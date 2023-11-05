@@ -1,0 +1,34 @@
+{
+  "profiles": {
+    "DC Web": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchServiceName": "eshopwebmvc",
+      //"composeLaunchUrl": "{Scheme}://host.docker.internal:{ServicePort}",
+      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}",
+      "serviceActions": {
+        "catalogapi": "StartDebugging",
+        "eshopwebmvc": "StartDebugging",
+        "identityapi": "StartDebugging",
+        "backoffice": "StartDebugging",
+        "postgres_db": "StartWithoutDebugging"
+      }
+    },
+    "DC Backoffice": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchServiceName": "backoffice",
+      "composeLaunchUrl": "{Scheme}://host.docker.internal:{ServicePort}",
+      //"composeLaunchUrl": "{Scheme}://localhost:{ServicePort}",
+      "serviceActions": {
+        "backoffice": "StartDebugging",
+        "catalogapi": "StartDebugging",
+        "eshopwebmvc": "StartDebugging",
+        "identityapi": "StartDebugging",
+        "postgres_db": "StartWithoutDebugging"
+      }
+    }
+  }
+}

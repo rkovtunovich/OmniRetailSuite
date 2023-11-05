@@ -1,0 +1,47 @@
+﻿using Retail.Core.Entities.ReceiptAggregate;
+
+namespace Retail.Core.DTOs;
+
+public record ReceiptDto
+{
+    public int Id { get; init; }
+
+    public string Number { get; set; } = null!;
+
+    public DateTimeOffset Date { get; init; }
+
+    public CashierDto Cashier { get; init; } = null!;
+
+    public decimal TotalPrice { get; init; }
+
+    public List<ReceiptItemDto> ReceiptItems { get; init; } = null!;
+
+    public static ReceiptDto FromReceipt(Receipt receipt)
+    {
+        return new ReceiptDto
+        {
+            Id = receipt.Id,
+            Date = receipt.Date,
+            Cashier = CashierDto.FromCashier(receipt.Cashier),
+            ReceiptItems = ReceiptItemDto.FromReceiptItems(receipt.ReceiptItems)
+        };
+    }
+
+    public static List<ReceiptDto> FromReceipts(List<Receipt> receipts)
+    {
+        return receipts.Select(FromReceipt).ToList();
+    }
+
+    public Receipt ToReceipt()
+    {
+        return new Receipt
+        {
+            Id = Id,
+            Date = Date,
+            CashierId = Cashier.Id,
+            Cashier = Cashier.ToCashier(),
+            TotalPrice = TotalPrice,
+            ReceiptItems = ReceiptItems.Select(x => x.ToReceiptItem()).ToList()
+        };
+    }
+}

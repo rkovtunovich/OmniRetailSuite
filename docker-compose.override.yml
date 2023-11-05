@@ -1,0 +1,52 @@
+version: '3.4'
+
+services:
+ eshopwebmvc:
+   environment:
+     - ASPNETCORE_ENVIRONMENT=Docker
+     - ASPNETCORE_URLS=http://+:80
+   ports:
+     - "5106:80"
+   volumes:
+     - ~/.aspnet/https:/root/.aspnet/https:ro
+     - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
+ catalogapi:
+   environment:
+     - ASPNETCORE_ENVIRONMENT=Docker
+     - ASPNETCORE_URLS=http://+:80
+   ports:
+     - "5222:80"
+   volumes:
+     - ~/.aspnet/https:/root/.aspnet/https:ro
+     - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
+ backoffice:
+   environment:
+     ASPNETCORE_ENVIRONMENT: "Docker"
+     #ASPNETCORE_URLS: "https://+:443;http://+:80"
+     # ASPNETCORE_HTTP_PORTS: 8080
+     ASPNETCORE_HTTPS_PORTS: 8081
+     ASPNETCORE_Kestrel__Certificates__Default__Password: ${CERTIFICATE_PASSWORD}
+     ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/backoffice/backoffice.pfx"
+   ports:
+     # - "5300:8080"
+     - "5301:8081"
+   volumes:
+     - ~/.aspnet/https:/root/.aspnet/https:ro
+     # - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
+     - C:/repos/ssl/eshop:/https:ro
+ identityapi:
+   environment:
+     ASPNETCORE_ENVIRONMENT: "Docker"
+     #ASPNETCORE_URLS: "https://+:443;http://+:80"
+     #ASPNETCORE_URLS: "http://+:80"
+     ASPNETCORE_HTTP_PORTS: 8080
+     ASPNETCORE_HTTPS_PORTS: 8081
+     ASPNETCORE_Kestrel__Certificates__Default__Password: ${CERTIFICATE_PASSWORD}
+     ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/identityapi/identityapi.pfx"
+   ports:
+     - "5400:8080"
+     - "5401:8081"
+   volumes:
+     - ~/.aspnet/https:/root/.aspnet/https:ro
+     # - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro  
+     - C:/repos/ssl/eshop:/https:ro 

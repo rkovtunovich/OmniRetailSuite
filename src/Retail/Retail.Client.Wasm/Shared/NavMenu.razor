@@ -1,0 +1,29 @@
+﻿@using Retail.Client.Wasm.Helpers;
+
+@inherits BlazorComponent
+
+<MudNavMenu>
+
+    <MudNavLink class="nav-link" href="" Match="NavLinkMatch.All">
+        <span class="bi bi-house-door-fill" aria-hidden="true"></span> Home
+    </MudNavLink>
+
+    <AuthorizeView>
+
+        <Authorized>
+
+            <MudNavLink class="nav-link" href="cashiers-workplace">
+                <iconify-icon icon="streamline:money-cashier-shop-shopping-pay-payment-cashier-store-cash-register-machine" width="21" height="21"></iconify-icon> Cashier's workplace
+            </MudNavLink>
+
+        </Authorized>
+
+    </AuthorizeView>
+
+    <MudNavLink class="nav-link" href="fetchdata">
+        <span class="bi bi-list-nested" aria-hidden="true"></span> Fetch data
+    </MudNavLink>
+
+</MudNavMenu>
+
+

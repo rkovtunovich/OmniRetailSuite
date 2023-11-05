@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <UserSecretsId>430bdf60-3f10-4caa-a4dc-40957c3cb09b</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..\..</DockerfileContext>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
+    <PackageReference Include="Steeltoe.Discovery.ClientCore" />
+    <PackageReference Include="Steeltoe.Discovery.Consul" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Infrastructure\Infrastructure.Messaging.Kafka\Infrastructure.Messaging.Kafka.csproj" />
+    <ProjectReference Include="..\..\Shared\Infrastructure\Infrastructure.Serialization.JsonText\Infrastructure.Serialization.JsonText.csproj" />
+    <ProjectReference Include="..\Retail.Application\Retail.Application.csproj" />
+    <ProjectReference Include="..\Retail.Core\Retail.Core.csproj" />
+    <ProjectReference Include="..\Retail.Data\Retail.Data.csproj" />
+  </ItemGroup>
+
+</Project>

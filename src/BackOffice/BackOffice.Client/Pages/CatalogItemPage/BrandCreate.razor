@@ -1,0 +1,46 @@
+﻿@inject ILogger<ItemCreate> Logger
+@inject ICatalogService CatalogItemService
+
+@inherits BlazorComponent
+
+@namespace BackOffice.Client.Pages.CatalogItemPage
+
+@using BackOffice.Core.Models.Catalog;
+@using BackOffice.Core.Services.Abstraction;
+@using BackOffice.Client.Helpers;
+
+<MudContainer Class="m-0 p-0 form-content-panel">
+
+    <MudToolBar Dense Class="form-command-panel">
+
+         <MudTooltip Text="Save">
+             <MudIconButton Icon="@Icons.Material.Outlined.Save" Color="Color.Inherit" Class="mr-5" OnClick="@CreateClick" />
+         </MudTooltip>
+
+         <MudSpacer></MudSpacer>
+
+         <MudTooltip Text="Close">
+             <MudIconButton Icon="@Icons.Material.Outlined.Close" Color="Color.Inherit" Class="mr-5" OnClick="@Close" />
+         </MudTooltip>
+
+     </MudToolBar>
+
+     <EditForm EditContext="@_editContext" OnValidSubmit="@CreateClick">
+
+         <DataAnnotationsValidator />
+
+         <MudGrid>
+             <MudItem Style="min-width:50%">
+                 <MudCard>
+
+                     <MudCardContent>
+                         <MudTextField Label="Name" Class="mt-3" @bind-Value="_brand.Name" For="@(() => _brand.Name)" Variant="@MudBlazor.Variant.Filled" />
+                     </MudCardContent>
+
+                 </MudCard>
+             </MudItem>
+         </MudGrid>
+
+     </EditForm>
+
+</MudContainer>
