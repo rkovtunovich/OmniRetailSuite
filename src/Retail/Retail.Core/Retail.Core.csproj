@@ -7,4 +7,8 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Core\Shared.Core.Abstraction\Shared.Core.Abstraction.csproj" />
+  </ItemGroup>
+
 </Project>

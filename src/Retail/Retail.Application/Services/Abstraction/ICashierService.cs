@@ -1,10 +1,8 @@
-﻿using Retail.Core.DTOs;
-
-namespace Retail.Application.Services.Abstraction;
+﻿namespace Retail.Application.Services.Abstraction;
 
 public interface ICashierService
 {
-    Task<CashierDto?> GetCashierAsync(int id);
+    Task<CashierDto?> GetCashierAsync(Guid id);
 
     Task<List<CashierDto>> GetCashiersAsync();
 
@@ -12,5 +10,5 @@ public interface ICashierService
 
     Task<CashierDto> UpdateCashierAsync(CashierDto cashierDto);
 
-    Task DeleteCashierAsync(int id, bool isSoftDeleting);
+    Task DeleteCashierAsync(Guid id, bool isSoftDeleting);
 }

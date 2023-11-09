@@ -30,10 +30,10 @@ public class CatalogItemController(ICatalogItemService catalogItemService, ILogg
     }
 
     [HttpGet]
-    [Route("catalog-items/{id:int}")]
+    [Route("catalog-items/{id:Guid}")]
     [ProducesResponseType(typeof(CatalogItemDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<CatalogItemDto>> GetCatalogItemAsync(int id)
+    public async Task<ActionResult<CatalogItemDto>> GetCatalogItemAsync(Guid id)
     {
         try
         {

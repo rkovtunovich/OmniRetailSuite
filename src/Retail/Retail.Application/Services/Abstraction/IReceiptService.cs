@@ -1,10 +1,8 @@
-﻿using Retail.Core.DTOs;
-
-namespace Retail.Application.Services.Abstraction;
+﻿namespace Retail.Application.Services.Abstraction;
 
 public interface IReceiptService
 {
-    Task<ReceiptDto?> GetReceiptAsync(int id);
+    Task<ReceiptDto?> GetReceiptAsync(Guid id);
 
     Task<List<ReceiptDto>> GetReceiptsAsync();
 
@@ -12,5 +10,5 @@ public interface IReceiptService
 
     Task<ReceiptDto> UpdateReceiptAsync(ReceiptDto receiptDto);
 
-    Task DeleteReceiptAsync(int id, bool isSoftDeleting);
+    Task DeleteReceiptAsync(Guid id, bool isSoftDeleting);
 }

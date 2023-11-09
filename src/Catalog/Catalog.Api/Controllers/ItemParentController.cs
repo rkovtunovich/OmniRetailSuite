@@ -29,13 +29,13 @@ public class ItemParentController: ControllerBase
     }
 
     [HttpGet]
-    [Route("parents/{id:int}")]
+    [Route("parents/{id:Guid}")]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ItemParentDto), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<ItemParentDto>> ParentByIdAsync(int id)
+    public async Task<ActionResult<ItemParentDto>> ParentByIdAsync(Guid id)
     {
-        if (id <= 0)
+        if (id == Guid.Empty)
             return BadRequest();
 
         var parent = await _itemParentRepository.GetItemParentAsync(id);
@@ -82,7 +82,7 @@ public class ItemParentController: ControllerBase
     [HttpDelete]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    public async Task<ActionResult> DeleteParentAsync(int id, [FromQuery] bool useSoftDeleting = false)
+    public async Task<ActionResult> DeleteParentAsync(Guid id, [FromQuery] bool useSoftDeleting = false)
     {
         var isDeleted = await _itemParentRepository.DeleteItemParentAsync(id, useSoftDeleting);
         if (!isDeleted)

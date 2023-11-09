@@ -6,11 +6,11 @@ public interface ICatalogItemRepository
 {
     Task<List<CatalogItem>> GetCatalogItemsAsync();
 
-    Task<CatalogItem?> GetCatalogItemAsync(int receiptItemId);
+    Task<CatalogItem?> GetCatalogItemAsync(Guid receiptItemId);
 
     Task<CatalogItem> AddCatalogItemAsync(CatalogItem catalogItem);
 
     Task UpdateCatalogItemAsync(CatalogItem receiptItem);
 
-    Task DeleteCatalogItemAsync(int catalogItemId, bool useSoftDeleting);
+    Task DeleteCatalogItemAsync(Guid catalogItemId, bool useSoftDeleting);
 }

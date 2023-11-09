@@ -33,10 +33,10 @@ public class ReceiptController(IReceiptService receiptService, ILogger<ReceiptCo
     }
 
     [HttpGet]
-    [Route("receipts/{id:int}")]
+    [Route("receipts/{id:Guid}")]
     [ProducesResponseType(typeof(ReceiptDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<ReceiptDto>> GetReceiptAsync(int id)
+    public async Task<ActionResult<ReceiptDto>> GetReceiptAsync(Guid id)
     {
         try
         {
@@ -99,7 +99,7 @@ public class ReceiptController(IReceiptService receiptService, ILogger<ReceiptCo
     [Route("receipts/{id:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<Receipt>> DeleteReceiptAsync(int id, bool useSoftDeleting)
+    public async Task<ActionResult<Receipt>> DeleteReceiptAsync(Guid id, bool useSoftDeleting)
     {
         try
         {

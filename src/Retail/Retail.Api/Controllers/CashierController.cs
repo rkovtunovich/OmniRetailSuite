@@ -31,10 +31,10 @@ public class CashierController(ICashierService cashierService, ILogger<CashierCo
     }
 
     [HttpGet]
-    [Route("cashiers/{id:int}")]
+    [Route("cashiers/{id:Guid}")]
     [ProducesResponseType(typeof(CashierDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<CashierDto>> GetCashierAsync(int id)
+    public async Task<ActionResult<CashierDto>> GetCashierAsync(Guid id)
     {
         try
         {

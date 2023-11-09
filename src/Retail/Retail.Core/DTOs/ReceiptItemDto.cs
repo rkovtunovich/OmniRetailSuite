@@ -4,9 +4,9 @@ namespace Retail.Core.DTOs;
 
 public record ReceiptItemDto
 {
-    public int Id { get; init; }
+    public Guid Id { get; init; }
 
-    public int Number { get; init; }
+    public int LineNumber { get; init; }
 
     public ReceiptDto Receipt { get; init; } = null!;
 
@@ -25,7 +25,7 @@ public record ReceiptItemDto
         return new ReceiptItemDto
         {
             Id = receiptItem.Id,
-            Number = receiptItem.Number,
+            LineNumber = receiptItem.LineNumber,
             Receipt = ReceiptDto.FromReceipt(receiptItem.Receipt),
             CatalogItem = CatalogItemDto.FromCatalogItem(receiptItem.CatalogItem),
             Quantity = receiptItem.Quantity,
@@ -44,7 +44,7 @@ public record ReceiptItemDto
         return new ReceiptItem
         {
             Id = Id,
-            Number = Number,
+            LineNumber = LineNumber,
             ReceiptId = Receipt.Id,
             Receipt = Receipt.ToReceipt(),
             CatalogItemId = CatalogItem.Id,

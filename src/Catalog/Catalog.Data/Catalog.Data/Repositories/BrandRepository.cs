@@ -28,7 +28,7 @@ public class BrandRepository: IBrandRepository
         }
     }
 
-    public async Task<bool> DeleteBrandAsync(int id, bool useSoftDeleting)
+    public async Task<bool> DeleteBrandAsync(Guid id, bool useSoftDeleting)
     {
         try
         {
@@ -56,7 +56,7 @@ public class BrandRepository: IBrandRepository
         }
     }
 
-    public async Task<Brand?> GetBrandByIdAsync(int id)
+    public async Task<Brand?> GetBrandByIdAsync(Guid id)
     {
         try
         {

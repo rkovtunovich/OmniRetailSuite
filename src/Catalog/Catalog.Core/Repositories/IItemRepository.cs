@@ -4,13 +4,13 @@ public interface IItemRepository
 {
     Task<List<Item>> GetItemsAsync(int pageSize, int pageIndex);
 
-    Task<Item?> GetItemByIdAsync(int id);
+    Task<Item?> GetItemByIdAsync(Guid id);
 
-    Task<List<Item>> GetItemsByIdAsync(IEnumerable<int> ids);
+    Task<List<Item>> GetItemsByIdAsync(IEnumerable<Guid> ids);
 
     Task<List<Item>> GetItemsByNameAsync(string name);
 
-    Task<List<Item>> GetItemsByCategoryAsync(int? catalogBrandId, int? catalogTypeId);
+    Task<List<Item>> GetItemsByCategoryAsync(Guid? catalogBrandId, Guid? catalogTypeId);
 
     Task<int> GetItemsCountAsync();
 
@@ -18,5 +18,5 @@ public interface IItemRepository
 
     Task<bool> UpdateItemAsync(Item item);
 
-    Task<bool> DeleteItemAsync(int id, bool useSoftDeleting);
+    Task<bool> DeleteItemAsync(Guid id, bool useSoftDeleting);
 }

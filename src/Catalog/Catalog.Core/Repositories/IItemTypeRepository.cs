@@ -4,11 +4,11 @@ public interface IItemTypeRepository
 {
     Task<IReadOnlyList<ItemType>> GetItemTypesAsync();
 
-    Task<ItemType?> GetItemTypeByIdAsync(int id);
+    Task<ItemType?> GetItemTypeByIdAsync(Guid id);
 
     Task<bool> CreateItemTypeAsync(ItemType itemType);
 
     Task<bool> UpdateItemTypeAsync(ItemType itemType);
 
-    Task<bool> DeleteItemTypeAsync(int id, bool useSoftDeleting);
+    Task<bool> DeleteItemTypeAsync(Guid id, bool useSoftDeleting);
 }

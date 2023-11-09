@@ -1,4 +1,6 @@
-﻿namespace Retail.Core.Entities.ReceiptAggregate;
+﻿using Shared.Core.Abstraction;
+
+namespace Retail.Core.Entities.ReceiptAggregate;
 
 public class CatalogItem: BaseEntity
 {

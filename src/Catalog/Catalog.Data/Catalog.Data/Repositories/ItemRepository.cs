@@ -34,7 +34,7 @@ public class ItemRepository : IItemRepository
         }
     }
 
-    public async Task<bool> DeleteItemAsync(int id, bool useSoftDeleting)
+    public async Task<bool> DeleteItemAsync(Guid id, bool useSoftDeleting)
     {
         try
         {
@@ -63,7 +63,7 @@ public class ItemRepository : IItemRepository
         }
     }
 
-    public async Task<Item?> GetItemByIdAsync(int id)
+    public async Task<Item?> GetItemByIdAsync(Guid id)
     {
         try
         {
@@ -100,7 +100,7 @@ public class ItemRepository : IItemRepository
         }
     }
 
-    public async Task<List<Item>> GetItemsByCategoryAsync(int? catalogBrandId, int? catalogTypeId)
+    public async Task<List<Item>> GetItemsByCategoryAsync(Guid? catalogBrandId, Guid? catalogTypeId)
     {
         try
         {
@@ -144,7 +144,7 @@ public class ItemRepository : IItemRepository
         }
     }
 
-    public Task<List<Item>> GetItemsByIdAsync(IEnumerable<int> ids)
+    public Task<List<Item>> GetItemsByIdAsync(IEnumerable<Guid> ids)
     {
         try
         {

@@ -4,9 +4,9 @@ public interface IItemParentRepository
 {
     Task<bool> CreateItemParentAsync(ItemParent itemParent);
 
-    Task<bool> DeleteItemParentAsync(int id, bool useSoftDeleting);
+    Task<bool> DeleteItemParentAsync(Guid id, bool useSoftDeleting);
 
-    Task<ItemParent?> GetItemParentAsync(int id);
+    Task<ItemParent?> GetItemParentAsync(Guid id);
 
     Task<List<ItemParent>> GetItemParentsAsync();
 

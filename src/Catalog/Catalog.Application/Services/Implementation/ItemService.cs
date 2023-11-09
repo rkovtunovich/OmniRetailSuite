@@ -26,7 +26,7 @@ public class ItemService(IItemRepository itemRepository, IEventPublisher eventPu
         return paginatedItems;
     }
 
-    public async Task<ItemDto?> GetItemByIdAsync(int id)
+    public async Task<ItemDto?> GetItemByIdAsync(Guid id)
     {
         var item = await _itemRepository.GetItemByIdAsync(id);
 
@@ -43,7 +43,7 @@ public class ItemService(IItemRepository itemRepository, IEventPublisher eventPu
         return itemsDtos;
     }
 
-    public async Task<PaginatedItemsDto> GetItemsByCategoryAsync(int? typeId, int? brandId)
+    public async Task<PaginatedItemsDto> GetItemsByCategoryAsync(Guid? typeId, Guid? brandId)
     {
         var root = await _itemRepository.GetItemsByCategoryAsync(typeId, brandId);
 
@@ -85,7 +85,7 @@ public class ItemService(IItemRepository itemRepository, IEventPublisher eventPu
         return item;
     }
 
-    public async Task<bool> DeleteItemAsync(int id, bool isSoftDeleting)
+    public async Task<bool> DeleteItemAsync(Guid id, bool isSoftDeleting)
     {
         var result = await _itemRepository.DeleteItemAsync(id, isSoftDeleting);
 

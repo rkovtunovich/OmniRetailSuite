@@ -12,7 +12,8 @@ public class ReceiptConfiguration : IEntityTypeConfiguration<Receipt>
 
         builder.HasOne(x => x.Cashier)
             .WithMany()
-            .HasForeignKey(x => x.CashierId);
+            .HasForeignKey(x => x.CashierId)
+            .IsRequired();
 
         builder.Property(x => x.TotalPrice)
             .IsRequired(true)
@@ -24,5 +25,9 @@ public class ReceiptConfiguration : IEntityTypeConfiguration<Receipt>
 
         builder.Property(x => x.Date)
             .IsRequired(true);
+
+        builder.Property(x => x.Number)
+            .IsRequired(true)
+            .HasMaxLength(9);
     }
 }

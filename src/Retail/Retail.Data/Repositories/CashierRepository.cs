@@ -19,7 +19,7 @@ public class CashierRepository(RetailDbContext context, ILogger<ReceiptRepositor
         }
     }
 
-    public async Task<Cashier?> GetCashierAsync(int cashierId)
+    public async Task<Cashier?> GetCashierAsync(Guid cashierId)
     {
         try
         {
@@ -65,7 +65,7 @@ public class CashierRepository(RetailDbContext context, ILogger<ReceiptRepositor
         }
     }
 
-    public async Task DeleteCashierAsync(int cashierId, bool useSoftDeleting)
+    public async Task DeleteCashierAsync(Guid cashierId, bool useSoftDeleting)
     {
         try
         {

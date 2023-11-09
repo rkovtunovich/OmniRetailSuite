@@ -13,7 +13,7 @@ public class ReceiptService : IReceiptService
         _logger = logger;
     }
 
-    public async Task<ReceiptDto?> GetReceiptAsync(int id)
+    public async Task<ReceiptDto?> GetReceiptAsync(Guid id)
     {
         try
         {
@@ -74,7 +74,7 @@ public class ReceiptService : IReceiptService
         }
     }
 
-    public async Task DeleteReceiptAsync(int id, bool isSoftDeleting)
+    public async Task DeleteReceiptAsync(Guid id, bool isSoftDeleting)
     {
         try
         {

@@ -1,7 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Retail.Application.Services.Abstraction;
-using Retail.Core.DTOs;
-using Retail.Core.Repositories;
+﻿using Retail.Core.Repositories;
 
 namespace Retail.Application.Services.Implementation;
 
@@ -16,7 +13,7 @@ public class CatalogItemService : ICatalogItemService
         _logger = logger;
     }
 
-    public async Task<CatalogItemDto?> GetCatalogItemAsync(int id)
+    public async Task<CatalogItemDto?> GetCatalogItemAsync(Guid id)
     {
         try
         {
@@ -77,7 +74,7 @@ public class CatalogItemService : ICatalogItemService
         }
     }
 
-    public async Task DeleteCatalogItemAsync(int id, bool isSoftDeleting)
+    public async Task DeleteCatalogItemAsync(Guid id, bool isSoftDeleting)
     {
         try
         {

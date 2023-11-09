@@ -28,7 +28,7 @@ public class ItemParentRepository: IItemParentRepository
         }
     }
 
-    public async Task<bool> DeleteItemParentAsync(int id, bool useSoftDeleting)
+    public async Task<bool> DeleteItemParentAsync(Guid id, bool useSoftDeleting)
     {
         try
         {
@@ -57,7 +57,7 @@ public class ItemParentRepository: IItemParentRepository
         }
     }
 
-    public async Task<ItemParent?> GetItemParentAsync(int id)
+    public async Task<ItemParent?> GetItemParentAsync(Guid id)
     {
         try
         {

@@ -1,7 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Retail.Application.Services.Abstraction;
-using Retail.Core.DTOs;
-using Retail.Core.Repositories;
+﻿using Retail.Core.Repositories;
 
 namespace Retail.Application.Services.Implementation;
 
@@ -16,7 +13,7 @@ public class CashierService: ICashierService
         _logger = logger;
     }
 
-    public async Task<CashierDto?> GetCashierAsync(int id)
+    public async Task<CashierDto?> GetCashierAsync(Guid id)
     {
         try
         {
@@ -72,7 +69,7 @@ public class CashierService: ICashierService
         }
     }
 
-    public async Task DeleteCashierAsync(int id, bool isSoftDeleting)
+    public async Task DeleteCashierAsync(Guid id, bool isSoftDeleting)
     {
         try
         {

@@ -2,7 +2,7 @@
 
 public record ItemUpdatedEvent : IEvent
 {
-    public ItemUpdatedEvent(int id, string name)
+    public ItemUpdatedEvent(Guid id, string name)
     {
         Id = id;
         Name = name;
@@ -14,7 +14,7 @@ public record ItemUpdatedEvent : IEvent
 
     public string EventType { get; init; } = nameof(ItemUpdatedEvent);
 
-    public int Id { get; init; }
+    public Guid Id { get; init; }
 
     public string Name { get; init; } = string.Empty;
 }

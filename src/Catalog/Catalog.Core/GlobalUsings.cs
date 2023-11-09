@@ -2,6 +2,8 @@
 global using Catalog.Core.Messaging;
 global using Catalog.Core.Repositories;
 
+global using Shared.Core.Abstraction;
+
 global using System.Collections.Generic;
 global using System.IO;
 global using System.Linq;

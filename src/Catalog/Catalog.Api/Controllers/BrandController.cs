@@ -26,13 +26,13 @@ public class BrandController: ControllerBase
     }
 
     [HttpGet]
-    [Route("brands/{id:int}")]
+    [Route("brands/{id:Guid}")]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(BrandDto), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<BrandDto>> BrandByIdAsync(int id)
+    public async Task<ActionResult<BrandDto>> BrandByIdAsync(Guid id)
     {
-        if (id <= 0)
+        if (id == Guid.Empty)
             return BadRequest();
 
         var brand = await _brandRepository.GetBrandByIdAsync(id);
@@ -79,7 +79,7 @@ public class BrandController: ControllerBase
     [HttpDelete]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    public async Task<ActionResult> DeleteBrandAsync(int id, [FromQuery] bool useSoftDeleting = false)
+    public async Task<ActionResult> DeleteBrandAsync(Guid id, [FromQuery] bool useSoftDeleting = false)
     {
         var isDeleted = await _brandRepository.DeleteBrandAsync(id, useSoftDeleting);
         if (isDeleted)

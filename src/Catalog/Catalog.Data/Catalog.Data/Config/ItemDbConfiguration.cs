@@ -9,7 +9,6 @@ public class ItemDbConfiguration : IEntityTypeConfiguration<Item>
         builder.ToTable("items");
 
         builder.Property(ci => ci.Id)
-            .UseHiLo("catalog_hilo")
             .IsRequired();
 
         builder.Property(ci => ci.Name)

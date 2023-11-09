@@ -17,21 +17,21 @@ public class Item : BaseEntity, IAggregateRoot
 
     public ItemParent? Parent { get; set; }
 
-    public int? ParentId { get; set; }
+    public Guid? ParentId { get; set; }
 
-    public int CatalogTypeId { get; set; }
+    public Guid CatalogTypeId { get; set; }
 
     [StringLength(13)]
     public string? Barcode { get; set; }
 
     public virtual ItemType? CatalogType { get; set; }
 
-    public int CatalogBrandId { get; set; }
+    public Guid CatalogBrandId { get; set; }
 
     public virtual Brand? CatalogBrand { get; set; }
 
-    public Item(int catalogTypeId,
-        int catalogBrandId,
+    public Item(Guid catalogTypeId,
+        Guid catalogBrandId,
         string description,
         string name,
         decimal price,
@@ -62,15 +62,15 @@ public class Item : BaseEntity, IAggregateRoot
         Price = details.Price;
     }
 
-    public void UpdateBrand(int catalogBrandId)
+    public void UpdateBrand(Guid catalogBrandId)
     {
-        Guard.Against.Zero(catalogBrandId, nameof(catalogBrandId));
+        Guard.Against.Default(catalogBrandId, nameof(catalogBrandId));
         CatalogBrandId = catalogBrandId;
     }
 
-    public void UpdateType(int catalogTypeId)
+    public void UpdateType(Guid catalogTypeId)
     {
-        Guard.Against.Zero(catalogTypeId, nameof(catalogTypeId));
+        Guard.Against.Default(catalogTypeId, nameof(catalogTypeId));
         CatalogTypeId = catalogTypeId;
     }
 

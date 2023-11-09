@@ -4,7 +4,7 @@ namespace Retail.Application.Services.Abstraction;
 
 public interface ICatalogItemService
 {
-    Task<CatalogItemDto?> GetCatalogItemAsync(int id);
+    Task<CatalogItemDto?> GetCatalogItemAsync(Guid id);
 
     Task<List<CatalogItemDto>> GetCatalogItemsAsync();
 
@@ -12,5 +12,5 @@ public interface ICatalogItemService
 
     Task UpdateCatalogItemAsync(CatalogItemDto catalogItemDto);
 
-    Task DeleteCatalogItemAsync(int id, bool isSoftDeleting);
+    Task DeleteCatalogItemAsync(Guid id, bool isSoftDeleting);
 }

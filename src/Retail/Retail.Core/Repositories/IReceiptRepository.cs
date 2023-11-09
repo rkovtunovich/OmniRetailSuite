@@ -6,7 +6,7 @@ public interface IReceiptRepository
 {
     Task<List<Receipt>> GetReceiptsAsync();
 
-    Task<Receipt?> GetReceiptAsync(int receiptId);
+    Task<Receipt?> GetReceiptAsync(Guid receiptId);
 
     Task<Receipt?> GetReceiptAsync(string receiptNumber);
 
@@ -14,5 +14,5 @@ public interface IReceiptRepository
 
     Task UpdateReceiptAsync(Receipt receipt);
 
-    Task DeleteReceiptAsync(int receiptId, bool useSoftDeleting);
+    Task DeleteReceiptAsync(Guid receiptId, bool useSoftDeleting);
 }

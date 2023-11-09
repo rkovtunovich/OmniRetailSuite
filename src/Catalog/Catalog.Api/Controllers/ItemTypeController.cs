@@ -1,5 +1,4 @@
-﻿using Catalog.Application.DTOs.CatalogTDOs;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Catalog.Api.Controllers;
 
@@ -26,13 +25,13 @@ public class ItemTypeController: ControllerBase
     }
 
     [HttpGet]
-    [Route("types/{id:int}")]
+    [Route("types/{id:Guid}")]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ItemTypeDto), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<ItemTypeDto>> TypeByIdAsync(int id)
+    public async Task<ActionResult<ItemTypeDto>> TypeByIdAsync(Guid id)
     {
-        if (id <= 0)
+        if (id == Guid.Empty)
             return BadRequest();
 
         var type = await _itemTypeRepository.GetItemTypeByIdAsync(id);
@@ -78,7 +77,7 @@ public class ItemTypeController: ControllerBase
     [HttpDelete]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    public async Task<ActionResult> DeleteTypeAsync(int id, [FromQuery] bool useSoftDeleting = false)
+    public async Task<ActionResult> DeleteTypeAsync(Guid id, [FromQuery] bool useSoftDeleting = false)
     {
         var deleted = await _itemTypeRepository.DeleteItemTypeAsync(id, useSoftDeleting);
 

@@ -18,7 +18,7 @@ public class CatalogItemRepository(RetailDbContext context, ILogger<ReceiptRepos
         }
     }
 
-    public async Task<CatalogItem?> GetCatalogItemAsync(int receiptItemId)
+    public async Task<CatalogItem?> GetCatalogItemAsync(Guid receiptItemId)
     {
         try
         {
@@ -64,7 +64,7 @@ public class CatalogItemRepository(RetailDbContext context, ILogger<ReceiptRepos
         }
     }
 
-    public async Task DeleteCatalogItemAsync(int catalogItemId, bool useSoftDeleting)
+    public async Task DeleteCatalogItemAsync(Guid catalogItemId, bool useSoftDeleting)
     {
         try
         {

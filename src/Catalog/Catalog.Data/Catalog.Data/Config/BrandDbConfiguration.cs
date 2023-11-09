@@ -9,7 +9,6 @@ public class BrandDbConfiguration : IEntityTypeConfiguration<Brand>
         builder.HasKey(ci => ci.Id);
 
         builder.Property(ci => ci.Id)
-           .UseHiLo("brand_hilo")
            .IsRequired();
 
         builder.Property(cb => cb.Name)

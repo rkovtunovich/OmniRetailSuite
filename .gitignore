@@ -262,3 +262,4 @@ pub/
 /src/PublicApi/appsettings.Local.json
 /ToDo List.txt
 /src/Catalog/Catalog.Data/Catalog.Data/appsettings.json
+/src/Retail/Retail.Data/appsettings.json

@@ -4,7 +4,7 @@ namespace Retail.Core.DTOs;
 
 public record ReceiptDto
 {
-    public int Id { get; init; }
+    public Guid Id { get; init; }
 
     public string Number { get; set; } = null!;
 

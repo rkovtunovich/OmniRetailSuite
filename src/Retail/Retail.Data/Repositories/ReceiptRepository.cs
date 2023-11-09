@@ -32,7 +32,7 @@ public class ReceiptRepository(RetailDbContext context, ILogger<ReceiptRepositor
         }
     }
 
-    public async Task<Receipt?> GetReceiptAsync(int receiptId)
+    public async Task<Receipt?> GetReceiptAsync(Guid receiptId)
     {
         try
         {
@@ -78,7 +78,7 @@ public class ReceiptRepository(RetailDbContext context, ILogger<ReceiptRepositor
         }
     }
 
-    public async Task DeleteReceiptAsync(int receiptId, bool useSoftDeleting)
+    public async Task DeleteReceiptAsync(Guid receiptId, bool useSoftDeleting)
     {
         try
         {

@@ -4,7 +4,7 @@ namespace Retail.Core.DTOs;
 
 public record CashierDto
 {
-    public int Id { get; init; }
+    public Guid Id { get; init; }
 
     public string Name { get; init; } = null!;
 

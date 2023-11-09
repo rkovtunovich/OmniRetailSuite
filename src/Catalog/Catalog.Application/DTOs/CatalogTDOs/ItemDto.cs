@@ -4,7 +4,7 @@ namespace Catalog.Application.DTOs.CatalogTDOs;
 
 public record ItemDto
 {
-    public int Id { get; init; }
+    public Guid Id { get; init; }
 
     public string Name { get; init; } = string.Empty;
 
@@ -16,11 +16,11 @@ public record ItemDto
 
     public string PictureBase64 { get; init; } = string.Empty;
 
-    public int CatalogTypeId { get; init; }
+    public Guid CatalogTypeId { get; init; }
 
     public ItemTypeDto? CatalogType { get; init; }
 
-    public int CatalogBrandId { get; init; }
+    public Guid CatalogBrandId { get; init; }
 
     public BrandDto? CatalogBrand { get; init; }
 
@@ -54,8 +54,8 @@ public record ItemDto
             Barcode = Barcode,
             CatalogBrand = CatalogBrand?.ToEntity(),
             CatalogType = CatalogType?.ToEntity(),
-            CatalogTypeId = CatalogType?.Id ?? 0,
-            CatalogBrandId = CatalogBrand?.Id ?? 0
+            CatalogTypeId = CatalogType?.Id ?? Guid.Empty,
+            CatalogBrandId = CatalogBrand?.Id ?? Guid.Empty
         };
     }
 

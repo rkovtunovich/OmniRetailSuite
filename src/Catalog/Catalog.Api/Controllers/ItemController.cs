@@ -31,13 +31,13 @@ public class ItemController : ControllerBase
     }
 
     [HttpGet]
-    [Route("items/{id:int}")]
+    [Route("items/{id:Guid}")]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ItemDto), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<ItemDto>> ItemByIdAsync(int id)
+    public async Task<ActionResult<ItemDto>> ItemByIdAsync(Guid id)
     {
-        if (id <= 0)
+        if (id == Guid.Empty)
             return BadRequest();
 
         var item = await _itemService.GetItemByIdAsync(id);
@@ -63,7 +63,7 @@ public class ItemController : ControllerBase
     [HttpGet]
     [Route("items/type/{catalogTypeId}/brand/{catalogBrandId:int?}")]
     [ProducesResponseType(typeof(PaginatedItemsDto), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<PaginatedItemsDto>> ItemsByTypeIdAndBrandIdAsync(int? catalogTypeId, int? catalogBrandId, [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
+    public async Task<ActionResult<PaginatedItemsDto>> ItemsByTypeIdAndBrandIdAsync(Guid? catalogTypeId, Guid? catalogBrandId, [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
     {
         return await _itemService.GetItemsByCategoryAsync(catalogBrandId, catalogTypeId);
     }
@@ -72,7 +72,7 @@ public class ItemController : ControllerBase
     [HttpGet]
     [Route("items/type/all/brand/{catalogBrandId:int?}")]
     [ProducesResponseType(typeof(PaginatedItemsDto), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<PaginatedItemsDto>> ItemsByBrandIdAsync(int? catalogBrandId, [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
+    public async Task<ActionResult<PaginatedItemsDto>> ItemsByBrandIdAsync(Guid? catalogBrandId, [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
     {
         if (catalogBrandId is null)
             throw new ArgumentNullException(nameof(catalogBrandId));
@@ -113,7 +113,7 @@ public class ItemController : ControllerBase
     [HttpDelete]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    public async Task<ActionResult> DeleteItemAsync(int id, [FromQuery] bool useSoftDeleting = false)
+    public async Task<ActionResult> DeleteItemAsync(Guid id, [FromQuery] bool useSoftDeleting = false)
     {
         var isDeleted = await _itemService.DeleteItemAsync(id, useSoftDeleting);
         if (!isDeleted)

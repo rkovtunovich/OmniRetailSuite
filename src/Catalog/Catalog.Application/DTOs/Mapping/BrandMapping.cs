@@ -1,5 +1,4 @@
 ﻿using Catalog.Application.DTOs.CatalogTDOs;
-using Catalog.Core.Entities.CatalogAggregate;
 
 namespace Catalog.Application.DTOs.Mapping;
 
