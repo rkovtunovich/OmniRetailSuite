@@ -10,20 +10,7 @@ services:
       BlazorAdminClient: "${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5301"
       ConnectionStrings__IdentityApiConnection: "${POSTGRES_IDENTITY_API_CONNECTION_STRING}"
     depends_on:
-      - "postgres_db"
-  eshopwebmvc:
-    image: ${DOCKER_REGISTRY-}eshop-web
-    build:
-      context: .
-      dockerfile: src/Web/Dockerfile
-    environment:
-      ConnectionStrings__CatalogConnection: "${POSTGRES_CATALOG_CONNECTION_STRING}"
-      ConnectionStrings__IdentityConnection: "${POSTGRES_IDENTITY_CONNECTION_STRING}"
-      ApiUrl: "http://catalogapi"
-      IdentityUrl: "https://identityapi"
-    depends_on:
-      - "catalogapi"
-      - "identityapi"  
+      - "postgres_db"  
   backoffice:
     image: ${DOCKER_REGISTRY-}backoffice-client
     build:
