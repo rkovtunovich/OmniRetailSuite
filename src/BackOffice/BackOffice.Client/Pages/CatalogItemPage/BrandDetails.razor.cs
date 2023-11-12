@@ -1,5 +1,6 @@
-﻿using BackOffice.Client.Services;
-using BackOffice.Core.Models.Catalog;
+﻿using BackOffice.Application.Services.Abstraction;
+using BackOffice.Client.Services;
+using BackOffice.Core.Models.Product;
 using Microsoft.AspNetCore.Components.Forms;
 
 namespace BackOffice.Client.Pages.CatalogItemPage;
@@ -8,13 +9,13 @@ public partial class BrandDetails
 {
     [Inject] private TabsService _tabsService { get; set; } = null!;
 
-    [Inject] public ICatalogService CatalogService { get; set; } = null!;
+    [Inject] public IProductCatalogService CatalogService { get; set; } = null!;
 
     [Parameter]
     public EventCallback<string> OnSaveClick { get; set; }
 
     [Parameter]
-    public CatalogBrand Brand { get; set; } = null!;
+    public Brand Brand { get; set; } = null!;
 
     private EditContext? _editContext;
 

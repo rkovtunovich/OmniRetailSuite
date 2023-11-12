@@ -1,17 +1,17 @@
 ﻿using BackOffice.Client.Services;
-using BackOffice.Core.Models.Catalog;
+using BackOffice.Core.Models.Product;
 
 namespace BackOffice.Client.Pages.CatalogItemPage;
 
 public partial class TypeList : BlazorComponent
 {
-    [Inject] public ICatalogService CatalogService { get; set; } = null!;
+    [Inject] public IProductCatalogService CatalogService { get; set; } = null!;
 
     [Inject] private TabsService _tabsService { get; set; } = null!;
 
-    private List<CatalogType> _catalogTypes = new();
+    private List<ItemType> _catalogTypes = new();
 
-    private MudDataGrid<CatalogType> _dataGrid = null!;
+    private MudDataGrid<ItemType> _dataGrid = null!;
 
     private string? _searchString;
 
@@ -19,7 +19,7 @@ public partial class TypeList : BlazorComponent
     private DataGridEditTrigger _editTrigger = DataGridEditTrigger.Manual;
     private DialogOptions _dialogOptions = new() { DisableBackdropClick = true };
 
-    private Func<CatalogType, bool> _quickFilter => x =>
+    private Func<ItemType, bool> _quickFilter => x =>
     {
         if (string.IsNullOrWhiteSpace(_searchString))
             return true;
@@ -47,7 +47,7 @@ public partial class TypeList : BlazorComponent
         _tabsService.TryCreateTab<TypeCreate>();        
     }
 
-    private void OpenTypeClick(CellContext<CatalogType> context)
+    private void OpenTypeClick(CellContext<ItemType> context)
     {
         var parameters = new Dictionary<string, object>
         {
@@ -64,23 +64,23 @@ public partial class TypeList : BlazorComponent
         CallRequestRefresh();
     }
 
-    private void StartedEditingItem(CatalogType item)
+    private void StartedEditingItem(ItemType item)
     {
         _editTrigger = DataGridEditTrigger.Manual;
     }
 
-    private void CanceledEditingItem(CatalogType item)
+    private void CanceledEditingItem(ItemType item)
     {
     }
 
-    private async Task CommittedItemChanges(CatalogType type)
+    private async Task CommittedItemChanges(ItemType type)
     {
         await CatalogService.UpdateTypeAsync(type);
 
         CallRequestRefresh();
     }
 
-    private async Task RowClick(DataGridRowClickEventArgs<CatalogType> eventArg)
+    private async Task RowClick(DataGridRowClickEventArgs<ItemType> eventArg)
     {
         if (eventArg.MouseEventArgs.Detail == 1)
             return;
@@ -93,7 +93,7 @@ public partial class TypeList : BlazorComponent
         });
     }
 
-    private async Task OnCatalogTypeChanged(CatalogType changedType)
+    private async Task OnCatalogTypeChanged(ItemType changedType)
     {
         _catalogTypes = await CatalogService.GetTypesAsync();
         CallRequestRefresh();

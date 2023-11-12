@@ -1,5 +1,6 @@
-﻿using BackOffice.Client.Model;
-using BackOffice.Client.Services;
+﻿using BackOffice.Application;
+using BackOffice.Application.Services.Implementation;
+using BackOffice.Core.Models.Settings;
 using Microsoft.AspNetCore.HttpLogging;
 
 namespace BackOffice.Client.Configuration;

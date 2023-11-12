@@ -1,10 +1,10 @@
-﻿using BackOffice.Core.Models.Catalog;
+﻿using BackOffice.Core.Models.Product;
 
 namespace BackOffice.Client.Model;
 
 public class TreeItemParentsData
 {
-    public int Id { get; init; }
+    public Guid Id { get; init; }
 
     public string Name { get; init; } = string.Empty;
 

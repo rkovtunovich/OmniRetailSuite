@@ -1,6 +1,7 @@
-﻿using BackOffice.Client.Model;
+﻿using BackOffice.Application.Services.Abstraction;
+using BackOffice.Client.Model;
 using BackOffice.Client.Services;
-using BackOffice.Core.Models.Catalog;
+using BackOffice.Core.Models.Product;
 
 namespace BackOffice.Client.Pages.CatalogItemPage;
 
@@ -8,7 +9,7 @@ public partial class ItemList : BlazorComponent
 {
     #region Injects
 
-    [Inject] public ICatalogService CatalogService { get; set; } = null!;
+    [Inject] public IProductCatalogService CatalogService { get; set; } = null!;
 
     [Inject] private TabsService _tabsService { get; set; } = null!;
 
@@ -18,9 +19,9 @@ public partial class ItemList : BlazorComponent
 
     #region Item
 
-    private List<CatalogItem> _catalogItems = new();
+    private List<Item> _catalogItems = new();
 
-    private MudDataGrid<CatalogItem> _dataGrid = null!;
+    private MudDataGrid<Item> _dataGrid = null!;
 
     private string? _searchString;
 
@@ -28,7 +29,7 @@ public partial class ItemList : BlazorComponent
     private DataGridEditTrigger _editTrigger = DataGridEditTrigger.Manual;
     private DialogOptions _dialogOptions = new() { DisableBackdropClick = true };
 
-    private Func<CatalogItem, bool> _quickFilter => x =>
+    private Func<Item, bool> _quickFilter => x =>
     {
         if (string.IsNullOrWhiteSpace(_searchString))
             return true;
@@ -39,10 +40,10 @@ public partial class ItemList : BlazorComponent
         if (x.Description.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
             return true;
 
-        if (x.CatalogBrand?.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ?? false)
+        if (x.Brand?.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ?? false)
             return true;
 
-        if (x.CatalogType?.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ?? false)
+        if (x.ItemType?.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ?? false)
             return true;
 
         if ($"{x.Id} {x.Price}".Contains(_searchString))
@@ -96,7 +97,7 @@ public partial class ItemList : BlazorComponent
         _tabsService.TryCreateTab<ItemCreate>();        
     }
 
-    private void OpenItemClick(CellContext<CatalogItem> context)
+    private void OpenItemClick(CellContext<Item> context)
     {
         var parameters = new Dictionary<string, object>
         {
@@ -120,23 +121,23 @@ public partial class ItemList : BlazorComponent
         CallRequestRefresh();
     }
 
-    private void StartedEditingItem(CatalogItem item)
+    private void StartedEditingItem(Item item)
     {
         _editTrigger = DataGridEditTrigger.Manual;
     }
 
-    private void CanceledEditingItem(CatalogItem item)
+    private void CanceledEditingItem(Item item)
     {
     }
 
-    private async Task CommittedItemChanges(CatalogItem item)
+    private async Task CommittedItemChanges(Item item)
     {
         await CatalogService.UpdateItemAsync(item);
 
         CallRequestRefresh();
     }
 
-    private async Task RowClick(DataGridRowClickEventArgs<CatalogItem> eventArg)
+    private async Task RowClick(DataGridRowClickEventArgs<Item> eventArg)
     {
         if (eventArg.MouseEventArgs.Detail == 1)
             return;
@@ -149,7 +150,7 @@ public partial class ItemList : BlazorComponent
         });
     }
 
-    private async Task OnCatalogItemChanged(CatalogItem changedItem)
+    private async Task OnCatalogItemChanged(Item changedItem)
     {
         _catalogItems = await CatalogService.GetItemsAsync(0, 100, null, null);
         CallRequestRefresh();

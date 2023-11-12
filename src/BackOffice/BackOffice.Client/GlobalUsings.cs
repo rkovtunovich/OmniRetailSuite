@@ -1,7 +1,7 @@
-﻿global using BackOffice.Client;
+﻿global using BackOffice.Application.Services.Abstraction;
+
+global using BackOffice.Client;
 global using BackOffice.Client.Helpers;
-global using BackOffice.Client.Services.Implementation;
-global using BackOffice.Core.Services.Abstraction;
 
 global using Microsoft.AspNetCore.Components;
 

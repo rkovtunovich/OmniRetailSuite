@@ -5,12 +5,9 @@
 
 @namespace BackOffice.Client.Pages.CatalogItemPage
 
-@using BackOffice.Core.Models.Catalog;
-@using BackOffice.Client.Helpers;
-
 <PageTitle>Manage Catalog Type</PageTitle>
 
-<MudDataGrid T="CatalogType" @ref="@(_dataGrid)" Items="@_catalogTypes" Filterable="true" QuickFilter="@_quickFilter" EditMode="@(_editMode)" EditTrigger="@(_editTrigger)"
+<MudDataGrid T="ItemType" @ref="@(_dataGrid)" Items="@_catalogTypes" Filterable="true" QuickFilter="@_quickFilter" EditMode="@(_editMode)" EditTrigger="@(_editTrigger)"
              StartedEditingItem="@StartedEditingItem" CanceledEditingItem="@CanceledEditingItem" CommittedItemChanges="@CommittedItemChanges" ReadOnly="false" RowClick="RowClick"
              EditDialogOptions="_dialogOptions" FixedHeader="true" HeaderClass="data-grid-header"
              Style="height:100%; display:flex; flex-direction:column">

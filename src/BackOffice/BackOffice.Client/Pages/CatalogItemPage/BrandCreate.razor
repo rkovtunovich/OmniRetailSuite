@@ -1,13 +1,9 @@
 ﻿@inject ILogger<ItemCreate> Logger
-@inject ICatalogService CatalogItemService
+@inject IProductCatalogService CatalogItemService
 
 @inherits BlazorComponent
 
 @namespace BackOffice.Client.Pages.CatalogItemPage
-
-@using BackOffice.Core.Models.Catalog;
-@using BackOffice.Core.Services.Abstraction;
-@using BackOffice.Client.Helpers;
 
 <MudContainer Class="m-0 p-0 form-content-panel">
 

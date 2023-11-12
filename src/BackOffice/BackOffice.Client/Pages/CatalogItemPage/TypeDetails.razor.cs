@@ -1,5 +1,5 @@
 ﻿using BackOffice.Client.Services;
-using BackOffice.Core.Models.Catalog;
+using BackOffice.Core.Models.Product;
 using Microsoft.AspNetCore.Components.Forms;
 
 namespace BackOffice.Client.Pages.CatalogItemPage;
@@ -8,13 +8,13 @@ public partial class TypeDetails
 {
     [Inject] private TabsService _tabsService { get; set; } = null!;
 
-    [Inject] public ICatalogService CatalogService { get; set; } = null!;
+    [Inject] public IProductCatalogService CatalogService { get; set; } = null!;
 
     [Parameter]
     public EventCallback<string> OnSaveClick { get; set; }
 
     [Parameter]
-    public CatalogType Type { get; set; } = null!;
+    public ItemType Type { get; set; } = null!;
 
     private EditContext? _editContext;
 

@@ -1,17 +1,18 @@
-﻿using BackOffice.Client.Services;
-using BackOffice.Core.Models.Catalog;
+﻿using BackOffice.Application.Services.Abstraction;
+using BackOffice.Client.Services;
+using BackOffice.Core.Models.Product;
 
 namespace BackOffice.Client.Pages.CatalogItemPage;
 
 public partial class BrandList : BlazorComponent
 {
-    [Inject] public ICatalogService CatalogService { get; set; } = null!;
+    [Inject] public IProductCatalogService CatalogService { get; set; } = null!;
 
     [Inject] private TabsService _tabsService { get; set; } = null!;
 
-    private List<CatalogBrand> _catalogBrands = new();
+    private List<Brand> _catalogBrands = new();
 
-    private MudDataGrid<CatalogBrand> _dataGrid = null!;
+    private MudDataGrid<Brand> _dataGrid = null!;
 
     private string? _searchString;
 
@@ -19,7 +20,7 @@ public partial class BrandList : BlazorComponent
     private DataGridEditTrigger _editTrigger = DataGridEditTrigger.Manual;
     private DialogOptions _dialogOptions = new() { DisableBackdropClick = true };
 
-    private Func<CatalogBrand, bool> _quickFilter => x =>
+    private Func<Brand, bool> _quickFilter => x =>
     {
         if (string.IsNullOrWhiteSpace(_searchString))
             return true;
@@ -47,7 +48,7 @@ public partial class BrandList : BlazorComponent
         _tabsService.TryCreateTab<BrandCreate>();        
     }
 
-    private void OpenBrandClick(CellContext<CatalogBrand> context)
+    private void OpenBrandClick(CellContext<Brand> context)
     {
         var parameters = new Dictionary<string, object>
         {
@@ -64,23 +65,23 @@ public partial class BrandList : BlazorComponent
         CallRequestRefresh();
     }
 
-    private void StartedEditingItem(CatalogBrand item)
+    private void StartedEditingItem(Brand item)
     {
         _editTrigger = DataGridEditTrigger.Manual;
     }
 
-    private void CanceledEditingItem(CatalogBrand item)
+    private void CanceledEditingItem(Brand item)
     {
     }
 
-    private async Task CommittedItemChanges(CatalogBrand type)
+    private async Task CommittedItemChanges(Brand type)
     {
         await CatalogService.UpdateBrandAsync(type);
 
         CallRequestRefresh();
     }
 
-    private async Task RowClick(DataGridRowClickEventArgs<CatalogBrand> eventArg)
+    private async Task RowClick(DataGridRowClickEventArgs<Brand> eventArg)
     {
         if (eventArg.MouseEventArgs.Detail == 1)
             return;
@@ -93,7 +94,7 @@ public partial class BrandList : BlazorComponent
         });
     }
 
-    private async Task OnCatalogBrandChanged(CatalogBrand changedBrand)
+    private async Task OnCatalogBrandChanged(Brand changedBrand)
     {
         _catalogBrands = await CatalogService.GetBrandsAsync();
         CallRequestRefresh();

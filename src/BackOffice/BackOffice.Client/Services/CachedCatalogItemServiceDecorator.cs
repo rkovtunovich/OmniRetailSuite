@@ -1,5 +1,4 @@
-﻿using BackOffice.Core.Models.Catalog;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 
 namespace BackOffice.Client.Services;
 
