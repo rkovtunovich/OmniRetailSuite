@@ -19,7 +19,11 @@ using Steeltoe.Discovery.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
+if(builder.Environment.IsDevelopment())
+    builder.Logging.AddDebug();
+
 builder.Services.AddDataLayerDependencies(builder.Configuration);
 builder.Services.Configure<CatalogSettings>(builder.Configuration);
 builder.Services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));

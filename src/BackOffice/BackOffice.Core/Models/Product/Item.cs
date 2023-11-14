@@ -6,11 +6,11 @@ public class Item
 {
     public Guid Id { get; set; }
 
-    public Guid ItemTypeId { get; set; }
+    public Guid? ItemTypeId { get; set; }
 
     public ItemType? ItemType { get; set; }
 
-    public Guid CatalogBrandId { get; set; }
+    public Guid? CatalogBrandId { get; set; }
 
     public Brand? Brand { get; set; }
 

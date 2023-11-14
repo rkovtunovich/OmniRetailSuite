@@ -39,19 +39,7 @@ public class CatalogService : IProductCatalogService
         var uri = CatalogUriHelper.GetAllCatalogItems(page, take, brand, type);
         var paginatedItemsDto = await _httpService.GetAsync<PaginatedItemsDto>(uri);
 
-        var items = paginatedItemsDto?.Data.Select(x => new Item()
-        {
-            Id = x.Id,
-            Brand = x.CatalogBrand?.ToModel(),
-            CatalogBrandId = x.CatalogBrandId,
-            ItemType = x.CatalogType?.ToModel(),
-            ItemTypeId = x.CatalogTypeId,
-            Description = x.Description,
-            Name = x.Name,
-            PictureUri = x.PictureUri,
-            Price = x.Price,
-            Barcode = x.Barcode,
-        }).ToList() ?? [];
+        var items = paginatedItemsDto?.Data.Select(x => x.ToModel()).ToList() ?? [];
 
         return items;
     }
@@ -87,7 +75,7 @@ public class CatalogService : IProductCatalogService
     public async Task<Item> CreateItemAsync(Item catalogItem)
     {
         var uri = CatalogUriHelper.CreateCatalogItem();
-        await _httpService.PostAsync(uri, catalogItem);
+        await _httpService.PostAsync(uri, catalogItem.ToDto());
 
         CatalogItemChanged?.Invoke(catalogItem);
 

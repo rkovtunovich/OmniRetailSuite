@@ -10,9 +10,9 @@ public static class ItemMapping
         {
             Id = dto.Id,
             Brand = dto.CatalogBrand?.ToModel(),
-            CatalogBrandId = dto.CatalogBrandId,
+            CatalogBrandId = dto.CatalogBrand?.Id,
             ItemType = dto.CatalogType?.ToModel(),
-            ItemTypeId = dto.CatalogTypeId,
+            ItemTypeId = dto.CatalogType?.Id,
             Description = dto.Description,
             Name = dto.Name,
             PictureUri = dto.PictureUri,
@@ -26,10 +26,8 @@ public static class ItemMapping
         return new ItemDto()
         {
             Id = model.Id,
-            CatalogBrand = model.Brand?.ToDto(),
-            CatalogBrandId = model.CatalogBrandId,
+            CatalogBrand = model.Brand?.ToDto(),   
             CatalogType = model.ItemType?.ToDto(),
-            CatalogTypeId = model.ItemTypeId,
             Description = model.Description,
             Name = model.Name,
             PictureUri = model.PictureUri,

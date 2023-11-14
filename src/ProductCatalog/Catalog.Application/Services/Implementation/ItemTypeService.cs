@@ -34,6 +34,7 @@ public class ItemTypeService: IItemTypeService
     public async Task<ItemTypeDto> CreateItemTypeAsync(ItemTypeDto itemTypeDto)
     {
         var itemType = itemTypeDto.ToEntity();
+        itemType.CreatedAt = DateTime.UtcNow;
         var result = await _itemTypeRepository.CreateItemTypeAsync(itemType);
         if (!result)
         {

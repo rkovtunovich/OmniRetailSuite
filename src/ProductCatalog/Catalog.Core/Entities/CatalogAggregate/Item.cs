@@ -19,14 +19,14 @@ public class Item : BaseEntity, IAggregateRoot
 
     public Guid? ParentId { get; set; }
 
-    public Guid CatalogTypeId { get; set; }
+    public Guid? CatalogTypeId { get; set; }
 
     [StringLength(13)]
     public string? Barcode { get; set; }
 
     public virtual ItemType? CatalogType { get; set; }
 
-    public Guid CatalogBrandId { get; set; }
+    public Guid? CatalogBrandId { get; set; }
 
     public virtual Brand? CatalogBrand { get; set; }
 

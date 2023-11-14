@@ -9,42 +9,28 @@ using ProductCatalog.Data;
 
 #nullable disable
 
-namespace eShop.PublicApi.Infrastructure.Data.Migrations
+namespace ProductCatalog.Data.Migrations
 {
     [DbContext(typeof(CatalogContext))]
-    [Migration("20231104080408_Common_fields")]
-    partial class Common_fields
+    [Migration("20231114185613_NullableItemProperties")]
+    partial class NullableItemProperties
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.13")
+                .HasAnnotation("ProductVersion", "7.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.HasSequence("brand_hilo")
-                .IncrementsBy(10);
-
-            modelBuilder.HasSequence("catalog_hilo")
-                .IncrementsBy(10);
-
-            modelBuilder.HasSequence("catalog_type_hilo")
-                .IncrementsBy(10);
-
-            modelBuilder.HasSequence("item_parent_hilo")
-                .IncrementsBy(10);
-
-            modelBuilder.Entity("Catalog.Core.Entities.CatalogAggregate.Brand", b =>
+            modelBuilder.Entity("ProductCatalog.Core.Entities.CatalogAggregate.Brand", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseHiLo(b.Property<int>("Id"), "brand_hilo");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -70,26 +56,24 @@ namespace eShop.PublicApi.Infrastructure.Data.Migrations
                     b.ToTable("brands", (string)null);
                 });
 
-            modelBuilder.Entity("Catalog.Core.Entities.CatalogAggregate.Item", b =>
+            modelBuilder.Entity("ProductCatalog.Core.Entities.CatalogAggregate.Item", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseHiLo(b.Property<int>("Id"), "catalog_hilo");
 
                     b.Property<string>("Barcode")
                         .HasMaxLength(13)
                         .HasColumnType("character varying(13)")
                         .HasColumnName("barcode");
 
-                    b.Property<int>("CatalogBrandId")
-                        .HasColumnType("integer")
+                    b.Property<Guid?>("CatalogBrandId")
+                        .HasColumnType("uuid")
                         .HasColumnName("catalog_brand_id");
 
-                    b.Property<int>("CatalogTypeId")
-                        .HasColumnType("integer")
+                    b.Property<Guid?>("CatalogTypeId")
+                        .HasColumnType("uuid")
                         .HasColumnName("catalog_type_id");
 
                     b.Property<DateTimeOffset>("CreatedAt")
@@ -111,8 +95,8 @@ namespace eShop.PublicApi.Infrastructure.Data.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("name");
 
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("integer")
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uuid")
                         .HasColumnName("parent_id");
 
                     b.Property<string>("PictureFileName")
@@ -146,14 +130,12 @@ namespace eShop.PublicApi.Infrastructure.Data.Migrations
                     b.ToTable("items", (string)null);
                 });
 
-            modelBuilder.Entity("Catalog.Core.Entities.CatalogAggregate.ItemParent", b =>
+            modelBuilder.Entity("ProductCatalog.Core.Entities.CatalogAggregate.ItemParent", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseHiLo(b.Property<int>("Id"), "item_parent_hilo");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -169,8 +151,8 @@ namespace eShop.PublicApi.Infrastructure.Data.Migrations
                         .HasColumnType("character varying(150)")
                         .HasColumnName("name");
 
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("integer")
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uuid")
                         .HasColumnName("parent_id");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
@@ -186,14 +168,12 @@ namespace eShop.PublicApi.Infrastructure.Data.Migrations
                     b.ToTable("item_parents", (string)null);
                 });
 
-            modelBuilder.Entity("Catalog.Core.Entities.CatalogAggregate.ItemType", b =>
+            modelBuilder.Entity("ProductCatalog.Core.Entities.CatalogAggregate.ItemType", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseHiLo(b.Property<int>("Id"), "catalog_type_hilo");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -219,23 +199,19 @@ namespace eShop.PublicApi.Infrastructure.Data.Migrations
                     b.ToTable("item_types", (string)null);
                 });
 
-            modelBuilder.Entity("Catalog.Core.Entities.CatalogAggregate.Item", b =>
+            modelBuilder.Entity("ProductCatalog.Core.Entities.CatalogAggregate.Item", b =>
                 {
-                    b.HasOne("Catalog.Core.Entities.CatalogAggregate.Brand", "CatalogBrand")
+                    b.HasOne("ProductCatalog.Core.Entities.CatalogAggregate.Brand", "CatalogBrand")
                         .WithMany()
                         .HasForeignKey("CatalogBrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
                         .HasConstraintName("fk_items_brands_catalog_brand_id");
 
-                    b.HasOne("Catalog.Core.Entities.CatalogAggregate.ItemType", "CatalogType")
+                    b.HasOne("ProductCatalog.Core.Entities.CatalogAggregate.ItemType", "CatalogType")
                         .WithMany()
                         .HasForeignKey("CatalogTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
                         .HasConstraintName("fk_items_item_types_catalog_type_id");
 
-                    b.HasOne("Catalog.Core.Entities.CatalogAggregate.ItemParent", "Parent")
+                    b.HasOne("ProductCatalog.Core.Entities.CatalogAggregate.ItemParent", "Parent")
                         .WithMany()
                         .HasForeignKey("ParentId")
                         .HasConstraintName("fk_items_item_parents_parent_id");
@@ -247,9 +223,9 @@ namespace eShop.PublicApi.Infrastructure.Data.Migrations
                     b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("Catalog.Core.Entities.CatalogAggregate.ItemParent", b =>
+            modelBuilder.Entity("ProductCatalog.Core.Entities.CatalogAggregate.ItemParent", b =>
                 {
-                    b.HasOne("Catalog.Core.Entities.CatalogAggregate.ItemParent", "Parent")
+                    b.HasOne("ProductCatalog.Core.Entities.CatalogAggregate.ItemParent", "Parent")
                         .WithMany()
                         .HasForeignKey("ParentId")
                         .HasConstraintName("fk_item_parents_item_parents_parent_id");

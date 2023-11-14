@@ -48,9 +48,9 @@ public class BrandController : ControllerBase
     [ProducesResponseType((int)HttpStatusCode.Created)]
     public async Task<ActionResult> CreateBrandAsync([FromBody] BrandDto brand)
     {
-        await _brandService.CreateBrandAsync(brand);
-        if (brand.Id != Guid.Empty)
-            return CreatedAtAction(nameof(BrandByIdAsync), new { id = brand.Id }, null);
+        var createdBrand = await _brandService.CreateBrandAsync(brand);
+        if (createdBrand.Id != Guid.Empty)
+            return Created();
 
         return BadRequest();
     }

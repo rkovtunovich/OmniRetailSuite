@@ -8,7 +8,7 @@ using Retail.Data;
 
 #nullable disable
 
-namespace Retail.Api.Migrations
+namespace Retail.Data.Migrations
 {
     [DbContext(typeof(RetailDbContext))]
     partial class RetailDbContextModelSnapshot : ModelSnapshot
@@ -17,7 +17,7 @@ namespace Retail.Api.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.11")
+                .HasAnnotation("ProductVersion", "8.0.0-rc.2.23480.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);

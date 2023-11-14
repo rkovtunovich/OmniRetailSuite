@@ -25,7 +25,9 @@ public static class ItemMapping
             Description = itemDto.Description,
             Price = itemDto.Price,
             PictureUri = itemDto.PictureUri,
+            CatalogBrandId = itemDto?.CatalogBrand?.Id,
             CatalogBrand = itemDto?.CatalogBrand?.ToEntity(),
+            CatalogTypeId = itemDto?.CatalogType?.Id,
             CatalogType = itemDto?.CatalogType?.ToEntity()
         };
     }

@@ -8,7 +8,7 @@ using ProductCatalog.Data;
 
 #nullable disable
 
-namespace eShop.PublicApi.Infrastructure.Data.Migrations
+namespace ProductCatalog.Data.Migrations
 {
     [DbContext(typeof(CatalogContext))]
     partial class CatalogContextModelSnapshot : ModelSnapshot
@@ -22,7 +22,7 @@ namespace eShop.PublicApi.Infrastructure.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Catalog.Core.Entities.CatalogAggregate.Brand", b =>
+            modelBuilder.Entity("ProductCatalog.Core.Entities.CatalogAggregate.Brand", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -53,7 +53,7 @@ namespace eShop.PublicApi.Infrastructure.Data.Migrations
                     b.ToTable("brands", (string)null);
                 });
 
-            modelBuilder.Entity("Catalog.Core.Entities.CatalogAggregate.Item", b =>
+            modelBuilder.Entity("ProductCatalog.Core.Entities.CatalogAggregate.Item", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -65,11 +65,11 @@ namespace eShop.PublicApi.Infrastructure.Data.Migrations
                         .HasColumnType("character varying(13)")
                         .HasColumnName("barcode");
 
-                    b.Property<Guid>("CatalogBrandId")
+                    b.Property<Guid?>("CatalogBrandId")
                         .HasColumnType("uuid")
                         .HasColumnName("catalog_brand_id");
 
-                    b.Property<Guid>("CatalogTypeId")
+                    b.Property<Guid?>("CatalogTypeId")
                         .HasColumnType("uuid")
                         .HasColumnName("catalog_type_id");
 
@@ -127,7 +127,7 @@ namespace eShop.PublicApi.Infrastructure.Data.Migrations
                     b.ToTable("items", (string)null);
                 });
 
-            modelBuilder.Entity("Catalog.Core.Entities.CatalogAggregate.ItemParent", b =>
+            modelBuilder.Entity("ProductCatalog.Core.Entities.CatalogAggregate.ItemParent", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -165,7 +165,7 @@ namespace eShop.PublicApi.Infrastructure.Data.Migrations
                     b.ToTable("item_parents", (string)null);
                 });
 
-            modelBuilder.Entity("Catalog.Core.Entities.CatalogAggregate.ItemType", b =>
+            modelBuilder.Entity("ProductCatalog.Core.Entities.CatalogAggregate.ItemType", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -196,23 +196,19 @@ namespace eShop.PublicApi.Infrastructure.Data.Migrations
                     b.ToTable("item_types", (string)null);
                 });
 
-            modelBuilder.Entity("Catalog.Core.Entities.CatalogAggregate.Item", b =>
+            modelBuilder.Entity("ProductCatalog.Core.Entities.CatalogAggregate.Item", b =>
                 {
-                    b.HasOne("Catalog.Core.Entities.CatalogAggregate.Brand", "CatalogBrand")
+                    b.HasOne("ProductCatalog.Core.Entities.CatalogAggregate.Brand", "CatalogBrand")
                         .WithMany()
                         .HasForeignKey("CatalogBrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
                         .HasConstraintName("fk_items_brands_catalog_brand_id");
 
-                    b.HasOne("Catalog.Core.Entities.CatalogAggregate.ItemType", "CatalogType")
+                    b.HasOne("ProductCatalog.Core.Entities.CatalogAggregate.ItemType", "CatalogType")
                         .WithMany()
                         .HasForeignKey("CatalogTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
                         .HasConstraintName("fk_items_item_types_catalog_type_id");
 
-                    b.HasOne("Catalog.Core.Entities.CatalogAggregate.ItemParent", "Parent")
+                    b.HasOne("ProductCatalog.Core.Entities.CatalogAggregate.ItemParent", "Parent")
                         .WithMany()
                         .HasForeignKey("ParentId")
                         .HasConstraintName("fk_items_item_parents_parent_id");
@@ -224,9 +220,9 @@ namespace eShop.PublicApi.Infrastructure.Data.Migrations
                     b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("Catalog.Core.Entities.CatalogAggregate.ItemParent", b =>
+            modelBuilder.Entity("ProductCatalog.Core.Entities.CatalogAggregate.ItemParent", b =>
                 {
-                    b.HasOne("Catalog.Core.Entities.CatalogAggregate.ItemParent", "Parent")
+                    b.HasOne("ProductCatalog.Core.Entities.CatalogAggregate.ItemParent", "Parent")
                         .WithMany()
                         .HasForeignKey("ParentId")
                         .HasConstraintName("fk_item_parents_item_parents_parent_id");

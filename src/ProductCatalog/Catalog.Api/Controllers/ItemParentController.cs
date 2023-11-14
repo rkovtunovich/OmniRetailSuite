@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace ProductCatalog.Api.Controllers;
 
@@ -54,7 +53,7 @@ public class ItemParentController : ControllerBase
         try
         {
             await _itemParentService.CreateItemParentAsync(parent);
-            return CreatedAtAction(nameof(ParentByIdAsync), new { id = parent.Id }, null);
+            return Created();
         }
         catch (Exception ex)
         {

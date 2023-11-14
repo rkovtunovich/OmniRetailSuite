@@ -14,11 +14,7 @@ public record ItemDto
 
     public string PictureBase64 { get; init; } = string.Empty;
 
-    public Guid CatalogTypeId { get; init; }
-
     public ItemTypeDto? CatalogType { get; init; }
-
-    public Guid CatalogBrandId { get; init; }
 
     public BrandDto? CatalogBrand { get; init; }
 

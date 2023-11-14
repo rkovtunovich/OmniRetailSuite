@@ -54,7 +54,7 @@ public class ItemTypeController : ControllerBase
         try
         {
             var createdType = await _itemTypeService.CreateItemTypeAsync(type);
-            return CreatedAtAction(nameof(TypeByIdAsync), new { id = createdType.Id }, createdType);
+            return Created();
         }
         catch (Exception)
         {

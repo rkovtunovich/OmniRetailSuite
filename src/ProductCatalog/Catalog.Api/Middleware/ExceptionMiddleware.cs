@@ -4,20 +4,13 @@ using ProductCatalog.Core.Exceptions;
 
 namespace ProductCatalog.Api.Middleware;
 
-public class ExceptionMiddleware
+public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
 {
-    private readonly RequestDelegate _next;
-
-    public ExceptionMiddleware(RequestDelegate next)
-    {
-        _next = next;
-    }
-
     public async Task InvokeAsync(HttpContext httpContext)
     {
         try
         {
-            await _next(httpContext);
+            await next(httpContext);
         }
         catch (Exception ex)
         {
@@ -27,6 +20,8 @@ public class ExceptionMiddleware
 
     private async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
+        logger.LogError(exception, exception.Message);
+
         context.Response.ContentType = "application/json";
 
         if (exception is DuplicateException duplicationException)

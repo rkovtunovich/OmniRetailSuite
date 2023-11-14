@@ -1,10 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Retail.Api.Migrations;
+namespace Retail.Data.Migrations;
 
 /// <inheritdoc />
 public partial class Initial : Migration
@@ -12,22 +11,15 @@ public partial class Initial : Migration
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.CreateSequence(
-            name: "catalog_item_hilo",
-            incrementBy: 10);
-
-        migrationBuilder.CreateSequence(
-            name: "receipt_item_hilo",
-            incrementBy: 10);
-
         migrationBuilder.CreateTable(
             name: "cashiers",
             columns: table => new
             {
-                id = table.Column<int>(type: "integer", nullable: false)
-                    .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                id = table.Column<Guid>(type: "uuid", nullable: false),
                 name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                is_deleted = table.Column<bool>(type: "boolean", nullable: false)
+                is_deleted = table.Column<bool>(type: "boolean", nullable: false),
+                created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                updated_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
             },
             constraints: table =>
             {
@@ -38,9 +30,11 @@ public partial class Initial : Migration
             name: "catalog_items",
             columns: table => new
             {
-                id = table.Column<int>(type: "integer", nullable: false),
+                id = table.Column<Guid>(type: "uuid", nullable: false),
                 name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                is_deleted = table.Column<bool>(type: "boolean", nullable: false)
+                is_deleted = table.Column<bool>(type: "boolean", nullable: false),
+                created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                updated_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
             },
             constraints: table =>
             {
@@ -51,13 +45,14 @@ public partial class Initial : Migration
             name: "receipts",
             columns: table => new
             {
-                id = table.Column<int>(type: "integer", nullable: false)
-                    .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                receipt_number = table.Column<string>(type: "character varying(9)", maxLength: 9, nullable: false),
-                receipt_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                cashier_id = table.Column<int>(type: "integer", nullable: false),
-                total_price = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
-                is_deleted = table.Column<bool>(type: "boolean", nullable: false)
+                id = table.Column<Guid>(type: "uuid", nullable: false),
+                number = table.Column<string>(type: "character varying(9)", maxLength: 9, nullable: false),
+                date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                cashier_id = table.Column<Guid>(type: "uuid", nullable: false),
+                total_price = table.Column<decimal>(type: "numeric(18)", nullable: false),
+                is_deleted = table.Column<bool>(type: "boolean", nullable: false),
+                created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                updated_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
             },
             constraints: table =>
             {
@@ -74,14 +69,16 @@ public partial class Initial : Migration
             name: "receipt_items",
             columns: table => new
             {
-                id = table.Column<int>(type: "integer", nullable: false),
-                receipt_id = table.Column<int>(type: "integer", nullable: false),
-                number = table.Column<int>(type: "integer", nullable: false),
-                catalog_item_id = table.Column<int>(type: "integer", nullable: false),
+                id = table.Column<Guid>(type: "uuid", nullable: false),
+                receipt_id = table.Column<Guid>(type: "uuid", nullable: false),
+                line_number = table.Column<int>(type: "integer", nullable: false),
+                catalog_item_id = table.Column<Guid>(type: "uuid", nullable: false),
                 quantity = table.Column<double>(type: "numeric(18,3)", nullable: false),
-                unit_price = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
-                total_price = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
-                is_deleted = table.Column<bool>(type: "boolean", nullable: false)
+                unit_price = table.Column<decimal>(type: "numeric(18)", nullable: false),
+                total_price = table.Column<decimal>(type: "numeric(18)", nullable: false),
+                is_deleted = table.Column<bool>(type: "boolean", nullable: false),
+                created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                updated_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
             },
             constraints: table =>
             {
@@ -130,11 +127,5 @@ public partial class Initial : Migration
 
         migrationBuilder.DropTable(
             name: "cashiers");
-
-        migrationBuilder.DropSequence(
-            name: "catalog_item_hilo");
-
-        migrationBuilder.DropSequence(
-            name: "receipt_item_hilo");
     }
 }
