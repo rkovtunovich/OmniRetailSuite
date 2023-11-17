@@ -1,8 +1,10 @@
-﻿namespace ProductCatalog.Data;
+﻿using ProductCatalog.Core.Entities.ProductAggregate;
 
-public class CatalogContextSeed
+namespace ProductCatalog.Data;
+
+public class ProductDbContextSeed
 {
-    public static async Task SeedAsync(CatalogContext catalogContext, ILogger logger, int retry = 0)
+    public static async Task SeedAsync(ProductDbContext catalogContext, ILogger logger, int retry = 0)
     {
         var retryForAvailability = retry;
         try
@@ -14,13 +16,13 @@ public class CatalogContextSeed
 
             if (!await catalogContext.Brands.AnyAsync())
             {
-                await catalogContext.Brands.AddRangeAsync(GetPreconfiguredCatalogBrands());
+                await catalogContext.Brands.AddRangeAsync(GetPreconfiguredProductBrands());
                 await catalogContext.SaveChangesAsync();
             }
 
             if (!await catalogContext.ItemTypes.AnyAsync())
             {
-                await catalogContext.ItemTypes.AddRangeAsync(GetPreconfiguredCatalogTypes());
+                await catalogContext.ItemTypes.AddRangeAsync(GetPreconfiguredProductTypes());
                 await catalogContext.SaveChangesAsync();
             }
 
@@ -42,12 +44,12 @@ public class CatalogContextSeed
         }
     }
 
-    static IEnumerable<Brand> GetPreconfiguredCatalogBrands()
+    static IEnumerable<Brand> GetPreconfiguredProductBrands()
     {
         return [];
     }
 
-    static IEnumerable<ItemType> GetPreconfiguredCatalogTypes()
+    static IEnumerable<ItemType> GetPreconfiguredProductTypes()
     {
         return [];
     }

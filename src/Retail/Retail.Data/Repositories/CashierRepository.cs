@@ -65,22 +65,23 @@ public class CashierRepository(RetailDbContext context, ILogger<ReceiptRepositor
         }
     }
 
-    public async Task DeleteCashierAsync(Guid cashierId, bool useSoftDeleting)
+    public async Task DeleteCashierAsync(Guid cashierId, bool isSoftDeleting)
     {
         try
         {
             var cashier = await _context.Cashiers.FirstOrDefaultAsync(c => c.Id == cashierId) ?? throw new Exception($"Cashier with id {cashierId} not found");
 
-            if (useSoftDeleting)
+            if (isSoftDeleting)
             {
                 cashier.IsDeleted = true;
-
                 _context.Cashiers.Update(cashier);
             }
             else
             {
                 _context.Cashiers.Remove(cashier);
             }
+
+            await _context.SaveChangesAsync();
         }
         catch (Exception)
         {

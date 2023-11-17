@@ -1,13 +1,11 @@
-﻿using ProductCatalog.Data;
-
-namespace ProductCatalog.Data.Repositories;
+﻿namespace ProductCatalog.Data.Repositories;
 
 public class BrandRepository : IBrandRepository
 {
-    private readonly CatalogContext _context;
+    private readonly ProductDbContext _context;
     private readonly ILogger<BrandRepository> _logger;
 
-    public BrandRepository(CatalogContext context, ILogger<BrandRepository> logger)
+    public BrandRepository(ProductDbContext context, ILogger<BrandRepository> logger)
     {
         _context = context;
         _logger = logger;
@@ -30,7 +28,7 @@ public class BrandRepository : IBrandRepository
         }
     }
 
-    public async Task<bool> DeleteBrandAsync(Guid id, bool useSoftDeleting)
+    public async Task<bool> DeleteBrandAsync(Guid id, bool isSoftDeleting)
     {
         try
         {
@@ -39,7 +37,7 @@ public class BrandRepository : IBrandRepository
             if (brand is null)
                 return false;
 
-            if (useSoftDeleting)
+            if (isSoftDeleting)
             {
                 brand.IsDeleted = true;
                 _context.Brands.Update(brand);

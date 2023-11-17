@@ -5,10 +5,10 @@ namespace Retail.Application.EventsHandlers.CatalogItem;
 
 public class ItemUpdatedEventHandler : IEventHandler<ItemUpdatedEvent>
 {
-    private readonly ICatalogItemService _catalogItemService;
+    private readonly IProductItemService _catalogItemService;
     private readonly ILogger<ItemUpdatedEventHandler> _logger;
 
-    public ItemUpdatedEventHandler(ICatalogItemService catalogItemService, ILogger<ItemUpdatedEventHandler> logger)
+    public ItemUpdatedEventHandler(IProductItemService catalogItemService, ILogger<ItemUpdatedEventHandler> logger)
     {
         _catalogItemService = catalogItemService;
         _logger = logger;
@@ -26,7 +26,7 @@ public class ItemUpdatedEventHandler : IEventHandler<ItemUpdatedEvent>
                 Name = @event.Name
             };
 
-            _catalogItemService.UpdateCatalogItemAsync(catalogItemDto);
+            _catalogItemService.UpdateProductItemAsync(catalogItemDto);
         }
         catch (Exception e)
         {

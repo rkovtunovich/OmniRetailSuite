@@ -11,7 +11,7 @@ using ProductCatalog.Data;
 
 namespace ProductCatalog.Data.Migrations
 {
-    [DbContext(typeof(CatalogContext))]
+    [DbContext(typeof(ProductDbContext))]
     [Migration("20231113190155_Initial")]
     partial class Initial
     {

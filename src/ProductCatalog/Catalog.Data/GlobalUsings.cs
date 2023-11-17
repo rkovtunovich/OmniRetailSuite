@@ -1,10 +1,12 @@
 ﻿global using ProductCatalog.Data.Repositories;
 
-global using ProductCatalog.Core.Entities.CatalogAggregate;
+global using ProductCatalog.Core.Entities.ProductAggregate;
 global using ProductCatalog.Core.Repositories;
 
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.Logging;
+
+global using Shared.Core.Abstraction;
 
 global using System.Collections.Generic;
 global using System.IO;

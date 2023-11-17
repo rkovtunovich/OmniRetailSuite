@@ -1,13 +1,11 @@
-﻿using ProductCatalog.Data;
-
-namespace ProductCatalog.Data.Repositories;
+﻿namespace ProductCatalog.Data.Repositories;
 
 public class ItemTypeRepository : IItemTypeRepository
 {
-    private readonly CatalogContext _context;
+    private readonly ProductDbContext _context;
     private readonly ILogger<ItemTypeRepository> _logger;
 
-    public ItemTypeRepository(CatalogContext context, ILogger<ItemTypeRepository> logger)
+    public ItemTypeRepository(ProductDbContext context, ILogger<ItemTypeRepository> logger)
     {
         _context = context;
         _logger = logger;
@@ -30,7 +28,7 @@ public class ItemTypeRepository : IItemTypeRepository
         }
     }
 
-    public async Task<bool> DeleteItemTypeAsync(Guid id, bool useSoftDeleting)
+    public async Task<bool> DeleteItemTypeAsync(Guid id, bool isSoftDeleting)
     {
         try
         {
@@ -39,7 +37,7 @@ public class ItemTypeRepository : IItemTypeRepository
             if (type is null)
                 return false;
 
-            if (useSoftDeleting)
+            if (isSoftDeleting)
             {
                 type.IsDeleted = true;
                 _context.ItemTypes.Update(type);

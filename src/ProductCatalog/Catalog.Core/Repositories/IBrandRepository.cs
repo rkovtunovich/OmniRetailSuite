@@ -1,4 +1,6 @@
-﻿namespace ProductCatalog.Core.Repositories;
+﻿using ProductCatalog.Core.Entities.ProductAggregate;
+
+namespace ProductCatalog.Core.Repositories;
 
 public interface IBrandRepository
 {
@@ -10,5 +12,5 @@ public interface IBrandRepository
 
     Task<bool> UpdateBrandAsync(Brand brand);
 
-    Task<bool> DeleteBrandAsync(Guid id, bool useSoftDeleting);
+    Task<bool> DeleteBrandAsync(Guid id, bool isSoftDeleting);
 }

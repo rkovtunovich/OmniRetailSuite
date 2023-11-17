@@ -27,7 +27,7 @@ public record ReceiptItemDto
             Id = receiptItem.Id,
             LineNumber = receiptItem.LineNumber,
             Receipt = ReceiptDto.FromReceipt(receiptItem.Receipt),
-            CatalogItem = CatalogItemDto.FromCatalogItem(receiptItem.CatalogItem),
+            CatalogItem = CatalogItemDto.FromProductItem(receiptItem.ProductItem),
             Quantity = receiptItem.Quantity,
             UnitPrice = receiptItem.UnitPrice,
             TotalPrice = receiptItem.TotalPrice
@@ -47,8 +47,8 @@ public record ReceiptItemDto
             LineNumber = LineNumber,
             ReceiptId = Receipt.Id,
             Receipt = Receipt.ToReceipt(),
-            CatalogItemId = CatalogItem.Id,
-            CatalogItem = CatalogItem.ToCatalogItem(),
+            ProductItemId = CatalogItem.Id,
+            ProductItem = CatalogItem.ToProductItem(),
             Quantity = Quantity,
             UnitPrice = UnitPrice,
             TotalPrice = TotalPrice

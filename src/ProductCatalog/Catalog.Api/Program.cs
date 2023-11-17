@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using ProductCatalog.Api;
 using ProductCatalog.Api.Configuration;
 using ProductCatalog.Api.Middleware;
@@ -48,7 +47,7 @@ builder.Configuration.AddEnvironmentVariables();
 
 var app = builder.Build();
 
-app.Logger.LogInformation("CatalogApi App created...");
+app.Logger.LogInformation("ProductCatalog.Api App created...");
 app.Logger.LogInformation("Seeding Database...");
 
 using (var scope = app.Services.CreateScope())
@@ -56,8 +55,8 @@ using (var scope = app.Services.CreateScope())
     var scopedProvider = scope.ServiceProvider;
     try
     {
-        var catalogContext = scopedProvider.GetRequiredService<CatalogContext>();
-        await CatalogContextSeed.SeedAsync(catalogContext, app.Logger);
+        var catalogContext = scopedProvider.GetRequiredService<ProductDbContext>();
+        await ProductDbContextSeed.SeedAsync(catalogContext, app.Logger);
     }
     catch (Exception ex)
     {
@@ -84,7 +83,7 @@ app.UseSwagger();
 // specifying the Swagger JSON endpoint.
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Catalog API V1");
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Product catalog API V1");
 });
 
 app.MapControllers();

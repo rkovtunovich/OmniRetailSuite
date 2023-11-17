@@ -11,7 +11,7 @@ using ProductCatalog.Data;
 
 namespace ProductCatalog.Data.Migrations
 {
-    [DbContext(typeof(CatalogContext))]
+    [DbContext(typeof(ProductDbContext))]
     [Migration("20231114185613_NullableItemProperties")]
     partial class NullableItemProperties
     {

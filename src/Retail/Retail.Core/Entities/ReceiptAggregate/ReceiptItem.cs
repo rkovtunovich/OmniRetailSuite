@@ -8,9 +8,9 @@ public class ReceiptItem: BaseEntity
 
     public int LineNumber { get; set; }
 
-    public Guid CatalogItemId { get; set; }
+    public Guid ProductItemId { get; set; }
 
-    public CatalogItem CatalogItem { get; set; } = null!;
+    public ProductItem ProductItem { get; set; } = null!;
 
     public double Quantity { get; set; }
 

@@ -1,13 +1,13 @@
-﻿using ProductCatalog.Data;
+﻿using ProductCatalog.Core.Entities.ProductAggregate;
 
 namespace ProductCatalog.Data.Repositories;
 
 public class ItemParentRepository : IItemParentRepository
 {
-    private readonly CatalogContext _context;
+    private readonly ProductDbContext _context;
     private readonly ILogger<ItemParentRepository> _logger;
 
-    public ItemParentRepository(CatalogContext context, ILogger<ItemParentRepository> logger)
+    public ItemParentRepository(ProductDbContext context, ILogger<ItemParentRepository> logger)
     {
         _context = context;
         _logger = logger;
@@ -30,7 +30,7 @@ public class ItemParentRepository : IItemParentRepository
         }
     }
 
-    public async Task<bool> DeleteItemParentAsync(Guid id, bool useSoftDeleting)
+    public async Task<bool> DeleteItemParentAsync(Guid id, bool isSoftDeleting)
     {
         try
         {
@@ -38,7 +38,7 @@ public class ItemParentRepository : IItemParentRepository
             if (product is null)
                 return false;
 
-            if (useSoftDeleting)
+            if (isSoftDeleting)
             {
                 product.IsDeleted = true;
                 _context.ItemParents.Update(product);

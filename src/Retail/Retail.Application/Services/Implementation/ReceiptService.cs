@@ -45,7 +45,6 @@ public class ReceiptService : IReceiptService
     public async Task<ReceiptDto> CreateReceiptAsync(ReceiptDto receiptDto)
     {
         var receipt = receiptDto.ToReceipt();
-        receipt.CreatedAt = DateTime.UtcNow;
         await _receiptRepository.AddReceiptAsync(receipt);
         return ReceiptDto.FromReceipt(receipt);
     }
@@ -61,7 +60,6 @@ public class ReceiptService : IReceiptService
             receipt.Cashier = receiptDto.Cashier.ToCashier();
             receipt.TotalPrice = receiptDto.TotalPrice;
             receipt.ReceiptItems = receiptDto.ReceiptItems.Select(x => x.ToReceiptItem()).ToList();
-            receipt.UpdatedAt = DateTime.UtcNow;
 
             await _receiptRepository.UpdateReceiptAsync(receipt);
 

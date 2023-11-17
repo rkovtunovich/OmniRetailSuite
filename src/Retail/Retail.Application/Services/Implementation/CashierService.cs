@@ -45,7 +45,6 @@ public class CashierService: ICashierService
     public async Task<CashierDto> CreateCashierAsync(CashierDto cashierDto)
     {
         var cashier = cashierDto.ToCashier();
-        cashier.CreatedAt = DateTime.UtcNow;
         await _cashierRepository.AddCashierAsync(cashier);
         return CashierDto.FromCashier(cashier);
     }
@@ -56,7 +55,6 @@ public class CashierService: ICashierService
         {
             var cashier = await _cashierRepository.GetCashierAsync(cashierDto.Id) ?? throw new Exception($"Cashier with id {cashierDto.Id} not found");
             cashier.Name = cashierDto.Name;
-            cashier.UpdatedAt = DateTime.UtcNow;
 
             await _cashierRepository.UpdateCashierAsync(cashier);
 

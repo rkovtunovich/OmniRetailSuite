@@ -25,7 +25,7 @@ public static class ConfigureDbContext
         });
 
         services.AddScoped<IReceiptRepository, ReceiptRepository>();
-        services.AddScoped<ICatalogItemRepository, CatalogItemRepository>();
+        services.AddScoped<ICatalogItemRepository, ProductItemRepository>();
         services.AddScoped<ICashierRepository, CashierRepository>();
 
         return services;

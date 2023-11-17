@@ -1,6 +1,6 @@
 ﻿namespace Retail.Core.Entities.ReceiptAggregate;
 
-public class Cashier : BaseEntity
+public class ProductItem: BaseEntity
 {
     public string Name { get; set; } = null!;
 }

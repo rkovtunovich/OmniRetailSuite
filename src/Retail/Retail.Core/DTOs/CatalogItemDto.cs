@@ -8,7 +8,7 @@ public record CatalogItemDto
 
     public string Name { get; init; } = null!;
 
-    public static CatalogItemDto FromCatalogItem(CatalogItem catalogItem)
+    public static CatalogItemDto FromProductItem(ProductItem catalogItem)
     {
         return new CatalogItemDto
         {
@@ -17,14 +17,14 @@ public record CatalogItemDto
         };
     }
 
-    public static List<CatalogItemDto> FromCatalogItems(List<CatalogItem> catalogItems)
+    public static List<CatalogItemDto> FromCatalogItems(List<ProductItem> catalogItems)
     {
-        return catalogItems.Select(FromCatalogItem).ToList();
+        return catalogItems.Select(FromProductItem).ToList();
     }
 
-    public CatalogItem ToCatalogItem()
+    public ProductItem ToProductItem()
     {
-        return new CatalogItem
+        return new ProductItem
         {
             Id = Id,
             Name = Name,

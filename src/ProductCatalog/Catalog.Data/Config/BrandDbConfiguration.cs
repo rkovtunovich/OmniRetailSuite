@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ProductCatalog.Core.Entities.ProductAggregate;
 
 namespace ProductCatalog.Data.Config;
 

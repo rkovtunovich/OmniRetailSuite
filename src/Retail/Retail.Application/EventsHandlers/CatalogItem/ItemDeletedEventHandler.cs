@@ -5,10 +5,10 @@ namespace Retail.Application.EventsHandlers.CatalogItem;
 
 public class ItemDeletedEventHandler: IEventHandler<ItemDeletedEvent>
 {
-    private readonly ICatalogItemService _catalogItemService;
+    private readonly IProductItemService _catalogItemService;
     private readonly ILogger<ItemDeletedEventHandler> _logger;
 
-    public ItemDeletedEventHandler(ICatalogItemService catalogItemService, ILogger<ItemDeletedEventHandler> logger)
+    public ItemDeletedEventHandler(IProductItemService catalogItemService, ILogger<ItemDeletedEventHandler> logger)
     {
         _catalogItemService = catalogItemService;
         _logger = logger;
@@ -20,7 +20,7 @@ public class ItemDeletedEventHandler: IEventHandler<ItemDeletedEvent>
 
         try
         {
-            _catalogItemService.DeleteCatalogItemAsync(@event.Id, true);
+            _catalogItemService.DeleteProductItemAsync(@event.Id, true);
         }
         catch (Exception e)
         {

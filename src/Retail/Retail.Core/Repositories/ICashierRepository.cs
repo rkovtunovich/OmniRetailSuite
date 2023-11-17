@@ -12,5 +12,5 @@ public interface ICashierRepository
 
     Task UpdateCashierAsync(Cashier cashier);
 
-    Task DeleteCashierAsync(Guid cashierId, bool useSoftDeleting);
+    Task DeleteCashierAsync(Guid cashierId, bool isSoftDeleting);
 }

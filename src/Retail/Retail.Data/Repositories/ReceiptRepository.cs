@@ -78,13 +78,13 @@ public class ReceiptRepository(RetailDbContext context, ILogger<ReceiptRepositor
         }
     }
 
-    public async Task DeleteReceiptAsync(Guid receiptId, bool useSoftDeleting)
+    public async Task DeleteReceiptAsync(Guid receiptId, bool isSoftDeleting)
     {
         try
         {
             var receipt = await _context.Receipts.FirstOrDefaultAsync(r => r.Id == receiptId) ?? throw new Exception($"Receipt with id {receiptId} not found");
 
-            if (useSoftDeleting)
+            if (isSoftDeleting)
             {
                 receipt.IsDeleted = true;
 
@@ -94,6 +94,8 @@ public class ReceiptRepository(RetailDbContext context, ILogger<ReceiptRepositor
             {
                 _context.Receipts.Remove(receipt);
             }
+
+            await _context.SaveChangesAsync();
         }
         catch (Exception)
         {

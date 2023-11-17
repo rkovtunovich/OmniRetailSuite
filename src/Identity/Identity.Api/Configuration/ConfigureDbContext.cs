@@ -1,5 +1,6 @@
 ﻿using Identity.Api.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace Identity.Api.Configuration;
 
@@ -7,9 +8,14 @@ public static class ConfigureDbContext
 {
     public static IServiceCollection AddIdentityDbContext(this IServiceCollection services, IConfiguration configuration)
     {
+        var builder = new NpgsqlDataSourceBuilder(connectionString: configuration.GetConnectionString("IdentityApiConnection"))
+            .EnableDynamicJsonMappings();
+
+        var dataSource = builder.Build();
+
         services.AddDbContext<ApplicationDbContext>(options =>
         {
-            options.UseNpgsql(configuration.GetConnectionString("IdentityApiConnection"));
+            options.UseNpgsql(dataSource);
             options.UseSnakeCaseNamingConvention();
         });
 

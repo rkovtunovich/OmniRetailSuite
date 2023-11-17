@@ -14,5 +14,5 @@ public interface IReceiptRepository
 
     Task UpdateReceiptAsync(Receipt receipt);
 
-    Task DeleteReceiptAsync(Guid receiptId, bool useSoftDeleting);
+    Task DeleteReceiptAsync(Guid receiptId, bool isSoftDeleting);
 }

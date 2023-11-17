@@ -1,4 +1,6 @@
-﻿namespace ProductCatalog.Core.Repositories;
+﻿using ProductCatalog.Core.Entities.ProductAggregate;
+
+namespace ProductCatalog.Core.Repositories;
 
 public interface IItemTypeRepository
 {
@@ -10,5 +12,5 @@ public interface IItemTypeRepository
 
     Task<bool> UpdateItemTypeAsync(ItemType itemType);
 
-    Task<bool> DeleteItemTypeAsync(Guid id, bool useSoftDeleting);
+    Task<bool> DeleteItemTypeAsync(Guid id, bool isSoftDeleting);
 }

@@ -35,7 +35,6 @@ public class BrandService: IBrandService
     public async Task<BrandDto> CreateBrandAsync(BrandDto brandDto)
     {
         var brand = brandDto.ToEntity();
-        brand.CreatedAt = DateTime.UtcNow;
         var result = await _brandRepository.CreateBrandAsync(brand);
         if (!result)
         {

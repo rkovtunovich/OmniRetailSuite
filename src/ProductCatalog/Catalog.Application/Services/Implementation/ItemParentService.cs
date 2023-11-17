@@ -36,7 +36,6 @@ public class ItemParentService: IItemParentService
     public async Task<ItemParentDto> CreateItemParentAsync(ItemParentDto itemParent)
     {
         var item = itemParent.ToEntity();
-        item.CreatedAt = DateTime.UtcNow;
 
         var isCreated = await _itemParentRepository.CreateItemParentAsync(item);
         if (isCreated)

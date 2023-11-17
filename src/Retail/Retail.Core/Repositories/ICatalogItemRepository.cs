@@ -4,13 +4,13 @@ namespace Retail.Core.Repositories;
 
 public interface ICatalogItemRepository
 {
-    Task<List<CatalogItem>> GetCatalogItemsAsync();
+    Task<List<ProductItem>> GetProductItemsAsync();
 
-    Task<CatalogItem?> GetCatalogItemAsync(Guid receiptItemId);
+    Task<ProductItem?> GetProductItemAsync(Guid productItemId);
 
-    Task<CatalogItem> AddCatalogItemAsync(CatalogItem catalogItem);
+    Task<ProductItem> AddProductItemAsync(ProductItem productItem);
 
-    Task UpdateCatalogItemAsync(CatalogItem receiptItem);
+    Task UpdateProductItemAsync(ProductItem productItem);
 
-    Task DeleteCatalogItemAsync(Guid catalogItemId, bool useSoftDeleting);
+    Task DeleteProductItemAsync(Guid productItemId, bool isSoftDeleting);
 }

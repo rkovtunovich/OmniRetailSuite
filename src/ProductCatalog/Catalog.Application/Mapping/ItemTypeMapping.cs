@@ -1,4 +1,4 @@
-﻿using Contracts.Dtos.ProductCatalog;
+﻿using ProductCatalog.Core.Entities.ProductAggregate;
 
 namespace ProductCatalog.Application.Mapping;
 

@@ -65,7 +65,6 @@ public class ItemService(IItemRepository itemRepository, IEventPublisher eventPu
     public async Task<ItemDto> CreateItemAsync(ItemDto item)
     {
         var entity = item.ToEntity();
-        entity.CreatedAt = DateTime.UtcNow;
         var result = await _itemRepository.CreateItemAsync(entity);
 
         if (result)
@@ -77,7 +76,6 @@ public class ItemService(IItemRepository itemRepository, IEventPublisher eventPu
     public async Task<ItemDto> UpdateItemAsync(ItemDto item)
     {
         var entity = item.ToEntity();
-        entity.UpdatedAt = DateTime.UtcNow;
         var result = await _itemRepository.UpdateItemAsync(entity);
 
         if (result)

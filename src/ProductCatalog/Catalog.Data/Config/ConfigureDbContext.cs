@@ -16,11 +16,11 @@ public static class ConfigureDbContext
         // for tests
         if (useOnlyInMemoryDatabase)
         {
-            services.AddDbContext<CatalogContext>(c => c.UseInMemoryDatabase("Catalog"));
+            services.AddDbContext<ProductDbContext>(c => c.UseInMemoryDatabase("Catalog"));
             return services;
         }
 
-        services.AddDbContext<CatalogContext>(c =>
+        services.AddDbContext<ProductDbContext>(c =>
         {
             c.UseNpgsql(configuration.GetConnectionString("CatalogConnection"));
             c.UseSnakeCaseNamingConvention();

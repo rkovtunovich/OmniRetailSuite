@@ -1,4 +1,4 @@
-﻿namespace ProductCatalog.Core.Entities.CatalogAggregate;
+﻿namespace ProductCatalog.Core.Entities.ProductAggregate;
 
 public class ItemType : BaseEntity, IAggregateRoot
 {

@@ -1,4 +1,4 @@
-﻿global using ProductCatalog.Core.Entities.CatalogAggregate;
+﻿global using ProductCatalog.Core.Entities.ProductAggregate;
 global using ProductCatalog.Core.Messaging;
 global using ProductCatalog.Core.Repositories;
 

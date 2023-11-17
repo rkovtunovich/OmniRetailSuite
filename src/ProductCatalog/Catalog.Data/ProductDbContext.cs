@@ -1,26 +1,26 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Retail.Data.Config;
+using ProductCatalog.Data.Config;
 
-namespace Retail.Data;
+namespace ProductCatalog.Data;
 
-public class RetailDbContext(DbContextOptions<RetailDbContext> options) : DbContext(options)
+public class ProductDbContext(DbContextOptions<ProductDbContext> options) : DbContext(options)
 {
-    public DbSet<Receipt> Receipts { get; set; } = null!;
+    public DbSet<Item> Items { get; set; } = null!;
 
-    public DbSet<ReceiptItem> ReceiptItems { get; set; } = null!;
+    public DbSet<ItemParent> ItemParents { get; set; } = null!;
 
-    public DbSet<Cashier> Cashiers { get; set; } = null!;
+    public DbSet<Brand> Brands { get; set; } = null!;
 
-    public DbSet<ProductItem> ProductItems { get; set; } = null!;
+    public DbSet<ItemType> ItemTypes { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
 
-        builder.ApplyConfiguration(new ReceiptConfiguration());
-        builder.ApplyConfiguration(new ReceiptItemConfiguration());
-        builder.ApplyConfiguration(new CashierConfiguration());
-        builder.ApplyConfiguration(new ProductItemConfiguration());
+        builder.ApplyConfiguration(new ItemDbConfiguration());
+        builder.ApplyConfiguration(new ItemParentDbConfiguration());
+        builder.ApplyConfiguration(new BrandDbConfiguration());
+        builder.ApplyConfiguration(new ItemTypeDbConfiguration());
 
         // Define a conversion for all DateTimeOffset properties
         var dateTimeOffsetConverter = new ValueConverter<DateTimeOffset, DateTime>(
@@ -31,8 +31,8 @@ public class RetailDbContext(DbContextOptions<RetailDbContext> options) : DbCont
         {
             foreach (var property in entityType.GetProperties())
             {
-                if (property.ClrType == typeof(DateTimeOffset) || property.ClrType == typeof(DateTimeOffset?))               
-                    property.SetValueConverter(dateTimeOffsetConverter);               
+                if (property.ClrType == typeof(DateTimeOffset) || property.ClrType == typeof(DateTimeOffset?))
+                    property.SetValueConverter(dateTimeOffsetConverter);
             }
         }
     }

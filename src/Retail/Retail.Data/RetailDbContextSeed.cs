@@ -37,7 +37,7 @@ public class RetailDbContextSeed
     {
         return
             [
-                new() { Name = "default"}
+                new() { Name = "default", CreatedAt = DateTimeOffset.Now }
             ];
     }
 

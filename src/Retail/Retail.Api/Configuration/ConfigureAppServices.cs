@@ -10,7 +10,7 @@ public static class ConfigureAppServices
     public static IServiceCollection AddAppServices(this IServiceCollection services)
     {
         services.AddScoped<ICashierService, CashierService>();
-        services.AddScoped<ICatalogItemService, CatalogItemService>();
+        services.AddScoped<IProductItemService, ProductItemService>();
         services.AddScoped<IReceiptService, ReceiptService>();
 
         services.AddScoped<IEventHandler<ItemUpdatedEvent>, ItemUpdatedEventHandler>();

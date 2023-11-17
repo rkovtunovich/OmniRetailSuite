@@ -3,7 +3,7 @@
 global using ProductCatalog.Application.Mapping;
 global using ProductCatalog.Application.Services.Abstraction;
 global using ProductCatalog.Core.Repositories;
-global using ProductCatalog.Core.Entities.CatalogAggregate;
+global using ProductCatalog.Core.Entities.ProductAggregate;
 
 global using System.Collections.Generic;
 global using System.IO;

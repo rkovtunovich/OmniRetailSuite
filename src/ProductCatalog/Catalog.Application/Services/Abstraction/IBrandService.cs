@@ -1,6 +1,4 @@
-﻿using Contracts.Dtos.ProductCatalog;
-
-namespace ProductCatalog.Application.Services.Abstraction;
+﻿namespace ProductCatalog.Application.Services.Abstraction;
 
 public interface IBrandService
 {

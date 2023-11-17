@@ -12,9 +12,9 @@ public class ReceiptItemConfiguration : IEntityTypeConfiguration<ReceiptItem>
         builder.Property(x => x.ReceiptId)
             .IsRequired();
 
-        builder.HasOne(x => x.CatalogItem)
+        builder.HasOne(x => x.ProductItem)
             .WithMany()
-            .HasForeignKey(x => x.CatalogItemId)
+            .HasForeignKey(x => x.ProductItemId)
             .IsRequired();
 
         builder.Property(x => x.Quantity)

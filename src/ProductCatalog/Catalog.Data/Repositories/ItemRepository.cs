@@ -1,13 +1,11 @@
-﻿using ProductCatalog.Data;
-
-namespace ProductCatalog.Data.Repositories;
+﻿namespace ProductCatalog.Data.Repositories;
 
 public class ItemRepository : IItemRepository
 {
-    private readonly CatalogContext _context;
+    private readonly ProductDbContext _context;
     private readonly ILogger<ItemRepository> _logger;
 
-    public ItemRepository(CatalogContext context, ILogger<ItemRepository> logger)
+    public ItemRepository(ProductDbContext context, ILogger<ItemRepository> logger)
     {
         _context = context;
         _logger = logger;
@@ -36,7 +34,7 @@ public class ItemRepository : IItemRepository
         }
     }
 
-    public async Task<bool> DeleteItemAsync(Guid id, bool useSoftDeleting)
+    public async Task<bool> DeleteItemAsync(Guid id, bool isSoftDeleting)
     {
         try
         {
@@ -44,7 +42,7 @@ public class ItemRepository : IItemRepository
             if (product is null)
                 return false;
 
-            if (useSoftDeleting)
+            if (isSoftDeleting)
             {
                 product.IsDeleted = true;
                 _context.Items.Update(product);

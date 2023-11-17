@@ -1,4 +1,6 @@
-﻿namespace ProductCatalog.Application.Mapping;
+﻿using ProductCatalog.Core.Entities.ProductAggregate;
+
+namespace ProductCatalog.Application.Mapping;
 
 public static class ItemParentMapping
 {

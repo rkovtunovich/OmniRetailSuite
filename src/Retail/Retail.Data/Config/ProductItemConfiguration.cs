@@ -2,9 +2,9 @@
 
 namespace Retail.Data.Config;
 
-public class CatalogItemConfiguration : IEntityTypeConfiguration<CatalogItem>
+public class ProductItemConfiguration : IEntityTypeConfiguration<ProductItem>
 {
-    public void Configure(EntityTypeBuilder<CatalogItem> builder)
+    public void Configure(EntityTypeBuilder<ProductItem> builder)
     {
         builder.Property(ci => ci.Id)
             .IsRequired();
