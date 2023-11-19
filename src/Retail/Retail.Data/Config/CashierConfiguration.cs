@@ -9,5 +9,7 @@ public class CashierConfiguration : IEntityTypeConfiguration<Cashier>
         builder.Property(x => x.Name)
             .IsRequired(true)
             .HasMaxLength(100);
+
+        builder.HasQueryFilter(p => !p.IsDeleted);
     }
 }

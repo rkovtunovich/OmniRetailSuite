@@ -7,4 +7,6 @@ public class ItemParent : BaseEntity
     public Guid? ParentId { get; set; }
 
     public ItemParent? Parent { get; set; }
+
+    public List<ItemParent>? Children { get; set; }
 }

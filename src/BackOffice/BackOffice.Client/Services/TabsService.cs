@@ -1,4 +1,4 @@
-﻿using BackOffice.Client.Shared;
+﻿using BackOffice.Client.Model;
 using Microsoft.IdentityModel.Tokens;
 
 namespace BackOffice.Client.Services;

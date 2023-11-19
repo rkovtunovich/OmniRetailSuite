@@ -1,4 +1,4 @@
-﻿namespace BackOffice.Client.Shared;
+﻿namespace BackOffice.Client.Model;
 
 public class TabView
 {

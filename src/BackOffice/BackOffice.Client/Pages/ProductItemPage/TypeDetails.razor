@@ -3,9 +3,7 @@
 
 @inherits BlazorComponent
 
-@namespace BackOffice.Client.Pages.CatalogItemPage
-
-@using BackOffice.Client.Helpers;
+@namespace BackOffice.Client.Pages.ProductItemPage
 
 <MudContainer Class="m-0 p-0 form-content-panel">
 
@@ -37,8 +35,8 @@
 
                     <MudCardContent>
 
-                         <MudTextField Label="Id" Class="mt-3" @bind-Value="Brand.Id" For="@(() => Brand.Id)" Variant="@MudBlazor.Variant.Filled" Disabled />
-                         <MudTextField Label="Name" Class="mt-3" @bind-Value="Brand.Name" For="@(() => Brand.Name)" Variant="@MudBlazor.Variant.Filled" />
+                         <MudTextField Label="Id" Class="mt-3" @bind-Value="Type.Id" For="@(() => Type.Id)" Variant="@MudBlazor.Variant.Filled" Disabled />
+                         <MudTextField Label="Name" Class="mt-3" @bind-Value="Type.Name" For="@(() => Type.Name)" Variant="@MudBlazor.Variant.Filled" />
 
                     </MudCardContent>
 

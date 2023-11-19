@@ -15,5 +15,7 @@ public class ItemTypeDbConfiguration : IEntityTypeConfiguration<ItemType>
         builder.Property(cb => cb.Type)
             .IsRequired()
             .HasMaxLength(100);
+
+        builder.HasQueryFilter(p => !p.IsDeleted);
     }
 }

@@ -4,12 +4,14 @@ namespace BackOffice.Application.Mapping;
 
 public static class ItemParentMapping
 {
-    public static ItemParentDto? ToDto(this ItemParent itemParent)
+    public static ItemParentDto ToDto(this ItemParent itemParent)
     {
         return new ItemParentDto
         {
             Id = itemParent.Id,
-            Name = itemParent.Name
+            Name = itemParent.Name,
+            Parent = itemParent.Parent?.ToDto(),
+            Children = itemParent.Children?.Select(x => x.ToDto())
         };
     }
 
@@ -18,7 +20,10 @@ public static class ItemParentMapping
         return new ItemParent
         {
             Id = itemParentDto.Id,
-            Name = itemParentDto.Name
+            Name = itemParentDto.Name,
+            Parent = itemParentDto.Parent?.ToModel(),
+            ParentId = itemParentDto.Parent?.Id,
+            Children = itemParentDto.Children?.Select(x => x.ToModel()).ToHashSet()
         };
     }
 }

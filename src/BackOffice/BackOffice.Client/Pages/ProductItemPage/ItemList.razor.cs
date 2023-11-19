@@ -1,15 +1,13 @@
-﻿using BackOffice.Application.Services.Abstraction;
-using BackOffice.Client.Model;
-using BackOffice.Client.Services;
+﻿using BackOffice.Client.Services;
 using BackOffice.Core.Models.Product;
 
-namespace BackOffice.Client.Pages.CatalogItemPage;
+namespace BackOffice.Client.Pages.ProductItemPage;
 
 public partial class ItemList : BlazorComponent
 {
     #region Injects
 
-    [Inject] public IProductCatalogService CatalogService { get; set; } = null!;
+    [Inject] public IProductCatalogService ProductService { get; set; } = null!;
 
     [Inject] private TabsService _tabsService { get; set; } = null!;
 
@@ -19,7 +17,7 @@ public partial class ItemList : BlazorComponent
 
     #region Item
 
-    private List<Item> _catalogItems = new();
+    private List<Item> _productItems = new();
 
     private MudDataGrid<Item> _dataGrid = null!;
 
@@ -56,9 +54,7 @@ public partial class ItemList : BlazorComponent
 
     #region ItemParents
 
-    private HashSet<TreeItemParentsData> _itemParentsViewData = new();
-
-    private List<ItemParent> _itemParents = new();
+    private HashSet<ItemParent> _itemParents = [];
 
     private bool _isItemParentsOpen = true;
 
@@ -72,8 +68,8 @@ public partial class ItemList : BlazorComponent
     {
         if (firstRender)
         {
-            CatalogService.CatalogItemChanged += OnCatalogItemChanged;
-            await ReloadCatalogItems();
+            ProductService.CatalogItemChanged += OnProductItemChanged;
+            await ReloadProductItems();
             await ReloadItemParents();;
         }
 
@@ -83,7 +79,7 @@ public partial class ItemList : BlazorComponent
     public override void Dispose()
     {
         // Unsubscribe when the component is destroyed to prevent memory leaks
-        CatalogService.CatalogItemChanged -= OnCatalogItemChanged;
+        ProductService.CatalogItemChanged -= OnProductItemChanged;
     }
 
     #endregion
@@ -107,17 +103,17 @@ public partial class ItemList : BlazorComponent
         _tabsService.TryCreateTab<ItemDetails>(parameters);
     }
 
-    private async Task ReloadCatalogItems()
+    private async Task ReloadProductItems()
     {
-        _catalogItems = await CatalogService.GetItemsAsync(0, 100);
+        _productItems = await ProductService.GetItemsAsync(0, 100);
 
         CallRequestRefresh();
     }
 
     private async Task ReloadItemParents()
     {
-        _itemParents = await CatalogService.GetItemParentsAsync();
-        UpdateItemParentViewData();
+        var itemParentsList = await ProductService.GetItemParentsAsync();
+        _itemParents = [.. itemParentsList];
         CallRequestRefresh();
     }
 
@@ -132,7 +128,7 @@ public partial class ItemList : BlazorComponent
 
     private async Task CommittedItemChanges(Item item)
     {
-        await CatalogService.UpdateItemAsync(item);
+        await ProductService.UpdateItemAsync(item);
 
         CallRequestRefresh();
     }
@@ -150,23 +146,10 @@ public partial class ItemList : BlazorComponent
         });
     }
 
-    private async Task OnCatalogItemChanged(Item changedItem)
+    private async Task OnProductItemChanged(Item changedItem)
     {
-        _catalogItems = await CatalogService.GetItemsAsync(0, 100, null, null);
+        _productItems = await ProductService.GetItemsAsync(0, 100, null, null);
         CallRequestRefresh();
-    }
-
-    private void UpdateItemParentViewData()
-    {
-        
-        _itemParentsViewData = new();
-
-        foreach(var itemParent in _itemParents)
-        {
-            var treeItemParentsData = TreeItemParentsData.Create(itemParent);
-
-            _itemParentsViewData.Add(treeItemParentsData);
-        }
     }
 
     #endregion
@@ -178,6 +161,11 @@ public partial class ItemList : BlazorComponent
         _isItemParentsOpen = !_isItemParentsOpen;
 
         CallRequestRefresh();
+    }
+
+    private void CreateItemParentClick()
+    {
+        _tabsService.TryCreateTab<ItemParentCreate>();
     }
 
     #endregion

@@ -11,7 +11,7 @@ public static class ConfigureBackOfficeServices
         //services.AddScoped<CatalogLookupDataService<CatalogBrand, CatalogBrandResponse>>();
         //services.AddScoped<ICatalogLookupDataService<CatalogType>, CachedCatalogLookupDataServiceDecorator<CatalogType, CatalogTypeResponse>>();
         //services.AddScoped<CatalogLookupDataService<CatalogType, CatalogTypeResponse>>();
-        services.AddScoped<IProductCatalogService, CatalogService>();
+        services.AddScoped<IProductCatalogService, ProductCatalogService>();
         services.AddScoped<IUserPreferenceService, UserPreferenceService>();
         
         services.AddSingleton<TabsService>();

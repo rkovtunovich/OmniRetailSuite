@@ -26,7 +26,7 @@ public static class ConfigureWebInfrastructureServices
         });
 
         services.AddScoped<ITokenService, TokenService>();
-        services.AddKeyedScoped<IHttpService, CatalogHttpService>(Constants.API_HTTP_CLIENT_NAME);
+        services.AddKeyedScoped<IHttpService, ProductCatalogHttpService>(Constants.API_HTTP_CLIENT_NAME);
         services.AddKeyedScoped<IHttpService, IdentityHttpService>(Constants.IDENTITY_CLIENT_NAME);
 
         return services;

@@ -1,9 +1,8 @@
-﻿using BackOffice.Application.Services.Abstraction;
-using BackOffice.Client.Services;
+﻿using BackOffice.Client.Services;
 using BackOffice.Core.Models.Product;
 using Microsoft.AspNetCore.Components.Forms;
 
-namespace BackOffice.Client.Pages.CatalogItemPage;
+namespace BackOffice.Client.Pages.ProductItemPage;
 
 public partial class BrandCreate
 {
@@ -17,8 +16,6 @@ public partial class BrandCreate
     private Brand _brand = new();
 
     private EditContext? _editContext;
-
-    private List<List<int>> _forTest = [[1, 2, 3, 5, 5, 6], [1, 2, 3, 4], [2, 4, 5]];
 
     protected override void OnInitialized()
     {

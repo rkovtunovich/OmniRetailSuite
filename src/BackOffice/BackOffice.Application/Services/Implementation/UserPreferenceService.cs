@@ -8,9 +8,9 @@ namespace BackOffice.Application.Services.Implementation;
 public class UserPreferenceService : IUserPreferenceService
 {
     private readonly IHttpService _httpService;
-    private readonly ILogger<CatalogService> _logger;
+    private readonly ILogger<ProductCatalogService> _logger;
 
-    public UserPreferenceService([FromKeyedServices(Constants.IDENTITY_CLIENT_NAME)] IHttpService httpService, ILogger<CatalogService> logger)
+    public UserPreferenceService([FromKeyedServices(Constants.IDENTITY_CLIENT_NAME)] IHttpService httpService, ILogger<ProductCatalogService> logger)
     {
         _logger = logger;
         _httpService = httpService;

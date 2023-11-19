@@ -2,9 +2,9 @@
 using BackOffice.Core.Models.Product;
 using Microsoft.AspNetCore.Components.Forms;
 
-namespace BackOffice.Client.Pages.CatalogItemPage;
+namespace BackOffice.Client.Pages.ProductItemPage;
 
-public partial class TypeDetails
+public partial class BrandDetails
 {
     [Inject] private TabsService _tabsService { get; set; } = null!;
 
@@ -14,13 +14,13 @@ public partial class TypeDetails
     public EventCallback<string> OnSaveClick { get; set; }
 
     [Parameter]
-    public ItemType Type { get; set; } = null!;
+    public Brand Brand { get; set; } = null!;
 
     private EditContext? _editContext;
 
     protected override void OnInitialized()
     {
-        _editContext = new EditContext(Type);
+        _editContext = new EditContext(Brand);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -33,7 +33,7 @@ public partial class TypeDetails
         if (!_editContext?.Validate() ?? false)
             return;
 
-        var result = await CatalogItemService.UpdateTypeAsync(Type);
+        var result = await CatalogItemService.UpdateBrandAsync(Brand);
         if (result is not null)
         {
             await OnSaveClick.InvokeAsync(null);
@@ -43,7 +43,7 @@ public partial class TypeDetails
 
     private async Task DeleteClick()
     {
-        await CatalogItemService.DeleteTypeAsync(Type.Id, true);
+        await CatalogItemService.DeleteBrandAsync(Brand.Id, true);
         
         Close();
     }

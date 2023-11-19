@@ -4,12 +4,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace BackOffice.Application.Services.Implementation;
 
-public class CatalogService : IProductCatalogService
+public class ProductCatalogService : IProductCatalogService
 {
     #region Fields
 
     private readonly IHttpService _httpService;
-    private readonly ILogger<CatalogService> _logger;
+    private readonly ILogger<ProductCatalogService> _logger;
 
     #endregion
 
@@ -24,7 +24,7 @@ public class CatalogService : IProductCatalogService
 
     #region Ctor
 
-    public CatalogService([FromKeyedServices(Constants.API_HTTP_CLIENT_NAME)] IHttpService httpService, ILogger<CatalogService> logger)
+    public ProductCatalogService([FromKeyedServices(Constants.API_HTTP_CLIENT_NAME)] IHttpService httpService, ILogger<ProductCatalogService> logger)
     {
         _logger = logger;
         _httpService = httpService;
@@ -105,7 +105,7 @@ public class CatalogService : IProductCatalogService
             Name = x.Name
         }).ToList();
 
-        return itemParents ?? new();
+        return itemParents ?? [];
     }
 
     public async Task<ItemParent> GetItemParentByIdAsync(Guid id)
@@ -119,7 +119,7 @@ public class CatalogService : IProductCatalogService
     public async Task<ItemParent> CreateItemParentAsync(ItemParent itemParent)
     {
         var uri = CatalogUriHelper.CreateItemParent();
-        await _httpService.PostAsync(uri, itemParent);
+        await _httpService.PostAsync(uri, itemParent.ToDto());
 
         ItemParentChanged?.Invoke(itemParent);
 

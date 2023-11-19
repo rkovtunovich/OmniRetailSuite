@@ -29,5 +29,7 @@ public class ReceiptConfiguration : IEntityTypeConfiguration<Receipt>
         builder.Property(x => x.Number)
             .IsRequired(true)
             .HasMaxLength(9);
+
+        builder.HasQueryFilter(p => !p.IsDeleted);
     }
 }

@@ -12,5 +12,7 @@ public class ProductItemConfiguration : IEntityTypeConfiguration<ProductItem>
         builder.Property(x => x.Name)
             .IsRequired(true)
             .HasMaxLength(100);
+
+        builder.HasQueryFilter(p => !p.IsDeleted);
     }
 }

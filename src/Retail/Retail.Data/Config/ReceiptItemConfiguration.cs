@@ -31,5 +31,7 @@ public class ReceiptItemConfiguration : IEntityTypeConfiguration<ReceiptItem>
 
         builder.Property(x => x.LineNumber)
             .IsRequired(true);
+
+        builder.HasQueryFilter(p => !p.IsDeleted);
     }
 }

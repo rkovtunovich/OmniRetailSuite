@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ProductCatalog.Data;
@@ -11,9 +12,11 @@ using ProductCatalog.Data;
 namespace ProductCatalog.Data.Migrations
 {
     [DbContext(typeof(ProductDbContext))]
-    partial class CatalogContextModelSnapshot : ModelSnapshot
+    [Migration("20231118154046_ItemParenChildren")]
+    partial class ItemParenChildren
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,6 +145,10 @@ namespace ProductCatalog.Data.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_deleted");
 
+                    b.Property<Guid?>("ItemParentId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("item_parent_id");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(150)
@@ -158,6 +165,9 @@ namespace ProductCatalog.Data.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_item_parents");
+
+                    b.HasIndex("ItemParentId")
+                        .HasDatabaseName("ix_item_parents_item_parent_id");
 
                     b.HasIndex("ParentId")
                         .HasDatabaseName("ix_item_parents_parent_id");
@@ -222,11 +232,15 @@ namespace ProductCatalog.Data.Migrations
 
             modelBuilder.Entity("ProductCatalog.Core.Entities.ProductAggregate.ItemParent", b =>
                 {
-                    b.HasOne("ProductCatalog.Core.Entities.ProductAggregate.ItemParent", "Parent")
+                    b.HasOne("ProductCatalog.Core.Entities.ProductAggregate.ItemParent", null)
                         .WithMany("Children")
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("ItemParentId")
                         .HasConstraintName("fk_item_parents_item_parents_item_parent_id");
+
+                    b.HasOne("ProductCatalog.Core.Entities.ProductAggregate.ItemParent", "Parent")
+                        .WithMany()
+                        .HasForeignKey("ParentId")
+                        .HasConstraintName("fk_item_parents_item_parents_parent_id");
 
                     b.Navigation("Parent");
                 });

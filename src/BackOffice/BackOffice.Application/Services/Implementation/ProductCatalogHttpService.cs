@@ -3,13 +3,13 @@ using IdentityModel.Client;
 
 namespace BackOffice.Application.Services.Implementation;
 
-public class CatalogHttpService : IHttpService
+public class ProductCatalogHttpService : IHttpService
 {
     private readonly IHttpClientFactory _clientFactory;
     private readonly ITokenService _tokenService;
-    private readonly ILogger<CatalogHttpService> _logger;
+    private readonly ILogger<ProductCatalogHttpService> _logger;
 
-    public CatalogHttpService(IHttpClientFactory clientFactory, ITokenService tokenService, ILogger<CatalogHttpService> logger)
+    public ProductCatalogHttpService(IHttpClientFactory clientFactory, ITokenService tokenService, ILogger<ProductCatalogHttpService> logger)
     {
         _clientFactory = clientFactory;
         _tokenService = tokenService;

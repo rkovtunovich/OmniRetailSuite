@@ -34,5 +34,7 @@ public class ItemDbConfiguration : IEntityTypeConfiguration<Item>
         builder.HasOne(ci => ci.Parent)
             .WithMany()
             .HasForeignKey(ci => ci.ParentId);
+
+        builder.HasQueryFilter(p => !p.IsDeleted);
     }
 }

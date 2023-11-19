@@ -1,4 +1,5 @@
-﻿using Infrastructure.Messaging.Kafka;
+﻿using System.Text.Json.Serialization;
+using Infrastructure.Messaging.Kafka;
 using Infrastructure.Messaging.Kafka.Configuration;
 using Infrastructure.Messaging.Kafka.Configuration.Settings;
 using Infrastructure.Serialization.JsonText.Configuration;
@@ -42,7 +43,7 @@ builder.Services.AddDiscoveryClient(configSection);
 builder.Services.AddAppServices();
 builder.Services.AddMemoryCache();
 builder.Services.AddSwagger();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 builder.Configuration.AddEnvironmentVariables();
 
 var app = builder.Build();

@@ -2,9 +2,9 @@
 using BackOffice.Core.Models.Product;
 using Microsoft.AspNetCore.Components.Forms;
 
-namespace BackOffice.Client.Pages.CatalogItemPage;
+namespace BackOffice.Client.Pages.ProductItemPage;
 
-public partial class TypeCreate
+public partial class TypeDetails
 {
     [Inject] private TabsService _tabsService { get; set; } = null!;
 
@@ -13,13 +13,14 @@ public partial class TypeCreate
     [Parameter]
     public EventCallback<string> OnSaveClick { get; set; }
 
-    private ItemType _type = new();
+    [Parameter]
+    public ItemType Type { get; set; } = null!;
 
     private EditContext? _editContext;
 
     protected override void OnInitialized()
     {
-        _editContext = new EditContext(_type);
+        _editContext = new EditContext(Type);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -27,17 +28,24 @@ public partial class TypeCreate
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    private async Task CreateClick()
+    private async Task SaveClick()
     {
-        if(!_editContext?.Validate() ?? false)
+        if (!_editContext?.Validate() ?? false)
             return;
 
-        var result = await CatalogItemService.CreateTypeAsync(_type);
+        var result = await CatalogItemService.UpdateTypeAsync(Type);
         if (result is not null)
         {
             await OnSaveClick.InvokeAsync(null);
             Close();
         }
+    }
+
+    private async Task DeleteClick()
+    {
+        await CatalogItemService.DeleteTypeAsync(Type.Id, true);
+        
+        Close();
     }
 
     private void Close()

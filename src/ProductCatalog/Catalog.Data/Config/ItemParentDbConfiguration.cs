@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ProductCatalog.Core.Entities.ProductAggregate;
 
 namespace ProductCatalog.Data.Config;
 
@@ -19,5 +18,12 @@ public class ItemParentDbConfiguration : IEntityTypeConfiguration<ItemParent>
         builder.HasOne(ci => ci.Parent)
             .WithMany()
             .HasForeignKey(ci => ci.ParentId);
+
+        builder.HasOne(ci => ci.Parent)
+               .WithMany(p => p.Children) 
+               .HasForeignKey(ci => ci.ParentId)
+               .OnDelete(DeleteBehavior.Restrict); 
+
+        builder.HasQueryFilter(p => !p.IsDeleted);
     }
 }

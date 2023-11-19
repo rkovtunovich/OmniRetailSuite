@@ -2,9 +2,9 @@
 using BackOffice.Core.Models.Product;
 using Microsoft.AspNetCore.Components.Forms;
 
-namespace BackOffice.Client.Pages.CatalogItemPage;
+namespace BackOffice.Client.Pages.ProductItemPage;
 
-public partial class ItemCreate
+public partial class ItemDetails
 {
     [Inject] private TabsService _tabsService { get; set; } = null!;
 
@@ -13,23 +13,24 @@ public partial class ItemCreate
     [Parameter]
     public EventCallback<string> OnSaveClick { get; set; }
 
+    [Parameter]
+    public Item Item { get; set; } = null!;
+
     private List<ItemType> _itemTypes = new();
 
     private List<Brand> _itemBrands = new();
 
-    private string LoadPicture => string.IsNullOrEmpty(_item.PictureBase64) ? string.Empty : $"data:image/png;base64, {_item.PictureBase64}";
+    private string LoadPicture => string.IsNullOrEmpty(Item.PictureBase64) ? string.Empty : $"data:image/png;base64, {Item.PictureBase64}";
 
-    private bool HasPicture => !string.IsNullOrEmpty(_item.PictureBase64);
+    private bool HasPicture => !string.IsNullOrEmpty(Item.PictureBase64);
 
     private string _badFileMessage = string.Empty;
-
-    private Item _item = new();
 
     private EditContext? _editContext;
 
     protected override void OnInitialized()
     {
-        _editContext = new EditContext(_item);
+        _editContext = new EditContext(Item);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -45,17 +46,24 @@ public partial class ItemCreate
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    private async Task CreateClick()
+    private async Task SaveClick()
     {
-        if(!_editContext?.Validate() ?? false)
+        if (!_editContext?.Validate() ?? false)
             return;
 
-        var result = await CatalogItemService.CreateItemAsync(_item);
+        var result = await CatalogItemService.UpdateItemAsync(Item);
         if (result is not null)
         {
             await OnSaveClick.InvokeAsync(null);
             Close();
         }
+    }
+
+    private async Task DeleteClick()
+    {
+        await CatalogItemService.DeleteItemAsync(Item.Id, true);
+        
+        Close();
     }
 
     private void Close()

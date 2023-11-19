@@ -1,17 +1,17 @@
-﻿@page "/catalog-items"
+﻿@page "/product-items"
 @* @attribute [Authorize(Roles = BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS)] *@
 @attribute [Authorize]
 @inherits BlazorComponent
 
-@namespace BackOffice.Client.Pages.CatalogItemPage
+@namespace BackOffice.Client.Pages.ProductItemPage
 
-<PageTitle>Manage Catalog Item</PageTitle>
+<PageTitle>Manage Product Item</PageTitle>
 
 <RadzenSplitter Style="display:flex; min-width:100%; height:100%; padding:0">
-    
+
     <RadzenSplitterPane>
 
-        <MudDataGrid T="Item" @ref="@(_dataGrid)" Items="@_catalogItems" Filterable="true" QuickFilter="@_quickFilter" EditMode="@(_editMode)" EditTrigger="@(_editTrigger)"
+        <MudDataGrid T="Item" @ref="@(_dataGrid)" Items="@_productItems" Filterable="true" QuickFilter="@_quickFilter" EditMode="@(_editMode)" EditTrigger="@(_editTrigger)"
                      StartedEditingItem="@StartedEditingItem" CanceledEditingItem="@CanceledEditingItem" CommittedItemChanges="@CommittedItemChanges" ReadOnly="false" RowClick="RowClick"
                      EditDialogOptions="_dialogOptions" FixedHeader="true" HeaderClass="data-grid-header" Dense="true" ColumnResizeMode="ResizeMode.Column"
                      DragDropColumnReordering="true" Style="height:100%; display:flex; flex-direction:column; width:100%; resize:horizontal">
@@ -51,23 +51,48 @@
 
     <RadzenSplitterPane Visible="@_isItemParentsOpen">
 
-        <MudTreeView Items="@_itemParentsViewData" Hover="true" Style="max-width:50%; resize:horizontal">
+
+        <MudToolBar>
+
+            <MudButton OnClick="@CreateItemParentClick" Color="@Color.Success" Class="add-item-btn">Add</MudButton>
+            <MudSpacer />
+
+        </MudToolBar>
+
+        <MudTreeView T="ItemParent" Items="@_itemParents" Hover="true" Style="resize:horizontal">
             <ItemTemplate Context="item">
                 <MudTreeViewItem Items="@item.Children">
                     <BodyContent>
-                        <div style="display: grid; grid-template-columns: 1fr auto; align-items: center">
-                            <MudText Style="justify-self: start;">@item.Id</MudText>
-                            <MudText Style="justify-self: start;">@item.Name</MudText>
+
+                        <MudText Style="justify-self: start;">@item.Name</MudText>
+
                             <div style="justify-self: end;">
                                 <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Medium" Color="Color.Inherit" />
                                 <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Medium" Color="Color.Inherit" />
                             </div>
-                        </div>
-                    </BodyContent>
-                </MudTreeViewItem>
-            </ItemTemplate>
-        </MudTreeView>
 
-    </RadzenSplitterPane>
+                        </BodyContent>
+                    </MudTreeViewItem>
+                </ItemTemplate>
+            </MudTreeView>
 
-</RadzenSplitter>
+            @* <MudTreeView T="ItemParent">
+        <TreeItems>
+        @foreach (var item in _itemParents)
+        {
+        <MudTreeViewItem Value="item" Text="@item.Name" Icon="@Icons.Material.Folder" ExpandIcon="@Icons.Material.ExpandMore" CollapseIcon="@Icons.Material.ChevronRight">
+        @if (item.Children != null)
+        {
+        foreach (var child in item.Children)
+        {
+        <MudTreeViewItem Value="child" Text="@child.Name" Icon="@Icons.Material.Folder" />
+        }
+        }
+        </MudTreeViewItem>
+        }
+        </TreeItems>
+        </MudTreeView> *@
+
+        </RadzenSplitterPane>
+
+    </RadzenSplitter>

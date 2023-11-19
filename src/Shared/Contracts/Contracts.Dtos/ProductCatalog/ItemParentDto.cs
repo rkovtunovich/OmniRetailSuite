@@ -7,4 +7,6 @@ public record ItemParentDto
     public string Name { get; init; } = string.Empty;
 
     public ItemParentDto? Parent { get; init; }
+
+    public IEnumerable<ItemParentDto>? Children { get; init; }
 }

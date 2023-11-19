@@ -1,4 +1,4 @@
-﻿@using BackOffice.Client.Pages.CatalogItemPage;
+﻿@using BackOffice.Client.Pages.ProductItemPage;
 @inherits BlazorComponent
 
 <MudNavMenu>
@@ -11,7 +11,7 @@
 
         <Authorized>
 
-            <MudNavGroup Title="Catalog" Icon="@Icons.Material.Filled.Dataset" Expanded="false" Class="my-nav-menu-group">
+            <MudNavGroup Title="Product Catalog" Icon="@Icons.Material.Filled.Dataset" Expanded="false" Class="my-nav-menu-group">
                 <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<ItemList>(nameof(ItemList), e)">Items</MudNavLink>
                 <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<BrandList>(nameof(BrandList), e)">Brands</MudNavLink>
                 <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<TypeList>(nameof(TypeList), e)">Types</MudNavLink>

@@ -7,4 +7,8 @@ public class ItemParent
     public string Name { get; set; } = string.Empty;
 
     public ItemParent? Parent { get; set; }
+
+    public Guid? ParentId { get; set; }
+
+    public HashSet<ItemParent>? Children { get; set; }
 }

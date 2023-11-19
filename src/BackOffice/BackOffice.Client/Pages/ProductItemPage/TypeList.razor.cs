@@ -1,18 +1,17 @@
-﻿using BackOffice.Application.Services.Abstraction;
-using BackOffice.Client.Services;
+﻿using BackOffice.Client.Services;
 using BackOffice.Core.Models.Product;
 
-namespace BackOffice.Client.Pages.CatalogItemPage;
+namespace BackOffice.Client.Pages.ProductItemPage;
 
-public partial class BrandList : BlazorComponent
+public partial class TypeList : BlazorComponent
 {
     [Inject] public IProductCatalogService CatalogService { get; set; } = null!;
 
     [Inject] private TabsService _tabsService { get; set; } = null!;
 
-    private List<Brand> _catalogBrands = new();
+    private List<ItemType> _catalogTypes = new();
 
-    private MudDataGrid<Brand> _dataGrid = null!;
+    private MudDataGrid<ItemType> _dataGrid = null!;
 
     private string? _searchString;
 
@@ -20,7 +19,7 @@ public partial class BrandList : BlazorComponent
     private DataGridEditTrigger _editTrigger = DataGridEditTrigger.Manual;
     private DialogOptions _dialogOptions = new() { DisableBackdropClick = true };
 
-    private Func<Brand, bool> _quickFilter => x =>
+    private Func<ItemType, bool> _quickFilter => x =>
     {
         if (string.IsNullOrWhiteSpace(_searchString))
             return true;
@@ -35,7 +34,7 @@ public partial class BrandList : BlazorComponent
     {
         if (firstRender)
         {
-            CatalogService.CatalogBrandChanged += OnCatalogBrandChanged;
+            CatalogService.CatalogTypeChanged += OnCatalogTypeChanged;
 
             await ReloadCatalogTypes();
         }
@@ -43,45 +42,45 @@ public partial class BrandList : BlazorComponent
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    private void CreateBrandClick()
+    private void CreateTypeClick()
     {
-        _tabsService.TryCreateTab<BrandCreate>();        
+        _tabsService.TryCreateTab<TypeCreate>();        
     }
 
-    private void OpenBrandClick(CellContext<Brand> context)
+    private void OpenTypeClick(CellContext<ItemType> context)
     {
         var parameters = new Dictionary<string, object>
         {
-            { nameof(BrandDetails.Brand), context.Item }
+            { nameof(TypeDetails.Type), context.Item }
         };
 
-        _tabsService.TryCreateTab<BrandDetails>(parameters);
+        _tabsService.TryCreateTab<TypeDetails>(parameters);
     }
 
     private async Task ReloadCatalogTypes()
     {
-        _catalogBrands = await CatalogService.GetBrandsAsync();
+        _catalogTypes = await CatalogService.GetTypesAsync();
 
         CallRequestRefresh();
     }
 
-    private void StartedEditingItem(Brand item)
+    private void StartedEditingItem(ItemType item)
     {
         _editTrigger = DataGridEditTrigger.Manual;
     }
 
-    private void CanceledEditingItem(Brand item)
+    private void CanceledEditingItem(ItemType item)
     {
     }
 
-    private async Task CommittedItemChanges(Brand type)
+    private async Task CommittedItemChanges(ItemType type)
     {
-        await CatalogService.UpdateBrandAsync(type);
+        await CatalogService.UpdateTypeAsync(type);
 
         CallRequestRefresh();
     }
 
-    private async Task RowClick(DataGridRowClickEventArgs<Brand> eventArg)
+    private async Task RowClick(DataGridRowClickEventArgs<ItemType> eventArg)
     {
         if (eventArg.MouseEventArgs.Detail == 1)
             return;
@@ -94,15 +93,15 @@ public partial class BrandList : BlazorComponent
         });
     }
 
-    private async Task OnCatalogBrandChanged(Brand changedBrand)
+    private async Task OnCatalogTypeChanged(ItemType changedType)
     {
-        _catalogBrands = await CatalogService.GetBrandsAsync();
+        _catalogTypes = await CatalogService.GetTypesAsync();
         CallRequestRefresh();
     }
 
     public override void Dispose()
     {
         // Unsubscribe when the component is destroyed to prevent memory leaks
-        CatalogService.CatalogBrandChanged -= OnCatalogBrandChanged;
+        CatalogService.CatalogTypeChanged -= OnCatalogTypeChanged;
     }
 }

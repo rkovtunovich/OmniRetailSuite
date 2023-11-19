@@ -10,7 +10,8 @@ public static class ItemParentMapping
         {
             Id = itemParent.Id,
             Name = itemParent.Name,
-            Parent = itemParent.Parent == null ? null : ToDto(itemParent.Parent)
+            Parent = itemParent.Parent == null ? null : ToDto(itemParent.Parent),
+            Children = itemParent.Children?.Select(x => ToDto(x))
         };
     }
 
