@@ -43,7 +43,7 @@ builder.Services.AddDiscoveryClient(configSection);
 builder.Services.AddAppServices();
 builder.Services.AddMemoryCache();
 builder.Services.AddSwagger();
-builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+builder.Services.AddControllers();
 builder.Configuration.AddEnvironmentVariables();
 
 var app = builder.Build();

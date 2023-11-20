@@ -2,11 +2,11 @@
 
 public record ItemParentDto
 {
-    public Guid Id { get; init; }
+    public Guid Id { get; set; }
 
-    public string Name { get; init; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
 
-    public ItemParentDto? Parent { get; init; }
+    public Guid? ParentId { get; set; }
 
-    public IEnumerable<ItemParentDto>? Children { get; init; }
+    public IEnumerable<ItemParentDto>? Children { get; set; }
 }

@@ -21,6 +21,7 @@
 	</ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Infrastructure\Infrastructure.Serialization.JsonText\Infrastructure.Serialization.JsonText.csproj" />
     <ProjectReference Include="..\BackOffice.Application\BackOffice.Application.csproj" />
   </ItemGroup>
 

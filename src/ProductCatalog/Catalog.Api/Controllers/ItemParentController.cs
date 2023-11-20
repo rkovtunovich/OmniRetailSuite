@@ -23,7 +23,7 @@ public class ItemParentController : ControllerBase
     {
         var parents = await _itemParentService.GetItemParentsAsync();
 
-        return parents;
+        return Ok(parents);
     }
 
     [HttpGet]
@@ -75,7 +75,7 @@ public class ItemParentController : ControllerBase
             if (parent is null)
                 return NotFound();
 
-            return CreatedAtAction(nameof(ParentByIdAsync), new { id = parent.Id }, null);
+            return NoContent();
         }
         catch (Exception ex)
         {

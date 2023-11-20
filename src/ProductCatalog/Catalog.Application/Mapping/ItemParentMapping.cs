@@ -1,6 +1,4 @@
-﻿using ProductCatalog.Core.Entities.ProductAggregate;
-
-namespace ProductCatalog.Application.Mapping;
+﻿namespace ProductCatalog.Application.Mapping;
 
 public static class ItemParentMapping
 {
@@ -10,7 +8,7 @@ public static class ItemParentMapping
         {
             Id = itemParent.Id,
             Name = itemParent.Name,
-            Parent = itemParent.Parent == null ? null : ToDto(itemParent.Parent),
+            ParentId = itemParent.ParentId,
             Children = itemParent.Children?.Select(x => ToDto(x))
         };
     }
@@ -21,7 +19,7 @@ public static class ItemParentMapping
         {
             Id = itemParentDto.Id,
             Name = itemParentDto.Name,
-            Parent = itemParentDto.Parent?.ToEntity()
+            ParentId = itemParentDto.ParentId
         };
     }
 }

@@ -1,6 +1,4 @@
-﻿using ProductCatalog.Data.Queries;
-
-namespace ProductCatalog.Data.Repositories;
+﻿namespace ProductCatalog.Data.Repositories;
 
 public class ItemParentRepository : IItemParentRepository
 {
@@ -18,6 +16,7 @@ public class ItemParentRepository : IItemParentRepository
         try
         {
             var itemParents = await _context.ItemParents.ToListAsync();
+            itemParents = itemParents.Where(x => x.Parent == null).ToList();
 
             return itemParents;
         }

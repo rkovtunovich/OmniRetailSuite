@@ -1,6 +1,7 @@
 ﻿using BackOffice.Client.Configuration;
 using BackOffice.Client.Model.Options;
 using BackOffice.Client.Services;
+using Infrastructure.Serialization.JsonText.Configuration;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -17,6 +18,7 @@ builder.Services.Configure<BaseUrlConfiguration>(configSection);
 builder.WebHost.UseWebRoot("wwwroot").UseStaticWebAssets();
 
 builder.Services.AddWebServices(builder.Configuration);
+builder.Services.AddJsonTextSerialization();
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor(config => config.DetailedErrors = false);

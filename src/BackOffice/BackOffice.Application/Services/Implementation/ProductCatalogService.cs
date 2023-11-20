@@ -99,11 +99,7 @@ public class ProductCatalogService : IProductCatalogService
         var uri = CatalogUriHelper.GetAllItemParents();
         var itemParentDtos = await _httpService.GetAsync<List<ItemParentDto>>(uri);
 
-        var itemParents = itemParentDtos?.Select(x => new ItemParent()
-        {
-            Id = x.Id,
-            Name = x.Name
-        }).ToList();
+        var itemParents = itemParentDtos?.Select(x => x.ToModel()).ToList();
 
         return itemParents ?? [];
     }

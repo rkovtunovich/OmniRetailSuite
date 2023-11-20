@@ -19,7 +19,13 @@ public class ItemService(IItemRepository itemRepository, IEventPublisher eventPu
 
         catalogItemDtos = ChangeUriPlaceholder(catalogItemDtos);
 
-        var paginatedItems = new PaginatedItemsDto(pageIndex, pageSize, totalItems, catalogItemDtos ?? []);
+        var paginatedItems = new PaginatedItemsDto
+        {
+            PageIndex = pageIndex,
+            PageSize = pageSize,
+            Count = totalItems,
+            Data = catalogItemDtos ?? []
+        };
 
         return paginatedItems;
     }
@@ -59,7 +65,13 @@ public class ItemService(IItemRepository itemRepository, IEventPublisher eventPu
 
         itemsOnPage = ChangeUriPlaceholder(itemsOnPage);
 
-        return new PaginatedItemsDto(0, totalItems, totalItems, itemsOnPage);
+        return new PaginatedItemsDto
+        {
+            PageIndex = 0,
+            PageSize = totalItems,
+            Count = totalItems,
+            Data = itemsOnPage
+        };
     }
 
     public async Task<ItemDto> CreateItemAsync(ItemDto item)

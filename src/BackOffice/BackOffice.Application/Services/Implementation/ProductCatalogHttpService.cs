@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Json;
 using IdentityModel.Client;
+using Infrastructure.Serialization.Abstraction;
 
 namespace BackOffice.Application.Services.Implementation;
 
@@ -7,13 +8,15 @@ public class ProductCatalogHttpService : IHttpService
 {
     private readonly IHttpClientFactory _clientFactory;
     private readonly ITokenService _tokenService;
+    private readonly IDataSerializer _dataSerializer;
     private readonly ILogger<ProductCatalogHttpService> _logger;
 
-    public ProductCatalogHttpService(IHttpClientFactory clientFactory, ITokenService tokenService, ILogger<ProductCatalogHttpService> logger)
+    public ProductCatalogHttpService(IHttpClientFactory clientFactory, ITokenService tokenService, IDataSerializer dataSerializer, ILogger<ProductCatalogHttpService> logger)
     {
         _clientFactory = clientFactory;
         _tokenService = tokenService;
         _logger = logger;
+        _dataSerializer = dataSerializer;
     }
 
     public async Task<T?> GetAsync<T>(string uri)
@@ -22,10 +25,7 @@ public class ProductCatalogHttpService : IHttpService
         {
             var client = await GetClientAsync();
             var responseString = await client.GetStringAsync(uri) ?? throw new Exception($"Error getting request catalog uri {uri}");
-            var value = JsonSerializer.Deserialize<T>(responseString, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
+            var value = _dataSerializer.Deserialize<T>(responseString);
 
             return value;
 

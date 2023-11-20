@@ -9,12 +9,4 @@ public record PaginatedItemsDto
     public long Count { get; init; }
 
     public List<ItemDto> Data { get; init; } = [];
-
-    public PaginatedItemsDto(int pageIndex, int pageSize, long count, List<ItemDto> data)
-    {
-        PageIndex = pageIndex;
-        PageSize = pageSize;
-        Count = count;
-        Data = data;
-    }
 }

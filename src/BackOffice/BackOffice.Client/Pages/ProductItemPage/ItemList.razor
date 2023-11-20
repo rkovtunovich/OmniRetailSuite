@@ -61,37 +61,17 @@
 
         <MudTreeView T="ItemParent" Items="@_itemParents" Hover="true" Style="resize:horizontal">
             <ItemTemplate Context="item">
-                <MudTreeViewItem Items="@item.Children">
+                <MudTreeViewItem Items="@item.Children" Icon="@Icons.Material.Outlined.Folder" Value="item">
                     <BodyContent>
 
                         <MudText Style="justify-self: start;">@item.Name</MudText>
-
-                            <div style="justify-self: end;">
-                                <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Medium" Color="Color.Inherit" />
-                                <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Medium" Color="Color.Inherit" />
-                            </div>
+                            <MudSpacer />
+                            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.FilterNone" OnClick="@(() => OpenItemParentClick(context))" />
 
                         </BodyContent>
                     </MudTreeViewItem>
                 </ItemTemplate>
             </MudTreeView>
-
-            @* <MudTreeView T="ItemParent">
-        <TreeItems>
-        @foreach (var item in _itemParents)
-        {
-        <MudTreeViewItem Value="item" Text="@item.Name" Icon="@Icons.Material.Folder" ExpandIcon="@Icons.Material.ExpandMore" CollapseIcon="@Icons.Material.ChevronRight">
-        @if (item.Children != null)
-        {
-        foreach (var child in item.Children)
-        {
-        <MudTreeViewItem Value="child" Text="@child.Name" Icon="@Icons.Material.Folder" />
-        }
-        }
-        </MudTreeViewItem>
-        }
-        </TreeItems>
-        </MudTreeView> *@
 
         </RadzenSplitterPane>
 

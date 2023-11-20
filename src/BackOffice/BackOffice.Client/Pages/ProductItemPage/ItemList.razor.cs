@@ -163,6 +163,16 @@ public partial class ItemList : BlazorComponent
         CallRequestRefresh();
     }
 
+    private void OpenItemParentClick(MudTreeViewItem<ItemParent> viewItem)
+    {
+        var parameters = new Dictionary<string, object>
+        {
+            { nameof(ItemParentDetails.ItemParent), viewItem.Value }
+        };
+
+        _tabsService.TryCreateTab<ItemParentDetails>(parameters);
+    }
+
     private void CreateItemParentClick()
     {
         _tabsService.TryCreateTab<ItemParentCreate>();

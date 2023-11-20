@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Infrastructure\Infrastructure.Serialization.Abstraction\Infrastructure.Serialization.Abstraction.csproj" />
     <ProjectReference Include="..\BackOffice.Core\BackOffice.Core.csproj" />
   </ItemGroup>
 
