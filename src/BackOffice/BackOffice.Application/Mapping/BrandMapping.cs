@@ -1,10 +1,10 @@
-﻿using BackOffice.Core.Models.Product;
+﻿using BackOffice.Core.Models.ProductCatalog;
 
 namespace BackOffice.Application.Mapping;
 
 public static class BrandMapping
 {
-    public static BrandDto? ToDto(this Brand catalogBrand)
+    public static BrandDto? ToDto(this ProductBrand catalogBrand)
     {
         return new BrandDto
         {
@@ -13,9 +13,9 @@ public static class BrandMapping
         };
     }
 
-    public static Brand ToModel(this BrandDto catalogBrand)
+    public static ProductBrand ToModel(this BrandDto catalogBrand)
     {
-        return new Brand
+        return new ProductBrand
         {
             Id = catalogBrand.Id,
             Name = catalogBrand.Name

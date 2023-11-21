@@ -1,10 +1,10 @@
-﻿using BackOffice.Core.Models.Product;
+﻿using BackOffice.Core.Models.ProductCatalog;
 
 namespace BackOffice.Application.Mapping;
 
 public static class ItemTypeMapping
 {
-    public static ItemTypeDto? ToDto(this ItemType catalogType)
+    public static ItemTypeDto? ToDto(this ProductType catalogType)
     {
         return new ItemTypeDto
         {
@@ -13,9 +13,9 @@ public static class ItemTypeMapping
         };
     }
 
-    public static ItemType ToModel(this ItemTypeDto catalogType)
+    public static ProductType ToModel(this ItemTypeDto catalogType)
     {
-        return new ItemType
+        return new ProductType
         {
             Id = catalogType.Id,
             Name = catalogType.Name

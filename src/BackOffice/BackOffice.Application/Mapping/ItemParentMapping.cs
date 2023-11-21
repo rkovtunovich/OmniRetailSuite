@@ -1,10 +1,10 @@
-﻿using BackOffice.Core.Models.Product;
+﻿using BackOffice.Core.Models.ProductCatalog;
 
 namespace BackOffice.Application.Mapping;
 
 public static class ItemParentMapping
 {
-    public static ItemParentDto ToDto(this ItemParent itemParent)
+    public static ItemParentDto ToDto(this ProductParent itemParent)
     {
         return new ItemParentDto
         {
@@ -15,9 +15,9 @@ public static class ItemParentMapping
         };
     }
 
-    public static ItemParent ToModel(this ItemParentDto itemParentDto)
+    public static ProductParent ToModel(this ItemParentDto itemParentDto)
     {
-        return new ItemParent
+        return new ProductParent
         {
             Id = itemParentDto.Id,
             Name = itemParentDto.Name,

@@ -1,4 +1,5 @@
 ﻿using BackOffice.Application.Helpers;
+using BackOffice.Application.Services.Implementation.ProductCatalog;
 using BackOffice.Core.Models.UserPreferences;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,9 +9,9 @@ namespace BackOffice.Application.Services.Implementation;
 public class UserPreferenceService : IUserPreferenceService
 {
     private readonly IHttpService _httpService;
-    private readonly ILogger<ProductCatalogService> _logger;
+    private readonly ILogger<ProductItemService> _logger;
 
-    public UserPreferenceService([FromKeyedServices(Constants.IDENTITY_CLIENT_NAME)] IHttpService httpService, ILogger<ProductCatalogService> logger)
+    public UserPreferenceService([FromKeyedServices(Constants.IDENTITY_CLIENT_NAME)] IHttpService httpService, ILogger<ProductItemService> logger)
     {
         _logger = logger;
         _httpService = httpService;

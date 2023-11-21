@@ -1,0 +1,48 @@
+﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
+using BackOffice.Client.Services;
+using BackOffice.Core.Models.ProductCatalog;
+using Microsoft.AspNetCore.Components.Forms;
+
+namespace BackOffice.Client.Pages.ProductCatalog.Type;
+
+public partial class TypeCreate
+{
+    [Inject] private TabsService _tabsService { get; set; } = null!;
+
+    [Inject] public IProductTypeService ProductTypeService { get; set; } = null!;
+
+    [Parameter]
+    public EventCallback<string> OnSaveClick { get; set; }
+
+    private ProductType _type = new();
+
+    private EditContext? _editContext;
+
+    protected override void OnInitialized()
+    {
+        _editContext = new EditContext(_type);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task CreateClick()
+    {
+        if (!_editContext?.Validate() ?? false)
+            return;
+
+        var result = await ProductTypeService.CreateTypeAsync(_type);
+        if (result is not null)
+        {
+            await OnSaveClick.InvokeAsync(null);
+            Close();
+        }
+    }
+
+    private void Close()
+    {
+        _tabsService.RemoveTab(_tabsService.Tabs?.ActivePanel);
+    }
+}

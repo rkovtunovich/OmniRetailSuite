@@ -1,0 +1,46 @@
+﻿@inherits BlazorComponent
+
+@namespace BackOffice.Client.Pages.ProductCatalog.Parent
+
+<MudContainer Class="m-0 p-0 form-content-panel">
+
+    <MudToolBar Dense Class="form-command-panel">
+
+         <MudTooltip Text="Save">
+             <MudIconButton Icon="@Icons.Material.Outlined.Save" Color="Color.Inherit" Class="mr-5" OnClick="@CreateClick" />
+         </MudTooltip>
+
+         <MudSpacer></MudSpacer>
+
+         <MudTooltip Text="Close">
+             <MudIconButton Icon="@Icons.Material.Outlined.Close" Color="Color.Inherit" Class="mr-5" OnClick="@Close" />
+         </MudTooltip>
+
+     </MudToolBar>
+
+     <EditForm EditContext="@_editContext" OnValidSubmit="@CreateClick">
+
+         <DataAnnotationsValidator />
+
+         <MudGrid>
+             <MudItem Style="min-width:50%">
+                 <MudCard>
+
+                     <MudCardContent>
+                         <MudTextField Label="Name" Class="mt-3" @bind-Value="_itemParent.Name" For="@(() => _itemParent.Name)" Variant="@MudBlazor.Variant.Filled" />
+                         <MudSelect Label="Parent" T="Guid?" For="@(() => _itemParent.ParentId)" ValueChanged="OnParentSelected">
+                            <MudSelectItem Value="null" T="Guid?">No Parent</MudSelectItem>
+                            @foreach (var parent in _allItemParents)
+                            {
+                                <MudSelectItem Value="@parent.Id" T="Guid?">@parent.Name</MudSelectItem>
+                            }
+                        </MudSelect>
+                     </MudCardContent>
+
+                 </MudCard>
+             </MudItem>
+         </MudGrid>
+
+     </EditForm>
+
+</MudContainer>

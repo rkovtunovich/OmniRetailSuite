@@ -1,12 +1,12 @@
-﻿using BackOffice.Core.Models.Product;
+﻿using BackOffice.Core.Models.ProductCatalog;
 
 namespace BackOffice.Application.Mapping;
 
 public static class ItemMapping
 {
-    public static Item ToModel(this ItemDto dto)
+    public static ProductItem ToModel(this ItemDto dto)
     {
-        return new Item()
+        return new ProductItem()
         {
             Id = dto.Id,
             Brand = dto.CatalogBrand?.ToModel(),
@@ -21,7 +21,7 @@ public static class ItemMapping
         };
     }
 
-    public static ItemDto ToDto(this Item model)
+    public static ItemDto ToDto(this ProductItem model)
     {
         return new ItemDto()
         {
