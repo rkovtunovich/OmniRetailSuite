@@ -23,11 +23,7 @@ public class ProductTypeService: IProductTypeService
         var uri = CatalogUriHelper.GetAllTypes();
         var typeDtos = await _httpService.GetAsync<List<ItemTypeDto>>(uri);
 
-        var types = typeDtos?.Select(x => new ProductType()
-        {
-            Id = x.Id,
-            Name = x.Name
-        }).ToList();
+        var types = typeDtos?.Select(x => x.ToModel()).ToList();
 
         return types ?? [];
     }

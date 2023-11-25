@@ -10,6 +10,8 @@ public static class ItemParentMapping
         {
             Id = itemParent.Id,
             Name = itemParent.Name,
+            CodeNumber = itemParent.CodeNumber,
+            CodePrefix = itemParent.CodePrefix,
             ParentId = itemParent.ParentId,
             Children = itemParent.Children?.Select(x => x.ToDto())
         };
@@ -21,6 +23,8 @@ public static class ItemParentMapping
         {
             Id = itemParentDto.Id,
             Name = itemParentDto.Name,
+            CodeNumber = itemParentDto.CodeNumber,
+            CodePrefix = itemParentDto.CodePrefix,
             ParentId = itemParentDto.ParentId,
             Children = itemParentDto.Children?.Select(x => x.ToModel()).ToHashSet()
         };

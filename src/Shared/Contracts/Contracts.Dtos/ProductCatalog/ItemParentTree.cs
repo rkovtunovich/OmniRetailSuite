@@ -6,6 +6,10 @@ public record ItemParentTree
 
     public string Name { get; init; } = string.Empty;
 
+    public int CodeNumber { get; init; }
+
+    public string? CodePrefix { get; init; }
+
     public ItemParentDto? Parent { get; init; }
 
     public List<int> ChildIds { get; init; } = [];

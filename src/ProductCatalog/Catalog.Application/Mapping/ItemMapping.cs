@@ -10,6 +10,8 @@ public static class ItemMapping
         {
             Id = item.Id,
             Name = item.Name,
+            CodeNumber = item.CodeNumber,
+            CodePrefix = item.CodePrefix,
             Description = item.Description,
             Price = item.Price,
             PictureUri = item.PictureUri,
@@ -24,6 +26,8 @@ public static class ItemMapping
         {
             Id = itemDto.Id,
             Name = itemDto.Name,
+            CodeNumber = itemDto.CodeNumber,
+            CodePrefix = itemDto.CodePrefix,
             Description = itemDto.Description,
             Price = itemDto.Price,
             PictureUri = itemDto.PictureUri,

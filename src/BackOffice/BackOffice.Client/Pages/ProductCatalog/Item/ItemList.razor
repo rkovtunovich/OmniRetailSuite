@@ -31,7 +31,7 @@
             </ToolBarContent>
 
             <Columns>
-                <PropertyColumn Property="x => x.Id" IsEditable="false" />
+                <PropertyColumn Property="x => x.GetCode()" IsEditable="false" />
                 <PropertyColumn Property="x => x.Name" />
                 <PropertyColumn Property="x => x.Description" />
                 <PropertyColumn Property="x => x.ItemType" Title="Type" IsEditable="false" />
@@ -62,14 +62,17 @@
         <MudTreeView T="ProductParent" Items="@_itemParents" Hover="true" Style="resize:horizontal">
             <ItemTemplate Context="item">
                 <MudTreeViewItem Items="@item.Children" Icon="@Icons.Material.Outlined.Folder" Value="item">
+                    
                     <BodyContent>
 
-                        <MudText Style="justify-self: start;">@item.Name</MudText>
-                            <MudSpacer />
-                            <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.FilterNone" OnClick="@(() => OpenItemParentClick(context))" />
+                        <MudText>@item.GetCode()</MudText>
+                        <MudText Style="justify-self: start;"> @item.Name</MudText>
+                        <MudSpacer />
+                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.FilterNone" OnClick="@(() => OpenItemParentClick(context))" />
 
-                        </BodyContent>
-                    </MudTreeViewItem>
+                     </BodyContent>
+
+                 </MudTreeViewItem>
                 </ItemTemplate>
             </MudTreeView>
 

@@ -23,11 +23,7 @@ public class ProductBrandService: IProductBrandService
         var uri = CatalogUriHelper.GetAllBrands();
         var brandDtos = await _httpService.GetAsync<List<BrandDto>>(uri);
 
-        var brands = brandDtos?.Select(x => new ProductBrand()
-        {
-            Id = x.Id,
-            Name = x.Name
-        }).ToList();
+        var brands = brandDtos?.Select(x => x.ToModel()).ToList();
 
         return brands ?? [];
     }

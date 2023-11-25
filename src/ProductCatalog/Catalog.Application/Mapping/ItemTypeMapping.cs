@@ -1,6 +1,4 @@
-﻿using ProductCatalog.Core.Entities.ProductAggregate;
-
-namespace ProductCatalog.Application.Mapping;
+﻿namespace ProductCatalog.Application.Mapping;
 
 public static class ItemTypeMapping
 {
@@ -9,7 +7,9 @@ public static class ItemTypeMapping
         return new ItemTypeDto
         {
             Id = catalogType.Id,
-            Name = catalogType.Type
+            Name = catalogType.Type,
+            CodeNumber = catalogType.CodeNumber,
+            CodePrefix = catalogType.CodePrefix
         };
     }
 
@@ -18,7 +18,9 @@ public static class ItemTypeMapping
         return new ItemType
         {
             Id = catalogTypeDto.Id,
-            Type = catalogTypeDto.Name
+            Type = catalogTypeDto.Name,
+            CodeNumber = catalogTypeDto.CodeNumber,
+            CodePrefix = catalogTypeDto.CodePrefix
         };
     }
 }

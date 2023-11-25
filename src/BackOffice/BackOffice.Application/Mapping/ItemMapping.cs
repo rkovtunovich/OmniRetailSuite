@@ -9,12 +9,14 @@ public static class ItemMapping
         return new ProductItem()
         {
             Id = dto.Id,
+            Name = dto.Name,
+            CodeNumber = dto.CodeNumber,
+            CodePrefix = dto.CodePrefix,
             Brand = dto.CatalogBrand?.ToModel(),
             CatalogBrandId = dto.CatalogBrand?.Id,
             ItemType = dto.CatalogType?.ToModel(),
             ItemTypeId = dto.CatalogType?.Id,
             Description = dto.Description,
-            Name = dto.Name,
             PictureUri = dto.PictureUri,
             Price = dto.Price,
             Barcode = dto.Barcode,
@@ -26,10 +28,12 @@ public static class ItemMapping
         return new ItemDto()
         {
             Id = model.Id,
+            Name = model.Name,
+            CodeNumber = model.CodeNumber,
+            CodePrefix = model.CodePrefix,
             CatalogBrand = model.Brand?.ToDto(),   
             CatalogType = model.ItemType?.ToDto(),
             Description = model.Description,
-            Name = model.Name,
             PictureUri = model.PictureUri,
             Price = model.Price,
             Barcode = model.Barcode,

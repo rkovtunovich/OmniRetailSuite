@@ -8,6 +8,10 @@ public class ProductItem
 
     public Guid? ItemTypeId { get; set; }
 
+    public int CodeNumber { get; set; }
+
+    public string? CodePrefix { get; set; }
+
     public ProductType? ItemType { get; set; }
 
     public Guid? CatalogBrandId { get; set; }
@@ -63,21 +67,6 @@ public class ProductItem
         return null;
     }
 
-    //public static async Task<string> DataToBase64(IFileListEntry fileItem)
-    //{
-    //    using (var reader = new StreamReader(fileItem.Data))
-    //    {
-    //        using (var memStream = new MemoryStream())
-    //        {
-    //            await reader.BaseStream.CopyToAsync(memStream);
-    //            var fileData = memStream.ToArray();
-    //            var encodedBase64 = Convert.ToBase64String(fileData);
-
-    //            return encodedBase64;
-    //        }
-    //    }
-    //}
-
     private static bool IsExtensionValid(string fileName)
     {
         var extension = Path.GetExtension(fileName);
@@ -86,5 +75,10 @@ public class ProductItem
                string.Equals(extension, ".png", StringComparison.OrdinalIgnoreCase) ||
                string.Equals(extension, ".gif", StringComparison.OrdinalIgnoreCase) ||
                string.Equals(extension, ".jpeg", StringComparison.OrdinalIgnoreCase);
+    }
+
+    public string GetCode()
+    {
+        return $"{CodePrefix}{CodeNumber:0000}";
     }
 }

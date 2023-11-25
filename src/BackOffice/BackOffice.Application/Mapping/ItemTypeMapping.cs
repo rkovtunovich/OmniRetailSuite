@@ -9,7 +9,9 @@ public static class ItemTypeMapping
         return new ItemTypeDto
         {
             Id = catalogType.Id,
-            Name = catalogType.Name
+            Name = catalogType.Name,
+            CodeNumber = catalogType.CodeNumber,
+            CodePrefix = catalogType.CodePrefix
         };
     }
 
@@ -18,7 +20,9 @@ public static class ItemTypeMapping
         return new ProductType
         {
             Id = catalogType.Id,
-            Name = catalogType.Name
+            Name = catalogType.Name,
+            CodeNumber = catalogType.CodeNumber,
+            CodePrefix = catalogType.CodePrefix
         };
     }
 }

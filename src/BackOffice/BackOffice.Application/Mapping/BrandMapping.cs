@@ -9,7 +9,9 @@ public static class BrandMapping
         return new BrandDto
         {
             Id = catalogBrand.Id,
-            Name = catalogBrand.Name
+            Name = catalogBrand.Name,
+            CodeNumber = catalogBrand.CodeNumber,
+            CodePrefix = catalogBrand.CodePrefix
         };
     }
 
@@ -18,7 +20,9 @@ public static class BrandMapping
         return new ProductBrand
         {
             Id = catalogBrand.Id,
-            Name = catalogBrand.Name
+            Name = catalogBrand.Name,
+            CodeNumber = catalogBrand.CodeNumber,
+            CodePrefix = catalogBrand.CodePrefix
         };
     }
 }
