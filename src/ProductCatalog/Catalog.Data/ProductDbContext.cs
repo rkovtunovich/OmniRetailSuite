@@ -35,6 +35,22 @@ public class ProductDbContext(DbContextOptions<ProductDbContext> options) : DbCo
                     property.SetValueConverter(dateTimeOffsetConverter);
             }
         }
+
+        builder.HasSequence<int>(BrandDbConfiguration.CodeSequenceName)
+            .StartsAt(1)
+            .IncrementsBy(1);
+
+        builder.HasSequence<int>(ItemDbConfiguration.CodeSequenceName)
+            .StartsAt(1)
+            .IncrementsBy(1);
+
+        builder.HasSequence<int>(ItemParentDbConfiguration.CodeSequenceName)
+            .StartsAt(1)
+            .IncrementsBy(1);
+
+        builder.HasSequence<int>(ItemTypeDbConfiguration.CodeSequenceName)
+            .StartsAt(1)
+            .IncrementsBy(1);
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

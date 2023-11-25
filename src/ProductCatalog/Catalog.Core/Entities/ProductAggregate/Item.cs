@@ -2,9 +2,13 @@
 
 namespace ProductCatalog.Core.Entities.ProductAggregate;
 
-public class Item : BaseEntity, IAggregateRoot
+public class Item : BaseEntity, IAggregateRoot, ICodedEntity
 {
     public string Name { get; set; } = null!;
+
+    public string? CodePrefix { get; set; }
+
+    public int CodeNumber { get; set; }
 
     public string Description { get; set; } = null!;
 

@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ProductCatalog.Core.Entities.ProductAggregate;
 
 namespace ProductCatalog.Data.Config;
 
 public class BrandDbConfiguration : IEntityTypeConfiguration<Brand>
 {
+    public static readonly string CodeSequenceName = "brand_codes";
+
     public void Configure(EntityTypeBuilder<Brand> builder)
     {
         builder.HasKey(ci => ci.Id);
@@ -17,5 +18,17 @@ public class BrandDbConfiguration : IEntityTypeConfiguration<Brand>
             .HasMaxLength(100);
 
         builder.HasQueryFilter(p => !p.IsDeleted);
+
+        builder.HasIndex(e => new { e.CodePrefix, e.CodeNumber })
+            .IsUnique();
+
+        builder.Property(e => e.CodeNumber)
+            .HasDefaultValueSql($"nextval('\"{CodeSequenceName}\"')");
+
+        builder.Property(p => p.CodePrefix)
+            .HasMaxLength(3);
+
+        builder.HasIndex(e => new { e.CodePrefix, e.CodeNumber })
+            .IsUnique();
     }
 }

@@ -2,5 +2,7 @@
 
 public interface ICodedEntity
 {
-    public string Code { get; init; }
+    public int CodeNumber { get; set; }
+
+    public string? CodePrefix { get; set; }
 }

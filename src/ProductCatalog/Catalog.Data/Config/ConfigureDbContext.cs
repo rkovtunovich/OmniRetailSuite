@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ProductCatalog.Data;
-using ProductCatalog.Data.Repositories;
 
 namespace ProductCatalog.Data.Config;
 

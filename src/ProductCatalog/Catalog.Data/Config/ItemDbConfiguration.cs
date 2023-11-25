@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ProductCatalog.Core.Entities.ProductAggregate;
 
 namespace ProductCatalog.Data.Config;
 
 public class ItemDbConfiguration : IEntityTypeConfiguration<Item>
 {
+    public static readonly string CodeSequenceName = "item_codes";
+
     public void Configure(EntityTypeBuilder<Item> builder)
     {
         builder.ToTable("items");
@@ -36,5 +37,14 @@ public class ItemDbConfiguration : IEntityTypeConfiguration<Item>
             .HasForeignKey(ci => ci.ParentId);
 
         builder.HasQueryFilter(p => !p.IsDeleted);
+
+        builder.Property(e => e.CodeNumber)
+            .HasDefaultValueSql($"nextval('\"{CodeSequenceName}\"')");
+
+        builder.Property(p => p.CodePrefix)
+            .HasMaxLength(3);
+
+        builder.HasIndex(e => new { e.CodePrefix, e.CodeNumber })
+            .IsUnique();
     }
 }
