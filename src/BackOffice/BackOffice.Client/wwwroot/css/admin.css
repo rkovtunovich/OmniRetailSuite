@@ -284,3 +284,13 @@ a, .btn-link {
     height: 100%;
     max-width:none;
 }
+
+.orm-tree-item-parent-code {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.orm-tree-item-parent-name {
+    margin-left: 16px; /* Adjust the spacing between the code and the name */
+}

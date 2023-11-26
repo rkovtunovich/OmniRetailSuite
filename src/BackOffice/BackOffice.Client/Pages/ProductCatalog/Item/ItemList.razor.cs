@@ -19,6 +19,8 @@ public partial class ItemList : BlazorComponent
 
     #region Fields
 
+    double _splitterPercentage = 75;
+
     #region Item
 
     private List<ProductItem> _productItems = [];
@@ -152,9 +154,14 @@ public partial class ItemList : BlazorComponent
 
     #region ItemParents
 
-    private void OpenItemParentsClick()
+    private void ShowCatalogParentsClick()
     {
         _isItemParentsOpen = !_isItemParentsOpen;
+
+        if(_isItemParentsOpen)
+            _splitterPercentage = 75;
+        else
+            _splitterPercentage = 100;
 
         CallRequestRefresh();
     }
@@ -169,7 +176,7 @@ public partial class ItemList : BlazorComponent
         _tabsService.TryCreateTab<ItemParentDetails>(parameters);
     }
 
-    private void CreateItemParentClick()
+    private void CreateCatalogParentClick()
     {
         _tabsService.TryCreateTab<ItemParentCreate>();
     }

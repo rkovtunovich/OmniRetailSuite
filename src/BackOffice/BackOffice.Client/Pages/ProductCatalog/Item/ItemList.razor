@@ -7,9 +7,9 @@
 
 <PageTitle>Manage Product Item</PageTitle>
 
-<RadzenSplitter Style="display:flex; min-width:100%; height:100%; padding:0">
+<MudSplitter Style=" min-width:100%; height:100%;" @bind-Dimension="@_splitterPercentage">
 
-    <RadzenSplitterPane>
+    <StartContent>
 
         <MudDataGrid T="ProductItem" @ref="@(_dataGrid)" Items="@_productItems" Filterable="true" QuickFilter="@_quickFilter" EditMode="@(_editMode)" EditTrigger="@(_editTrigger)"
                      StartedEditingItem="@StartedEditingItem" CanceledEditingItem="@CanceledEditingItem" CommittedItemChanges="@CommittedItemChanges" ReadOnly="false" RowClick="RowClick"
@@ -22,7 +22,7 @@
                 <MudButton OnClick="@CreateItemClick" Color="@Color.Success" Class="add-item-btn">Add</MudButton>
                 <MudSpacer />
                 <MudTooltip Text="hierarchy">
-                    <MudButton Color="@Color.Primary" @onclick="@OpenItemParentsClick">
+                    <MudButton Color="@Color.Primary" @onclick="@ShowCatalogParentsClick">
                         <iconify-icon icon="mdi:family-tree" width="24" height="24"></iconify-icon>
                     </MudButton>
                 </MudTooltip>
@@ -31,7 +31,7 @@
             </ToolBarContent>
 
             <Columns>
-                <PropertyColumn Property="x => x.GetCode()" IsEditable="false" />
+                <PropertyColumn Property="x => x.GetCode()" Title="Code" IsEditable="false" />
                 <PropertyColumn Property="x => x.Name" />
                 <PropertyColumn Property="x => x.Description" />
                 <PropertyColumn Property="x => x.ItemType" Title="Type" IsEditable="false" />
@@ -47,35 +47,39 @@
 
         </MudDataGrid>
 
-    </RadzenSplitterPane>
+    </StartContent>
 
-    <RadzenSplitterPane Visible="@_isItemParentsOpen">
+    <EndContent>
 
+        <MudContainer Class="d-block p-0 m-0">
 
-        <MudToolBar>
+            <MudToolBar>
 
-            <MudButton OnClick="@CreateItemParentClick" Color="@Color.Success" Class="add-item-btn">Add</MudButton>
-            <MudSpacer />
+                <MudButton OnClick="@CreateCatalogParentClick" Color="@Color.Success" Class="add-item-btn">Add</MudButton>
+                <MudSpacer />
 
-        </MudToolBar>
+            </MudToolBar>
 
-        <MudTreeView T="ProductParent" Items="@_itemParents" Hover="true" Style="resize:horizontal">
-            <ItemTemplate Context="item">
-                <MudTreeViewItem Items="@item.Children" Icon="@Icons.Material.Outlined.Folder" Value="item">
-                    
-                    <BodyContent>
+            <MudTreeView T="ProductParent" Items="@_itemParents" Hover="true" Style="resize:horizontal">
+                <ItemTemplate Context="item">
 
-                        <MudText>@item.GetCode()</MudText>
-                        <MudText Style="justify-self: start;"> @item.Name</MudText>
-                        <MudSpacer />
-                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.FilterNone" OnClick="@(() => OpenItemParentClick(context))" />
+                    <MudTreeViewItem Items="@item.Children" Icon="@Icons.Material.Outlined.Folder" Value="item">
 
-                     </BodyContent>
+                        <BodyContent>
+                            <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                                <MudText Class="ors-tree-item-parent-code" Style="flex-basis: 20%; margin-right: 16px;">@item.GetCode()</MudText>
+                                <MudText Class="ors-tree-item-parent-name" Style="flex-grow: 1;">@item.Name</MudText>
+                                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.FilterNone" OnClick="@(() => OpenItemParentClick(context))" />
+                            </div>
+                        </BodyContent>
 
-                 </MudTreeViewItem>
+                    </MudTreeViewItem>
+
                 </ItemTemplate>
             </MudTreeView>
 
-        </RadzenSplitterPane>
+        </MudContainer>
 
-    </RadzenSplitter>
+    </EndContent>
+
+</MudSplitter>

@@ -6,7 +6,7 @@
 @namespace BackOffice.Client.Pages.ProductCatalog.Brand
 @using BackOffice.Core.Models.ProductCatalog
 
-<PageTitle>Manage Catalog Type</PageTitle>
+<PageTitle>Manage Product Brand</PageTitle>
 
 <MudDataGrid T="ProductBrand" @ref="@(_dataGrid)" Items="@_catalogBrands" Filterable="true" QuickFilter="@_quickFilter" EditMode="@(_editMode)" EditTrigger="@(_editTrigger)"
              StartedEditingItem="@StartedEditingItem" CanceledEditingItem="@CanceledEditingItem" CommittedItemChanges="@CommittedItemChanges" ReadOnly="false" RowClick="RowClick"
@@ -22,7 +22,7 @@
     </ToolBarContent>
 
     <Columns>
-        <PropertyColumn Property="x => x.GetCode()" IsEditable="false" />
+        <PropertyColumn Property="x => x.GetCode()" Title="Code" IsEditable="false" />
         <PropertyColumn Property="x => x.Name" />
         <TemplateColumn CellClass="d-flex justify-end" Sortable="false" Filterable="false">
             <CellTemplate>

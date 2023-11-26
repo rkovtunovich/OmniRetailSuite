@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Logging;
 using MudBlazor.Services;
+using MudExtensions.Services;
 using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -49,6 +50,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddBackOfficeServices();
 builder.Services.AddMudServices();
+builder.Services.AddMudExtensions();
 builder.Services.AddRadzenComponents();
 
 builder.Logging.AddConfiguration(builder.Configuration.GetRequiredSection("Logging"));

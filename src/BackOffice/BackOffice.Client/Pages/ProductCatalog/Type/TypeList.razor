@@ -5,7 +5,7 @@
 
 @namespace BackOffice.Client.Pages.ProductCatalog.Type
 
-<PageTitle>Manage Catalog Type</PageTitle>
+<PageTitle>Manage Product Type</PageTitle>
 
 <MudDataGrid T="ProductType" @ref="@(_dataGrid)" Items="@_catalogTypes" Filterable="true" QuickFilter="@_quickFilter" EditMode="@(_editMode)" EditTrigger="@(_editTrigger)"
              StartedEditingItem="@StartedEditingItem" CanceledEditingItem="@CanceledEditingItem" CommittedItemChanges="@CommittedItemChanges" ReadOnly="false" RowClick="RowClick"
@@ -21,7 +21,7 @@
     </ToolBarContent>
 
     <Columns>
-        <PropertyColumn Property="x => x.GetCode()" IsEditable="false" />
+        <PropertyColumn Property="x => x.GetCode()" Title="Code" IsEditable="false" />
         <PropertyColumn Property="x => x.Name" />
         <TemplateColumn CellClass="d-flex justify-end" Sortable="false" Filterable="false">
             <CellTemplate>
