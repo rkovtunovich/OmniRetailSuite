@@ -1,6 +1,4 @@
-﻿using ProductCatalog.Core.Entities.ProductAggregate;
-
-namespace ProductCatalog.Application.Mapping;
+﻿namespace ProductCatalog.Application.Mapping;
 
 public static class ItemMapping
 {
@@ -15,8 +13,10 @@ public static class ItemMapping
             Description = item.Description,
             Price = item.Price,
             PictureUri = item.PictureUri,
+            ParentId = item.ParentId,
             CatalogBrand = item.CatalogBrand?.ToDto(),
-            CatalogType = item.CatalogType?.ToDto()
+            CatalogType = item.CatalogType?.ToDto(),
+            Barcode = item.Barcode
         };
     }
 
@@ -31,10 +31,12 @@ public static class ItemMapping
             Description = itemDto.Description,
             Price = itemDto.Price,
             PictureUri = itemDto.PictureUri,
+            ParentId = itemDto.ParentId,
             CatalogBrandId = itemDto?.CatalogBrand?.Id,
             CatalogBrand = itemDto?.CatalogBrand?.ToEntity(),
             CatalogTypeId = itemDto?.CatalogType?.Id,
-            CatalogType = itemDto?.CatalogType?.ToEntity()
+            CatalogType = itemDto?.CatalogType?.ToEntity(),
+            Barcode = itemDto?.Barcode
         };
     }
 }

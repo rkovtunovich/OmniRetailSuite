@@ -138,5 +138,10 @@ public static class CatalogUriHelper
         return $"{Constants.CATALOG_BASE_URI}brands/{id}?useSoftDeleting={useSoftDeleting}";
     }
 
+    public static string GetCatalogItemsByParent(Guid parentId)
+    {
+        return $"{Constants.CATALOG_BASE_URI}items/parent/{parentId}";
+    }
+
     #endregion
 }

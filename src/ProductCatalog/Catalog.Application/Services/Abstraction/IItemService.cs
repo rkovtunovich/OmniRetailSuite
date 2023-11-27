@@ -10,6 +10,8 @@ public interface IItemService
 
     Task<PaginatedItemsDto> GetItemsByCategoryAsync(Guid? typeId, Guid? brandId);
 
+    Task<PaginatedItemsDto> GetItemsByParentAsync(Guid parentId);
+
     Task<ItemDto> CreateItemAsync(ItemDto item);
 
     Task<ItemDto> UpdateItemAsync(ItemDto item);

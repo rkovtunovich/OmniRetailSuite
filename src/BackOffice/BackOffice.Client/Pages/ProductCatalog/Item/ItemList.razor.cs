@@ -2,6 +2,7 @@
 using BackOffice.Client.Pages.ProductCatalog.Parent;
 using BackOffice.Client.Services;
 using BackOffice.Core.Models.ProductCatalog;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Item;
 
@@ -21,7 +22,7 @@ public partial class ItemList : BlazorComponent
 
     double _splitterPercentage = 75;
 
-    #region Item
+    #region Product Items
 
     private List<ProductItem> _productItems = [];
 
@@ -58,7 +59,9 @@ public partial class ItemList : BlazorComponent
 
     #endregion
 
-    #region ItemParents
+    #region Product Parents
+
+    private ProductParent? _selectedProductParent;
 
     private HashSet<ProductParent> _itemParents = [];
 
@@ -92,7 +95,7 @@ public partial class ItemList : BlazorComponent
 
     #region Private Methods
 
-    #region Item
+    #region Product Items
 
     private void CreateItemClick()
     {
@@ -143,16 +146,25 @@ public partial class ItemList : BlazorComponent
         await ReloadProductItems();
     }
 
-    private async Task ReloadProductItems()
+    private async Task ReloadProductItems(ProductParent? productParent = null)
     {
-        _productItems = await ProductItemService.GetItemsAsync(0, 100);
+       if(productParent == null)
+        {
+            var productItemsList = await ProductItemService.GetItemsAsync(0, 1000);
+            _productItems = [.. productItemsList];
+        }
+        else
+        {
+            var productItemsList = await ProductItemService.GetItemsByParent(productParent.Id);
+            _productItems = [.. productItemsList];
+        }
 
         CallRequestRefresh();
     }
 
     #endregion
 
-    #region ItemParents
+    #region Product Parents
 
     private void ShowCatalogParentsClick()
     {
@@ -164,6 +176,13 @@ public partial class ItemList : BlazorComponent
             _splitterPercentage = 100;
 
         CallRequestRefresh();
+    }
+
+    private async void OnParentItemDoubleClick(ProductParent productParent, MouseEventArgs mouseEventArgs)
+    {
+        _selectedProductParent = productParent; 
+        
+        await ReloadProductItems(productParent);
     }
 
     private void OpenItemParentClick(MudTreeViewItem<ProductParent> viewItem)

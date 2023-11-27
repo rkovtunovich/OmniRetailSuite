@@ -34,35 +34,6 @@ public class ItemRepository : IItemRepository
         }
     }
 
-    public async Task<bool> DeleteItemAsync(Guid id, bool isSoftDeleting)
-    {
-        try
-        {
-            var product = _context.Items.SingleOrDefault(x => x.Id == id);
-            if (product is null)
-                return false;
-
-            if (isSoftDeleting)
-            {
-                product.IsDeleted = true;
-                _context.Items.Update(product);
-                await _context.SaveChangesAsync();
-                return true;
-            }
-
-            _context.Items.Remove(product);
-
-            await _context.SaveChangesAsync();
-
-            return true;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError($"Error in {nameof(DeleteItemAsync)}: {nameof(id)}: {id}", ex);
-            throw;
-        }
-    }
-
     public async Task<Item?> GetItemByIdAsync(Guid id)
     {
         try
@@ -120,7 +91,7 @@ public class ItemRepository : IItemRepository
             var itemsOnPage = await root
                 .ToListAsync();
 
-            return itemsOnPage ?? new();
+            return itemsOnPage ?? [];
         }
         catch (Exception ex)
         {
@@ -176,16 +147,28 @@ public class ItemRepository : IItemRepository
         }
     }
 
-    public async Task<bool> UpdateItemAsync(Item item)
+    public async Task<List<Item>> GetItemsByParentAsync(Guid catalogParentId)
     {
         try
         {
-            var catalogItem = await _context.Items.AsNoTracking().SingleOrDefaultAsync(i => i.Id == item.Id);
+            var itemsOnPage = await _context.Items
+                .Where(ci => ci.ParentId == catalogParentId)
+                .ToListAsync();
 
-            if (catalogItem == null)
-                return false;
+            return itemsOnPage ?? [];
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error in {nameof(GetItemsByParentAsync)}: {nameof(catalogParentId)}: {catalogParentId}", ex);
+            throw;
+        }
+    }
 
-            _context.Items.Update(catalogItem);
+    public async Task<bool> UpdateItemAsync(Item itemToUpdate)
+    {
+        try
+        {
+            _context.Items.Update(itemToUpdate);
 
             await _context.SaveChangesAsync();
 
@@ -193,7 +176,36 @@ public class ItemRepository : IItemRepository
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Error in {nameof(UpdateItemAsync)}: {nameof(item)}: {item}", ex);
+            _logger.LogError($"Error in {nameof(UpdateItemAsync)}: {nameof(itemToUpdate)}: {itemToUpdate}", ex);
+            throw;
+        }
+    }
+
+    public async Task<bool> DeleteItemAsync(Guid id, bool isSoftDeleting)
+    {
+        try
+        {
+            var product = _context.Items.SingleOrDefault(x => x.Id == id);
+            if (product is null)
+                return false;
+
+            if (isSoftDeleting)
+            {
+                product.IsDeleted = true;
+                _context.Items.Update(product);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+
+            _context.Items.Remove(product);
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error in {nameof(DeleteItemAsync)}: {nameof(id)}: {id}", ex);
             throw;
         }
     }

@@ -45,11 +45,20 @@ public class ProductItemService : IProductItemService
         return items?.Select(x => x.ToModel()).ToList() ?? [];
     }
 
+    public async Task<List<ProductItem>> GetItemsByParent(Guid parentId)
+    {
+        var uri = CatalogUriHelper.GetCatalogItemsByParent(parentId);
+
+        var items = await _httpService.GetAsync<PaginatedItemsDto>(uri);
+
+        return items?.Data.Select(x => x.ToModel()).ToList() ?? [];
+    }
+
     public async Task<ProductItem> UpdateItemAsync(ProductItem catalogItem)
     {
         var uri = CatalogUriHelper.UpdateCatalogItem();
 
-        await _httpService.PutAsync(uri, catalogItem);
+        await _httpService.PutAsync(uri, catalogItem.ToDto());
 
         ProductItemChanged?.Invoke(catalogItem);
 

@@ -1,6 +1,7 @@
 ﻿@inherits BlazorComponent
 
 @namespace BackOffice.Client.Pages.ProductCatalog.Item
+@using BackOffice.Client.Model
 
 <MudContainer Class="m-0 p-0 form-content-panel">
 
@@ -17,7 +18,7 @@
         <MudSpacer></MudSpacer>
 
         <MudTooltip Text="Close">
-            <MudIconButton Icon="@Icons.Material.Outlined.Close" Color="Color.Inherit" Class="mr-5" OnClick="@Close" />
+            <MudIconButton Icon="@Icons.Material.Outlined.Close" Color="Color.Inherit" Class="mr-5" OnClick="@CloseClick" />
         </MudTooltip>
 
     </MudToolBar>
@@ -31,6 +32,13 @@
                         <MudTextField Label="Id" Class="mt-3" @bind-Value="ProductItem.Id" For="@(() => ProductItem.Id)" Variant="@MudBlazor.Variant.Filled" Disabled />
                         <MudTextField Label="Name" Class="mt-3" @bind-Value="ProductItem.Name" For="@(() => ProductItem.Name)" Variant="@MudBlazor.Variant.Filled" />
                         <MudTextField Label="Description" Class="mt-3" @bind-Value="ProductItem.Description" For="@(() => ProductItem.Description)" Variant="@MudBlazor.Variant.Filled" />
+
+                         <MudSelect T="ProductParentSelectModel" Label="Select Parent" @bind-Value="_selectedParent" ToStringFunc="@_converterItemParent" Clearable Variant="@MudBlazor.Variant.Filled">
+                             @foreach (var parent in _flattenedParents)
+                            {
+                                 <MudSelectItem Value="@parent"></MudSelectItem> 
+                            }
+                        </MudSelect>
 
                         <MudSelect T="ProductType" @bind-Value=ProductItem.ItemType ToStringFunc="@_converterItemType" Label="Select item type" Clearable Variant="@MudBlazor.Variant.Filled">
                              @foreach (var item in _itemTypes)

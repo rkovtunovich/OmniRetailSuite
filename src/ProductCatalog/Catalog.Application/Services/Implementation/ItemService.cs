@@ -74,6 +74,24 @@ public class ItemService(IItemRepository itemRepository, IEventPublisher eventPu
         };
     }
 
+    public async Task<PaginatedItemsDto> GetItemsByParentAsync(Guid parentId)
+    {
+        var items = await _itemRepository.GetItemsByParentAsync(parentId);
+        var itemsDtos = items.Select(x => x.ToDto()).ToList();
+
+        var totalItems = itemsDtos.Count;
+
+        var paginatedItems = new PaginatedItemsDto
+        {
+            PageIndex = 0,
+            PageSize = totalItems,
+            Count = totalItems,
+            Data = itemsDtos
+        };
+
+        return paginatedItems;
+    }
+
     public async Task<ItemDto> CreateItemAsync(ItemDto item)
     {
         var entity = item.ToEntity();

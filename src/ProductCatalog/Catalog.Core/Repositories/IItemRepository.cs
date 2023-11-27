@@ -1,6 +1,4 @@
-﻿using ProductCatalog.Core.Entities.ProductAggregate;
-
-namespace ProductCatalog.Core.Repositories;
+﻿namespace ProductCatalog.Core.Repositories;
 
 public interface IItemRepository
 {
@@ -13,6 +11,8 @@ public interface IItemRepository
     Task<List<Item>> GetItemsByNameAsync(string name);
 
     Task<List<Item>> GetItemsByCategoryAsync(Guid? catalogBrandId, Guid? catalogTypeId);
+
+    Task<List<Item>> GetItemsByParentAsync(Guid catalogParentId);
 
     Task<int> GetItemsCountAsync();
 

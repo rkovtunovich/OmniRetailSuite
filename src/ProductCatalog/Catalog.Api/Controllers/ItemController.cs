@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace ProductCatalog.Api.Controllers;
 
@@ -77,6 +76,15 @@ public class ItemController : ControllerBase
             throw new ArgumentNullException(nameof(catalogBrandId));
 
         return await _itemService.GetItemsByCategoryAsync(catalogBrandId, null);
+    }
+
+    // GET api/v1/[controller]/items/parent/{id}[?pageSize=3&pageIndex=10]
+    [HttpGet]
+    [Route("items/parent/{catalogParentId}")]
+    [ProducesResponseType(typeof(PaginatedItemsDto), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<PaginatedItemsDto>> ItemsByParentIdAsync(Guid catalogParentId, [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
+    {
+        return await _itemService.GetItemsByParentAsync(catalogParentId);
     }
 
     //PUT api/v1/[controller]/items

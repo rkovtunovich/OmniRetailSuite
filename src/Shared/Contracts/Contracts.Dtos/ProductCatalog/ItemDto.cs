@@ -18,6 +18,8 @@ public record ItemDto
 
     public string PictureBase64 { get; init; } = string.Empty;
 
+    public Guid? ParentId { get; init; }
+
     public ItemTypeDto? CatalogType { get; init; }
 
     public BrandDto? CatalogBrand { get; init; }

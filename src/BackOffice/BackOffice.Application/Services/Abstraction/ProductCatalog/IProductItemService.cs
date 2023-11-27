@@ -12,6 +12,8 @@ public interface IProductItemService
 
     Task<List<ProductItem>> GetItemsByIdsAsync(string ids);
 
+    Task<List<ProductItem>> GetItemsByParent(Guid parentId);
+
     Task<ProductItem> CreateItemAsync(ProductItem catalogItem);
 
     Task<ProductItem> UpdateItemAsync(ProductItem catalogItem);

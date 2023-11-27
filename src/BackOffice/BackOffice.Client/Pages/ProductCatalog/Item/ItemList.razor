@@ -63,7 +63,7 @@
             <MudTreeView T="ProductParent" Items="@_itemParents" Hover="true" Style="resize:horizontal">
                 <ItemTemplate Context="item">
 
-                    <MudTreeViewItem Items="@item.Children" Icon="@Icons.Material.Outlined.Folder" Value="item">
+                    <MudTreeViewItem Items="@item.Children" Icon="@Icons.Material.Outlined.Folder" Value="item" OnDoubleClick="@(e => OnParentItemDoubleClick(item, e))">
 
                         <BodyContent>
                             <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">

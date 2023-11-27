@@ -12,6 +12,8 @@ public class ProductItem
 
     public string? CodePrefix { get; set; }
 
+    public Guid? ParentId { get; set; }
+
     public ProductType? ItemType { get; set; }
 
     public Guid? CatalogBrandId { get; set; }
