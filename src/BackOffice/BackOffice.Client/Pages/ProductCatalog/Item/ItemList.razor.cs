@@ -1,4 +1,5 @@
 ﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
+using BackOffice.Client.Enums;
 using BackOffice.Client.Pages.ProductCatalog.Parent;
 using BackOffice.Client.Services;
 using BackOffice.Core.Models.ProductCatalog;
@@ -66,6 +67,8 @@ public partial class ItemList : BlazorComponent
     private HashSet<ProductParent> _itemParents = [];
 
     private bool _isItemParentsOpen = true;
+
+    private static readonly string selectedParentClassName = "orm-selected-parent-item";
 
     #endregion
 
@@ -182,11 +185,25 @@ public partial class ItemList : BlazorComponent
     {
         _selectedProductParent = productParent; 
         
-        await ReloadProductItems(productParent);
+        if(productParent.Name == FilterSpecialCase.All.ToString())
+        {
+            await ReloadProductItems();
+            _selectedProductParent = null;
+        }
+        else
+        {
+            await ReloadProductItems(productParent);
+        }
     }
 
     private void OpenItemParentClick(MudTreeViewItem<ProductParent> viewItem)
     {
+        if (viewItem.Value.Name == FilterSpecialCase.Empty.ToString())
+            return;
+
+        if (viewItem.Value.Name == FilterSpecialCase.All.ToString())
+            return;
+
         var parameters = new Dictionary<string, object>
         {
             { nameof(ItemParentDetails.ProductParent), viewItem.Value }
@@ -208,8 +225,30 @@ public partial class ItemList : BlazorComponent
     private async Task ReloadItemParents()
     {
         var itemParentsList = await ProductParentService.GetItemParentsAsync();
-        _itemParents = [.. itemParentsList];
+        _itemParents.Clear();
+        _itemParents.Add(new ProductParent { Id = Guid.NewGuid(), Name = FilterSpecialCase.All.ToString() });
+        _itemParents.Add(new ProductParent { Id = Guid.NewGuid(), Name = FilterSpecialCase.Empty.ToString() });
+        
+        foreach (var itemParent in itemParentsList)
+        {
+            _itemParents.Add(itemParent);
+        }
+
         CallRequestRefresh();
+    }
+
+    private string GetItemClass(ProductParent productParent)
+    {
+        if (_selectedProductParent is null)
+            return "";
+
+        if (_selectedProductParent.Name == FilterSpecialCase.All.ToString() && productParent.Name == _selectedProductParent.Name)
+            return selectedParentClassName;
+
+        if(_selectedProductParent.Name == FilterSpecialCase.Empty.ToString() && productParent.Name == _selectedProductParent.Name)
+            return selectedParentClassName;
+
+        return _selectedProductParent.Id == productParent.Id ? selectedParentClassName : "";
     }
 
     #endregion

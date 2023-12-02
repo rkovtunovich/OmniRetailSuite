@@ -60,16 +60,23 @@
 
             </MudToolBar>
 
-            <MudTreeView T="ProductParent" Items="@_itemParents" Hover="true" Style="resize:horizontal">
+            <MudTreeView T="ProductParent" Items="@_itemParents" Hover="true" Dense>
                 <ItemTemplate Context="item">
 
-                    <MudTreeViewItem Items="@item.Children" Icon="@Icons.Material.Outlined.Folder" Value="item" OnDoubleClick="@(e => OnParentItemDoubleClick(item, e))">
+                    <MudTreeViewItem Items="@item.Children" 
+                        Icon="@Icons.Material.Outlined.Folder" 
+                        Value="item" 
+                        OnDoubleClick="@(e => OnParentItemDoubleClick(item, e))"
+                        Class="@($"{GetItemClass(item)} orm-no-select")">
 
                         <BodyContent>
                             <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                                <MudText Class="ors-tree-item-parent-code" Style="flex-basis: 20%; margin-right: 16px;">@item.GetCode()</MudText>
-                                <MudText Class="ors-tree-item-parent-name" Style="flex-grow: 1;">@item.Name</MudText>
-                                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.FilterNone" OnClick="@(() => OpenItemParentClick(context))" />
+                                <MudText Class="orm-tree-item-parent-code" Style="flex-basis: 20%; margin-right: 16px;">@item.GetCode()</MudText>
+                                <MudText Class="orm-tree-item-parent-name" Style="flex-grow: 1;">@item.Name</MudText>
+                                <MudIconButton Size="@Size.Small" 
+                                    Icon="@Icons.Material.Outlined.FilterNone" 
+                                    OnClick="@(() => OpenItemParentClick(context))"
+                                   />
                             </div>
                         </BodyContent>
 
