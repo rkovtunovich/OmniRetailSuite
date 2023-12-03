@@ -3,7 +3,6 @@
 global using Microsoft.Extensions.Logging;
 
 global using ProductCatalog.Application.Services.Abstraction;
-global using ProductCatalog.Core.Repositories;
 
 global using Swashbuckle.AspNetCore.SwaggerGen;
 

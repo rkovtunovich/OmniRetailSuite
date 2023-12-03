@@ -2,38 +2,26 @@
 
 @namespace BackOffice.Client.Pages.ProductCatalog.Brand
 
-<MudContainer Class="m-0 p-0 form-content-panel">
+<Form Commands="@_toolbarCommands">
+    <FormContent>
 
-    <MudToolBar Dense Class="form-command-panel">
+        <EditForm EditContext="@_editContext" OnValidSubmit="@CreateClick">
 
-         <MudTooltip Text="Save">
-             <MudIconButton Icon="@Icons.Material.Outlined.Save" Color="Color.Inherit" Class="mr-5" OnClick="@CreateClick" />
-         </MudTooltip>
+            <DataAnnotationsValidator />
 
-         <MudSpacer></MudSpacer>
+            <MudGrid>
+                <MudItem Style="min-width:50%">
+                    <MudCard>
 
-         <MudTooltip Text="Close">
-             <MudIconButton Icon="@Icons.Material.Outlined.Close" Color="Color.Inherit" Class="mr-5" OnClick="@Close" />
-         </MudTooltip>
+                        <MudCardContent>
+                            <MudTextField Label="Name" Class="mt-3" @bind-Value="_brand.Name" For="@(() => _brand.Name)" Variant="@MudBlazor.Variant.Filled" />
+                        </MudCardContent>
 
-     </MudToolBar>
+                    </MudCard>
+                </MudItem>
+            </MudGrid>
 
-     <EditForm EditContext="@_editContext" OnValidSubmit="@CreateClick">
+        </EditForm>
 
-         <DataAnnotationsValidator />
-
-         <MudGrid>
-             <MudItem Style="min-width:50%">
-                 <MudCard>
-
-                     <MudCardContent>
-                         <MudTextField Label="Name" Class="mt-3" @bind-Value="_brand.Name" For="@(() => _brand.Name)" Variant="@MudBlazor.Variant.Filled" />
-                     </MudCardContent>
-
-                 </MudCard>
-             </MudItem>
-         </MudGrid>
-
-     </EditForm>
-
-</MudContainer>
+    </FormContent>
+</Form>

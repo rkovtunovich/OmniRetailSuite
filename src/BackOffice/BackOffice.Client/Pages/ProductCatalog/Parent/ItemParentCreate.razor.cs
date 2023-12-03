@@ -2,6 +2,7 @@
 using BackOffice.Client.Services;
 using BackOffice.Core.Models.ProductCatalog;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Parent;
 
@@ -16,7 +17,10 @@ public partial class ItemParentCreate
     [Parameter]
     public EventCallback<string> OnSaveClick { get; set; }
 
+    private List<ToolbarCommand> _toolbarCommands = null!;
+
     private List<ProductParent> _allItemParents = [];
+    
     private ProductParent _itemParent = new();
 
     private EditContext? _editContext;
@@ -24,6 +28,8 @@ public partial class ItemParentCreate
     protected override void OnInitialized()
     {
         _editContext = new EditContext(_itemParent);
+
+        DefineToolbarCommands();
     }
 
     protected override async Task OnInitializedAsync()
@@ -45,11 +51,11 @@ public partial class ItemParentCreate
         if (result is not null)
         {
             await OnSaveClick.InvokeAsync(null);
-            Close();
+            CloseClick();
         }
     }
 
-    private void Close()
+    private void CloseClick()
     {
         _tabsService.RemoveTab(_tabsService.Tabs?.ActivePanel);
     }
@@ -74,4 +80,29 @@ public partial class ItemParentCreate
         else
             _itemParent.Parent = null;
     }
+
+    #region Commands
+
+    private void DefineToolbarCommands()
+    {
+        _toolbarCommands =
+        [
+            new()
+            {
+                Name = "Save",
+                Icon = Icons.Material.Outlined.Save,
+                Callback = EventCallback.Factory.Create<MouseEventArgs>(this, CreateClick),
+                Tooltip = "Save"
+            },
+            new()
+            {
+                Name = "Close",
+                Icon = Icons.Material.Outlined.Close,
+                Callback = EventCallback.Factory.Create<MouseEventArgs>(this, CloseClick),
+                Tooltip = "Close"
+            }
+        ];
+    }
+
+    #endregion
 }

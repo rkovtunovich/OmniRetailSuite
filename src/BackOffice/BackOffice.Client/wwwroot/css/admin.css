@@ -276,7 +276,7 @@ a, .btn-link {
     padding: 2px;
 }
 
-.form-command-panel {
+.ors-form-command-panel {
     box-shadow: 1px 1px 5px var(--mud-palette-black);
 }
 
@@ -285,17 +285,17 @@ a, .btn-link {
     max-width:none;
 }
 
-.orm-tree-item-parent-code {
+.ors-tree-item-parent-code {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.orm-tree-item-parent-name {
+.ors-tree-item-parent-name {
     margin-left: 16px; /* Adjust the spacing between the code and the name */
 }
 
-.orm-selected-parent-item > div.mud-treeview-item-content:first-child {
+.ors-selected-parent-item > div.mud-treeview-item-content:first-child {
     /*background-color: #d3d3d3;*/
     border-radius: var(--mud-default-borderradius);
     border-color: var(--mud-palette-lines-inputs);
@@ -303,7 +303,7 @@ a, .btn-link {
     border-style: solid;
 }
 
-.orm-no-select {
+.ors-no-select {
     user-select: none; /* Standard syntax */
     -webkit-user-select: none; /* Safari */
     -moz-user-select: none; /* Firefox */

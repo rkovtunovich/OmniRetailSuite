@@ -1,8 +1,8 @@
 ﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
-using BackOffice.Client.Model;
 using BackOffice.Client.Services;
 using BackOffice.Core.Models.ProductCatalog;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Item;
 
@@ -31,6 +31,8 @@ public partial class ItemCreate
 
     #region Fields
 
+    private List<ToolbarCommand> _toolbarCommands = null!;
+
     private List<ProductType> _itemTypes = [];
 
     private List<ProductBrand> _itemBrands = [];
@@ -56,6 +58,8 @@ public partial class ItemCreate
     protected override void OnInitialized()
     {
         _editContext = new EditContext(_item);
+
+        DefineToolbarCommands();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -75,6 +79,31 @@ public partial class ItemCreate
     #endregion
 
     #region Private Methods
+
+    #region Commands
+
+    private void DefineToolbarCommands()
+    {
+        _toolbarCommands =
+        [
+            new()
+            {
+                Name = "Save",
+                Icon = Icons.Material.Outlined.Save,
+                Callback = EventCallback.Factory.Create<MouseEventArgs>(this, CreateClick),
+                Tooltip = "Save"
+            },
+            new()
+            {
+                Name = "Close",
+                Icon = Icons.Material.Outlined.Close,
+                Callback = EventCallback.Factory.Create<MouseEventArgs>(this, CloseClick),
+                Tooltip = "Close"
+            }
+        ];
+    }
+
+    #endregion
 
     #region Clicks
 

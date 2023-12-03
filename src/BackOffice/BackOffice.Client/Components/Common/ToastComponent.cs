@@ -1,7 +1,6 @@
 ﻿using BackOffice.Client.Services;
-using Microsoft.AspNetCore.Components;
 
-namespace BackOffice.Client.Helpers;
+namespace BackOffice.Client.Components.Common;
 
 public class ToastComponent : ComponentBase, IDisposable
 {

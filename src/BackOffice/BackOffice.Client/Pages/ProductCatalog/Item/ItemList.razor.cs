@@ -1,4 +1,5 @@
 ﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
+using BackOffice.Client.Components.Common;
 using BackOffice.Client.Enums;
 using BackOffice.Client.Pages.ProductCatalog.Parent;
 using BackOffice.Client.Services;
@@ -68,7 +69,7 @@ public partial class ItemList : BlazorComponent
 
     private bool _isItemParentsOpen = true;
 
-    private static readonly string selectedParentClassName = "orm-selected-parent-item";
+    private static readonly string selectedParentClassName = "ors-selected-parent-item";
 
     #endregion
 

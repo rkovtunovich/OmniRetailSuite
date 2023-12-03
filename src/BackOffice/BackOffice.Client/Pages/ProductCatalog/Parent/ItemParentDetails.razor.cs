@@ -2,6 +2,7 @@
 using BackOffice.Client.Services;
 using BackOffice.Core.Models.ProductCatalog;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Parent;
 
@@ -19,9 +20,13 @@ public partial class ItemParentDetails
 
     private EditContext? _editContext;
 
+    private List<ToolbarCommand> _toolbarCommands = null!;
+
     protected override void OnInitialized()
     {
         _editContext = new EditContext(ProductParent);
+
+        DefineToolbarCommands();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -38,7 +43,7 @@ public partial class ItemParentDetails
         if (result is not null)
         {
             await OnSaveClick.InvokeAsync(null);
-            Close();
+            CloseClick();
         }
     }
 
@@ -46,11 +51,43 @@ public partial class ItemParentDetails
     {
         await ProductParentService.DeleteItemParentAsync(ProductParent.Id, true);
 
-        Close();
+        CloseClick();
     }
 
-    private void Close()
+    private void CloseClick()
     {
         _tabsService.RemoveTab(_tabsService.Tabs?.ActivePanel);
     }
+
+    #region Commands
+
+    private void DefineToolbarCommands()
+    {
+        _toolbarCommands =
+        [
+            new()
+            {
+                Name = "Save",
+                Icon = Icons.Material.Outlined.Save,
+                Callback = EventCallback.Factory.Create<MouseEventArgs>(this, SaveClick),
+                Tooltip = "Save"
+            },
+            new()
+            {
+                Name = "Delete",
+                Icon = Icons.Material.Outlined.Delete,
+                Callback = EventCallback.Factory.Create<MouseEventArgs>(this, DeleteClick),
+                Tooltip = "Delete"
+            },
+            new()
+            {
+                Name = "Close",
+                Icon = Icons.Material.Outlined.Close,
+                Callback = EventCallback.Factory.Create<MouseEventArgs>(this, CloseClick),
+                Tooltip = "Close"
+            }
+        ];
+    }
+
+    #endregion
 }

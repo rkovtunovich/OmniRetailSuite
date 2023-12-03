@@ -67,12 +67,12 @@
                         Icon="@Icons.Material.Outlined.Folder" 
                         Value="item" 
                         OnDoubleClick="@(e => OnParentItemDoubleClick(item, e))"
-                        Class="@($"{GetItemClass(item)} orm-no-select")">
+                        Class="@($"{GetItemClass(item)} ors-no-select")">
 
                         <BodyContent>
                             <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                                <MudText Class="orm-tree-item-parent-code" Style="flex-basis: 20%; margin-right: 16px;">@item.GetCode()</MudText>
-                                <MudText Class="orm-tree-item-parent-name" Style="flex-grow: 1;">@item.Name</MudText>
+                                <MudText Class="ors-tree-item-parent-code" Style="flex-basis: 20%; margin-right: 16px;">@item.GetCode()</MudText>
+                                <MudText Class="ors-tree-item-parent-name" Style="flex-grow: 1;">@item.Name</MudText>
                                 <MudIconButton Size="@Size.Small" 
                                     Icon="@Icons.Material.Outlined.FilterNone" 
                                     OnClick="@(() => OpenItemParentClick(context))"

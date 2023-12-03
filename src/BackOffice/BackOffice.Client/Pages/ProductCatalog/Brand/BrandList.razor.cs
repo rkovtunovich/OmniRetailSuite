@@ -1,4 +1,5 @@
 ﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
+using BackOffice.Client.Components.Common;
 using BackOffice.Client.Services;
 using BackOffice.Core.Models.ProductCatalog;
 

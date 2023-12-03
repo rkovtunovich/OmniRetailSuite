@@ -1,8 +1,8 @@
 ﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
-using BackOffice.Client.Model;
 using BackOffice.Client.Services;
 using BackOffice.Core.Models.ProductCatalog;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Item;
 
@@ -34,6 +34,8 @@ public partial class ItemDetails
 
     #region Fields
 
+    private List<ToolbarCommand> _toolbarCommands = null!;
+
     private List<ProductType> _itemTypes = [];
 
     private List<ProductBrand> _itemBrands = [];
@@ -57,6 +59,8 @@ public partial class ItemDetails
     protected override void OnInitialized()
     {
         _editContext = new EditContext(ProductItem);
+
+        DefineToolbarCommands();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -77,9 +81,38 @@ public partial class ItemDetails
 
     #region Private Methods
 
+    #region Commands
+
+    private void DefineToolbarCommands()
+    {
+        _toolbarCommands =
+        [
+            new() {
+                Name = "Save",
+                Icon = Icons.Material.Outlined.Save,
+                Callback = EventCallback.Factory.Create<MouseEventArgs>(this, SaveClick),
+                Tooltip = "Save"
+            },
+            new() {
+                Name = "Delete",
+                Icon = Icons.Material.Outlined.Delete,
+                Callback = EventCallback.Factory.Create<MouseEventArgs>(this, DeleteClick),
+                Tooltip = "Delete"
+            },
+            new() {
+                Name = "Close",
+                Icon = Icons.Material.Outlined.Close,
+                Callback = EventCallback.Factory.Create<MouseEventArgs>(this, CloseClick),
+                Tooltip = "Close"
+            }
+        ];
+    }
+
+    #endregion
+
     #region Clicks
 
-    private async Task SaveClick()
+    private async Task SaveClick(MouseEventArgs mouseEventArgs)
     {
         if (!_editContext?.Validate() ?? false)
             return;
@@ -110,6 +143,8 @@ public partial class ItemDetails
 
     #endregion
 
+    #region Catalog parent
+
     private async Task<List<ProductParentSelectModel>> GetFlattenedParentsAsync()
     {
         var allParents = await ProductParentService.GetItemParentsAsync();
@@ -137,6 +172,8 @@ public partial class ItemDetails
                 FlattenTree(parent.Children, list, level + 1);        
         }
     }
+
+    #endregion
 
     #endregion
 

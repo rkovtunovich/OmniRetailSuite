@@ -83,7 +83,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductCatalog.Api", "src\P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts.Dtos", "src\Shared\Contracts\Contracts.Dtos\Contracts.Dtos.csproj", "{5E3AC963-88D7-4BA9-8212-93CF08E78D53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackOffice.Application", "src\BackOffice\BackOffice.Application\BackOffice.Application.csproj", "{38415BC8-2E33-4A77-87D4-DB3847830E73}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackOffice.Application", "src\BackOffice\BackOffice.Application\BackOffice.Application.csproj", "{38415BC8-2E33-4A77-87D4-DB3847830E73}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

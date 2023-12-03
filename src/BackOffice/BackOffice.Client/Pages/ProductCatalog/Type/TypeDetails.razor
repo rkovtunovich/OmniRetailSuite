@@ -2,48 +2,29 @@
 
 @namespace BackOffice.Client.Pages.ProductCatalog.Type
 
-<MudContainer Class="m-0 p-0 form-content-panel">
+<Form Commands="@_toolbarCommands">
+    <FormContent>
 
-    <MudToolBar Dense Class="form-command-panel">
+        <EditForm EditContext="@_editContext" OnValidSubmit="@SaveClick">
 
-        <MudTooltip Text="Save">
-            <MudIconButton Icon="@Icons.Material.Outlined.Save" Color="Color.Inherit" Class="mr-5" OnClick="@SaveClick" />
-        </MudTooltip>
+            <DataAnnotationsValidator />
 
-         <MudTooltip Text="Mark as deleted">
-             <MudIconButton Icon="@Icons.Material.Outlined.Delete" Color="Color.Inherit" Class="mr-5" OnClick="@DeleteClick" />
-         </MudTooltip>
+            <MudGrid>
+                <MudItem Style="min-width:50%">
+                    <MudCard>
 
-        <MudSpacer></MudSpacer>
+                        <MudCardContent>
 
-        <MudTooltip Text="Close">
-            <MudIconButton Icon="@Icons.Material.Outlined.Close" Color="Color.Inherit" Class="mr-5" OnClick="@Close" />
-        </MudTooltip>
+                            <MudTextField Label="Id" Class="mt-3" @bind-Value="Type.Id" For="@(() => Type.Id)" Variant="@MudBlazor.Variant.Filled" Disabled />
+                             <MudTextField Label="Name" Class="mt-3" @bind-Value="Type.Name" For="@(() => Type.Name)" Variant="@MudBlazor.Variant.Filled" />
 
-    </MudToolBar>
+                         </MudCardContent>
 
-    <EditForm EditContext="@_editContext" OnValidSubmit="@SaveClick">
+                     </MudCard>
+                 </MudItem>
+             </MudGrid>
 
-        <DataAnnotationsValidator />
+         </EditForm>
 
-        <MudGrid>
-            <MudItem Style="min-width:50%">
-                <MudCard>
-
-                    <MudCardContent>
-
-                         <MudTextField Label="Id" Class="mt-3" @bind-Value="Type.Id" For="@(() => Type.Id)" Variant="@MudBlazor.Variant.Filled" Disabled />
-                         <MudTextField Label="Name" Class="mt-3" @bind-Value="Type.Name" For="@(() => Type.Name)" Variant="@MudBlazor.Variant.Filled" />
-
-                    </MudCardContent>
-
-                </MudCard>
-            </MudItem>
-        </MudGrid>
-
-    </EditForm>
-
-</MudContainer>
-
-
-
+     </FormContent>
+ </Form>

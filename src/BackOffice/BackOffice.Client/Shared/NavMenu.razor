@@ -1,14 +1,10 @@
 ﻿@using BackOffice.Client.Pages.ProductCatalog.Brand
+@using BackOffice.Client.Pages.ProductCatalog.Item
 @using BackOffice.Client.Pages.ProductCatalog.Type
-@using BackOffice.Client.Pages.ProductCatalog.Item;
+
 @inherits BlazorComponent
 
 <MudNavMenu>
-    <li class="nav-item px-3">
-        <NavLink class="nav-link" href="test" Match="NavLinkMatch.All">
-            <span class="oi oi-home" aria-hidden="true"></span> Home
-        </NavLink>
-    </li>
     <AuthorizeView>
 
         <Authorized>

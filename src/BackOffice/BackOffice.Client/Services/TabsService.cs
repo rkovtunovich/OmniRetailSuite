@@ -1,4 +1,4 @@
-﻿using BackOffice.Client.Model;
+﻿using BackOffice.Client.Model.UI;
 using Microsoft.IdentityModel.Tokens;
 
 namespace BackOffice.Client.Services;

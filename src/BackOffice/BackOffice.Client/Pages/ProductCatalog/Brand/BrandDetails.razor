@@ -2,51 +2,29 @@
 
 @namespace BackOffice.Client.Pages.ProductCatalog.Brand
 
-@using BackOffice.Client.Helpers;
-@using BackOffice.Application.Services.Abstraction.ProductCatalog;
+<Form Commands="@_toolbarCommands">
+    <FormContent>
 
-<MudContainer Class="m-0 p-0 form-content-panel">
+        <EditForm EditContext="@_editContext" OnValidSubmit="@SaveClick">
 
-    <MudToolBar Dense Class="form-command-panel">
+            <DataAnnotationsValidator />
 
-        <MudTooltip Text="Save">
-            <MudIconButton Icon="@Icons.Material.Outlined.Save" Color="Color.Inherit" Class="mr-5" OnClick="@SaveClick" />
-        </MudTooltip>
+            <MudGrid>
+                <MudItem Style="min-width:50%">
+                    <MudCard>
 
-         <MudTooltip Text="Mark as deleted">
-             <MudIconButton Icon="@Icons.Material.Outlined.Delete" Color="Color.Inherit" Class="mr-5" OnClick="@DeleteClick" />
-         </MudTooltip>
+                        <MudCardContent>
 
-        <MudSpacer></MudSpacer>
+                            <MudTextField Label="Id" Class="mt-3" @bind-Value="ProductBrand.Id" For="@(() => ProductBrand.Id)" Variant="@MudBlazor.Variant.Filled" Disabled />
+                             <MudTextField Label="Name" Class="mt-3" @bind-Value="ProductBrand.Name" For="@(() => ProductBrand.Name)" Variant="@MudBlazor.Variant.Filled" />
 
-        <MudTooltip Text="Close">
-            <MudIconButton Icon="@Icons.Material.Outlined.Close" Color="Color.Inherit" Class="mr-5" OnClick="@Close" />
-        </MudTooltip>
+                         </MudCardContent>
 
-    </MudToolBar>
+                     </MudCard>
+                 </MudItem>
+             </MudGrid>
 
-    <EditForm EditContext="@_editContext" OnValidSubmit="@SaveClick">
+         </EditForm>
 
-        <DataAnnotationsValidator />
-
-        <MudGrid>
-            <MudItem Style="min-width:50%">
-                <MudCard>
-
-                    <MudCardContent>
-
-                         <MudTextField Label="Id" Class="mt-3" @bind-Value="ProductBrand.Id" For="@(() => ProductBrand.Id)" Variant="@MudBlazor.Variant.Filled" Disabled />
-                         <MudTextField Label="Name" Class="mt-3" @bind-Value="ProductBrand.Name" For="@(() => ProductBrand.Name)" Variant="@MudBlazor.Variant.Filled" />
-
-                    </MudCardContent>
-
-                </MudCard>
-            </MudItem>
-        </MudGrid>
-
-    </EditForm>
-
-</MudContainer>
-
-
-
+     </FormContent>
+ </Form>

@@ -1,6 +1,6 @@
-﻿namespace BackOffice.Client.Helpers;
+﻿namespace BackOffice.Client.Components.Common;
 
-public class BlazorComponent : ComponentBase, IDisposable
+public class BlazorLayoutComponent : LayoutComponentBase
 {
     private readonly RefreshBroadcast _refresh = RefreshBroadcast.Instance;
 
@@ -21,10 +21,5 @@ public class BlazorComponent : ComponentBase, IDisposable
         {
             StateHasChanged();
         });
-    }
-
-    public virtual void Dispose()
-    {
-        
     }
 }

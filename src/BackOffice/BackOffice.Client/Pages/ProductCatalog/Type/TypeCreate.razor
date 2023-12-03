@@ -2,21 +2,8 @@
 
 @namespace BackOffice.Client.Pages.ProductCatalog.Type
 
-<MudContainer Class="m-0 p-0 form-content-panel">
-
-        <MudToolBar Dense Class="form-command-panel">
-
-            <MudTooltip Text="Save">
-                <MudIconButton Icon="@Icons.Material.Outlined.Save" Color="Color.Inherit" Class="mr-5" OnClick="@CreateClick" />
-            </MudTooltip>
-    
-            <MudSpacer></MudSpacer>
-
-            <MudTooltip Text="Close">
-                <MudIconButton Icon="@Icons.Material.Outlined.Close" Color="Color.Inherit" Class="mr-5" OnClick="@Close" />
-            </MudTooltip>
-
-        </MudToolBar>
+<Form Commands="@_toolbarCommands">
+    <FormContent>
 
         <EditForm EditContext="@_editContext" OnValidSubmit="@CreateClick">
 
@@ -36,4 +23,5 @@
 
         </EditForm>
 
-</MudContainer>
+    </FormContent>
+</Form>
