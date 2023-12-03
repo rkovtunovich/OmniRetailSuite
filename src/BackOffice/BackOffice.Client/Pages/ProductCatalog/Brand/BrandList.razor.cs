@@ -5,7 +5,7 @@ using BackOffice.Core.Models.ProductCatalog;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Brand;
 
-public partial class BrandList : BlazorComponent
+public partial class BrandList : OrsComponent
 {
     [Inject] public IProductBrandService CatalogService { get; set; } = null!;
 

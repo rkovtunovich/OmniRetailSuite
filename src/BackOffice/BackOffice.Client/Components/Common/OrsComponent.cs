@@ -1,6 +1,6 @@
 ﻿namespace BackOffice.Client.Components.Common;
 
-public class BlazorComponent : ComponentBase, IDisposable
+public abstract class OrsComponent : ComponentBase, IDisposable
 {
     private readonly RefreshBroadcast _refresh = RefreshBroadcast.Instance;
 

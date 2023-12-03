@@ -10,8 +10,6 @@ public partial class ItemDetails
 {
     #region Injects
 
-    [Inject] private TabsService _tabsService { get; set; } = null!;
-
     [Inject] public IProductItemService ProductItemService { get; set; } = null!;
 
     [Inject] public IProductTypeService ProductTypeService { get; set; } = null!;
@@ -34,8 +32,6 @@ public partial class ItemDetails
 
     #region Fields
 
-    private List<ToolbarCommand> _toolbarCommands = null!;
-
     private List<ProductType> _itemTypes = [];
 
     private List<ProductBrand> _itemBrands = [];
@@ -50,17 +46,15 @@ public partial class ItemDetails
 
     private string _badFileMessage = string.Empty;
 
-    private EditContext? _editContext;
-
     #endregion
 
     #region Overrides
 
     protected override void OnInitialized()
     {
-        _editContext = new EditContext(ProductItem);
+        EditContext = new EditContext(ProductItem);
 
-        DefineToolbarCommands();
+        base.OnInitialized();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -83,9 +77,9 @@ public partial class ItemDetails
 
     #region Commands
 
-    private void DefineToolbarCommands()
+    protected override void DefineToolbarCommands()
     {
-        _toolbarCommands =
+        ToolbarCommands =
         [
             new() {
                 Name = "Save",
@@ -114,7 +108,7 @@ public partial class ItemDetails
 
     private async Task SaveClick(MouseEventArgs mouseEventArgs)
     {
-        if (!_editContext?.Validate() ?? false)
+        if (!EditContext?.Validate() ?? false)
             return;
 
         if (_selectedParent is not null)       
@@ -134,11 +128,6 @@ public partial class ItemDetails
         await ProductItemService.DeleteItemAsync(ProductItem.Id, true);
 
         CloseClick();
-    }
-
-    private void CloseClick()
-    {
-        _tabsService.RemoveTab(_tabsService.Tabs?.ActivePanel);
     }
 
     #endregion

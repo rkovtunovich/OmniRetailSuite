@@ -1,5 +1,4 @@
 ﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
-using BackOffice.Client.Services;
 using BackOffice.Core.Models.ProductCatalog;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
@@ -8,8 +7,6 @@ namespace BackOffice.Client.Pages.ProductCatalog.Parent;
 
 public partial class ItemParentCreate
 {
-    [Inject] private TabsService _tabsService { get; set; } = null!;
-
     [Inject] public IProductParentService ProductParentService { get; set; } = null!;
 
     [Inject] public ILogger<ItemParentCreate> Logger { get; set; } = null!;
@@ -17,19 +14,15 @@ public partial class ItemParentCreate
     [Parameter]
     public EventCallback<string> OnSaveClick { get; set; }
 
-    private List<ToolbarCommand> _toolbarCommands = null!;
-
     private List<ProductParent> _allItemParents = [];
     
     private ProductParent _itemParent = new();
 
-    private EditContext? _editContext;
-
     protected override void OnInitialized()
     {
-        _editContext = new EditContext(_itemParent);
+        EditContext = new EditContext(_itemParent);
 
-        DefineToolbarCommands();
+        base.OnInitialized();
     }
 
     protected override async Task OnInitializedAsync()
@@ -44,7 +37,7 @@ public partial class ItemParentCreate
 
     private async Task CreateClick()
     {
-        if (!_editContext?.Validate() ?? false)
+        if (!EditContext?.Validate() ?? false)
             return;
 
         var result = await ProductParentService.CreateItemParentAsync(_itemParent);
@@ -53,11 +46,6 @@ public partial class ItemParentCreate
             await OnSaveClick.InvokeAsync(null);
             CloseClick();
         }
-    }
-
-    private void CloseClick()
-    {
-        _tabsService.RemoveTab(_tabsService.Tabs?.ActivePanel);
     }
 
     private async Task LoadAllItemParents()
@@ -83,9 +71,9 @@ public partial class ItemParentCreate
 
     #region Commands
 
-    private void DefineToolbarCommands()
+    protected override void DefineToolbarCommands()
     {
-        _toolbarCommands =
+        ToolbarCommands =
         [
             new()
             {

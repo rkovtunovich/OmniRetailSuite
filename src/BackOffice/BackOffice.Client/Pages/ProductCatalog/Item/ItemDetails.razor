@@ -1,11 +1,11 @@
-﻿@inherits BlazorComponent
+﻿@inherits FormBase
 
 @namespace BackOffice.Client.Pages.ProductCatalog.Item
 
-<Form Commands="@_toolbarCommands">
+<Form Commands="@ToolbarCommands">
     <FormContent>
 
-        <EditForm EditContext="@_editContext">
+        <EditForm EditContext="@EditContext">
             <DataAnnotationsValidator />
             <MudGrid>
                 <MudItem Style="min-width:50%">

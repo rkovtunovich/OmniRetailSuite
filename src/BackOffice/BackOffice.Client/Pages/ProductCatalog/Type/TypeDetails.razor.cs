@@ -1,5 +1,4 @@
 ﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
-using BackOffice.Client.Services;
 using BackOffice.Core.Models.ProductCatalog;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
@@ -8,8 +7,6 @@ namespace BackOffice.Client.Pages.ProductCatalog.Type;
 
 public partial class TypeDetails
 {
-    [Inject] private TabsService _tabsService { get; set; } = null!;
-
     [Inject] public IProductTypeService ProductTypeService { get; set; } = null!;
 
     [Parameter]
@@ -18,25 +15,16 @@ public partial class TypeDetails
     [Parameter]
     public ProductType Type { get; set; } = null!;
 
-    private EditContext? _editContext;
-
-    private List<ToolbarCommand> _toolbarCommands = null!;
-
     protected override void OnInitialized()
     {
-        _editContext = new EditContext(Type);
+        EditContext = new EditContext(Type);
 
-        DefineToolbarCommands();
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
+        base.OnInitialized();
     }
 
     private async Task SaveClick()
     {
-        if (!_editContext?.Validate() ?? false)
+        if (!EditContext?.Validate() ?? false)
             return;
 
         var result = await ProductTypeService.UpdateTypeAsync(Type);
@@ -54,16 +42,11 @@ public partial class TypeDetails
         CloseClick();
     }
 
-    private void CloseClick()
-    {
-        _tabsService.RemoveTab(_tabsService.Tabs?.ActivePanel);
-    }
-
     #region Commands
 
-    private void DefineToolbarCommands()
+    protected override void DefineToolbarCommands()
     {
-        _toolbarCommands =
+        ToolbarCommands =
         [
             new()
             {

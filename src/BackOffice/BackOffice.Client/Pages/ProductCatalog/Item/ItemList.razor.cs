@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Components.Web;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Item;
 
-public partial class ItemList : BlazorComponent
+public partial class ItemList : OrsComponent
 {
     #region Injects
 

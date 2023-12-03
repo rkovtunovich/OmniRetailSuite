@@ -5,7 +5,7 @@ using BackOffice.Core.Models.ProductCatalog;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Type;
 
-public partial class TypeList : BlazorComponent
+public partial class TypeList : OrsComponent
 {
     [Inject] public IProductTypeService ProductTypeService { get; set; } = null!;
 

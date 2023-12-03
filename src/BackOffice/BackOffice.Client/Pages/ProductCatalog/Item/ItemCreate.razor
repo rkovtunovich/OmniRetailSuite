@@ -1,12 +1,12 @@
 ﻿@inject ILogger<ItemCreate> Logger
-@inherits BlazorComponent
+@inherits FormBase
 
 @namespace BackOffice.Client.Pages.ProductCatalog.Item
 
-<Form Commands="@_toolbarCommands">
+<Form Commands="@ToolbarCommands">
     <FormContent>
 
-        <EditForm EditContext="@_editContext" OnValidSubmit="@CreateClick">
+        <EditForm EditContext="@EditContext" OnValidSubmit="@CreateClick">
             <DataAnnotationsValidator />
             <MudGrid>
                 <MudItem Style="min-width:50%">

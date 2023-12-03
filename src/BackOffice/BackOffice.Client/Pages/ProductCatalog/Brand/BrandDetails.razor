@@ -1,11 +1,11 @@
-﻿@inherits BlazorComponent
+﻿@inherits FormBase
 
 @namespace BackOffice.Client.Pages.ProductCatalog.Brand
 
-<Form Commands="@_toolbarCommands">
+<Form Commands="@ToolbarCommands">
     <FormContent>
 
-        <EditForm EditContext="@_editContext" OnValidSubmit="@SaveClick">
+        <EditForm EditContext="@EditContext" OnValidSubmit="@SaveClick">
 
             <DataAnnotationsValidator />
 

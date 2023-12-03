@@ -1,5 +1,4 @@
 ﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
-using BackOffice.Client.Services;
 using BackOffice.Core.Models.ProductCatalog;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
@@ -9,8 +8,6 @@ namespace BackOffice.Client.Pages.ProductCatalog.Item;
 public partial class ItemCreate
 {
     #region Injects
-
-    [Inject] private TabsService _tabsService { get; set; } = null!;
 
     [Inject] public IProductItemService ProductItemService { get; set; } = null!;
 
@@ -31,8 +28,6 @@ public partial class ItemCreate
 
     #region Fields
 
-    private List<ToolbarCommand> _toolbarCommands = null!;
-
     private List<ProductType> _itemTypes = [];
 
     private List<ProductBrand> _itemBrands = [];
@@ -49,17 +44,15 @@ public partial class ItemCreate
 
     private ProductParentSelectModel? _selectedParent;
 
-    private EditContext? _editContext;
-
     #endregion
 
     #region Overrides
 
     protected override void OnInitialized()
     {
-        _editContext = new EditContext(_item);
+        EditContext = new EditContext(_item);
 
-        DefineToolbarCommands();
+        base.OnInitialized();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -82,9 +75,9 @@ public partial class ItemCreate
 
     #region Commands
 
-    private void DefineToolbarCommands()
+    protected override void DefineToolbarCommands()
     {
-        _toolbarCommands =
+        ToolbarCommands =
         [
             new()
             {
@@ -109,7 +102,7 @@ public partial class ItemCreate
 
     private async Task CreateClick()
     {
-        if (!_editContext?.Validate() ?? false)
+        if (!EditContext?.Validate() ?? false)
             return;
 
         if (_selectedParent is not null)
@@ -121,11 +114,6 @@ public partial class ItemCreate
             await OnSaveClick.InvokeAsync(null);
             CloseClick();
         }
-    }
-
-    private void CloseClick()
-    {
-        _tabsService.RemoveTab(_tabsService.Tabs?.ActivePanel);
     }
 
     #endregion
