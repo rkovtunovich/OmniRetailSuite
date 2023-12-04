@@ -18,16 +18,16 @@ public class ReceiptRepository(RetailDbContext context, ILogger<ReceiptRepositor
         }
     }
 
-    public async Task<Receipt?> GetReceiptAsync(string receiptNumber)
+    public async Task<Receipt?> GetReceiptByNumberAsync(int code, string? prefix)
     {
         try
         {
             return await _context.Receipts
-                .FirstOrDefaultAsync(r => r.Number == receiptNumber);
+                .FirstOrDefaultAsync(r => r.CodeNumber == code && r.CodePrefix == prefix);
         }
         catch (Exception)
         {
-            _logger.LogError("Error while getting receipt with number {Number}", receiptNumber);
+            _logger.LogError("Error while getting receipt with number {code}{prefix}", code, prefix);
             throw;
         }
     }

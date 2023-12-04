@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Retail.Core.Entities;
 
-namespace ProductCatalog.Data.Config;
+namespace Retail.Data.Config;
 
-public class BrandDbConfiguration : IEntityTypeConfiguration<Brand>
+public class StoreConfiguration: IEntityTypeConfiguration<Store>
 {
-    public static readonly string CodeSequenceName = "brand_codes";
+    public static readonly string CodeSequenceName = "store_codes";
 
-    public void Configure(EntityTypeBuilder<Brand> builder)
+    public void Configure(EntityTypeBuilder<Store> builder)
     {
         builder.HasKey(ci => ci.Id);
 
@@ -16,6 +17,12 @@ public class BrandDbConfiguration : IEntityTypeConfiguration<Brand>
         builder.Property(cb => cb.Name)
             .IsRequired()
             .HasMaxLength(100);
+
+        builder.Property(cb => cb.Address)
+            .HasMaxLength(100);
+
+        builder.HasMany(x => x.Cashiers)
+            .WithMany();
 
         builder.HasQueryFilter(p => !p.IsDeleted);
 

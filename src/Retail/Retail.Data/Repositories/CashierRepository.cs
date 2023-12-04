@@ -1,4 +1,6 @@
-﻿namespace Retail.Data.Repositories;
+﻿using Retail.Core.Entities;
+
+namespace Retail.Data.Repositories;
 
 public class CashierRepository(RetailDbContext context, ILogger<ReceiptRepository> logger) : ICashierRepository
 {

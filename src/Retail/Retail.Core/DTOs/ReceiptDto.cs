@@ -6,7 +6,9 @@ public record ReceiptDto
 {
     public Guid Id { get; init; }
 
-    public string Number { get; set; } = null!;
+    public int CodeNumber { get; set; }
+
+    public string? CodePrefix { get; set; } = null!;
 
     public DateTimeOffset Date { get; init; }
 
@@ -22,6 +24,8 @@ public record ReceiptDto
         {
             Id = receipt.Id,
             Date = receipt.Date,
+            CodeNumber = receipt.CodeNumber,
+            CodePrefix = receipt.CodePrefix,
             Cashier = CashierDto.FromCashier(receipt.Cashier),
             ReceiptItems = ReceiptItemDto.FromReceiptItems(receipt.ReceiptItems)
         };
@@ -38,6 +42,8 @@ public record ReceiptDto
         {
             Id = Id,
             Date = Date,
+            CodeNumber = CodeNumber,
+            CodePrefix = CodePrefix,
             CashierId = Cashier.Id,
             Cashier = Cashier.ToCashier(),
             TotalPrice = TotalPrice,

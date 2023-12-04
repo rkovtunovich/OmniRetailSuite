@@ -1,13 +1,19 @@
 ﻿namespace Retail.Core.Entities.ReceiptAggregate;
 
-public class Receipt: BaseEntity, INumberedEntity
+public class Receipt: BaseEntity, ICodedEntity
 {
-    public string Number { get; set; } = null!;
+    public int CodeNumber { get; set; }
+
+    public string? CodePrefix { get; set; }
 
     public DateTimeOffset Date { get; set; }
 
+    public Guid StoreId { get; set; }
+
+    public Store Store { get; set; } = null!;
+
     public Guid CashierId { get; set; }
-    
+
     public Cashier Cashier { get; set; } = null!;
 
     public decimal TotalPrice { get; set; }

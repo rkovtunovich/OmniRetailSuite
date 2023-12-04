@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Retail.Core.Entities;
 using Retail.Data.Config;
 
 namespace Retail.Data;
@@ -21,6 +22,7 @@ public class RetailDbContext(DbContextOptions<RetailDbContext> options) : DbCont
         builder.ApplyConfiguration(new ReceiptItemConfiguration());
         builder.ApplyConfiguration(new CashierConfiguration());
         builder.ApplyConfiguration(new ProductItemConfiguration());
+        builder.ApplyConfiguration(new StoreConfiguration());
 
         // Define a conversion for all DateTimeOffset properties
         var dateTimeOffsetConverter = new ValueConverter<DateTimeOffset, DateTime>(
@@ -35,6 +37,18 @@ public class RetailDbContext(DbContextOptions<RetailDbContext> options) : DbCont
                     property.SetValueConverter(dateTimeOffsetConverter);               
             }
         }
+
+        builder.HasSequence<int>(ReceiptConfiguration.CodeSequenceName)
+            .StartsAt(1)
+            .IncrementsBy(1);
+
+        builder.HasSequence<int>(CashierConfiguration.CodeSequenceName)
+            .StartsAt(1)
+            .IncrementsBy(1);
+
+        builder.HasSequence<int>(StoreConfiguration.CodeSequenceName)
+            .StartsAt(1)
+            .IncrementsBy(1);
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

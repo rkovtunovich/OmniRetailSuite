@@ -8,7 +8,7 @@ public interface IReceiptRepository
 
     Task<Receipt?> GetReceiptAsync(Guid receiptId);
 
-    Task<Receipt?> GetReceiptAsync(string receiptNumber);
+    Task<Receipt?> GetReceiptByNumberAsync(int code, string? prefix);
 
     Task<Receipt> AddReceiptAsync(Receipt receipt);
 

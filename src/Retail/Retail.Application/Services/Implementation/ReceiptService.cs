@@ -55,7 +55,8 @@ public class ReceiptService : IReceiptService
         {
             var receipt = await _receiptRepository.GetReceiptAsync(receiptDto.Id) ?? throw new Exception($"Receipt with id {receiptDto.Id} not found");
             receipt.Date = receiptDto.Date;
-            receipt.Number = receiptDto.Number;
+            receipt.CodeNumber = receiptDto.CodeNumber;
+            receipt.CodePrefix = receiptDto.CodePrefix;
             receipt.CashierId = receiptDto.Cashier.Id;
             receipt.Cashier = receiptDto.Cashier.ToCashier();
             receipt.TotalPrice = receiptDto.TotalPrice;

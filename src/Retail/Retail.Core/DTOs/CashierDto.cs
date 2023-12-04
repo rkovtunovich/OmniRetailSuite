@@ -1,4 +1,4 @@
-﻿using Retail.Core.Entities.ReceiptAggregate;
+﻿using Retail.Core.Entities;
 
 namespace Retail.Core.DTOs;
 
