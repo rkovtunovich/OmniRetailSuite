@@ -13,13 +13,13 @@ public class ProductItemService : IProductItemService
         _logger = logger;
     }
 
-    public async Task<CatalogItemDto?> GetProductItemAsync(Guid id)
+    public async Task<ProductItemDto?> GetProductItemAsync(Guid id)
     {
         try
         {
             var productItem = await _productItemRepository.GetProductItemAsync(id);
 
-            return productItem is null ? null : CatalogItemDto.FromProductItem(productItem);
+            return productItem?.ToDto();
         }
         catch (Exception e)
         {
@@ -28,12 +28,12 @@ public class ProductItemService : IProductItemService
         }
     }
 
-    public async Task<List<CatalogItemDto>> GetProductItemsAsync()
+    public async Task<List<ProductItemDto>> GetProductItemsAsync()
     {
         try
         {
             var productItems = await _productItemRepository.GetProductItemsAsync();
-            return productItems.Select(productItem => CatalogItemDto.FromProductItem(productItem)).ToList();
+            return productItems.Select(productItem => productItem.ToDto()).ToList();
         }
         catch (Exception e)
         {
@@ -42,13 +42,13 @@ public class ProductItemService : IProductItemService
         }
     }
 
-    public async Task<CatalogItemDto> CreateProductItemAsync(CatalogItemDto ProductItemDto)
+    public async Task<ProductItemDto> CreateProductItemAsync(ProductItemDto ProductItemDto)
     {
         try
         {
-            var productItem = ProductItemDto.ToProductItem();
+            var productItem = ProductItemDto.ToEntity();
             await _productItemRepository.AddProductItemAsync(productItem);
-            return CatalogItemDto.FromProductItem(productItem);
+            return productItem.ToDto();
         }
         catch (Exception e)
         {
@@ -57,7 +57,7 @@ public class ProductItemService : IProductItemService
         }
     }
 
-    public async Task UpdateProductItemAsync(CatalogItemDto productItemDto)
+    public async Task UpdateProductItemAsync(ProductItemDto productItemDto)
     {
         try
         {

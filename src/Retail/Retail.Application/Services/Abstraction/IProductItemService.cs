@@ -1,16 +1,14 @@
-﻿using Retail.Core.DTOs;
-
-namespace Retail.Application.Services.Abstraction;
+﻿namespace Retail.Application.Services.Abstraction;
 
 public interface IProductItemService
 {
-    Task<CatalogItemDto?> GetProductItemAsync(Guid id);
+    Task<ProductItemDto?> GetProductItemAsync(Guid id);
 
-    Task<List<CatalogItemDto>> GetProductItemsAsync();
+    Task<List<ProductItemDto>> GetProductItemsAsync();
 
-    Task<CatalogItemDto> CreateProductItemAsync(CatalogItemDto catalogItemDto);
+    Task<ProductItemDto> CreateProductItemAsync(ProductItemDto catalogItemDto);
 
-    Task UpdateProductItemAsync(CatalogItemDto catalogItemDto);
+    Task UpdateProductItemAsync(ProductItemDto catalogItemDto);
 
     Task DeleteProductItemAsync(Guid id, bool isSoftDeleting);
 }

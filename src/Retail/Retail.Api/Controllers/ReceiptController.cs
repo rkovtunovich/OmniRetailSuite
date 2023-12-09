@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Contracts.Dtos.Retail;
+using Microsoft.AspNetCore.Mvc;
 using Retail.Application.Services.Abstraction;
-using Retail.Core.DTOs;
 using Retail.Core.Entities.ReceiptAggregate;
 
 namespace Retail.Api.Controllers;

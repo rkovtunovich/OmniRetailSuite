@@ -1,6 +1,4 @@
-﻿using ProductCatalog.Core.Entities.ProductAggregate;
-
-namespace ProductCatalog.Application.Mapping;
+﻿namespace ProductCatalog.Application.Mapping;
 
 public static class BrandMapping
 {

@@ -19,7 +19,7 @@ public class ReceiptService : IReceiptService
         {
             var receipt = await _receiptRepository.GetReceiptAsync(id);
 
-            return receipt is null ? null : ReceiptDto.FromReceipt(receipt);
+            return receipt?.ToDto();
         }
         catch (Exception e)
         {
@@ -33,7 +33,7 @@ public class ReceiptService : IReceiptService
         try
         {
             var receipts = await _receiptRepository.GetReceiptsAsync();
-            return receipts.Select(receipt => ReceiptDto.FromReceipt(receipt)).ToList();
+            return receipts.Select(receipt => receipt.ToDto()).ToList();
         }
         catch (Exception e)
         {
@@ -44,9 +44,9 @@ public class ReceiptService : IReceiptService
 
     public async Task<ReceiptDto> CreateReceiptAsync(ReceiptDto receiptDto)
     {
-        var receipt = receiptDto.ToReceipt();
+        var receipt = receiptDto.ToEntity();
         await _receiptRepository.AddReceiptAsync(receipt);
-        return ReceiptDto.FromReceipt(receipt);
+        return receipt.ToDto();
     }
 
     public async Task<ReceiptDto> UpdateReceiptAsync(ReceiptDto receiptDto)
@@ -57,14 +57,14 @@ public class ReceiptService : IReceiptService
             receipt.Date = receiptDto.Date;
             receipt.CodeNumber = receiptDto.CodeNumber;
             receipt.CodePrefix = receiptDto.CodePrefix;
-            receipt.CashierId = receiptDto.Cashier.Id;
-            receipt.Cashier = receiptDto.Cashier.ToCashier();
+            receipt.CashierId = receiptDto.CashierId;
+            receipt.StoreId = receiptDto.StoreId;
             receipt.TotalPrice = receiptDto.TotalPrice;
-            receipt.ReceiptItems = receiptDto.ReceiptItems.Select(x => x.ToReceiptItem()).ToList();
+            receipt.ReceiptItems = receiptDto.ReceiptItems.Select(x => x.ToEntity()).ToList();
 
             await _receiptRepository.UpdateReceiptAsync(receipt);
 
-            return ReceiptDto.FromReceipt(receipt);
+            return receipt.ToDto();
         }
         catch (Exception e)
         {

@@ -1,5 +1,6 @@
 ﻿global using Retail.Data.Repositories;
 
+global using Retail.Core.Entities;
 global using Retail.Core.Entities.ReceiptAggregate;
 global using Retail.Core.Repositories;
 

@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Retail.Core.Entities;
 using Retail.Data.Config;
 
 namespace Retail.Data;
@@ -13,6 +12,8 @@ public class RetailDbContext(DbContextOptions<RetailDbContext> options) : DbCont
     public DbSet<Cashier> Cashiers { get; set; } = null!;
 
     public DbSet<ProductItem> ProductItems { get; set; } = null!;
+
+    public DbSet<Store> Stores { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

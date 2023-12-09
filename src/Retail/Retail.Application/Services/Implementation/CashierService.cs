@@ -19,7 +19,7 @@ public class CashierService: ICashierService
         {
             var cashier = await _cashierRepository.GetCashierAsync(id);
 
-            return cashier is null ? null : CashierDto.FromCashier(cashier);
+            return cashier?.ToDto();
         }
         catch (Exception e)
         {
@@ -33,7 +33,7 @@ public class CashierService: ICashierService
         try
         {
             var cashiers = await _cashierRepository.GetCashiersAsync();
-            return cashiers.Select(cashier => CashierDto.FromCashier(cashier)).ToList();
+            return cashiers.Select(cashier => cashier.ToDto()).ToList();
         }
         catch (Exception e)
         {
@@ -44,9 +44,9 @@ public class CashierService: ICashierService
 
     public async Task<CashierDto> CreateCashierAsync(CashierDto cashierDto)
     {
-        var cashier = cashierDto.ToCashier();
+        var cashier = cashierDto.ToEntity();
         await _cashierRepository.AddCashierAsync(cashier);
-        return CashierDto.FromCashier(cashier);
+        return cashier.ToDto();
     }
 
     public async Task<CashierDto> UpdateCashierAsync(CashierDto cashierDto)
@@ -58,7 +58,7 @@ public class CashierService: ICashierService
 
             await _cashierRepository.UpdateCashierAsync(cashier);
 
-            return CashierDto.FromCashier(cashier);
+            return cashier.ToDto();
         }
         catch (Exception e)
         {
