@@ -1,11 +1,11 @@
 ﻿namespace Retail.Data.Repositories;
 
-public class StoreRepository(RetailDbContext context, ILogger<ReceiptRepository> logger): IStoreRepository
+public class StoreRepository(RetailDbContext context, ILogger<ReceiptRepository> logger): IRetailRepository<Store>
 {
     private readonly RetailDbContext _context = context;
     private readonly ILogger<ReceiptRepository> _logger = logger;
 
-    public async Task<IEnumerable<Store>> GetStoresAsync()
+    public async Task<IEnumerable<Store>> GetEntitiesAsync()
     {
         try
         {
@@ -18,7 +18,7 @@ public class StoreRepository(RetailDbContext context, ILogger<ReceiptRepository>
         }
     }
 
-    public async Task<Store?> GetStoreAsync(Guid id)
+    public async Task<Store?> GetEntityAsync(Guid id)
     {
         try
         {
@@ -32,7 +32,7 @@ public class StoreRepository(RetailDbContext context, ILogger<ReceiptRepository>
         }
     }
 
-    public async Task<Store> CreateStoreAsync(Store store)
+    public async Task<Store> AddEntityAsync(Store store)
     {
         try
         {
@@ -49,7 +49,7 @@ public class StoreRepository(RetailDbContext context, ILogger<ReceiptRepository>
         }
     }
 
-    public async Task<Store> UpdateStoreAsync(Store store)
+    public async Task<Store> UpdateEntityAsync(Store store)
     {
         try
         {
@@ -66,7 +66,7 @@ public class StoreRepository(RetailDbContext context, ILogger<ReceiptRepository>
         }
     }
 
-    public async Task DeleteStoreAsync(Guid id, bool isSoftDeleting)
+    public async Task DeleteEntityAsync(Guid id, bool isSoftDeleting)
     {
         try
         {
