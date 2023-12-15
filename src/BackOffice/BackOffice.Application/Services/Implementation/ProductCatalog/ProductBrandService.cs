@@ -1,4 +1,5 @@
 ﻿using BackOffice.Application.Helpers;
+using BackOffice.Application.Mapping.ProductCatalog;
 using BackOffice.Application.Services.Abstraction.ProductCatalog;
 using BackOffice.Core.Models.ProductCatalog;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,10 +8,10 @@ namespace BackOffice.Application.Services.Implementation.ProductCatalog;
 
 public class ProductBrandService: IProductBrandService
 {
-    private readonly IHttpService _httpService;
+    private readonly IHttpService<ProductCatalogResource> _httpService;
     private readonly ILogger<ProductItemService> _logger;
 
-    public ProductBrandService([FromKeyedServices(Constants.API_HTTP_CLIENT_NAME)] IHttpService httpService, ILogger<ProductItemService> logger)
+    public ProductBrandService([FromKeyedServices(Constants.PRODUCT_CATALOG_HTTP_CLIENT_NAME)] IHttpService<ProductCatalogResource> httpService, ILogger<ProductItemService> logger)
     {
         _httpService = httpService;
         _logger = logger;

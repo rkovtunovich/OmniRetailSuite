@@ -1,4 +1,4 @@
-﻿@inherits FormBase
+﻿@inherits FormBase<ProductItem>
 
 @namespace BackOffice.Client.Pages.ProductCatalog.Item
 
@@ -11,9 +11,9 @@
                 <MudItem Style="min-width:50%">
                     <MudCard>
                         <MudCardContent>
-                            <MudTextField Label="Id" Class="mt-3" @bind-Value="ProductItem.Id" For="@(() => ProductItem.Id)" Variant="@MudBlazor.Variant.Filled" Disabled />
-                             <MudTextField Label="Name" Class="mt-3" @bind-Value="ProductItem.Name" For="@(() => ProductItem.Name)" Variant="@MudBlazor.Variant.Filled" />
-                             <MudTextField Label="Description" Class="mt-3" @bind-Value="ProductItem.Description" For="@(() => ProductItem.Description)" Variant="@MudBlazor.Variant.Filled" />
+                            <MudTextField Label="Id" Class="mt-3" @bind-Value="Model.Id" For="@(() => Model.Id)" Variant="@MudBlazor.Variant.Filled" Disabled />
+                             <MudTextField Label="Name" Class="mt-3" @bind-Value="Model.Name" For="@(() => Model.Name)" Variant="@MudBlazor.Variant.Filled" />
+                             <MudTextField Label="Description" Class="mt-3" @bind-Value="Model.Description" For="@(() => Model.Description)" Variant="@MudBlazor.Variant.Filled" />
 
                              <MudSelect T="ProductParentSelectModel" Label="Select Parent" @bind-Value="_selectedParent" ToStringFunc="@_converterItemParent" Clearable Variant="@MudBlazor.Variant.Filled">
                                  @foreach (var parent in _flattenedParents)
@@ -22,22 +22,22 @@
                                 }
                             </MudSelect>
 
-                            <MudSelect T="ProductType" @bind-Value=ProductItem.ItemType ToStringFunc="@_converterItemType" Label="Select item type" Clearable Variant="@MudBlazor.Variant.Filled">
+                            <MudSelect T="ProductType" @bind-Value=Model.ItemType ToStringFunc="@_converterItemType" Label="Select item type" Clearable Variant="@MudBlazor.Variant.Filled">
                                  @foreach (var item in _itemTypes)
                                 {
                                     <MudSelectItem Value="@item"></MudSelectItem>
                                 }
                             </MudSelect>
 
-                            <MudSelect T="ProductBrand" @bind-Value=ProductItem.Brand ToStringFunc="@_converterItemBrand" Label="Select item brand" Clearable Variant="@MudBlazor.Variant.Filled">
+                            <MudSelect T="ProductBrand" @bind-Value=Model.Brand ToStringFunc="@_converterItemBrand" Label="Select item brand" Clearable Variant="@MudBlazor.Variant.Filled">
                                  @foreach (var item in _itemBrands)
                                 {
                                     <MudSelectItem Value="@item"></MudSelectItem>
                                 }
                             </MudSelect>
 
-                            <MudTextField Label="Barcode" Class="mt-3" @bind-Value="ProductItem.Barcode" For="@(() => ProductItem.Barcode)" Variant="@MudBlazor.Variant.Filled" />
-                            <MudNumericField Label="Price" Class="mt-3" @bind-Value="ProductItem.Price" For="@(() => ProductItem.Price)" T="decimal" Format="N2" Variant="@MudBlazor.Variant.Filled" />
+                            <MudTextField Label="Barcode" Class="mt-3" @bind-Value="Model.Barcode" For="@(() => Model.Barcode)" Variant="@MudBlazor.Variant.Filled" />
+                            <MudNumericField Label="Price" Class="mt-3" @bind-Value="Model.Price" For="@(() => Model.Price)" T="decimal" Format="N2" Variant="@MudBlazor.Variant.Filled" />
                         </MudCardContent>
                     </MudCard>
                 </MudItem>

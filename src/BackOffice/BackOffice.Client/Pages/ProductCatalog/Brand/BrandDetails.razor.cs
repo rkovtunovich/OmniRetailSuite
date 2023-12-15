@@ -1,33 +1,23 @@
 ﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
+using BackOffice.Client.Components.Base;
 using BackOffice.Core.Models.ProductCatalog;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Brand;
 
-public partial class BrandDetails
+public partial class BrandDetails: FormBase<ProductBrand>
 {
     [Inject] public IProductBrandService ProductBrandService { get; set; } = null!;
 
     [Parameter]
     public EventCallback<string> OnSaveClick { get; set; }
 
-    [Parameter]
-    public ProductBrand ProductBrand { get; set; } = null!;
-
-    protected override void OnInitialized()
-    {
-        EditContext = new EditContext(ProductBrand);
-
-        base.OnInitialized();
-    }
-
     private async Task SaveClick()
     {
         if (!EditContext?.Validate() ?? false)
             return;
 
-        var result = await ProductBrandService.UpdateBrandAsync(ProductBrand);
+        var result = await ProductBrandService.UpdateBrandAsync(Model);
         if (result is not null)
         {
             await OnSaveClick.InvokeAsync(null);
@@ -37,7 +27,7 @@ public partial class BrandDetails
 
     private async Task DeleteClick()
     {
-        await ProductBrandService.DeleteBrandAsync(ProductBrand.Id, true);
+        await ProductBrandService.DeleteBrandAsync(Model.Id, true);
 
         CloseClick();
     }

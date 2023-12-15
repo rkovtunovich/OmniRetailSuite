@@ -1,6 +1,7 @@
 ﻿@using BackOffice.Client.Pages.ProductCatalog.Brand
 @using BackOffice.Client.Pages.ProductCatalog.Item
 @using BackOffice.Client.Pages.ProductCatalog.Type
+@using BackOffice.Client.Pages.Retail.Cashiers
 
 @inherits OrsComponent
 
@@ -13,6 +14,10 @@
                 <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<ItemList>(nameof(ItemList), e)">Items</MudNavLink>
                 <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<BrandList>(nameof(BrandList), e)">Brands</MudNavLink>
                 <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<TypeList>(nameof(TypeList), e)">Types</MudNavLink>
+            </MudNavGroup>
+
+            <MudNavGroup Title="Retail" Icon="@Icons.Material.Filled.Dataset" Expanded="false" Class="my-nav-menu-group">
+                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<CashierList>(nameof(CashierList), e)">Cashiers</MudNavLink>
             </MudNavGroup>
 
         </Authorized>

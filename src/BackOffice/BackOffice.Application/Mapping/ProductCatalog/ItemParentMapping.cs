@@ -1,6 +1,6 @@
 ﻿using BackOffice.Core.Models.ProductCatalog;
 
-namespace BackOffice.Application.Mapping;
+namespace BackOffice.Application.Mapping.ProductCatalog;
 
 public static class ItemParentMapping
 {

@@ -1,5 +1,6 @@
 ﻿using BackOffice.Application;
 using BackOffice.Application.Services.Implementation;
+using BackOffice.Application.Services.Implementation.ProductCatalog;
 using BackOffice.Core.Models.Settings;
 using Microsoft.AspNetCore.HttpLogging;
 
@@ -11,11 +12,15 @@ public static class ConfigureWebInfrastructureServices
     {
         services.Configure<IdentityServerSettings>(configuration.GetSection("IdentityServerSettings"));
         services.AddSignalR(options => options.MaximumReceiveMessageSize = 10 * 1024 * 1024);
-        services.AddHttpClient(Constants.API_HTTP_CLIENT_NAME, client =>
+        services.AddHttpClient(Constants.IDENTITY_CLIENT_NAME, client =>
         {
             client.BaseAddress = new Uri(configuration[Constants.HTTP_WEB_GATEWAY] ?? throw new Exception("Api Gateway isn't settled in configuration"));
         });
-        services.AddHttpClient(Constants.IDENTITY_CLIENT_NAME, client =>
+        services.AddHttpClient(Constants.PRODUCT_CATALOG_HTTP_CLIENT_NAME, client =>
+        {
+            client.BaseAddress = new Uri(configuration[Constants.HTTP_WEB_GATEWAY] ?? throw new Exception("Api Gateway isn't settled in configuration"));
+        });
+        services.AddHttpClient(Constants.RETAIL_HTTP_CLIENT_NAME, client =>
         {
             client.BaseAddress = new Uri(configuration[Constants.HTTP_WEB_GATEWAY] ?? throw new Exception("Api Gateway isn't settled in configuration"));
         });
@@ -26,8 +31,9 @@ public static class ConfigureWebInfrastructureServices
         });
 
         services.AddScoped<ITokenService, TokenService>();
-        services.AddKeyedScoped<IHttpService, ProductCatalogHttpService>(Constants.API_HTTP_CLIENT_NAME);
-        services.AddKeyedScoped<IHttpService, IdentityHttpService>(Constants.IDENTITY_CLIENT_NAME);
+        services.AddKeyedScoped<IHttpService<IdentityResource>, IdentityHttpService>(Constants.IDENTITY_CLIENT_NAME);
+        services.AddKeyedScoped<IHttpService<ProductCatalogResource>, ProductCatalogHttpService>(Constants.PRODUCT_CATALOG_HTTP_CLIENT_NAME);
+        services.AddScoped(typeof(IHttpService<>), typeof(HttpService<>));
 
         return services;
     }

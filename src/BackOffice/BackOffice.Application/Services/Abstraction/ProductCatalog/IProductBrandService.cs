@@ -14,5 +14,5 @@ public interface IProductBrandService
 
     Task<ProductBrand> UpdateBrandAsync(ProductBrand catalogBrand);
 
-    Task DeleteBrandAsync(Guid id, bool useSoftDeleting);
+    Task DeleteBrandAsync(Guid id, bool isSoftDeleting);
 }

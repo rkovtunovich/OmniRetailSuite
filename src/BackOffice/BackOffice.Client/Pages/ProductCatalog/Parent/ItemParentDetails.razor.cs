@@ -1,33 +1,23 @@
 ﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
+using BackOffice.Client.Components.Base;
 using BackOffice.Core.Models.ProductCatalog;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Parent;
 
-public partial class ItemParentDetails
+public partial class ItemParentDetails: FormBase<ProductParent>
 {
     [Inject] public IProductParentService ProductParentService { get; set; } = null!;
 
     [Parameter]
     public EventCallback<string> OnSaveClick { get; set; }
 
-    [Parameter]
-    public ProductParent ProductParent { get; set; } = null!;
-
-    protected override void OnInitialized()
-    {
-        EditContext = new EditContext(ProductParent);
-
-        base.OnInitialized();
-    }
-
     private async Task SaveClick()
     {
         if (!EditContext?.Validate() ?? false)
             return;
 
-        var result = await ProductParentService.UpdateItemParentAsync(ProductParent);
+        var result = await ProductParentService.UpdateItemParentAsync(Model);
         if (result is not null)
         {
             await OnSaveClick.InvokeAsync(null);
@@ -37,7 +27,7 @@ public partial class ItemParentDetails
 
     private async Task DeleteClick()
     {
-        await ProductParentService.DeleteItemParentAsync(ProductParent.Id, true);
+        await ProductParentService.DeleteItemParentAsync(Model.Id, true);
 
         CloseClick();
     }

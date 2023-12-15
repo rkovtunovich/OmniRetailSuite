@@ -23,7 +23,9 @@ public class ItemCreatedEventHandler: IEventHandler<ItemCreatedEvent>
             var catalogItemDto = new ProductItemDto
             {
                 Id = @event.Id,
-                Name = @event.Name
+                Name = @event.Name,
+                CodeNumber = @event.CodeNumber,
+                CodePrefix = @event.CodePrefix
             };
 
             _catalogItemService.CreateProductItemAsync(catalogItemDto);

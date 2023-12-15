@@ -1,4 +1,4 @@
-﻿@inherits FormBase
+﻿@inherits FormBase<ProductBrand>
 
 @namespace BackOffice.Client.Pages.ProductCatalog.Brand
 
@@ -15,8 +15,8 @@
 
                         <MudCardContent>
 
-                            <MudTextField Label="Id" Class="mt-3" @bind-Value="ProductBrand.Id" For="@(() => ProductBrand.Id)" Variant="@MudBlazor.Variant.Filled" Disabled />
-                             <MudTextField Label="Name" Class="mt-3" @bind-Value="ProductBrand.Name" For="@(() => ProductBrand.Name)" Variant="@MudBlazor.Variant.Filled" />
+                            <MudTextField Label="Id" Class="mt-3" @bind-Value="Model.Id" For="@(() => Model.Id)" Variant="@MudBlazor.Variant.Filled" Disabled />
+                             <MudTextField Label="Name" Class="mt-3" @bind-Value="Model.Name" For="@(() => Model.Name)" Variant="@MudBlazor.Variant.Filled" />
 
                          </MudCardContent>
 

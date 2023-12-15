@@ -1,6 +1,6 @@
 ﻿using BackOffice.Core.Models.ProductCatalog;
 
-namespace BackOffice.Application.Mapping;
+namespace BackOffice.Application.Mapping.ProductCatalog;
 
 public static class ItemMapping
 {
@@ -33,7 +33,7 @@ public static class ItemMapping
             CodeNumber = model.CodeNumber,
             CodePrefix = model.CodePrefix,
             ParentId = model.ParentId,
-            CatalogBrand = model.Brand?.ToDto(),   
+            CatalogBrand = model.Brand?.ToDto(),
             CatalogType = model.ItemType?.ToDto(),
             Description = model.Description,
             PictureUri = model.PictureUri,

@@ -98,7 +98,7 @@ public class ItemService(IItemRepository itemRepository, IEventPublisher eventPu
         var result = await _itemRepository.CreateItemAsync(entity);
 
         if (result)
-            await _eventPublisher.PublishAsync(new ItemCreatedEvent(entity.Id, entity.Name));
+            await _eventPublisher.PublishAsync(new ItemCreatedEvent(entity.Id, entity.Name, entity.CodeNumber, entity.CodePrefix));
 
         return item;
     }
@@ -109,7 +109,7 @@ public class ItemService(IItemRepository itemRepository, IEventPublisher eventPu
         var result = await _itemRepository.UpdateItemAsync(entity);
 
         if (result)
-            await _eventPublisher.PublishAsync(new ItemUpdatedEvent(item.Id, item.Name));
+            await _eventPublisher.PublishAsync(new ItemUpdatedEvent(item.Id, item.Name, item.CodeNumber, item.CodePrefix));
 
         return item;
     }

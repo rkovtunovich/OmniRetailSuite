@@ -1,4 +1,5 @@
 ﻿using BackOffice.Application.Helpers;
+using BackOffice.Application.Mapping.ProductCatalog;
 using BackOffice.Application.Services.Abstraction.ProductCatalog;
 using BackOffice.Core.Models.ProductCatalog;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,12 +8,12 @@ namespace BackOffice.Application.Services.Implementation.ProductCatalog;
 
 public class ProductTypeService: IProductTypeService
 {
-    private readonly IHttpService _httpService;
+    private readonly IHttpService<ProductCatalogResource> _httpService;
     private readonly ILogger<ProductItemService> _logger;
 
     public event Func<ProductType, Task>? ProductTypeChanged;
 
-    public ProductTypeService([FromKeyedServices(Constants.API_HTTP_CLIENT_NAME)] IHttpService httpService, ILogger<ProductItemService> logger)
+    public ProductTypeService([FromKeyedServices(Constants.PRODUCT_CATALOG_HTTP_CLIENT_NAME)] IHttpService<ProductCatalogResource> httpService, ILogger<ProductItemService> logger)
     {
         _logger = logger;
         _httpService = httpService;

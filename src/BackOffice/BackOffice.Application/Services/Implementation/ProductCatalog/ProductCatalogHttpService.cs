@@ -1,10 +1,9 @@
 ﻿using System.Net.Http.Json;
 using IdentityModel.Client;
-using Infrastructure.Serialization.Abstraction;
 
-namespace BackOffice.Application.Services.Implementation;
+namespace BackOffice.Application.Services.Implementation.ProductCatalog;
 
-public class ProductCatalogHttpService : IHttpService
+public class ProductCatalogHttpService : IHttpService<ProductCatalogResource>
 {
     private readonly IHttpClientFactory _clientFactory;
     private readonly ITokenService _tokenService;
@@ -109,7 +108,7 @@ public class ProductCatalogHttpService : IHttpService
 
     private async Task<HttpClient> GetClientAsync()
     {
-        var client = _clientFactory.CreateClient(Constants.API_HTTP_CLIENT_NAME);
+        var client = _clientFactory.CreateClient(Constants.PRODUCT_CATALOG_HTTP_CLIENT_NAME);
         var tokenResponse = await _tokenService.GetToken(Constants.CATALOG_API_SCOPE);
         if (tokenResponse is null || tokenResponse.IsError)
             throw new Exception(tokenResponse?.Error ?? "Unable to get AccessToken");

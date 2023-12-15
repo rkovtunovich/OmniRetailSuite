@@ -1,12 +1,11 @@
 ﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
-using BackOffice.Client.Services;
+using BackOffice.Client.Components.Base;
 using BackOffice.Core.Models.ProductCatalog;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Item;
 
-public partial class ItemDetails
+public partial class ItemDetails: FormBase<ProductItem>
 {
     #region Injects
 
@@ -25,9 +24,6 @@ public partial class ItemDetails
     [Parameter]
     public EventCallback<string> OnSaveClick { get; set; }
 
-    [Parameter]
-    public ProductItem ProductItem { get; set; } = null!;
-
     #endregion
 
     #region Fields
@@ -40,22 +36,15 @@ public partial class ItemDetails
 
     private ProductParentSelectModel? _selectedParent;
 
-    private string LoadPicture => string.IsNullOrEmpty(ProductItem.PictureBase64) ? string.Empty : $"data:image/png;base64, {ProductItem.PictureBase64}";
+    private string LoadPicture => string.IsNullOrEmpty(Model.PictureBase64) ? string.Empty : $"data:image/png;base64, {Model.PictureBase64}";
 
-    private bool HasPicture => !string.IsNullOrEmpty(ProductItem.PictureBase64);
+    private bool HasPicture => !string.IsNullOrEmpty(Model.PictureBase64);
 
     private string _badFileMessage = string.Empty;
 
     #endregion
 
     #region Overrides
-
-    protected override void OnInitialized()
-    {
-        EditContext = new EditContext(ProductItem);
-
-        base.OnInitialized();
-    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -111,11 +100,11 @@ public partial class ItemDetails
         if (!EditContext?.Validate() ?? false)
             return;
 
-        if (_selectedParent is not null)       
-            ProductItem.ParentId = _selectedParent.Id;
+        if (_selectedParent is not null)
+            Model.ParentId = _selectedParent.Id;
         
 
-        var result = await ProductItemService.UpdateItemAsync(ProductItem);
+        var result = await ProductItemService.UpdateItemAsync(Model);
         if (result is not null)
         {
             await OnSaveClick.InvokeAsync(null);
@@ -125,7 +114,7 @@ public partial class ItemDetails
 
     private async Task DeleteClick()
     {
-        await ProductItemService.DeleteItemAsync(ProductItem.Id, true);
+        await ProductItemService.DeleteItemAsync(Model.Id, true);
 
         CloseClick();
     }
@@ -140,8 +129,8 @@ public partial class ItemDetails
         var flattenedList = new List<ProductParentSelectModel>();
         FlattenTree(allParents, flattenedList, 0);
 
-        if (ProductItem.ParentId is not null)
-            _selectedParent = flattenedList.FirstOrDefault(p => p.Id == ProductItem.ParentId);
+        if (Model.ParentId is not null)
+            _selectedParent = flattenedList.FirstOrDefault(p => p.Id == Model.ParentId);
 
         return flattenedList;
     }

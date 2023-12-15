@@ -1,11 +1,11 @@
 ﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
+using BackOffice.Client.Components.Base;
 using BackOffice.Core.Models.ProductCatalog;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Item;
 
-public partial class ItemCreate
+public partial class ItemCreate: FormBase<ProductItem>
 {
     #region Injects
 
@@ -32,13 +32,11 @@ public partial class ItemCreate
 
     private List<ProductBrand> _itemBrands = [];
 
-    private string LoadPicture => string.IsNullOrEmpty(_item.PictureBase64) ? string.Empty : $"data:image/png;base64, {_item.PictureBase64}";
+    private string LoadPicture => string.IsNullOrEmpty(Model.PictureBase64) ? string.Empty : $"data:image/png;base64, {Model.PictureBase64}";
 
-    private bool HasPicture => !string.IsNullOrEmpty(_item.PictureBase64);
+    private bool HasPicture => !string.IsNullOrEmpty(Model.PictureBase64);
 
     private string _badFileMessage = string.Empty;
-
-    private ProductItem _item = new();
 
     private List<ProductParentSelectModel> _flattenedParents = [];
 
@@ -47,13 +45,6 @@ public partial class ItemCreate
     #endregion
 
     #region Overrides
-
-    protected override void OnInitialized()
-    {
-        EditContext = new EditContext(_item);
-
-        base.OnInitialized();
-    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -106,9 +97,9 @@ public partial class ItemCreate
             return;
 
         if (_selectedParent is not null)
-            _item.ParentId = _selectedParent.Id;
+            Model.ParentId = _selectedParent.Id;
 
-        var result = await ProductItemService.CreateItemAsync(_item);
+        var result = await ProductItemService.CreateItemAsync(Model);
         if (result is not null)
         {
             await OnSaveClick.InvokeAsync(null);
@@ -124,8 +115,8 @@ public partial class ItemCreate
         var flattenedList = new List<ProductParentSelectModel>();
         FlattenTree(allParents, flattenedList, 0);
 
-        if (_item.ParentId is not null)
-            _selectedParent = flattenedList.FirstOrDefault(p => p.Id == _item.ParentId);
+        if (Model.ParentId is not null)
+            _selectedParent = flattenedList.FirstOrDefault(p => p.Id == Model.ParentId);
 
         return flattenedList;
     }

@@ -1,15 +1,6 @@
 {
   "Routes": [
     {
-      "ServiceName": "catalogapi",
-      "DownstreamPathTemplate": "/api/v1/catalog/{everything}",
-      "UpstreamPathTemplate": "/api/v1/catalog/{everything}",
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityServer",
-        "AllowedScopes": [ "webappsgateway" ]
-      }
-    },
-    {
       "ServiceName": "identityapi",
       "DownstreamPathTemplate": "/api/v1/{everything}",
       "UpstreamPathTemplate": "/api/v1/identity/{everything}"
@@ -20,9 +11,22 @@
       "UpstreamPathTemplate": "/.well-known/openid-configuration"
     },
     {
+      "ServiceName": "catalogapi",
+      "DownstreamPathTemplate": "/api/v1/catalog/{everything}",
+      "UpstreamPathTemplate": "/api/v1/catalog/{everything}",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "IdentityServer",
+        "AllowedScopes": [ "webappsgateway" ]
+      }
+    },
+    {
       "ServiceName": "retailapi",
-      "DownstreamPathTemplate": "/api/{everything}",
-      "UpstreamPathTemplate": "/retail/api/{everything}"
+      "DownstreamPathTemplate": "/api/v1/retail/{everything}",
+      "UpstreamPathTemplate": "/api/v1/retail/{everything}",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "IdentityServer",
+        "AllowedScopes": [ "webappsgateway" ]
+      }
     }
   ],
   "GlobalConfiguration": {

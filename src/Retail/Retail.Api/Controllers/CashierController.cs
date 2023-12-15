@@ -5,6 +5,8 @@ using Retail.Core.Entities;
 
 namespace Retail.Api.Controllers;
 
+[ApiController]
+[Route("api/v1/retail")]
 public class CashierController(ICashierService cashierService, ILogger<CashierController> logger) : ControllerBase
 {
     private readonly ICashierService _cashierService = cashierService;
@@ -63,7 +65,7 @@ public class CashierController(ICashierService cashierService, ILogger<CashierCo
         {
             var createdCashier = await _cashierService.CreateCashierAsync(cashierDto);
 
-            return CreatedAtAction(nameof(GetCashierAsync), new { id = createdCashier.Id }, createdCashier);
+            return Created();
         }
         catch (Exception e)
         {

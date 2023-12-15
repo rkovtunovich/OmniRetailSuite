@@ -11,7 +11,7 @@ public partial class BrandList : OrsComponent
 
     [Inject] private TabsService _tabsService { get; set; } = null!;
 
-    private List<ProductBrand> _catalogBrands = new();
+    private List<ProductBrand> _catalogBrands = [];
 
     private MudDataGrid<ProductBrand> _dataGrid = null!;
 
@@ -53,7 +53,7 @@ public partial class BrandList : OrsComponent
     {
         var parameters = new Dictionary<string, object>
         {
-            { nameof(BrandDetails.ProductBrand), context.Item }
+            { nameof(BrandDetails.Model), context.Item }
         };
 
         _tabsService.TryCreateTab<BrandDetails>(parameters);

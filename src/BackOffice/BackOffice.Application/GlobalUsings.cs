@@ -1,7 +1,11 @@
 ﻿global using BackOffice.Application.Mapping;
 global using BackOffice.Application.Services.Abstraction;
 
+global using BackOffice.Core.Models;
+
 global using Contracts.Dtos.ProductCatalog;
+
+global using Infrastructure.Serialization.Abstraction;
 
 global using Microsoft.Extensions.Logging;
 

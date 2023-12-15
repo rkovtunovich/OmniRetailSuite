@@ -3,7 +3,7 @@ using IdentityModel.Client;
 
 namespace BackOffice.Application.Services.Implementation;
 
-public class IdentityHttpService : IHttpService
+public class IdentityHttpService : IHttpService<IdentityResource>
 {
     private readonly IHttpClientFactory _clientFactory;
     private readonly ITokenService _tokenService;

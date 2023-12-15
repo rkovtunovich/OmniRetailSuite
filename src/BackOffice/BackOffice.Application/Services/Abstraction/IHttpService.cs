@@ -1,6 +1,8 @@
-﻿namespace BackOffice.Application.Services.Abstraction;
+﻿using BackOffice.Core.Models;
 
-public interface IHttpService
+namespace BackOffice.Application.Services.Abstraction;
+
+public interface IHttpService<TResource> where TResource: ExternalResource
 {
     Task<T?> GetAsync<T>(string uri);
 

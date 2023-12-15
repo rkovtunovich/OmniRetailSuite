@@ -1,4 +1,4 @@
-﻿@inherits FormBase
+﻿@inherits FormBase<ProductParent>
 
 @namespace BackOffice.Client.Pages.ProductCatalog.Parent
 
@@ -14,8 +14,8 @@
                     <MudCard>
 
                         <MudCardContent>
-                            <MudTextField Label="Name" Class="mt-3" @bind-Value="_itemParent.Name" For="@(() => _itemParent.Name)" Variant="@MudBlazor.Variant.Filled" />
-                            <MudSelect Label="Parent" T="Guid?" For="@(() => _itemParent.ParentId)" ValueChanged="OnParentSelected">
+                            <MudTextField Label="Name" Class="mt-3" @bind-Value="Model.Name" For="@(() => Model.Name)" Variant="@MudBlazor.Variant.Filled" />
+                            <MudSelect Label="Parent" T="Guid?" For="@(() => Model.ParentId)" ValueChanged="OnParentSelected">
                                 <MudSelectItem Value="null" T="Guid?">No Parent</MudSelectItem>
                                 @foreach (var parent in _allItemParents)
                                 {

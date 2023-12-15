@@ -1,32 +1,23 @@
 ﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
+using BackOffice.Client.Components.Base;
 using BackOffice.Core.Models.ProductCatalog;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Brand;
 
-public partial class BrandCreate
+public partial class BrandCreate: FormBase<ProductBrand>
 {
     [Inject] public IProductBrandService ProductBrandService { get; set; } = null!;
 
     [Parameter]
     public EventCallback<string> OnSaveClick { get; set; }
 
-    private ProductBrand _brand = new();
-
-    protected override void OnInitialized()
-    {
-        EditContext = new EditContext(_brand);
-
-        base.OnInitialized();
-    }
-
     private async Task CreateClick()
     {
         if (!EditContext?.Validate() ?? false)
             return;
 
-        var result = await ProductBrandService.CreateBrandAsync(_brand);
+        var result = await ProductBrandService.CreateBrandAsync(Model);
         if (result is not null)
         {
             await OnSaveClick.InvokeAsync(null);

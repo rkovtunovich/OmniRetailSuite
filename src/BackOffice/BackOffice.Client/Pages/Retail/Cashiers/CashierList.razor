@@ -1,0 +1,34 @@
+﻿@page "/cashier"
+@* @attribute [Authorize(Roles = BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS)] *@
+@attribute [Authorize]
+@inherits ListBase<Cashier>
+
+@namespace BackOffice.Client.Pages.Retail.Cashiers
+@using BackOffice.Core.Models.Retail
+
+<PageTitle>Manage Cashier</PageTitle>
+
+<MudDataGrid T="Cashier" @ref="@(DataGrid)" Items="@Items" Filterable="true" QuickFilter="@_quickFilter" EditMode="@(_editMode)" EditTrigger="@(_editTrigger)"
+             StartedEditingItem="@StartedEditingItem" CanceledEditingItem="@CanceledEditingItem" CommittedItemChanges="@CommittedItemChanges" ReadOnly="false" RowClick="RowClick"
+             EditDialogOptions="_dialogOptions" FixedHeader="true" HeaderClass="data-grid-header"
+             Style="height:100%; display:flex; flex-direction:column">
+
+    <ToolBarContent>
+
+        <MudButton OnClick="@CreateClick" Color="@Color.Success" Class="add-item-btn">Add</MudButton>
+        <MudSpacer />
+        <MudTextField @bind-Value="@SearchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+
+    <Columns>
+        <PropertyColumn Property="x => x.GetCode()" Title="Code" IsEditable="false" />
+        <PropertyColumn Property="x => x.Name" />
+        <TemplateColumn CellClass="d-flex justify-end" Sortable="false" Filterable="false">
+            <CellTemplate>
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.FilterNone" OnClick="@(() => OpenClick(context))" />
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+
+</MudDataGrid>
