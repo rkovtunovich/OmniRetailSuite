@@ -2,30 +2,40 @@
 
 public static class RetailUrlHelper
 {
-    private readonly static RetailResource _retailResource = new();
+    private static readonly RetailResource _retailResource = new();
 
-    public static string GetAllCashiers()
+    public static string GetAll<T>()
     {
-        return $"{_retailResource.BaseAddress}cashiers";
+        var resourceName =  $"{typeof(T).Name.ToLower()}s";
+
+        return $"{_retailResource.BaseAddress}{resourceName}";
     }
 
-    public static string GetCashier(Guid cashierId)
+    public static string Get<T>(Guid id)
     {
-        return $"{_retailResource.BaseAddress}cashiers/{cashierId}";
+        var resourceName = $"{typeof(T).Name.ToLower()}s";
+
+        return $"{_retailResource.BaseAddress}{resourceName}/{id}";
     }
 
-    public static string AddCashier()
+    public static string Add<T>()
     {
-        return $"{_retailResource.BaseAddress}cashiers";
+        var resourceName = $"{typeof(T).Name.ToLower()}s";
+
+        return $"{_retailResource.BaseAddress}{resourceName}";
     }
 
-    public static string UpdateCashier()
+    public static string Update<T>()
     {
-        return $"{_retailResource.BaseAddress}cashiers";
+        var resourceName = $"{typeof(T).Name.ToLower()}s";
+
+        return $"{_retailResource.BaseAddress}{resourceName}";
     }
 
-    public static string DeleteCashier(Guid cashierId, bool isSoftDeleting)
+    public static string Delete<T>(Guid id, bool isSoftDeleting)
     {
-        return $"{_retailResource.BaseAddress}cashiers/{cashierId}?useSoftDeleting={isSoftDeleting}";
+        var resourceName = $"{typeof(T).Name.ToLower()}s";
+
+        return $"{_retailResource.BaseAddress}{resourceName}/{id}?useSoftDeleting={isSoftDeleting}";
     }
 }

@@ -2,10 +2,12 @@
 @using BackOffice.Client.Pages.ProductCatalog.Item
 @using BackOffice.Client.Pages.ProductCatalog.Type
 @using BackOffice.Client.Pages.Retail.Cashiers
+@using BackOffice.Client.Pages.Retail.Stores
 
 @inherits OrsComponent
 
 <MudNavMenu>
+
     <AuthorizeView>
 
         <Authorized>
@@ -18,6 +20,7 @@
 
             <MudNavGroup Title="Retail" Icon="@Icons.Material.Filled.Dataset" Expanded="false" Class="my-nav-menu-group">
                 <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<CashierList>(nameof(CashierList), e)">Cashiers</MudNavLink>
+                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<StoreList>(nameof(StoreList), e)">Stores</MudNavLink>
             </MudNavGroup>
 
         </Authorized>

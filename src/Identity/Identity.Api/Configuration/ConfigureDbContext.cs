@@ -9,7 +9,7 @@ public static class ConfigureDbContext
     public static IServiceCollection AddIdentityDbContext(this IServiceCollection services, IConfiguration configuration)
     {
         var builder = new NpgsqlDataSourceBuilder(connectionString: configuration.GetConnectionString("IdentityApiConnection"))
-            .EnableDynamicJsonMappings();
+            .EnableDynamicJson();
 
         var dataSource = builder.Build();
 

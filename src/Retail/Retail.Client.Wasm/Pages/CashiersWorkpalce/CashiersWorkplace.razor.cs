@@ -1,4 +1,4 @@
-﻿using Retail.Core.Models;
+﻿using Retail.Core.Entities.ReceiptAggregate;
 
 namespace Retail.Client.Wasm.Pages.CashiersWorkpalce;
 

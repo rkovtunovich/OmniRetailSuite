@@ -2,8 +2,10 @@
 global using BackOffice.Application.Services.Abstraction;
 
 global using BackOffice.Core.Models;
+global using BackOffice.Core.Models.Retail;
 
 global using Contracts.Dtos.ProductCatalog;
+global using Contracts.Dtos.Retail;
 
 global using Infrastructure.Serialization.Abstraction;
 

@@ -2,15 +2,9 @@
 
 namespace BackOffice.Core.Models.ProductCatalog;
 
-public class ProductItem
+public class ProductItem : EntityModelBase
 {
-    public Guid Id { get; set; }
-
     public Guid? ItemTypeId { get; set; }
-
-    public int CodeNumber { get; set; }
-
-    public string? CodePrefix { get; set; }
 
     public Guid? ParentId { get; set; }
 
@@ -19,9 +13,6 @@ public class ProductItem
     public Guid? CatalogBrandId { get; set; }
 
     public ProductBrand? Brand { get; set; }
-
-    [Required(ErrorMessage = "The Name field is required")]
-    public string Name { get; set; } = null!;
 
     [Required(ErrorMessage = "The Description field is required")]
     public string Description { get; set; } = null!;
@@ -77,10 +68,5 @@ public class ProductItem
                string.Equals(extension, ".png", StringComparison.OrdinalIgnoreCase) ||
                string.Equals(extension, ".gif", StringComparison.OrdinalIgnoreCase) ||
                string.Equals(extension, ".jpeg", StringComparison.OrdinalIgnoreCase);
-    }
-
-    public string GetCode()
-    {
-        return $"{CodePrefix}{CodeNumber:0000}";
     }
 }

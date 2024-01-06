@@ -3,17 +3,17 @@ using BackOffice.Client.Components.Base;
 using BackOffice.Client.Services;
 using BackOffice.Core.Models.Retail;
 
-namespace BackOffice.Client.Pages.Retail.Cashiers;
+namespace BackOffice.Client.Pages.Retail.Stores;
 
-public partial class CashierList : ListBase<Cashier>
+public partial class StoreList : ListBase<Store>
 {
-    [Inject] public IRetailService<Cashier> RetailService { get; set; } = null!;
+    [Inject] public IRetailService<Store> RetailService { get; set; } = null!;
 
     private DataGridEditMode _editMode = DataGridEditMode.Form;
     private DataGridEditTrigger _editTrigger = DataGridEditTrigger.Manual;
     private DialogOptions _dialogOptions = new() { DisableBackdropClick = true };
 
-    private Func<Cashier, bool> _quickFilter => x =>
+    private Func<Store, bool> _quickFilter => x =>
     {
         if (string.IsNullOrWhiteSpace(SearchString))
             return true;
@@ -38,17 +38,17 @@ public partial class CashierList : ListBase<Cashier>
 
     private void CreateClick()
     {
-        TabsService.TryCreateTab<CashierCreate>();
+        TabsService.TryCreateTab<StoreCreate>();
     }
 
-    private void OpenClick(CellContext<Cashier> context)
+    private void OpenClick(CellContext<Store> context)
     {
         var parameters = new Dictionary<string, object>
         {
-            { nameof(CashierDetails.Model), context.Item }
+            { nameof(StoreDetails.Model), context.Item }
         };
 
-        TabsService.TryCreateTab<CashierDetails>(parameters);
+        TabsService.TryCreateTab<StoreDetails>(parameters);
     }
 
     private async Task ReloadItems()
@@ -58,23 +58,23 @@ public partial class CashierList : ListBase<Cashier>
         CallRequestRefresh();
     }
 
-    private void StartedEditingItem(Cashier item)
+    private void StartedEditingItem(Store item)
     {
         _editTrigger = DataGridEditTrigger.Manual;
     }
 
-    private void CanceledEditingItem(Cashier item)
+    private void CanceledEditingItem(Store item)
     {
     }
 
-    private async Task CommittedItemChanges(Cashier cashier)
+    private async Task CommittedItemChanges(Store cashier)
     {
         await RetailService.UpdateAsync(cashier);
 
         CallRequestRefresh();
     }
 
-    private async Task RowClick(DataGridRowClickEventArgs<Cashier> eventArg)
+    private async Task RowClick(DataGridRowClickEventArgs<Store> eventArg)
     {
         if (eventArg.MouseEventArgs.Detail == 1)
             return;
@@ -87,7 +87,7 @@ public partial class CashierList : ListBase<Cashier>
         });
     }
 
-    private async Task OnChanged(Cashier changed)
+    private async Task OnChanged(Store changed)
     {
         Items = await RetailService.GetAllAsync();
         CallRequestRefresh();

@@ -8,9 +8,9 @@ public interface IRetailService<TModel> where TModel : class
 
     Task<List<TModel>> GetAllAsync();
 
-    Task<TModel> CreateAsync(TModel cashierDto);
+    Task<TModel> CreateAsync(TModel model);
 
-    Task<bool> UpdateAsync(TModel cashierDto);
+    Task<bool> UpdateAsync(TModel model);
 
     Task<bool> DeleteAsync(Guid id, bool isSoftDeleting);
 }
