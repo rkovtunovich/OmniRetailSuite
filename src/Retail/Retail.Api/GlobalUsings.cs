@@ -1,6 +1,9 @@
 ﻿global using Microsoft.EntityFrameworkCore;
 
 global using Retail.Application.Services.Implementation;
+global using Retail.Application.Services.Abstraction;
+global using Retail.Core.Entities;
+global using Retail.Core.Repositories;
 
 global using System.Collections.Generic;
 global using System.ComponentModel.DataAnnotations;

@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using BackOffice.Application.Helpers;
-using BackOffice.Application.Services.Abstraction.Retail;
 
-namespace BackOffice.Application.Services.Implementation.Retail;
+namespace BackOffice.Application.Services.Implementation;
 
-public class RetailService<TModel, TDto>: IRetailService<TModel> where TModel : EntityModelBase, new()
+public class RetailService<TModel, TDto> : IRetailService<TModel> where TModel : EntityModelBase, new()
 {
     private readonly IHttpService<RetailResource> _httpService;
     private readonly ILogger<RetailService<TModel, TDto>> _logger;

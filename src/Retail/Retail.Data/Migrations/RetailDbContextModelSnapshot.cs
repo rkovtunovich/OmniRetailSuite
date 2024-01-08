@@ -292,13 +292,13 @@ namespace Retail.Data.Migrations
                         .HasColumnName("updated_at");
 
                     b.HasKey("Id")
-                        .HasName("pk_store");
+                        .HasName("pk_stores");
 
                     b.HasIndex("CodePrefix", "CodeNumber")
                         .IsUnique()
-                        .HasDatabaseName("ix_store_code_prefix_code_number");
+                        .HasDatabaseName("ix_stores_code_prefix_code_number");
 
-                    b.ToTable("store", (string)null);
+                    b.ToTable("stores", (string)null);
                 });
 
             modelBuilder.Entity("CashierStore", b =>
@@ -315,7 +315,7 @@ namespace Retail.Data.Migrations
                         .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_cashier_store_store_store_id");
+                        .HasConstraintName("fk_cashier_store_stores_store_id");
                 });
 
             modelBuilder.Entity("Retail.Core.Entities.ReceiptAggregate.Receipt", b =>
@@ -332,7 +332,7 @@ namespace Retail.Data.Migrations
                         .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_receipts_store_store_id");
+                        .HasConstraintName("fk_receipts_stores_store_id");
 
                     b.Navigation("Cashier");
 

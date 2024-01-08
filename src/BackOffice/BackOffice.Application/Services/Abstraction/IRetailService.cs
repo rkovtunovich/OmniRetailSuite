@@ -1,4 +1,4 @@
-﻿namespace BackOffice.Application.Services.Abstraction.Retail;
+﻿namespace BackOffice.Application.Services.Abstraction;
 
 public interface IRetailService<TModel> where TModel : class
 {

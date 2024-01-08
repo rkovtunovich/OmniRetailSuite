@@ -1,14 +1,15 @@
-﻿using Retail.Core.Repositories;
+﻿using Retail.Core.Entities;
+using Retail.Core.Repositories;
 
 namespace Retail.Application.Services.Implementation;
 
-public class StoreService(IStoreRepository storeRepository, ILogger<StoreService> logger) : IStoreService
+public class StoreService(IRetailRepository<Store> storeRepository, ILogger<StoreService> logger) : IStoreService
 {
     public async Task<IEnumerable<StoreDto>> GetStoresAsync()
     {
         try
         {
-            var stores = await storeRepository.GetStoresAsync();
+            var stores = await storeRepository.GetEntitiesAsync();
 
             return stores.Select(s => s.ToDto()).ToList();
         }
@@ -23,7 +24,7 @@ public class StoreService(IStoreRepository storeRepository, ILogger<StoreService
     {
         try
         {
-            var store = await storeRepository.GetStoreAsync(id);
+            var store = await storeRepository.GetEntityAsync(id);
 
             return store?.ToDto();
         }
@@ -38,7 +39,7 @@ public class StoreService(IStoreRepository storeRepository, ILogger<StoreService
     {
         try
         {
-            var store = await storeRepository.CreateStoreAsync(storeDto.ToEntity());
+            var store = await storeRepository.AddEntityAsync(storeDto.ToEntity());
 
             return store.ToDto();
         }
@@ -53,7 +54,7 @@ public class StoreService(IStoreRepository storeRepository, ILogger<StoreService
     {
         try
         {
-            var store = await storeRepository.UpdateStoreAsync(storeDto.ToEntity());
+            var store = await storeRepository.UpdateEntityAsync(storeDto.ToEntity());
 
             return store.ToDto();
         }
@@ -68,7 +69,7 @@ public class StoreService(IStoreRepository storeRepository, ILogger<StoreService
     {
         try
         {
-            await storeRepository.DeleteStoreAsync(id, isSoftDeleting);
+            await storeRepository.DeleteEntityAsync(id, isSoftDeleting);
         }
         catch (Exception)
         {

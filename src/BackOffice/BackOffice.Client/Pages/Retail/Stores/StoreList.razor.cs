@@ -1,5 +1,4 @@
-﻿using BackOffice.Application.Services.Abstraction.Retail;
-using BackOffice.Client.Components.Base;
+﻿using BackOffice.Client.Components.Base;
 using BackOffice.Client.Services;
 using BackOffice.Core.Models.Retail;
 

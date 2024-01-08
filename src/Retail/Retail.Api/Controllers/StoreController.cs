@@ -4,6 +4,8 @@ using Retail.Application.Services.Abstraction;
 
 namespace Retail.Api.Controllers;
 
+[ApiController]
+[Route("api/v1/retail")]
 public class StoreController: ControllerBase
 {
     IStoreService _storeService;

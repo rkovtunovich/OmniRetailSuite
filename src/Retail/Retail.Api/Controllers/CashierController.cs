@@ -94,4 +94,24 @@ public class CashierController(ICashierService cashierService, ILogger<CashierCo
             return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
         }
     }
+
+    [HttpDelete]
+    [Route("cashiers/{id:Guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<CashierDto>> DeleteCashierAsync(Guid id, bool useSoftDeleting)
+    {
+        try
+        {
+            await _cashierService.DeleteCashierAsync(id, useSoftDeleting);
+
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error while deleting cashier");
+
+            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+        }
+    }
 }

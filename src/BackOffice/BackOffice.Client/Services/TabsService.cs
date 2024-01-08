@@ -80,7 +80,6 @@ public class TabsService
         TabDescriptions.Add(tabView);
         NextTabIndex = TabDescriptions.Count - 1;
         OnTabChanged?.Invoke();
-
     }
 
     private RenderFragment CreateFragment<TFragment>(Dictionary<string, object>? parameters = null) where TFragment : ComponentBase => builder =>
