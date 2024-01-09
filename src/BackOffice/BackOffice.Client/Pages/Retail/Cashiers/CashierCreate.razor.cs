@@ -34,7 +34,7 @@ public partial class CashierCreate: FormBase<Cashier>
 
     #region Commands
 
-    protected override void DefineToolbarCommands()
+    protected override void DefineFormToolbarCommands()
     {
         ToolbarCommands =
         [

@@ -1,5 +1,5 @@
 ﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
-using BackOffice.Client.Components.Common;
+using BackOffice.Client.Components.Base;
 using BackOffice.Client.Enums;
 using BackOffice.Client.Pages.ProductCatalog.Parent;
 using BackOffice.Client.Services;
@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Components.Web;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Item;
 
-public partial class ItemList : OrsComponent
+public partial class ItemList : OrsComponentBase
 {
     #region Injects
 

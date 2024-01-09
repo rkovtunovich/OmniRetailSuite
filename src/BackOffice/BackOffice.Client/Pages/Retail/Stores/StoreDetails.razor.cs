@@ -11,6 +11,22 @@ public partial class StoreDetails: FormBase<Store>
     [Parameter]
     public EventCallback<string> OnSaveClick { get; set; }
 
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        _cashier_Tab_ToolbarCommands =
+        [
+            new()
+            {
+                Name = "Add",
+                Icon = Icons.Material.Outlined.Add,
+                Callback = EventCallback.Factory.Create<MouseEventArgs>(this, CashierTabOnAddClick),
+                Tooltip = "Add"
+            }
+        ];
+    }
+
     private async Task SaveClick()
     {
         if (!EditContext?.Validate() ?? false)
@@ -34,7 +50,7 @@ public partial class StoreDetails: FormBase<Store>
 
     #region Commands
 
-    protected override void DefineToolbarCommands()
+    protected override void DefineFormToolbarCommands()
     {
         ToolbarCommands =
         [
@@ -60,6 +76,17 @@ public partial class StoreDetails: FormBase<Store>
                 Tooltip = "Close"
             }
         ];
+    }
+
+    #endregion
+
+    #region Cashiers Tab
+
+    private List<ToolbarCommand> _cashier_Tab_ToolbarCommands = null!;
+
+    private async Task CashierTabOnAddClick()
+    {
+        await Task.CompletedTask;
     }
 
     #endregion

@@ -34,7 +34,7 @@ public partial class BrandDetails: FormBase<ProductBrand>
 
     #region Commands
 
-    protected override void DefineToolbarCommands()
+    protected override void DefineFormToolbarCommands()
     {
         ToolbarCommands =
         [

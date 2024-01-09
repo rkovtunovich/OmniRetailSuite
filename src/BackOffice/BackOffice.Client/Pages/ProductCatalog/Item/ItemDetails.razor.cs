@@ -66,7 +66,7 @@ public partial class ItemDetails: FormBase<ProductItem>
 
     #region Commands
 
-    protected override void DefineToolbarCommands()
+    protected override void DefineFormToolbarCommands()
     {
         ToolbarCommands =
         [

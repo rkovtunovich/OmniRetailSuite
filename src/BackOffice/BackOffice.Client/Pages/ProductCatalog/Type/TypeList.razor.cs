@@ -1,11 +1,11 @@
 ﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
-using BackOffice.Client.Components.Common;
+using BackOffice.Client.Components.Base;
 using BackOffice.Client.Services;
 using BackOffice.Core.Models.ProductCatalog;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Type;
 
-public partial class TypeList : OrsComponent
+public partial class TypeList : OrsComponentBase
 {
     [Inject] public IProductTypeService ProductTypeService { get; set; } = null!;
 

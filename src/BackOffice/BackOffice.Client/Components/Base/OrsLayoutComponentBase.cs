@@ -1,6 +1,6 @@
-﻿namespace BackOffice.Client.Components.Common;
+﻿namespace BackOffice.Client.Components.Base;
 
-public abstract class OrsComponent : ComponentBase, IDisposable
+public class OrsLayoutComponentBase : LayoutComponentBase
 {
     private readonly RefreshBroadcast _refresh = RefreshBroadcast.Instance;
 
@@ -21,10 +21,5 @@ public abstract class OrsComponent : ComponentBase, IDisposable
         {
             StateHasChanged();
         });
-    }
-
-    public virtual void Dispose()
-    {
-
     }
 }

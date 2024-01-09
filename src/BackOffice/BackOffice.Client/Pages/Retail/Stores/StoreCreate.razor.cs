@@ -34,7 +34,7 @@ public partial class StoreCreate: FormBase<Store>
 
     #region Commands
 
-    protected override void DefineToolbarCommands()
+    protected override void DefineFormToolbarCommands()
     {
         ToolbarCommands =
         [

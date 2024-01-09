@@ -34,7 +34,7 @@ public partial class ItemParentDetails: FormBase<ProductParent>
 
     #region Commands
 
-    protected override void DefineToolbarCommands()
+    protected override void DefineFormToolbarCommands()
     {
         ToolbarCommands =
         [

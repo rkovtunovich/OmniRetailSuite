@@ -1,10 +1,9 @@
-﻿using BackOffice.Client.Components.Common;
-using BackOffice.Client.Services;
+﻿using BackOffice.Client.Services;
 using Microsoft.AspNetCore.Components.Forms;
 
 namespace BackOffice.Client.Components.Base;
 
-public abstract class FormBase<TModel> : OrsComponent where TModel : class, new()
+public abstract class FormBase<TModel> : OrsComponentBase where TModel : class, new()
 {
     [Parameter]
     public List<ToolbarCommand> ToolbarCommands { get; set; } = null!;
@@ -16,7 +15,7 @@ public abstract class FormBase<TModel> : OrsComponent where TModel : class, new(
 
     protected EditContext? EditContext { get; set;}
 
-    protected abstract void DefineToolbarCommands();
+    protected abstract void DefineFormToolbarCommands();
 
     protected override void OnInitialized()
     {
@@ -24,7 +23,7 @@ public abstract class FormBase<TModel> : OrsComponent where TModel : class, new(
 
         EditContext = new EditContext(Model);
 
-        DefineToolbarCommands();
+        DefineFormToolbarCommands();
     }
 
     protected virtual void CloseClick()

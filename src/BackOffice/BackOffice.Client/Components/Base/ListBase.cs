@@ -1,9 +1,8 @@
-﻿using BackOffice.Client.Components.Common;
-using BackOffice.Client.Services;
+﻿using BackOffice.Client.Services;
 
 namespace BackOffice.Client.Components.Base;
 
-public abstract class ListBase<TItem> : OrsComponent where TItem : class
+public abstract class ListBase<TItem> : OrsComponentBase where TItem : class
 {
     [Parameter]
     public List<ToolbarCommand> ToolbarCommands { get; set; } = null!;

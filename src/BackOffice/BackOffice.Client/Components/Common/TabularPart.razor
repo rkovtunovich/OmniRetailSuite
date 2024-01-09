@@ -1,0 +1,23 @@
+﻿@namespace BackOffice.Client.Components.Common
+@inherits TabularPartBase<TItem>
+@typeparam TItem where TItem : EntityModelBase
+
+<MudContainer MaxWidth="MaxWidth.False" Class="p-0">
+
+    <ToolBar Commands="@Commands" />
+
+    <MudTable Items="Items" Context="rowContext">
+
+        <HeaderContent>
+            <MudTh>Code</MudTh>
+            <MudTh>Name</MudTh>
+        </HeaderContent>
+
+        <RowTemplate>
+            <MudTd>@rowContext.GetCode()</MudTd>
+                <MudTd>@rowContext.Name</MudTd>
+            </RowTemplate>
+
+        </MudTable>
+
+    </MudContainer>
