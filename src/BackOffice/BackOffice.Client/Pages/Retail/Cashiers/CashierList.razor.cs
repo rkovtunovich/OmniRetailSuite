@@ -12,17 +12,6 @@ public partial class CashierList : ListBase<Cashier>
     private DataGridEditTrigger _editTrigger = DataGridEditTrigger.Manual;
     private DialogOptions _dialogOptions = new() { DisableBackdropClick = true };
 
-    private Func<Cashier, bool> _quickFilter => x =>
-    {
-        if (string.IsNullOrWhiteSpace(SearchString))
-            return true;
-
-        if (x.Name.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
-            return true;
-
-        return false;
-    };
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)

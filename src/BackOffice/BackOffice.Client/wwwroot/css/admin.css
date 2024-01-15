@@ -309,3 +309,7 @@ a, .btn-link {
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* Internet Explorer/Edge */
 }
+
+.ors-selection-list-footer{
+    display: none;
+}

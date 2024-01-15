@@ -13,8 +13,6 @@ public partial class BrandList : OrsComponentBase
 
     private List<ProductBrand> _catalogBrands = [];
 
-    private MudDataGrid<ProductBrand> _dataGrid = null!;
-
     private string? _searchString;
 
     private DataGridEditMode _editMode = DataGridEditMode.Form;

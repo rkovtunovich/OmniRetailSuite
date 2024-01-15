@@ -7,7 +7,7 @@
 
 <PageTitle>Manage Product Type</PageTitle>
 
-<MudDataGrid T="ProductType" @ref="@(_dataGrid)" Items="@_catalogTypes" Filterable="true" QuickFilter="@_quickFilter" EditMode="@(_editMode)" EditTrigger="@(_editTrigger)"
+<MudDataGrid T="ProductType" Items="@_catalogTypes" Filterable="true" QuickFilter="@_quickFilter" EditMode="@(_editMode)" EditTrigger="@(_editTrigger)"
              StartedEditingItem="@StartedEditingItem" CanceledEditingItem="@CanceledEditingItem" CommittedItemChanges="@CommittedItemChanges" ReadOnly="false" RowClick="RowClick"
              EditDialogOptions="_dialogOptions" FixedHeader="true" HeaderClass="data-grid-header"
              Style="height:100%; display:flex; flex-direction:column">

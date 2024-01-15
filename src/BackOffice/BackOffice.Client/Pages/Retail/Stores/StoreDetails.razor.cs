@@ -1,21 +1,27 @@
-﻿using BackOffice.Client.Components.Base;
-using BackOffice.Core.Models.Retail;
+﻿using BackOffice.Client.Components.Common;
+using BackOffice.Client.Pages.Retail.Cashiers;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace BackOffice.Client.Pages.Retail.Stores;
 
-public partial class StoreDetails: FormBase<Store>
+public partial class StoreDetails : FormBase<Store>
 {
     [Inject] public IRetailService<Store> RetailService { get; set; } = null!;
 
+    [Inject] public IRetailService<Cashier> CashierService { get; set; } = null!;
+
+    [Inject] public IDialogService DialogService { get; set; } = null!;
+
     [Parameter]
     public EventCallback<string> OnSaveClick { get; set; }
+
+    #region Initialization
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
 
-        _cashier_Tab_ToolbarCommands =
+        _cashierTabToolbarCommands =
         [
             new()
             {
@@ -27,26 +33,21 @@ public partial class StoreDetails: FormBase<Store>
         ];
     }
 
-    private async Task SaveClick()
+    protected override async Task OnInitializedAsync()
     {
-        if (!EditContext?.Validate() ?? false)
+        await LoadFullModel();
+        _allCashiers = await GetAllCashiers();
+    }
+
+    private async Task LoadFullModel()
+    {
+        if (Model is null)
             return;
 
-        var result = await RetailService.UpdateAsync(Model);
-        if (result)
-        {
-            await OnSaveClick.InvokeAsync(null);
-            CloseClick();
-        }
+        Model = await RetailService.GetByIdAsync(Model.Id) ?? new();
     }
 
-    private async Task DeleteClick()
-    {
-        var result = await RetailService.DeleteAsync(Model.Id, true);
-
-        if (result)
-            CloseClick();
-    }
+    #endregion
 
     #region Commands
 
@@ -78,15 +79,75 @@ public partial class StoreDetails: FormBase<Store>
         ];
     }
 
+    private async Task SaveClick()
+    {
+        if (!EditContext?.Validate() ?? false)
+            return;
+
+        var result = await RetailService.UpdateAsync(Model);
+        if (result)
+        {
+            await OnSaveClick.InvokeAsync(null);
+            CloseClick();
+        }
+    }
+
+    private async Task DeleteClick()
+    {
+        var result = await RetailService.DeleteAsync(Model.Id, true);
+
+        if (result)
+            CloseClick();
+    }
+
     #endregion
 
     #region Cashiers Tab
 
-    private List<ToolbarCommand> _cashier_Tab_ToolbarCommands = null!;
+    private List<ToolbarCommand> _cashierTabToolbarCommands = null!;
+
+    private List<Cashier> _allCashiers = null!;
 
     private async Task CashierTabOnAddClick()
     {
+        AddCashier();
+
         await Task.CompletedTask;
+    }
+
+    private void AddCashier()
+    {
+        var fragmentParameters = new Dictionary<string, object>
+        {
+            { nameof(CashierSelectionList.Items), _allCashiers },
+            { nameof(CashierSelectionList.OnSelectionMade), EventCallback.Factory.Create<IEnumerable<Cashier>>(this, CashierTabOnSelectionChanged) }
+        };
+
+        var content = RenderFragmentBuilder.Create<CashierSelectionList>(fragmentParameters);
+
+        var options = new DialogOptions
+        {
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Medium,
+            CloseButton = true,
+            
+        };
+        var dialogParameters = new DialogParameters { { "ChildContent", content } };
+
+        var dialog = DialogService.Show<ModalComponent>("Select cashiers", dialogParameters, options);
+
+    }
+
+    private async Task<List<Cashier>> GetAllCashiers()
+    {
+        var cashiers = await CashierService.GetAllAsync();
+
+        return cashiers;
+    }
+
+    private void CashierTabOnSelectionChanged(IEnumerable<Cashier> selectedItems)
+    {
+        Model.Cashiers = selectedItems.ToList();
     }
 
     #endregion

@@ -28,8 +28,6 @@ public partial class ItemList : OrsComponentBase
 
     private List<ProductItem> _productItems = [];
 
-    private MudDataGrid<ProductItem> _dataGrid = null!;
-
     private string? _searchString;
 
     private DataGridEditMode _editMode = DataGridEditMode.Form;

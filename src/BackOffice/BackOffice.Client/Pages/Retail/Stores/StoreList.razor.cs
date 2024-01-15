@@ -1,4 +1,5 @@
 ﻿using BackOffice.Client.Components.Base;
+using BackOffice.Client.Components.Common;
 using BackOffice.Client.Services;
 using BackOffice.Core.Models.Retail;
 
@@ -11,17 +12,6 @@ public partial class StoreList : ListBase<Store>
     private DataGridEditMode _editMode = DataGridEditMode.Form;
     private DataGridEditTrigger _editTrigger = DataGridEditTrigger.Manual;
     private DialogOptions _dialogOptions = new() { DisableBackdropClick = true };
-
-    private Func<Store, bool> _quickFilter => x =>
-    {
-        if (string.IsNullOrWhiteSpace(SearchString))
-            return true;
-
-        if (x.Name.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
-            return true;
-
-        return false;
-    };
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -81,9 +71,7 @@ public partial class StoreList : ListBase<Store>
         _editMode = DataGridEditMode.Form;
         _editTrigger = DataGridEditTrigger.OnRowClick;
 
-        await Task.Run(() =>
-        {
-        });
+        await Task.CompletedTask;
     }
 
     private async Task OnChanged(Store changed)

@@ -23,6 +23,7 @@ public class StoreRepository(RetailDbContext context, ILogger<ReceiptRepository>
         try
         {
             return await _context.Stores
+                .Include(s => s.Cashiers)
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
         catch (Exception)
@@ -59,9 +60,9 @@ public class StoreRepository(RetailDbContext context, ILogger<ReceiptRepository>
 
             return store;
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            _logger.LogError("Error while updating store");
+            _logger.LogError(e, "Error while updating store");
             throw;
         }
     }

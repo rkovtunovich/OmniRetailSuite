@@ -11,9 +11,7 @@ public partial class TypeList : OrsComponentBase
 
     [Inject] private TabsService _tabsService { get; set; } = null!;
 
-    private List<ProductType> _catalogTypes = new();
-
-    private MudDataGrid<ProductType> _dataGrid = null!;
+    private List<ProductType> _catalogTypes = [];
 
     private string? _searchString;
 

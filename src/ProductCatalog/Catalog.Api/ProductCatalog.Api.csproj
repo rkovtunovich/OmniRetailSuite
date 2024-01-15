@@ -8,6 +8,7 @@
     <DockerfileContext>..\..</DockerfileContext>
     <Nullable>enable</Nullable>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <NuGetAuditLevel>high</NuGetAuditLevel>
   </PropertyGroup>
 
   <ItemGroup>

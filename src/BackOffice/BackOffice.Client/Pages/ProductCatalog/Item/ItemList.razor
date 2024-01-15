@@ -11,7 +11,7 @@
 
     <StartContent>
 
-        <MudDataGrid T="ProductItem" @ref="@(_dataGrid)" Items="@_productItems" Filterable="true" QuickFilter="@_quickFilter" EditMode="@(_editMode)" EditTrigger="@(_editTrigger)"
+        <MudDataGrid T="ProductItem" Items="@_productItems" Filterable="true" QuickFilter="@_quickFilter" EditMode="@(_editMode)" EditTrigger="@(_editTrigger)"
                      StartedEditingItem="@StartedEditingItem" CanceledEditingItem="@CanceledEditingItem" CommittedItemChanges="@CommittedItemChanges" ReadOnly="false" RowClick="RowClick"
                      EditDialogOptions="_dialogOptions" FixedHeader="true" HeaderClass="data-grid-header" Dense="true" ColumnResizeMode="ResizeMode.Column"
                      DragDropColumnReordering="true" Style="height:100%; display:flex; flex-direction:column; width:100%; resize:horizontal">
