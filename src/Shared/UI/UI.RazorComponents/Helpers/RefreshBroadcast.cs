@@ -1,4 +1,4 @@
-﻿namespace BackOffice.Client.Helpers;
+﻿namespace UI.Razor.Helpers;
 
 internal sealed class RefreshBroadcast
 {

@@ -1,6 +1,6 @@
 ﻿global using Retail.Core.Entities;
 
-global using Shared.Core.Abstraction;
+global using Core.Abstraction;
 
 global using System.Collections.Generic;
 global using System.IO;

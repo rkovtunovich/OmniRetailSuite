@@ -6,7 +6,7 @@ global using ProductCatalog.Core.Repositories;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.Logging;
 
-global using Shared.Core.Abstraction;
+global using Core.Abstraction;
 
 global using System.Collections.Generic;
 global using System.IO;

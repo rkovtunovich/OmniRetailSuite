@@ -1,4 +1,4 @@
-﻿namespace BackOffice.Client.Model.UI;
+﻿namespace UI.Razor.Models;
 
 public class TabView
 {

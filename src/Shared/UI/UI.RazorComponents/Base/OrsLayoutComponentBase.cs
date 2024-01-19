@@ -1,4 +1,4 @@
-﻿namespace BackOffice.Client.Components.Base;
+﻿namespace UI.Razor.Base;
 
 public class OrsLayoutComponentBase : LayoutComponentBase
 {

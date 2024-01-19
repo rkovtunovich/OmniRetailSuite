@@ -2,7 +2,7 @@
 global using ProductCatalog.Core.Messaging;
 global using ProductCatalog.Core.Repositories;
 
-global using Shared.Core.Abstraction;
+global using Core.Abstraction;
 
 global using System.Collections.Generic;
 global using System.IO;

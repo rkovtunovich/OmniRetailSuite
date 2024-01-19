@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
 
-namespace BackOffice.Client.Model.UI;
+namespace UI.Razor.Models;
 
 public class ToolbarCommand
 {

@@ -1,4 +1,4 @@
-﻿namespace Shared.Core.Abstraction;
+﻿namespace Core.Abstraction;
 
 public abstract class BaseEntity
 {

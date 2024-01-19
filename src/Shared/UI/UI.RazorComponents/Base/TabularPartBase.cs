@@ -1,6 +1,6 @@
-﻿namespace BackOffice.Client.Components.Base;
+﻿namespace UI.Razor.Base;
 
-public class TabularPartBase<TItem> : OrsComponentBase where TItem : EntityModelBase
+public class TabularPartBase<TItem> : OrsComponentBase
 {
     [Parameter]
     public List<TItem> Items { get; set; } = [];

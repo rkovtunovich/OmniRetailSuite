@@ -1,6 +1,4 @@
-﻿using BackOffice.Client.Services;
-
-namespace BackOffice.Client.Components.Base;
+﻿namespace BackOffice.Client.Components.Base;
 
 public abstract class ListBase<TItem> : OrsComponentBase where TItem : class
 {

@@ -16,13 +16,13 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Configuration" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
-		<PackageReference Include="MudBlazor" />
 		<PackageReference Include="Radzen.Blazor" />
 		<PackageReference Include="System.Net.Http.Json" />
 	</ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\Infrastructure\Infrastructure.Serialization.JsonText\Infrastructure.Serialization.JsonText.csproj" />
+    <ProjectReference Include="..\..\Shared\UI\UI.RazorComponents\UI.Razor.csproj" />
     <ProjectReference Include="..\BackOffice.Application\BackOffice.Application.csproj" />
   </ItemGroup>
 

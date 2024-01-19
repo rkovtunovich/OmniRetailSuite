@@ -1,15 +1,13 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿namespace UI.Razor.Services.Implementation;
 
-namespace BackOffice.Client.Services;
-
-public class TabsService
+public class TabsService: ITabsService
 {
     public event Action? OnTabChanged;
-    
-    public List<TabView> TabDescriptions { get; private set; } = new();
+
+    public List<TabView> TabDescriptions { get; private set; } = [];
 
     public int TabIndex { get; set; } = 0;
-    
+
     public int? NextTabIndex { get; private set; } = null;
 
     public MudTabs? Tabs { get; set; }
@@ -24,7 +22,7 @@ public class TabsService
 
     public void ActivateCurrentTab()
     {
-        if(CurrentTab.IsNullOrEmpty())
+        if (CurrentTab.Length is 0)
             return;
 
         var tab = TabDescriptions.FirstOrDefault(x => x.Name == CurrentTab);
@@ -52,7 +50,7 @@ public class TabsService
 
     public void TryCreateTab<TFragment>(Dictionary<string, object>? parameters = null) where TFragment : ComponentBase
     {
-        if(Tabs is null)
+        if (Tabs is null)
             return;
 
         var tabName = typeof(TFragment).Name;
@@ -65,8 +63,8 @@ public class TabsService
             OnTabChanged?.Invoke();
             return;
         }
-        
-        var content = CreateFragment<TFragment>(parameters);
+
+        var content = RenderFragmentBuilder.Create<TFragment>(parameters);
 
         var tabView = new TabView
         {
@@ -80,17 +78,4 @@ public class TabsService
         NextTabIndex = TabDescriptions.Count - 1;
         OnTabChanged?.Invoke();
     }
-
-    private RenderFragment CreateFragment<TFragment>(Dictionary<string, object>? parameters = null) where TFragment : ComponentBase => builder =>
-    {
-        builder.OpenComponent<TFragment>(0);
-        if (parameters is not null)
-        {
-            foreach (var parameter in parameters)
-            {
-                builder.AddAttribute(1, parameter.Key, parameter.Value);
-            }
-        }
-        builder.CloseComponent();
-    };
 }
