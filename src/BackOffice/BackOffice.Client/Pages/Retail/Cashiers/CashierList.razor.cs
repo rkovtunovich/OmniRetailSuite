@@ -33,7 +33,7 @@ public partial class CashierList : ListBase<Cashier>
     {
         var parameters = new Dictionary<string, object>
         {
-            { nameof(CashierDetails.Model), context.Item }
+            { nameof(CashierDetails.Id), context.Item.Id }
         };
 
         TabsService.TryCreateTab<CashierDetails>(parameters);

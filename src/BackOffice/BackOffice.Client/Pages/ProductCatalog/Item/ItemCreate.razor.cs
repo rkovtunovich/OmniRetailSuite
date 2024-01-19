@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components.Web;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Item;
 
-public partial class ItemCreate: FormBase<ProductItem>
+public partial class ItemCreate: CreationFormBase<ProductItem>
 {
     #region Injects
 

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components.Web;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Brand;
 
-public partial class BrandDetails: FormBase<ProductBrand>
+public partial class BrandDetails: DetailsFormBase<ProductBrand>
 {
     [Inject] public IProductBrandService ProductBrandService { get; set; } = null!;
 
@@ -23,6 +23,11 @@ public partial class BrandDetails: FormBase<ProductBrand>
             await OnSaveClick.InvokeAsync(null);
             CloseClick();
         }
+    }
+
+    protected override async Task<ProductBrand> GetModel()
+    {
+        return await ProductBrandService.GetBrandByIdAsync(Id) ?? new();
     }
 
     private async Task DeleteClick()

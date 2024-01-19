@@ -1,11 +1,9 @@
-﻿using BackOffice.Client.Components.Base;
-using BackOffice.Core.Models.Retail;
-using Microsoft.AspNetCore.Components.Forms;
+﻿using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace BackOffice.Client.Pages.Retail.Stores;
 
-public partial class StoreCreate: FormBase<Store>
+public partial class StoreCreate: CreationFormBase<Store>
 {
     [Inject] public IRetailService<Store> RetailService { get; set; } = null!;
 

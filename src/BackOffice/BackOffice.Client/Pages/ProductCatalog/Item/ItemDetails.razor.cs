@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components.Web;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Item;
 
-public partial class ItemDetails: FormBase<ProductItem>
+public partial class ItemDetails: DetailsFormBase<ProductItem>
 {
     #region Injects
 
@@ -58,6 +58,11 @@ public partial class ItemDetails: FormBase<ProductItem>
         }
 
         await base.OnAfterRenderAsync(firstRender);
+    }
+
+    protected override async Task<ProductItem> GetModel()
+    {
+        return await ProductItemService.GetItemByIdAsync(Id) ?? new();
     }
 
     #endregion

@@ -54,11 +54,32 @@ public class StoreRepository(RetailDbContext context, ILogger<ReceiptRepository>
     {
         try
         {
-            _context.Stores.Update(store);
+            // Load the existing store including associated cashiers
+            var existingStore = await _context.Stores
+                .Include(s => s.Cashiers)
+                .FirstOrDefaultAsync(s => s.Id == store.Id) ?? throw new InvalidOperationException("Store not found.");
 
+            // Update store properties
+            _context.Entry(existingStore).CurrentValues.SetValues(store);
+
+            // Update many-to-many relationship
+            var existingCashiers = existingStore.Cashiers.ToList();
+            foreach (var cashier in existingCashiers)
+            {
+                if (!store.Cashiers.Any(c => c.Id == cashier.Id))             
+                    existingStore.Cashiers.Remove(cashier);           
+            }
+
+            foreach (var cashier in store.Cashiers)
+            {
+                if (!existingCashiers.Any(c => c.Id == cashier.Id))               
+                    existingStore.Cashiers.Add(cashier);             
+            }
+
+            // Save changes
             await _context.SaveChangesAsync();
 
-            return store;
+            return existingStore;
         }
         catch (Exception e)
         {

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components.Web;
 
 namespace BackOffice.Client.Pages.Retail.Stores;
 
-public partial class StoreDetails : FormBase<Store>
+public partial class StoreDetails : DetailsFormBase<Store>
 {
     [Inject] public IRetailService<Store> RetailService { get; set; } = null!;
 
@@ -35,16 +35,14 @@ public partial class StoreDetails : FormBase<Store>
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadFullModel();
+        await base.OnInitializedAsync();
+
         _allCashiers = await GetAllCashiers();
     }
 
-    private async Task LoadFullModel()
+    protected override async Task<Store> GetModel()
     {
-        if (Model is null)
-            return;
-
-        Model = await RetailService.GetByIdAsync(Model.Id) ?? new();
+        return await RetailService.GetByIdAsync(Id) ?? new();
     }
 
     #endregion

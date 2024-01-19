@@ -51,7 +51,7 @@ public partial class BrandList : OrsComponentBase
     {
         var parameters = new Dictionary<string, object>
         {
-            { nameof(BrandDetails.Model), context.Item }
+            { nameof(BrandDetails.Id), context.Item.Id }
         };
 
         _tabsService.TryCreateTab<BrandDetails>(parameters);

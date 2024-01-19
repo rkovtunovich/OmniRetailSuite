@@ -1,25 +1,15 @@
 ﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
 using BackOffice.Core.Models.ProductCatalog;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Type;
 
-public partial class TypeCreate
+public partial class TypeCreate: CreationFormBase<ProductType>
 {
     [Inject] public IProductTypeService ProductTypeService { get; set; } = null!;
 
     [Parameter]
     public EventCallback<string> OnSaveClick { get; set; }
-
-    private ProductType _type = new();
-
-    protected override void OnInitialized()
-    {
-        EditContext = new EditContext(_type);
-
-        base.OnInitialized();   
-    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -31,7 +21,7 @@ public partial class TypeCreate
         if (!EditContext?.Validate() ?? false)
             return;
 
-        var result = await ProductTypeService.CreateTypeAsync(_type);
+        var result = await ProductTypeService.CreateTypeAsync(Model);
         if (result is not null)
         {
             await OnSaveClick.InvokeAsync(null);

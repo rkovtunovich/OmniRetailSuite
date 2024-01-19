@@ -10,9 +10,6 @@ public abstract class FormBase<TModel> : OrsComponentBase where TModel : class, 
 
     [Inject] protected TabsService TabsService { get; set; } = null!;
 
-    [Parameter]
-    public TModel Model { get; set; } = new();
-
     protected EditContext? EditContext { get; set;}
 
     protected abstract void DefineFormToolbarCommands();
@@ -20,8 +17,6 @@ public abstract class FormBase<TModel> : OrsComponentBase where TModel : class, 
     protected override void OnInitialized()
     {
         base.OnInitialized();
-
-        EditContext = new EditContext(Model);
 
         DefineFormToolbarCommands();
     }

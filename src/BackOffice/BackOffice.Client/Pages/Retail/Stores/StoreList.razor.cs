@@ -1,9 +1,4 @@
-﻿using BackOffice.Client.Components.Base;
-using BackOffice.Client.Components.Common;
-using BackOffice.Client.Services;
-using BackOffice.Core.Models.Retail;
-
-namespace BackOffice.Client.Pages.Retail.Stores;
+﻿namespace BackOffice.Client.Pages.Retail.Stores;
 
 public partial class StoreList : ListBase<Store>
 {
@@ -34,7 +29,7 @@ public partial class StoreList : ListBase<Store>
     {
         var parameters = new Dictionary<string, object>
         {
-            { nameof(StoreDetails.Model), context.Item }
+            { nameof(StoreDetails.Id), context.Item.Id }
         };
 
         TabsService.TryCreateTab<StoreDetails>(parameters);

@@ -1,10 +1,8 @@
-﻿using BackOffice.Client.Components.Base;
-using BackOffice.Core.Models.Retail;
-using Microsoft.AspNetCore.Components.Web;
+﻿using Microsoft.AspNetCore.Components.Web;
 
 namespace BackOffice.Client.Pages.Retail.Cashiers;
 
-public partial class CashierDetails: FormBase<Cashier>
+public partial class CashierDetails: DetailsFormBase<Cashier>
 {
     [Inject] public IRetailService<Cashier> RetailService { get; set; } = null!;
 
@@ -22,6 +20,11 @@ public partial class CashierDetails: FormBase<Cashier>
             await OnSaveClick.InvokeAsync(null);
             CloseClick();
         }
+    }
+
+    protected override async Task<Cashier> GetModel()
+    {
+        return await RetailService.GetByIdAsync(Id) ?? new();
     }
 
     private async Task DeleteClick()

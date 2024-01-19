@@ -1,6 +1,4 @@
 ﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
-using BackOffice.Client.Components.Base;
-using BackOffice.Client.Services;
 using BackOffice.Core.Models.ProductCatalog;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Type;
@@ -51,7 +49,7 @@ public partial class TypeList : OrsComponentBase
     {
         var parameters = new Dictionary<string, object>
         {
-            { nameof(TypeDetails.Type), context.Item }
+            { nameof(TypeDetails.Id), context.Item.Id }
         };
 
         _tabsService.TryCreateTab<TypeDetails>(parameters);

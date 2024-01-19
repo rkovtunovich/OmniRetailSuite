@@ -1,11 +1,10 @@
 ﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
-using BackOffice.Client.Components.Base;
 using BackOffice.Core.Models.ProductCatalog;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Brand;
 
-public partial class BrandCreate: FormBase<ProductBrand>
+public partial class BrandCreate: CreationFormBase<ProductBrand>
 {
     [Inject] public IProductBrandService ProductBrandService { get; set; } = null!;
 

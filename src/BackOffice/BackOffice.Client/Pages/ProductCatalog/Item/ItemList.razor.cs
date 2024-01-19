@@ -108,7 +108,7 @@ public partial class ItemList : OrsComponentBase
     {
         var parameters = new Dictionary<string, object>
         {
-            { nameof(ItemDetails.Model), context.Item }
+            { nameof(ItemDetails.Id), context.Item.Id }
         };
 
         _tabsService.TryCreateTab<ItemDetails>(parameters);
@@ -205,7 +205,7 @@ public partial class ItemList : OrsComponentBase
 
         var parameters = new Dictionary<string, object>
         {
-            { nameof(ItemParentDetails.Model), viewItem.Value }
+            { nameof(ItemParentDetails.Id), viewItem.Value.Id }
         };
 
         _tabsService.TryCreateTab<ItemParentDetails>(parameters);

@@ -1,7 +1,4 @@
 ﻿using Identity.Api.Configuration;
-using Identity.Api.Infrastructure.Repositories;
-using Identity.Api.Services.Abstractions;
-using Identity.Api.Services.Implementations;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Logging;

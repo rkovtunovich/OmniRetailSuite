@@ -1,11 +1,9 @@
-﻿using BackOffice.Client.Components.Base;
-using BackOffice.Core.Models.Retail;
-using Microsoft.AspNetCore.Components.Forms;
+﻿using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace BackOffice.Client.Pages.Retail.Cashiers;
 
-public partial class CashierCreate: FormBase<Cashier>
+public partial class CashierCreate: CreationFormBase<Cashier>
 {
     [Inject] public IRetailService<Cashier> RetailService { get; set; } = null!;
 

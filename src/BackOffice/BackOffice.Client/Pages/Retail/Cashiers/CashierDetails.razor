@@ -1,4 +1,4 @@
-﻿@inherits FormBase<Cashier>
+﻿@inherits DetailsFormBase<Cashier>
 
 @namespace BackOffice.Client.Pages.Retail.Cashiers
 
@@ -16,7 +16,7 @@
                         <MudCardContent>
 
                             <MudTextField Label="Id" Class="mt-3" @bind-Value="Model.Id" For="@(() => Model.Id)" Variant="@MudBlazor.Variant.Filled" Disabled />
-                             <MudTextField Label="Name" Class="mt-3" @bind-Value="Model.Name" For="@(() => Model.Name)" Variant="@MudBlazor.Variant.Filled" />
+                            <MudTextField Label="Name" Class="mt-3" @bind-Value="Model.Name" For="@(() => Model.Name)" Variant="@MudBlazor.Variant.Filled" />
 
                          </MudCardContent>
 
