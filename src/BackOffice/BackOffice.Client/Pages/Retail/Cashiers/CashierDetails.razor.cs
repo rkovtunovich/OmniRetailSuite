@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
+using UI.Razor.Components.Base;
 
 namespace BackOffice.Client.Pages.Retail.Cashiers;
 

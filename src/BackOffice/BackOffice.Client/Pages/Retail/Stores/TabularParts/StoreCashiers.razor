@@ -1,6 +1,4 @@
-﻿@namespace BackOffice.Client.Components.Common
-@inherits TabularPartBase<TItem>
-@typeparam TItem where TItem : EntityModelBase
+﻿@inherits TabularPartBase<Cashier>
 
 <MudContainer MaxWidth="MaxWidth.False" Class="p-0">
 
@@ -15,9 +13,9 @@
 
         <RowTemplate>
             <MudTd>@rowContext.GetCode()</MudTd>
-                <MudTd>@rowContext.Name</MudTd>
-            </RowTemplate>
+            <MudTd>@rowContext.Name</MudTd>
+        </RowTemplate>
 
-        </MudTable>
+    </MudTable>
 
-    </MudContainer>
+</MudContainer>

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 
-namespace BackOffice.Client.Components.Base;
+namespace UI.Razor.Components.Base;
 
 public abstract class FormBase<TModel> : OrsComponentBase where TModel : class, new()
 {
@@ -9,7 +9,7 @@ public abstract class FormBase<TModel> : OrsComponentBase where TModel : class, 
 
     [Inject] protected TabsService TabsService { get; set; } = null!;
 
-    protected EditContext? EditContext { get; set;}
+    protected EditContext? EditContext { get; set; }
 
     protected abstract void DefineFormToolbarCommands();
 

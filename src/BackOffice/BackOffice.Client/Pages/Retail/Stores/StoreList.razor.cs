@@ -1,4 +1,6 @@
-﻿namespace BackOffice.Client.Pages.Retail.Stores;
+﻿using UI.Razor.Components.Base;
+
+namespace BackOffice.Client.Pages.Retail.Stores;
 
 public partial class StoreList : ListBase<Store>
 {

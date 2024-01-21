@@ -1,4 +1,4 @@
-﻿namespace UI.Razor.Base;
+﻿namespace UI.Razor.Components.Base;
 
 public abstract class OrsComponentBase : ComponentBase, IDisposable
 {

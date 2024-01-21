@@ -1,5 +1,4 @@
-﻿using BackOffice.Client.Components.Common;
-using BackOffice.Client.Pages.Retail.Cashiers;
+﻿using BackOffice.Client.Pages.Retail.Cashiers;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace BackOffice.Client.Pages.Retail.Stores;

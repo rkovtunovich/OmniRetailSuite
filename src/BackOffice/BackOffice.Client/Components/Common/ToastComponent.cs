@@ -1,6 +1,4 @@
-﻿using BackOffice.Client.Services;
-
-namespace BackOffice.Client.Components.Common;
+﻿namespace BackOffice.Client.Components.Common;
 
 public class ToastComponent : ComponentBase, IDisposable
 {

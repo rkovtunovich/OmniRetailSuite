@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 
-namespace BackOffice.Client.Components.Base;
+namespace UI.Razor.Components.Base;
 
 public abstract class CreationFormBase<TModel> : FormBase<TModel> where TModel : class, new()
 {

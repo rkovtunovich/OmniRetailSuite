@@ -1,4 +1,4 @@
-﻿namespace BackOffice.Client.Components.Base;
+﻿namespace UI.Razor.Components.Base;
 
 public abstract class ListBase<TItem> : OrsComponentBase where TItem : class
 {
@@ -24,7 +24,7 @@ public abstract class ListBase<TItem> : OrsComponentBase where TItem : class
         base.OnInitialized();
 
         DefineToolbarCommands();
-        SetDefaultQuickFilter();      
+        SetDefaultQuickFilter();
     }
 
     protected virtual void CloseClick()

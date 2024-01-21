@@ -1,4 +1,4 @@
-﻿namespace BackOffice.Client.Components.Base;
+﻿namespace UI.Razor.Components.Base;
 
 public class SelectionListBase<TItem> : ListBase<TItem> where TItem : class
 {

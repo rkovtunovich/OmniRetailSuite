@@ -1,4 +1,4 @@
-﻿namespace BackOffice.Client.Components.Common;
+﻿namespace UI.Razor.Components.Common;
 
 public partial class ModalComponent
 {

@@ -1,6 +1,7 @@
 ﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
 using BackOffice.Core.Models.ProductCatalog;
 using Microsoft.AspNetCore.Components.Web;
+using UI.Razor.Components.Base;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Brand;
 

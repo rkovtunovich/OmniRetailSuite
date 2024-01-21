@@ -1,4 +1,4 @@
-﻿namespace UI.Razor.Base;
+﻿namespace UI.Razor.Components.Base;
 
 public class OrsLayoutComponentBase : LayoutComponentBase
 {

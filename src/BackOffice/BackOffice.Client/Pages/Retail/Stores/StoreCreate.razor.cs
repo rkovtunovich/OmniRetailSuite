@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
+using UI.Razor.Components.Base;
 
 namespace BackOffice.Client.Pages.Retail.Stores;
 

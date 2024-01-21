@@ -1,6 +1,7 @@
 ﻿@inherits DetailsFormBase<Store>
 
 @namespace BackOffice.Client.Pages.Retail.Stores
+@using BackOffice.Client.Pages.Retail.Stores.TabularParts
 
 <Form Commands="@ToolbarCommands">
     <FormContent>
@@ -16,19 +17,19 @@
                         <MudCardContent>
 
                             <MudTextField Label="Id" Class="mt-3" @bind-Value="Model.Id" For="@(() => Model.Id)" Variant="@MudBlazor.Variant.Filled" Disabled />
-                             <MudTextField Label="Name" Class="mt-3" @bind-Value="Model.Name" For="@(() => Model.Name)" Variant="@MudBlazor.Variant.Filled" />
-                             <MudTextField Label="Address" Class="mt-3" @bind-Value="Model.Address" For="@(() => Model.Address)" Variant="@MudBlazor.Variant.Filled" />
+                            <MudTextField Label="Name" Class="mt-3" @bind-Value="Model.Name" For="@(() => Model.Name)" Variant="@MudBlazor.Variant.Filled" />
+                            <MudTextField Label="Address" Class="mt-3" @bind-Value="Model.Address" For="@(() => Model.Address)" Variant="@MudBlazor.Variant.Filled" />
 
-                         </MudCardContent>
+                        </MudCardContent>
 
-                     </MudCard>
-                 </MudItem>
-             </MudGrid>
+                    </MudCard>
+                </MudItem>
+            </MudGrid>
 
-            <TabularPart TItem="Cashier" Items="@Model.Cashiers" Commands="_cashierTabToolbarCommands"/>
+            <StoreCashiers Items="@Model.Cashiers" Commands="_cashierTabToolbarCommands" />
 
-         </EditForm>
+        </EditForm>
 
-     </FormContent>
- </Form>
+    </FormContent>
+</Form>
 

@@ -1,8 +1,4 @@
-﻿using BackOffice.Client.Components.Base;
-using BackOffice.Client.Services;
-using BackOffice.Core.Models.Retail;
-
-namespace BackOffice.Client.Pages.Retail.Cashiers;
+﻿namespace BackOffice.Client.Pages.Retail.Cashiers;
 
 public partial class CashierList : ListBase<Cashier>
 {

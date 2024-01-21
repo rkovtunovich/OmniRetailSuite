@@ -2,7 +2,7 @@
 
 global using MudBlazor;
 
-global using UI.Razor.Base;
+global using UI.Razor.Components.Base;
 global using UI.Razor.Helpers;
 global using UI.Razor.Models;
 global using UI.Razor.Services.Abstraction;

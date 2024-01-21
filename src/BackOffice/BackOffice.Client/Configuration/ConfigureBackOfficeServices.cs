@@ -2,8 +2,6 @@
 using BackOffice.Application.Services.Abstraction.ProductCatalog;
 using BackOffice.Application.Services.Implementation;
 using BackOffice.Application.Services.Implementation.ProductCatalog;
-using BackOffice.Client.Services;
-using BackOffice.Core.Models.Retail;
 using Contracts.Dtos.Retail;
 
 namespace BackOffice.Client.Configuration;

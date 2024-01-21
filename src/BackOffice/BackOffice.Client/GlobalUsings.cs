@@ -1,8 +1,6 @@
 ﻿global using BackOffice.Application.Services.Abstraction;
 
 global using BackOffice.Client;
-global using BackOffice.Client.Components.Base;
-global using BackOffice.Client.Helpers;
 global using BackOffice.Client.Model.UI;
 global using BackOffice.Client.Services;
 global using BackOffice.Client.Shared;
@@ -26,5 +24,9 @@ global using System.Threading;
 global using System.Threading.Tasks;
 global using System;
 
-global using UI.Razor.Base;
+global using UI.Razor.Components.Base;
+global using UI.Razor.Components.Common;
+global using UI.Razor.Helpers;
 global using UI.Razor.Models;
+global using UI.Razor.Services.Abstraction;
+global using UI.Razor.Services.Implementation;
