@@ -1,6 +1,6 @@
 ﻿namespace ProductCatalog.Core.Entities.ProductAggregate;
 
-public class ItemType : BaseEntity, IAggregateRoot, ICodedEntity
+public class ItemType : EntityBase, IAggregateRoot, ICodedEntity
 {
     public string? CodePrefix { get; set; }
 

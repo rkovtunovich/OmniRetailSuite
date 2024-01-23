@@ -2,7 +2,7 @@
 
 namespace ProductCatalog.Core.Entities.ProductAggregate;
 
-public class Item : BaseEntity, IAggregateRoot, ICodedEntity
+public class Item : EntityBase, IAggregateRoot, ICodedEntity
 {
     public string Name { get; set; } = null!;
 

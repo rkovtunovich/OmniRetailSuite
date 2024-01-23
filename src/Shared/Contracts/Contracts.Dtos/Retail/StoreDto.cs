@@ -1,9 +1,7 @@
 ﻿namespace Contracts.Dtos.Retail;
 
-public class StoreDto
+public record StoreDto : EntityDtoBase
 {
-    public Guid Id { get; init; }
-
     public string Name { get; init; } = null!;
 
     public int CodeNumber { get; init; }

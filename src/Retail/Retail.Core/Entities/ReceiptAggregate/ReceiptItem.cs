@@ -1,6 +1,6 @@
 ﻿namespace Retail.Core.Entities.ReceiptAggregate;
 
-public class ReceiptItem: BaseEntity
+public class ReceiptItem: EntityBase
 {
     public Guid ReceiptId { get; set; }
 

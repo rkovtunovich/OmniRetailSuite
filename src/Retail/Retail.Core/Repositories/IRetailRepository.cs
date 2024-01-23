@@ -1,6 +1,6 @@
 ﻿namespace Retail.Core.Repositories;
 
-public interface IRetailRepository<TEntity> where TEntity : BaseEntity
+public interface IRetailRepository<TEntity> where TEntity : EntityBase
 {
     Task<IEnumerable<TEntity>> GetEntitiesAsync();
 

@@ -1,6 +1,6 @@
 ﻿namespace Retail.Core.Entities;
 
-public class Store: BaseEntity, ICodedEntity
+public class Store: EntityBase, ICodedEntity
 {
     public int CodeNumber { get; set; }
 

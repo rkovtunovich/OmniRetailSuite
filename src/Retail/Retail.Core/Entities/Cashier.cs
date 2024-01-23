@@ -1,6 +1,6 @@
 ﻿namespace Retail.Core.Entities;
 
-public class Cashier : BaseEntity, ICodedEntity
+public class Cashier : EntityBase, ICodedEntity
 {
     public string Name { get; set; } = null!;
 

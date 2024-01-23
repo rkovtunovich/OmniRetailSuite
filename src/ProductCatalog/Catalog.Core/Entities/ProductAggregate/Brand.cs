@@ -1,6 +1,6 @@
 ﻿namespace ProductCatalog.Core.Entities.ProductAggregate;
 
-public class Brand : BaseEntity, IAggregateRoot, ICodedEntity
+public class Brand : EntityBase, IAggregateRoot, ICodedEntity
 {
     public string Name { get; set; } = string.Empty;
 

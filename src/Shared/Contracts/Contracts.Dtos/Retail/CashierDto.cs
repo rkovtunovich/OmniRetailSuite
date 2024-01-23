@@ -1,9 +1,7 @@
 ﻿namespace Contracts.Dtos.Retail;
 
-public record CashierDto
+public record CashierDto : EntityDtoBase
 {
-    public Guid Id { get; init; }
-
     public string Name { get; init; } = null!;
 
     public int CodeNumber { get; init; }

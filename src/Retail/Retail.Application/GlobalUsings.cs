@@ -1,9 +1,13 @@
-﻿global using Microsoft.Extensions.Logging;
+﻿global using AutoMapper;
+
+global using Microsoft.Extensions.Logging;
 
 global using Contracts.Dtos.Retail;
 
 global using Retail.Application.Mapping;
 global using Retail.Application.Services.Abstraction;
+
+global using Retail.Core.Entities;
 
 global using System.Collections.Generic;
 global using System.IO;

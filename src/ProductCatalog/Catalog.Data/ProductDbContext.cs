@@ -55,7 +55,7 @@ public class ProductDbContext(DbContextOptions<ProductDbContext> options) : DbCo
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        var entries = ChangeTracker.Entries<BaseEntity>();
+        var entries = ChangeTracker.Entries<EntityBase>();
 
         foreach (var entry in entries)
         {
@@ -66,7 +66,7 @@ public class ProductDbContext(DbContextOptions<ProductDbContext> options) : DbCo
                     break;
                 case EntityState.Modified:
                     entry.Entity.UpdatedAt = DateTimeOffset.UtcNow;
-                    entry.Property(nameof(BaseEntity.CreatedAt)).IsModified = false;
+                    entry.Property(nameof(EntityBase.CreatedAt)).IsModified = false;
                     break;
             }
         }

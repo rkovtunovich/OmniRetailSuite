@@ -1,9 +1,7 @@
 ﻿namespace Contracts.Dtos.Retail;
 
-public record ReceiptDto
+public record ReceiptDto : EntityDtoBase
 {
-    public Guid Id { get; init; }
-
     public int CodeNumber { get; set; }
 
     public string? CodePrefix { get; set; } = null!;

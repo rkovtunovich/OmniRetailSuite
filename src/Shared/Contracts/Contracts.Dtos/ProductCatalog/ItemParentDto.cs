@@ -1,10 +1,8 @@
 ﻿namespace Contracts.Dtos.ProductCatalog;
 
-public record ItemParentDto
+public record ItemParentDto : EntityDtoBase
 {
-    public Guid Id { get; set; }
-
-    public string Name { get; set; } = string.Empty;
+    public string Name { get; init; } = null!;
 
     public int CodeNumber { get; init; }
 

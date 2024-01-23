@@ -5,6 +5,8 @@ namespace Retail.Data;
 
 public class RetailDbContext(DbContextOptions<RetailDbContext> options) : DbContext(options)
 {
+    #region DbSets
+
     public DbSet<Receipt> Receipts { get; set; } = null!;
 
     public DbSet<ReceiptItem> ReceiptItems { get; set; } = null!;
@@ -15,6 +17,10 @@ public class RetailDbContext(DbContextOptions<RetailDbContext> options) : DbCont
 
     public DbSet<Store> Stores { get; set; } = null!;
 
+    public DbSet<AppClientSettings> AppClientSettings { get; set; } = null!;
+
+    #endregion
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
@@ -24,6 +30,7 @@ public class RetailDbContext(DbContextOptions<RetailDbContext> options) : DbCont
         builder.ApplyConfiguration(new CashierConfiguration());
         builder.ApplyConfiguration(new ProductItemConfiguration());
         builder.ApplyConfiguration(new StoreConfiguration());
+        builder.ApplyConfiguration(new AppClientSettingsConfiguration());
 
         // Define a conversion for all DateTimeOffset properties
         var dateTimeOffsetConverter = new ValueConverter<DateTimeOffset, DateTime>(
@@ -54,7 +61,7 @@ public class RetailDbContext(DbContextOptions<RetailDbContext> options) : DbCont
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        var entries = ChangeTracker.Entries<BaseEntity>();
+        var entries = ChangeTracker.Entries<EntityBase>();
 
         foreach (var entry in entries)
         {
@@ -65,7 +72,7 @@ public class RetailDbContext(DbContextOptions<RetailDbContext> options) : DbCont
                     break;
                 case EntityState.Modified:
                     entry.Entity.UpdatedAt = DateTimeOffset.UtcNow;
-                    entry.Property(nameof(BaseEntity.CreatedAt)).IsModified = false;
+                    entry.Property(nameof(EntityBase.CreatedAt)).IsModified = false;
                     break;
             }
         }

@@ -1,6 +1,6 @@
 ﻿namespace Retail.Core.Entities.ReceiptAggregate;
 
-public class ProductItem: BaseEntity, ICodedEntity
+public class ProductItem: EntityBase, ICodedEntity
 {
     public int CodeNumber { get; set; }
 
