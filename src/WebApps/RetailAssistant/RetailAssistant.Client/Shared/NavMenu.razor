@@ -1,0 +1,29 @@
+﻿@using RetailAssistant.Client.Helpers
+
+@inherits OrsComponentBase
+
+<MudNavMenu>
+
+    <MudNavLink class="nav-link" href="" Match="NavLinkMatch.All">
+        <span class="bi bi-house-door-fill" aria-hidden="true"></span> Home
+    </MudNavLink>
+
+    <AuthorizeView>
+
+        <Authorized>
+
+            <MudNavLink class="nav-link" href="cashiers-workplace">
+                <iconify-icon icon="streamline:money-cashier-shop-shopping-pay-payment-cashier-store-cash-register-machine" width="21" height="21"></iconify-icon> Cashier's workplace
+            </MudNavLink>
+
+            <MudNavLink class="nav-link" Href="settings">
+                <iconify-icon icon="material-symbols:settings-outline" width="21" height="21"></iconify-icon> Settings
+            </MudNavLink>
+
+        </Authorized>
+
+    </AuthorizeView>
+
+</MudNavMenu>
+
+
