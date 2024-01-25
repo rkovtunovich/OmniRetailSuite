@@ -1,6 +1,6 @@
-﻿using BackOffice.Core.Models.ExternalResources;
+﻿using RetailAssistant.Core.Models.ExternalResources;
 
-namespace BackOffice.Application.Helpers;
+namespace RetailAssistant.Application.Helpers;
 
 public static class RetailUrlHelper
 {
@@ -8,7 +8,7 @@ public static class RetailUrlHelper
 
     public static string GetAll<T>()
     {
-        var resourceName =  $"{typeof(T).Name.ToLower()}s";
+        var resourceName = $"{typeof(T).Name.ToLower()}s";
 
         return $"{_retailResource.BaseAddress}{resourceName}";
     }

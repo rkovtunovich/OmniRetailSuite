@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Components.Web;
+﻿using Infrastructure.Serialization.JsonText.Configuration;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
 using RetailAssistant.Client.Configuration;
+using RetailAssistant.Application.Config;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -9,8 +11,10 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-builder.Services.AddWebServices(builder.Configuration);
+builder.Services.AddJsonTextSerialization();
+builder.Services.AddRetailAssistantWebServices(builder.Configuration);
 builder.Services.AddMudServices();
+builder.Services.AddRetailAssistantAppServices();
 
 builder.Services.AddOidcAuthentication(options =>
 {

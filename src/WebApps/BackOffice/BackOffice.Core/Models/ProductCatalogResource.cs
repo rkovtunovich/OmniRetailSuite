@@ -1,4 +1,6 @@
-﻿namespace BackOffice.Core.Models;
+﻿using BackOffice.Core.Models.ExternalResources;
+
+namespace BackOffice.Core.Models;
 
 public class ProductCatalogResource: ExternalResource
 {

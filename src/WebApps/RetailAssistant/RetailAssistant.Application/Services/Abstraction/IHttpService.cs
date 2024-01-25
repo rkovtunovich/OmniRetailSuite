@@ -1,8 +1,8 @@
-﻿using BackOffice.Core.Models.ExternalResources;
+﻿using RetailAssistant.Core.Models.ExternalResources;
 
-namespace BackOffice.Application.Services.Abstraction;
+namespace RetailAssistant.Application.Services.Abstraction;
 
-public interface IHttpService<TResource> where TResource: ExternalResource
+public interface IHttpService<TResource> where TResource : ExternalResource
 {
     Task<T?> GetAsync<T>(string uri);
 

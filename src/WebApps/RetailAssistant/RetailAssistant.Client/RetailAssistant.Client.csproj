@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\Infrastructure\Infrastructure.Serialization.JsonText\Infrastructure.Serialization.JsonText.csproj" />
     <ProjectReference Include="..\..\..\Shared\UI\UI.RazorComponents\UI.Razor.csproj" />
     <ProjectReference Include="..\RetailAssistant.Application\RetailAssistant.Application.csproj" />
   </ItemGroup>
@@ -25,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\GlobalSettings\" />
+    <Folder Include="Model\" />
   </ItemGroup>
 
 </Project>

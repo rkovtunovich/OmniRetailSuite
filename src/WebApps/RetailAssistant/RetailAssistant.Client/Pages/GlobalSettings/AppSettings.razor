@@ -1,0 +1,31 @@
+﻿@page "/app-settings"
+@inherits OrsComponentBase
+
+<MudPaper Height="100%" Class="d-flex">
+
+    <span>test</span>
+   @*  <EditForm Model="@_appConfig" OnValidSubmit="@Save">
+
+        <DataAnnotationsValidator />
+
+        <MudGrid>
+            <MudItem Style="min-width:50%">
+                <MudCard>
+
+                    <MudCardContent>
+
+                        <MudSelect T="Store" @bind-Value=_appConfig.Store ToStringFunc="@( x => x.ToString())" Label="Select store" Clearable Variant="@MudBlazor.Variant.Filled">
+                            @foreach (var item in _stores)
+                            {
+                                <MudSelectItem Value="@item"></MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudCardContent>
+
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+
+    </EditForm> *@
+
+</MudPaper>

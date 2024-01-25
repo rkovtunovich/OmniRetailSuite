@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Json;
+using BackOffice.Core.Models.ExternalResources;
 using IdentityModel.Client;
 
 namespace BackOffice.Application.Services.Implementation;

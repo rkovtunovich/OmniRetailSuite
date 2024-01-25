@@ -1,6 +1,6 @@
-﻿namespace BackOffice.Core.Models;
+﻿namespace BackOffice.Core.Models.ExternalResources;
 
-public class IdentityResource: ExternalResource
+public class IdentityResource : ExternalResource
 {
     private static readonly string DefaultClientName = "IdentityClient";
     private static readonly string DefaultBaseAddress = "api/v1/identity/";

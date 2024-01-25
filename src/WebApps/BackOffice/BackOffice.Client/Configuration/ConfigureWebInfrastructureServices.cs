@@ -1,6 +1,7 @@
 ﻿using BackOffice.Application;
 using BackOffice.Application.Services.Implementation;
 using BackOffice.Application.Services.Implementation.ProductCatalog;
+using BackOffice.Core.Models.ExternalResources;
 using BackOffice.Core.Models.Settings;
 using Microsoft.AspNetCore.HttpLogging;
 

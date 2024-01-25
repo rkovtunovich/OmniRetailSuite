@@ -14,4 +14,9 @@ public abstract class EntityModelBase
     {
         return $"{CodePrefix}{CodeNumber:0000}";
     }
+
+    public override string ToString()
+    {
+        return $"{Name} ({GetCode()})";
+    }
 }

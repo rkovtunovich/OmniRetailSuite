@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using BackOffice.Application.Helpers;
-using BackOffice.Core.Models.ExternalResources;
+using RetailAssistant.Application.Helpers;
+using RetailAssistant.Core.Models.ExternalResources;
 
-namespace BackOffice.Application.Services.Implementation;
+namespace RetailAssistant.Application.Services.Implementation;
 
 public class RetailService<TModel, TDto> : IRetailService<TModel> where TModel : EntityModelBase, new()
 {

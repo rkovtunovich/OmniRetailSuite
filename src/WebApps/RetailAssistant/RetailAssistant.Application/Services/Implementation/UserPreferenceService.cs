@@ -1,9 +1,10 @@
-﻿using BackOffice.Application.Helpers;
-using BackOffice.Core.Models.ExternalResources;
-using BackOffice.Core.Models.UserPreferences;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using RetailAssistant.Application.Helpers;
+using RetailAssistant.Core.Models.ExternalResources;
+using RetailAssistant.Core.Models.UserPreferences;
 
-namespace BackOffice.Application.Services.Implementation;
+
+namespace RetailAssistant.Application.Services.Implementation;
 
 public class UserPreferenceService : IUserPreferenceService
 {

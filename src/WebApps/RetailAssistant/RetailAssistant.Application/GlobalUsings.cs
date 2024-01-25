@@ -1,19 +1,19 @@
-﻿global using Microsoft.AspNetCore.Components;
+﻿global using Contracts.Dtos.Retail;
 
-global using MudBlazor;
+global using Infrastructure.Serialization.Abstraction;
+
+global using Microsoft.Extensions.Logging;
 
 global using RetailAssistant.Application.Services.Abstraction;
-
-global using RetailAssistant.Client;
+global using RetailAssistant.Application.Services.Implementation;
 
 global using RetailAssistant.Core.Models;
 global using RetailAssistant.Core.Models.Retail;
 
-
 global using System.Collections.Generic;
-global using System.ComponentModel.DataAnnotations;
 global using System.IO;
 global using System.Linq;
+global using System.Linq.Expressions;
 global using System.Net;
 global using System.Security.Claims;
 global using System.Text;

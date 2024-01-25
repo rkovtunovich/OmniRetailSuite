@@ -1,10 +1,10 @@
-﻿using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using BackOffice.Core.Models.ExternalResources;
+﻿using System.Net.Http.Json;
+using System.Net.Http.Headers;
+using RetailAssistant.Core.Models.ExternalResources;
 
-namespace BackOffice.Application.Services.Implementation;
+namespace RetailAssistant.Application.Services.Implementation;
 
-public class HttpService<TResource>: IHttpService<TResource> where TResource: ExternalResource, new()
+public class HttpService<TResource> : IHttpService<TResource> where TResource : ExternalResource, new()
 {
     private readonly IHttpClientFactory _clientFactory;
     private readonly ITokenService _tokenService;
