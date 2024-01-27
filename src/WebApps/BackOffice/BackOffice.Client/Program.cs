@@ -1,6 +1,4 @@
 ﻿using BackOffice.Client.Configuration;
-using BackOffice.Client.Model.Options;
-using BackOffice.Client.Services;
 using Infrastructure.Serialization.JsonText.Configuration;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -12,10 +10,9 @@ using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
 
-IdentityModelEventSource.ShowPII = true;
+if (builder.Environment.IsDevelopment())
+    IdentityModelEventSource.ShowPII = true;
 
-var configSection = builder.Configuration.GetRequiredSection(BaseUrlConfiguration.CONFIG_NAME);
-builder.Services.Configure<BaseUrlConfiguration>(configSection);
 builder.WebHost.UseWebRoot("wwwroot").UseStaticWebAssets();
 
 builder.Services.AddWebServices(builder.Configuration);

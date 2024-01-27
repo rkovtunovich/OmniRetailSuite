@@ -58,7 +58,7 @@ public static class ConfigureIdentityServices
     {
         return
         [
-             new("api", "Api: catalog, basket"),
+             new("api", "Api: catalog, retail"),
              new("backoffice", "BackOffice"),
              new("retail.client.wasm", "Retail client wasm"),
              new(IdentityServerConstants.LocalApi.ScopeName, "Identity server API"),
@@ -74,10 +74,8 @@ public static class ConfigureIdentityServices
     {
         return
         [
-                new("api", "Api: catalog, basket"),
+                new("api", "Api: catalog, retail"),
                 new("backoffice", "BackOffice"),
-                new("retail.client.wasm", "Retail client wasm"),
-                new("web", "Web eShop"),
                 new(IdentityServerConstants.LocalApi.ScopeName, "Identity server api"),
                 new("webappsgateway", "WEB Apps API Gateway")
         ];
