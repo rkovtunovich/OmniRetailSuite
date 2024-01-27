@@ -174,7 +174,8 @@ public static class ConfigureIdentityServices
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         "api",
-                        IdentityServerConstants.LocalApi.ScopeName
+                        IdentityServerConstants.LocalApi.ScopeName,
+                        "webappsgateway"
                     ],
                     AccessTokenLifetime = 60 * 60 * 2, // 2 hours
                     IdentityTokenLifetime= 60 * 60 * 2 // 2 hours
