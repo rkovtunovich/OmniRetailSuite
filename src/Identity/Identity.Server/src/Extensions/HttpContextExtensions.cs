@@ -134,7 +134,7 @@ public static class HttpContextExtensions
     /// <exception cref="System.ArgumentNullException">context</exception>
     public static string GetIdentityServerIssuerUri(this HttpContext context)
     {
-        if (context == null) throw new ArgumentNullException(nameof(context));
+        ArgumentNullException.ThrowIfNull(context);
 
         // if they've explicitly configured a URI then use it,
         // otherwise dynamically calculate it
@@ -143,11 +143,11 @@ public static class HttpContextExtensions
         if (uri.IsMissing())
         {
             uri = context.GetIdentityServerOrigin() + context.GetIdentityServerBasePath();
-            if (uri.EndsWith("/")) uri = uri.Substring(0, uri.Length - 1);
-            if (options.LowerCaseIssuerUri)
-            {
-                uri = uri.ToLowerInvariant();
-            }
+            if (uri.EndsWith("/")) 
+                uri = uri[..^1];
+
+            if (options.LowerCaseIssuerUri)           
+                uri = uri.ToLowerInvariant();         
         }
 
         return uri;

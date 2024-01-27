@@ -6,9 +6,8 @@ using Steeltoe.Discovery.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// TO DO 
-// only for dev
-IdentityModelEventSource.ShowPII = true;
+if (builder.Environment.IsDevelopment())
+    IdentityModelEventSource.ShowPII = true;
 
 builder.Services.AddHttpLogging(options =>
 {

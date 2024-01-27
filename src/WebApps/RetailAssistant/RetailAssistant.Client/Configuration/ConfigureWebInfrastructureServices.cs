@@ -1,4 +1,5 @@
 ﻿using RetailAssistant.Application.Services.Implementation;
+using RetailAssistant.Core.Models.ExternalResources;
 
 namespace RetailAssistant.Client.Configuration;
 
@@ -9,19 +10,16 @@ public static class ConfigureWebInfrastructureServices
         services.Configure<IdentityServerSettings>(configuration.GetSection("IdentityServerSettings"));
 
         var gatewayUrl = configuration[Constants.HTTP_WEB_GATEWAY] ?? throw new Exception("Gateway isn't settled in configuration");
-        services.AddHttpClient(Constants.API_HTTP_CLIENT_NAME, client =>
-        {
-            client.BaseAddress = new Uri(gatewayUrl);
-        });
-        services.AddHttpClient(Constants.IDENTITY_CLIENT_NAME, client =>
+
+        services.AddHttpClient(IdentityResource.DefaultClientName, client =>
         {
             client.BaseAddress = new Uri(gatewayUrl);
         });
 
-        //services.AddHttpLogging(options =>
-        //{
-        //    options.LoggingFields = HttpLoggingFields.RequestPropertiesAndHeaders;
-        //});
+        services.AddHttpClient(RetailResource.DefaultClientName, client =>
+        {
+            client.BaseAddress = new Uri(gatewayUrl);
+        });
 
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped(typeof(IHttpService<>), typeof(HttpService<>));

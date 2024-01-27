@@ -1,5 +1,6 @@
 ﻿using Consul;
 using IdentityServer4.AccessTokenValidation;
+using Microsoft.AspNetCore.HttpOverrides;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Provider.Consul;
@@ -34,6 +35,12 @@ var app = builder.Build();
 
 app.UseDeveloperExceptionPage();
 app.UseHttpsRedirection();
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost
+});
+
 app.UseMiddleware<UpdateIdentityServerAuthorityMiddleware>();
 
 app.UseAuthentication();

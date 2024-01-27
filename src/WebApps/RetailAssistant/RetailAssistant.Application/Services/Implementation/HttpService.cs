@@ -1,23 +1,24 @@
 ﻿using System.Net.Http.Json;
 using System.Net.Http.Headers;
 using RetailAssistant.Core.Models.ExternalResources;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace RetailAssistant.Application.Services.Implementation;
 
 public class HttpService<TResource> : IHttpService<TResource> where TResource : ExternalResource, new()
 {
     private readonly IHttpClientFactory _clientFactory;
-    private readonly ITokenService _tokenService;
     private readonly IDataSerializer _dataSerializer;
     private readonly ILogger<HttpService<TResource>> _logger;
     private readonly TResource _resource = new();
+    private readonly IAccessTokenProvider _accessTokenProvider;
 
-    public HttpService(IHttpClientFactory clientFactory, ITokenService tokenService, IDataSerializer dataSerializer, ILogger<HttpService<TResource>> logger)
+    public HttpService(IHttpClientFactory clientFactory, IDataSerializer dataSerializer, ILogger<HttpService<TResource>> logger, IAccessTokenProvider accessTokenProvider)
     {
         _clientFactory = clientFactory;
-        _tokenService = tokenService;
         _logger = logger;
         _dataSerializer = dataSerializer;
+        _accessTokenProvider = accessTokenProvider;
     }
 
     public async Task<T?> GetAsync<T>(string uri)
@@ -113,11 +114,16 @@ public class HttpService<TResource> : IHttpService<TResource> where TResource : 
     private async Task<HttpClient> GetClientAsync()
     {
         var client = _clientFactory.CreateClient(_resource.ClientName);
-        var tokenResponse = await _tokenService.GetToken(_resource.ApiScope);
-        if (tokenResponse is null || tokenResponse.IsError)
-            throw new Exception(tokenResponse?.Error ?? "Unable to get AccessToken");
 
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenResponse.AccessToken ?? string.Empty);
+        var tokenResponse = await _accessTokenProvider.RequestAccessToken();
+
+        if (tokenResponse is null || tokenResponse.Status is not AccessTokenResultStatus.Success)
+            throw new Exception($"Unable to get a token");
+
+        if (!tokenResponse.TryGetToken(out var token))
+            throw new Exception($"Unable to get a token");
+
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.Value);
 
         return client;
     }

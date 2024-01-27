@@ -95,9 +95,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RetailAssistant", "RetailAs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetailAssistant.Client", "src\WebApps\RetailAssistant\RetailAssistant.Client\RetailAssistant.Client.csproj", "{3E3BE4A1-BFA7-4364-839C-26B3BC00F6BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailAssistant.Core", "src\WebApps\RetailAssistant\RetailAssistant.Core\RetailAssistant.Core.csproj", "{D24C51BA-BDDE-40FF-B105-967B07CB71A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetailAssistant.Core", "src\WebApps\RetailAssistant\RetailAssistant.Core\RetailAssistant.Core.csproj", "{D24C51BA-BDDE-40FF-B105-967B07CB71A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailAssistant.Application", "src\WebApps\RetailAssistant\RetailAssistant.Application\RetailAssistant.Application.csproj", "{0C43CB10-260B-4419-908E-ECFE3B4C7E2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetailAssistant.Application", "src\WebApps\RetailAssistant\RetailAssistant.Application\RetailAssistant.Application.csproj", "{0C43CB10-260B-4419-908E-ECFE3B4C7E2A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityModel", "src\Identity\Identity.Model\IdentityModel.csproj", "{B5F9D739-8847-43D3-8928-89D1933B4B15}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -217,6 +219,10 @@ Global
 		{0C43CB10-260B-4419-908E-ECFE3B4C7E2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C43CB10-260B-4419-908E-ECFE3B4C7E2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C43CB10-260B-4419-908E-ECFE3B4C7E2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5F9D739-8847-43D3-8928-89D1933B4B15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5F9D739-8847-43D3-8928-89D1933B4B15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5F9D739-8847-43D3-8928-89D1933B4B15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5F9D739-8847-43D3-8928-89D1933B4B15}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -262,6 +268,7 @@ Global
 		{3E3BE4A1-BFA7-4364-839C-26B3BC00F6BB} = {1D91FEC3-6E74-4EF7-BBB6-8F70D14AE95D}
 		{D24C51BA-BDDE-40FF-B105-967B07CB71A9} = {1D91FEC3-6E74-4EF7-BBB6-8F70D14AE95D}
 		{0C43CB10-260B-4419-908E-ECFE3B4C7E2A} = {1D91FEC3-6E74-4EF7-BBB6-8F70D14AE95D}
+		{B5F9D739-8847-43D3-8928-89D1933B4B15} = {A378C569-AE07-4439-8D93-B1A595E1467C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {49813262-5DA3-4D61-ABD3-493C74CE8C2B}

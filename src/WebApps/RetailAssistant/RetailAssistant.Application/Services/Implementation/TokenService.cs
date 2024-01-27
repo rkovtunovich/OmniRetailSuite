@@ -1,5 +1,6 @@
 ﻿using IdentityModel.Client;
 using Microsoft.Extensions.Options;
+using RetailAssistant.Application.Helpers;
 
 namespace RetailAssistant.Application.Services.Implementation;
 
@@ -21,13 +22,16 @@ public class TokenService : ITokenService
         await LoadDiscoveryDocument();
 
         var httpClient = _httpClientFactory.CreateClient(Constants.IDENTITY_CLIENT_NAME);
+        var baseAddress = httpClient.BaseAddress?.ToString() ?? string.Empty;
+
         var tokenRequest = new ClientCredentialsTokenRequest
         {
-            Address = _documentResponse?.TokenEndpoint,
+            Address = IdentityUriHelper.ChangeBaseUrl(_documentResponse?.TokenEndpoint, baseAddress),
             ClientId = _options.Value.ClientName,
             ClientSecret = _options.Value.ClientSecret,
             Scope = scope
         };
+
         var tokenResponse = await httpClient.RequestClientCredentialsTokenAsync(tokenRequest);
 
         if (tokenResponse.IsError)
@@ -42,7 +46,18 @@ public class TokenService : ITokenService
             return;
 
         var httpClient = _httpClientFactory.CreateClient(Constants.IDENTITY_CLIENT_NAME);
-        _documentResponse = await httpClient.GetDiscoveryDocumentAsync(_options.Value.DiscoveryUrl);
+        var request = new DiscoveryDocumentRequest
+        {
+            Address = _options.Value.DiscoveryUrl,
+            Policy = new DiscoveryPolicy
+            {
+              ValidateIssuerName = false,
+              ValidateEndpoints = false
+            }
+            
+        };
+
+        _documentResponse = await httpClient.GetDiscoveryDocumentAsync(request);
 
         if (_documentResponse.IsError)
             throw new Exception($"Unable to get discovery document {_documentResponse?.Error}", _documentResponse?.Exception);

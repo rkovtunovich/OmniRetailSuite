@@ -11,6 +11,11 @@
       "UpstreamPathTemplate": "/.well-known/openid-configuration"
     },
     {
+      "ServiceName": "identityapi",
+      "DownstreamPathTemplate": "/connect/token",
+      "UpstreamPathTemplate": "/connect/token"
+    },
+    {
       "ServiceName": "catalogapi",
       "DownstreamPathTemplate": "/api/v1/catalog/{everything}",
       "UpstreamPathTemplate": "/api/v1/catalog/{everything}",

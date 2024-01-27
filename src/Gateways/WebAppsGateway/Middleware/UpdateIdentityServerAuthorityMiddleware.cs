@@ -1,6 +1,5 @@
 ﻿using Consul;
 using IdentityServer4.AccessTokenValidation;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 
 namespace WebAppsGateway.Middleware;
@@ -38,7 +37,7 @@ public class UpdateIdentityServerAuthorityMiddleware(RequestDelegate next, ICons
         await _next(context);
     }
 
-    private bool CacheIsStale()
+    private bool CacheIsStale() 
     {
         return (DateTime.UtcNow - _lastUpdated).TotalMinutes > 10;  // Refresh every 10 minutes
     }

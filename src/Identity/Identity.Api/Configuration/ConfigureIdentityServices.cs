@@ -47,11 +47,11 @@ public static class ConfigureIdentityServices
 
     private static List<IdentityResource> GetIdentityResources()
     {
-        return new List<IdentityResource>
-        {
+        return
+        [
             new IdentityResources.OpenId(),
             new IdentityResources.Profile()
-        };
+        ];
     }
 
     private static List<ApiResource> GetApiResources()
@@ -61,7 +61,6 @@ public static class ConfigureIdentityServices
              new("api", "Api: catalog, basket"),
              new("backoffice", "BackOffice"),
              new("retail.client.wasm", "Retail client wasm"),
-             new("web", "Web eShop"),
              new(IdentityServerConstants.LocalApi.ScopeName, "Identity server API"),
              new("webappsgateway", "WEB Apps API Gateway")
                     {
@@ -134,10 +133,10 @@ public static class ConfigureIdentityServices
                         $"{configuration["BlazorAdminClient"]}/signin-oidc"
                     ],
                     FrontChannelLogoutUri = $"{configuration["BlazorAdminClient"]}/signout-oidc",
-                    PostLogoutRedirectUris = new List<string>
-                    {
+                    PostLogoutRedirectUris =
+                    [
                         $"{configuration["BlazorAdminClient"]}/signout-callback-oidc",
-                    },
+                    ],
                     AllowedScopes =
                     [
                         IdentityServerConstants.StandardScopes.OpenId,
@@ -158,7 +157,7 @@ public static class ConfigureIdentityServices
                     //AllowAccessTokensViaBrowser = false,
                     //RequireConsent = false,
                     //RequireConsent = true,
-                    //RequirePkce = false,
+                    RequirePkce = true,
                     AllowPlainTextPkce = true,
                     AllowOfflineAccess = true,
                     AllowedCorsOrigins = { configuration["BlazorWasmClient"] },
@@ -178,38 +177,6 @@ public static class ConfigureIdentityServices
                         IdentityServerConstants.StandardScopes.Profile,
                         "api",
                         IdentityServerConstants.LocalApi.ScopeName
-                    ],
-                    AccessTokenLifetime = 60 * 60 * 2, // 2 hours
-                    IdentityTokenLifetime= 60 * 60 * 2 // 2 hours
-                },
-                new() {
-                    ClientId = "web",
-                    ClientName = "Web eShop Client",
-                    ClientSecrets =
-                    [
-
-                        new("secret".Sha256())
-                    ],
-                    ClientUri = $"{"http://eshopwebmvc"}",                             // public uri of the client
-                    AllowedGrantTypes = GrantTypes.Code,
-                    AllowAccessTokensViaBrowser = false,
-                    RequireConsent = false,
-                    AllowOfflineAccess = true,
-                    AlwaysIncludeUserClaimsInIdToken = true,
-                    RequirePkce = false,
-                    RedirectUris =
-                    [
-                        $"http://eshopwebmvc/signin-oidc"
-                    ],
-                    PostLogoutRedirectUris =
-                    [
-                        $"http://eshopwebmvc/signout-callback-oidc"
-                    ],
-                    AllowedScopes =
-                    [
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        "api"
                     ],
                     AccessTokenLifetime = 60 * 60 * 2, // 2 hours
                     IdentityTokenLifetime= 60 * 60 * 2 // 2 hours
