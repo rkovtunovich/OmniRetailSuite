@@ -4,12 +4,18 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Provider.Consul;
+using WebAppsGateway.DelegatingHandlers;
 using WebAppsGateway.Middleware;
+using WebAppsGateway.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddJsonFile("ocelot.json");
-builder.Services.AddOcelot().AddConsul();
+builder.Services.AddOcelot()
+    .AddConsul()
+    .AddDelegatingHandler<GatewayHeadersDelegationHandler>();
+
+builder.Services.Configure<GatewaySettings>(builder.Configuration.GetRequiredSection(nameof(GatewaySettings)));
 
 // Extract Consul Settings
 var consulHost = builder.Configuration["GlobalConfiguration:ServiceDiscoveryProvider:Host"];

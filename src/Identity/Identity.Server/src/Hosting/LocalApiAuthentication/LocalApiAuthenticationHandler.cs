@@ -89,10 +89,10 @@ public class LocalApiAuthenticationHandler : AuthenticationHandler<LocalApiAuthe
 
         if (Options.SaveToken)
         {
-            authenticationProperties.StoreTokens(new[]
-            {
+            authenticationProperties.StoreTokens(
+            [
                 new AuthenticationToken { Name = "access_token", Value = token }
-            });
+            ]);
         }
 
         var claimsTransformationContext = new ClaimsTransformationContext

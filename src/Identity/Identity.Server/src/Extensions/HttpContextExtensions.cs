@@ -50,18 +50,11 @@ public static class HttpContextExtensions
         var options = context.RequestServices.GetRequiredService<IdentityServerOptions>();
         var request = context.Request;
         
-        if (options.MutualTls.Enabled && options.MutualTls.DomainName.IsPresent())
-        {
-            if (!options.MutualTls.DomainName.Contains("."))
-            {
-                if (request.Host.Value.StartsWith(options.MutualTls.DomainName, StringComparison.OrdinalIgnoreCase))
-                {
-                    return request.Scheme + "://" +
-                           request.Host.Value.Substring(options.MutualTls.DomainName.Length + 1);
-                }
-            }
-        }
-        
+        if (options.MutualTls.Enabled && options.MutualTls.DomainName.IsPresent())       
+            if (!options.MutualTls.DomainName.Contains('.'))            
+                if (request.Host.Value.StartsWith(options.MutualTls.DomainName, StringComparison.OrdinalIgnoreCase))              
+                    return string.Concat(request.Scheme, "://", request.Host.Value.AsSpan(options.MutualTls.DomainName.Length + 1));
+                       
         return request.Scheme + "://" + request.Host.Value;
     }
 
@@ -105,7 +98,11 @@ public static class HttpContextExtensions
     /// <returns></returns>
     public static string GetIdentityServerBaseUrl(this HttpContext context)
     {
-        return context.GetIdentityServerHost() + context.GetIdentityServerBasePath();
+        var baseUrl = context.GetIdentityServerHost();
+
+        UseGatewayAsIdentity(context, ref baseUrl);
+
+        return baseUrl + context.GetIdentityServerBasePath();
     }
 
     /// <summary>
@@ -116,13 +113,14 @@ public static class HttpContextExtensions
     /// <returns></returns>
     public static string GetIdentityServerRelativeUrl(this HttpContext context, string path)
     {
-        if (!path.IsLocalUrl())
-        {
+        if (!path.IsLocalUrl())   
             return null;
-        }
-
-        if (path.StartsWith("~/")) path = path.Substring(1);
+        
+        if (path.StartsWith("~/"))
+            path = path[1..];
+        
         path = context.GetIdentityServerBaseUrl().EnsureTrailingSlash() + path.RemoveLeadingSlash();
+        
         return path;
     }
 
@@ -143,14 +141,16 @@ public static class HttpContextExtensions
         if (uri.IsMissing())
         {
             uri = context.GetIdentityServerOrigin() + context.GetIdentityServerBasePath();
-            if (uri.EndsWith("/")) 
+            if (uri.EndsWith("/"))
                 uri = uri[..^1];
 
-            if (options.LowerCaseIssuerUri)           
-                uri = uri.ToLowerInvariant();         
+            if (options.LowerCaseIssuerUri)
+                uri = uri.ToLowerInvariant();
         }
 
-        return uri;
+        UseGatewayAsIdentity(context, ref uri);
+
+        return uri;     
     }
 
     internal static async Task<string> GetIdentityServerSignoutFrameCallbackUrlAsync(this HttpContext context, LogoutMessage logoutMessage = null)
@@ -213,5 +213,16 @@ public static class HttpContextExtensions
 
         // no sessions, so nothing to cleanup
         return null;
+    }
+
+    private static void UseGatewayAsIdentity(HttpContext context, ref string uri)
+    {
+        var useGatewayAsIdentity = context.Request.Headers["Use-Gateway-As-Identity"].FirstOrDefault();
+        if (useGatewayAsIdentity is "true")
+        {
+            var gatewayUrl = context.Request.Headers["Gateway-Url"].FirstOrDefault();
+            if (gatewayUrl is not null)
+                uri = gatewayUrl;
+        }
     }
 }

@@ -7,13 +7,16 @@
     },
     {
       "ServiceName": "identityapi",
-      "DownstreamPathTemplate": "/.well-known/openid-configuration",
-      "UpstreamPathTemplate": "/.well-known/openid-configuration"
+      "DownstreamPathTemplate": "/.well-known/{everything}",
+      "UpstreamPathTemplate": "/.well-known/{everything}",
+      "DelegatingHandlers": [
+        "GatewayHeadersDelegationHandler"
+      ]
     },
     {
       "ServiceName": "identityapi",
-      "DownstreamPathTemplate": "/connect/token",
-      "UpstreamPathTemplate": "/connect/token"
+      "DownstreamPathTemplate": "/connect/{everything}",
+      "UpstreamPathTemplate": "/connect/{everything}"
     },
     {
       "ServiceName": "catalogapi",

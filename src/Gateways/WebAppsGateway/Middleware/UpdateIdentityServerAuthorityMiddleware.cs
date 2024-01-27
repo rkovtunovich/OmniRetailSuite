@@ -16,7 +16,7 @@ public class UpdateIdentityServerAuthorityMiddleware(RequestDelegate next, ICons
 
     public async Task InvokeAsync(HttpContext context, IOptionsMonitor<IdentityServerAuthenticationOptions> optionsAccessor)
     {
-        if (_cachedAuthority == null || CacheIsStale())
+        if (_cachedAuthority is null || CacheIsStale())
         {
             var identityService = await _consulClient.Catalog.Service("identityapi");
             var serviceEntry = identityService.Response.FirstOrDefault();
@@ -28,7 +28,7 @@ public class UpdateIdentityServerAuthorityMiddleware(RequestDelegate next, ICons
             }
         }
 
-        if (_cachedAuthority != null)
+        if (_cachedAuthority is not null)
         {
             var options = optionsAccessor.Get("IdentityServer");
             options.Authority = _cachedAuthority;
