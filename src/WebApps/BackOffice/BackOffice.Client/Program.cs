@@ -1,9 +1,11 @@
-﻿using BackOffice.Client.Configuration;
+﻿using System.IdentityModel.Tokens.Jwt;
+using BackOffice.Client.Configuration;
 using Infrastructure.Serialization.JsonText.Configuration;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Tokens;
 using MudBlazor.Services;
 using MudExtensions.Services;
 using Radzen;
@@ -43,6 +45,11 @@ builder.Services.AddAuthentication(options =>
         options.SaveTokens = true;
         options.GetClaimsFromUserInfoEndpoint = true;
         options.RequireHttpsMetadata = false;
+        options.UseSecurityTokenValidator = false;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+           ValidateIssuer = false
+        };
     });
 
 builder.Services.AddBackOfficeServices();

@@ -22,7 +22,7 @@ public partial class LoginDisplay
         if (Configuration is null)
             throw new ArgumentNullException(nameof(Configuration));
 
-        var identityUrl = Configuration.GetValue<string>("IdentityUrl"); 
+        var identityUrl = Configuration.GetValue<string>("WebGateway"); 
 
         return identityUrl + "/" + IdentityUriHelper.GetRegisterUrl(NavigationManager?.Uri ?? "/");
     }

@@ -57,23 +57,21 @@ public class IdentityServerMiddleware
 
                 // back channel logout
                 var logoutContext = await session.GetLogoutNotificationContext();
-                if (logoutContext != null)
-                {
-                    await backChannelLogoutService.SendLogoutNotificationsAsync(logoutContext);
-                }
+                if (logoutContext is not null)               
+                    await backChannelLogoutService.SendLogoutNotificationsAsync(logoutContext);              
             }
         });
 
         try
         {
             var endpoint = router.Find(context);
-            if (endpoint != null)
+            if (endpoint is not null)
             {
-                _logger.LogInformation("Invoking IdentityServer endpoint: {endpointType} for {url}", endpoint.GetType().FullName, context.Request.Path.ToString());
+                _logger.LogInformation($"Invoking IS4 endpoint: {endpoint.GetType().FullName} for {context.Request.Path}. Remote host: {context.Connection.RemoteIpAddress}:{context.Connection.RemotePort}");
 
                 var result = await endpoint.ProcessAsync(context);
 
-                if (result != null)
+                if (result is not null)
                 {
                     _logger.LogTrace("Invoking result: {type}", result.GetType().FullName);
                     await result.ExecuteAsync(context);

@@ -13,8 +13,6 @@ using IdentityServer4.Stores;
 using System.Linq;
 using Microsoft.AspNetCore.Authentication;
 
-#pragma warning disable 1591
-
 namespace IdentityServer4.Extensions;
 
 public static class HttpContextExtensions
@@ -28,8 +26,8 @@ public static class HttpContextExtensions
 
     public static void SetIdentityServerOrigin(this HttpContext context, string value)
     {
-        if (context == null) throw new ArgumentNullException(nameof(context));
-        if (value == null) throw new ArgumentNullException(nameof(value));
+        ArgumentNullException.ThrowIfNull(context);
+        ArgumentNullException.ThrowIfNull(value);
 
         var split = value.Split(new[] { "://" }, StringSplitOptions.RemoveEmptyEntries);
 

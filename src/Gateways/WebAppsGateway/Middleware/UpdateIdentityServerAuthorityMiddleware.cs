@@ -1,5 +1,6 @@
 ﻿using Consul;
 using IdentityServer4.AccessTokenValidation;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace WebAppsGateway.Middleware;
@@ -8,8 +9,6 @@ public class UpdateIdentityServerAuthorityMiddleware(RequestDelegate next, ICons
 {
     private readonly RequestDelegate _next = next;
     private readonly IConsulClient _consulClient = consulClient;
-
-    private readonly ILogger<UpdateIdentityServerAuthorityMiddleware> _logger = logger;
 
     private string? _cachedAuthority;
     private DateTime _lastUpdated;
@@ -33,6 +32,8 @@ public class UpdateIdentityServerAuthorityMiddleware(RequestDelegate next, ICons
             var options = optionsAccessor.Get("IdentityServer");
             options.Authority = _cachedAuthority;
         }
+
+        logger.LogDebug($"Ocelot: remote port {context.Connection.RemotePort}");
 
         await _next(context);
     }

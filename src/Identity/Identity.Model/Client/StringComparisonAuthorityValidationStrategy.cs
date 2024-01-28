@@ -29,7 +29,8 @@ public sealed class StringComparisonAuthorityValidationStrategy : IAuthorityVali
     /// <returns></returns>
     public AuthorityValidationResult IsIssuerNameValid(string issuerName, string expectedAuthority)
     {
-        if (string.IsNullOrWhiteSpace(issuerName)) return AuthorityValidationResult.CreateError("Issuer name is missing");
+        if (string.IsNullOrWhiteSpace(issuerName)) 
+            return AuthorityValidationResult.CreateError("Issuer name is missing");
 
         if (string.Equals(issuerName.RemoveTrailingSlash(), expectedAuthority.RemoveTrailingSlash(), _stringComparison))
             return AuthorityValidationResult.SuccessResult;
