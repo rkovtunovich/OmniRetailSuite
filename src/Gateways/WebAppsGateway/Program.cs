@@ -10,6 +10,11 @@ using WebAppsGateway.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.ConfigureKestrel((context, options) =>
+{
+    options.Configure(context.Configuration.GetSection("Kestrel"));
+});
+
 builder.Configuration.AddJsonFile("ocelot.json");
 builder.Services.AddOcelot()
     .AddConsul()

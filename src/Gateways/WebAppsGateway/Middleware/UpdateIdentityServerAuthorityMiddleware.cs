@@ -1,6 +1,5 @@
 ﻿using Consul;
 using IdentityServer4.AccessTokenValidation;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace WebAppsGateway.Middleware;

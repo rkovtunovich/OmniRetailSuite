@@ -1,5 +1,4 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using BackOffice.Client.Configuration;
+﻿using BackOffice.Client.Configuration;
 using Infrastructure.Serialization.JsonText.Configuration;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -11,6 +10,11 @@ using MudExtensions.Services;
 using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.WebHost.ConfigureKestrel((context, options) =>
+{
+    options.Configure(context.Configuration.GetSection("Kestrel"));
+});
 
 if (builder.Environment.IsDevelopment())
     IdentityModelEventSource.ShowPII = true;

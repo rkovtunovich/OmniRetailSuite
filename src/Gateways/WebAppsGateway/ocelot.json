@@ -15,6 +15,14 @@
     },
     {
       "ServiceName": "identityapi",
+      "DownstreamPathTemplate": "/account/{everything}",
+      "UpstreamPathTemplate": "/account/{everything}",
+      "DelegatingHandlers": [
+        "GatewayHeadersDelegationHandler"
+      ]
+    },
+    {
+      "ServiceName": "identityapi",
       "DownstreamPathTemplate": "/connect/{everything}",
       "UpstreamPathTemplate": "/connect/{everything}"
     },

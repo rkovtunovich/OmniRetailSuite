@@ -6,6 +6,11 @@ using Steeltoe.Discovery.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.ConfigureKestrel((context, options) =>
+{
+    options.Configure(context.Configuration.GetSection("Kestrel")); 
+});
+
 if (builder.Environment.IsDevelopment())
     IdentityModelEventSource.ShowPII = true;
 
