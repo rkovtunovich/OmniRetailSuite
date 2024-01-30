@@ -16,7 +16,7 @@ public static class ConfigureIdentityServices
 
         services.AddIdentityServer(options =>
         {
-            options.IssuerUri = configuration["baseUrls:webBase"];
+            options.IssuerUri = configuration["WebGateway"];
             options.Authentication.CookieLifetime = TimeSpan.FromHours(2);
             options.Events.RaiseErrorEvents = true;
             options.Events.RaiseInformationEvents = true;

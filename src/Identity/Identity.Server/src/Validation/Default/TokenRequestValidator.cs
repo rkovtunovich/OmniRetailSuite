@@ -113,14 +113,14 @@ internal class TokenRequestValidator : ITokenRequestValidator
             Options = _options
         };
 
-        if (clientValidationResult == null) throw new ArgumentNullException(nameof(clientValidationResult));
+        ArgumentNullException.ThrowIfNull(clientValidationResult);
 
         _validatedRequest.SetClient(clientValidationResult.Client, clientValidationResult.Secret, clientValidationResult.Confirmation);
 
         /////////////////////////////////////////////
         // check client protocol type
         /////////////////////////////////////////////
-        if (_validatedRequest.Client.ProtocolType != IdentityServerConstants.ProtocolTypes.OpenIdConnect)
+        if (_validatedRequest.Client.ProtocolType is not IdentityServerConstants.ProtocolTypes.OpenIdConnect)
         {
             LogError("Invalid protocol type for client",
                 new
@@ -151,21 +151,15 @@ internal class TokenRequestValidator : ITokenRequestValidator
 
         _validatedRequest.GrantType = grantType;
 
-        switch (grantType)
+        return grantType switch
         {
-            case OidcConstants.GrantTypes.AuthorizationCode:
-                return await RunValidationAsync(ValidateAuthorizationCodeRequestAsync, parameters);
-            case OidcConstants.GrantTypes.ClientCredentials:
-                return await RunValidationAsync(ValidateClientCredentialsRequestAsync, parameters);
-            case OidcConstants.GrantTypes.Password:
-                return await RunValidationAsync(ValidateResourceOwnerCredentialRequestAsync, parameters);
-            case OidcConstants.GrantTypes.RefreshToken:
-                return await RunValidationAsync(ValidateRefreshTokenRequestAsync, parameters);
-            case OidcConstants.GrantTypes.DeviceCode:
-                return await RunValidationAsync(ValidateDeviceCodeRequestAsync, parameters);
-            default:
-                return await RunValidationAsync(ValidateExtensionGrantRequestAsync, parameters);
-        }
+            OidcConstants.GrantTypes.AuthorizationCode => await RunValidationAsync(ValidateAuthorizationCodeRequestAsync, parameters),
+            OidcConstants.GrantTypes.ClientCredentials => await RunValidationAsync(ValidateClientCredentialsRequestAsync, parameters),
+            OidcConstants.GrantTypes.Password => await RunValidationAsync(ValidateResourceOwnerCredentialRequestAsync, parameters),
+            OidcConstants.GrantTypes.RefreshToken => await RunValidationAsync(ValidateRefreshTokenRequestAsync, parameters),
+            OidcConstants.GrantTypes.DeviceCode => await RunValidationAsync(ValidateDeviceCodeRequestAsync, parameters),
+            _ => await RunValidationAsync(ValidateExtensionGrantRequestAsync, parameters),
+        };
     }
 
     private async Task<TokenRequestValidationResult> RunValidationAsync(Func<NameValueCollection, Task<TokenRequestValidationResult>> validationFunc, NameValueCollection parameters)
@@ -289,7 +283,7 @@ internal class TokenRequestValidator : ITokenRequestValidator
             return Invalid(OidcConstants.TokenErrors.UnauthorizedClient);
         }
 
-        if (redirectUri.Equals(_validatedRequest.AuthorizationCode.RedirectUri, StringComparison.Ordinal) == false)
+        if (redirectUri.Equals(_validatedRequest.AuthorizationCode.RedirectUri, StringComparison.Ordinal) is false)
         {
             LogError("Invalid redirect_uri", new { redirectUri, expectedRedirectUri = _validatedRequest.AuthorizationCode.RedirectUri });
             return Invalid(OidcConstants.TokenErrors.InvalidGrant);
@@ -298,8 +292,7 @@ internal class TokenRequestValidator : ITokenRequestValidator
         /////////////////////////////////////////////
         // validate scopes are present
         /////////////////////////////////////////////
-        if (_validatedRequest.AuthorizationCode.RequestedScopes == null ||
-            !_validatedRequest.AuthorizationCode.RequestedScopes.Any())
+        if (_validatedRequest.AuthorizationCode.RequestedScopes is null || !_validatedRequest.AuthorizationCode.RequestedScopes.Any())
         {
             LogError("Authorization code has no associated scopes");
             return Invalid(OidcConstants.TokenErrors.InvalidRequest);
