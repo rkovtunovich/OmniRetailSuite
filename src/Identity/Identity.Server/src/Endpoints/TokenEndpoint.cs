@@ -122,17 +122,14 @@ internal class TokenEndpoint : IEndpointHandler
         var clientId = $"{requestResult.ValidatedRequest.Client.ClientId} ({requestResult.ValidatedRequest.Client?.ClientName ?? "no name set"})";
         var subjectId = requestResult.ValidatedRequest.Subject?.GetSubjectId() ?? "no subject";
 
-        if (response.IdentityToken != null)
-        {
+        if (response.IdentityToken is not null)       
             _logger.LogTrace("Identity token issued for {clientId} / {subjectId}: {token}", clientId, subjectId, response.IdentityToken);
-        }
-        if (response.RefreshToken != null)
-        {
+        
+        if (response.RefreshToken is not null)      
             _logger.LogTrace("Refresh token issued for {clientId} / {subjectId}: {token}", clientId, subjectId, response.RefreshToken);
-        }
-        if (response.AccessToken != null)
-        {
+        
+        if (response.AccessToken is not null)       
             _logger.LogTrace("Access token issued for {clientId} / {subjectId}: {token}", clientId, subjectId, response.AccessToken);
-        }
+        
     }
 }

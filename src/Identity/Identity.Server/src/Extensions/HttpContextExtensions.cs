@@ -24,12 +24,14 @@ public static class HttpContextExtensions
         return (handler is IAuthenticationSignOutHandler);
     }
 
+    private static readonly string[] _separator = ["://"];
+
     public static void SetIdentityServerOrigin(this HttpContext context, string value)
     {
         ArgumentNullException.ThrowIfNull(context);
         ArgumentNullException.ThrowIfNull(value);
 
-        var split = value.Split(new[] { "://" }, StringSplitOptions.RemoveEmptyEntries);
+        var split = value.Split(_separator, StringSplitOptions.RemoveEmptyEntries);
 
         var request = context.Request;
         request.Scheme = split.First();
@@ -38,7 +40,7 @@ public static class HttpContextExtensions
 
     public static void SetIdentityServerBasePath(this HttpContext context, string value)
     {
-        if (context == null) throw new ArgumentNullException(nameof(context));
+        ArgumentNullException.ThrowIfNull(context);
 
         context.Items[Constants.EnvironmentKeys.IdentityServerBasePath] = value;
     }
@@ -59,7 +61,7 @@ public static class HttpContextExtensions
 
     internal static void SetSignOutCalled(this HttpContext context)
     {
-        if (context == null) throw new ArgumentNullException(nameof(context));
+        ArgumentNullException.ThrowIfNull(context);
         context.Items[Constants.EnvironmentKeys.SignOutCalled] = "true";
     }
 
@@ -139,7 +141,7 @@ public static class HttpContextExtensions
         if (uri.IsMissing())
         {
             uri = context.GetIdentityServerOrigin() + context.GetIdentityServerBasePath();
-            if (uri.EndsWith("/"))
+            if (uri.EndsWith('/'))
                 uri = uri[..^1];
 
             if (options.LowerCaseIssuerUri)

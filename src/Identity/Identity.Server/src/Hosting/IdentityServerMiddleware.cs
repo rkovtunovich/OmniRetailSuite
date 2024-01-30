@@ -15,21 +15,15 @@ namespace IdentityServer4.Hosting;
 /// <summary>
 /// IdentityServer middleware
 /// </summary>
-public class IdentityServerMiddleware
+/// <remarks>
+/// Initializes a new instance of the <see cref="IdentityServerMiddleware"/> class.
+/// </remarks>
+/// <param name="next">The next.</param>
+/// <param name="logger">The logger.</param>
+public class IdentityServerMiddleware(RequestDelegate next, ILogger<IdentityServerMiddleware> logger)
 {
-    private readonly RequestDelegate _next;
-    private readonly ILogger _logger;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="IdentityServerMiddleware"/> class.
-    /// </summary>
-    /// <param name="next">The next.</param>
-    /// <param name="logger">The logger.</param>
-    public IdentityServerMiddleware(RequestDelegate next, ILogger<IdentityServerMiddleware> logger)
-    {
-        _next = next;
-        _logger = logger;
-    }
+    private readonly RequestDelegate _next = next;
+    private readonly ILogger _logger = logger;
 
     /// <summary>
     /// Invokes the middleware.
