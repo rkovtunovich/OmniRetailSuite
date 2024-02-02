@@ -6,7 +6,6 @@ using Ocelot.Middleware;
 using Ocelot.Provider.Consul;
 using WebAppsGateway.DelegatingHandlers;
 using WebAppsGateway.Middleware;
-using WebAppsGateway.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +20,15 @@ builder.Services.AddOcelot()
     .AddDelegatingHandler<GatewayHeadersDelegationHandler>();
 
 builder.Services.Configure<GatewaySettings>(builder.Configuration.GetRequiredSection(nameof(GatewaySettings)));
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("default", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 // Extract Consul Settings
 var consulHost = builder.Configuration["GlobalConfiguration:ServiceDiscoveryProvider:Host"];
@@ -44,7 +52,11 @@ builder.Services.AddAuthentication("IdentityServer")
 
 var app = builder.Build();
 
-app.UseDeveloperExceptionPage();
+if (app.Environment.IsDevelopment())
+    app.UseDeveloperExceptionPage();
+
+app.UseCors("default");
+
 app.UseHttpsRedirection();
 
 app.UseForwardedHeaders(new ForwardedHeadersOptions
