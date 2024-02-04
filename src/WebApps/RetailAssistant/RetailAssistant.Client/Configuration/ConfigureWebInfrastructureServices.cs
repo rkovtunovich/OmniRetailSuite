@@ -21,7 +21,6 @@ public static class ConfigureWebInfrastructureServices
             client.BaseAddress = new Uri(gatewayUrl);
         });
 
-        services.AddScoped<ITokenService, TokenService>();
         services.AddScoped(typeof(IHttpService<>), typeof(HttpService<>));
 
         return services;

@@ -3,8 +3,7 @@
 
 <MudPaper Height="100%" Class="d-flex">
 
-    <span>test</span>
-   @*  <EditForm Model="@_appConfig" OnValidSubmit="@Save">
+    <EditForm Model="@_appConfig" OnValidSubmit="@Save">
 
         <DataAnnotationsValidator />
 
@@ -26,6 +25,8 @@
             </MudItem>
         </MudGrid>
 
-    </EditForm> *@
+        <MudButton Variant="Variant.Outlined" Color="Color.Primary" ButtonType="ButtonType.Submit">Save</MudButton>
+
+    </EditForm>
 
 </MudPaper>
