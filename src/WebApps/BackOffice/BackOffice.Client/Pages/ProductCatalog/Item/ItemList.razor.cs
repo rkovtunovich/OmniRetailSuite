@@ -20,7 +20,7 @@ public partial class ItemList : OrsComponentBase
 
     #region Fields
 
-    double _splitterPercentage = 75;
+    private double _splitterPercentage = 75;
 
     #region Product Items
 
