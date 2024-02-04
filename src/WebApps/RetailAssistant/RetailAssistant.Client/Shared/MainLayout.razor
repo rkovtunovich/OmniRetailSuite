@@ -43,16 +43,20 @@
                             'self' 
                             https://omni-rs.com:* 
                             http://localhost:* 
-                            'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=' 
-                            'sha256-1P/+Nxe2LOgGHeWU2DfZCy0GyvoKMbFONJnW+b9rWP4=';
+                            'unsafe-inline';
                        script-src 
                             'self' 
                             'wasm-unsafe-eval' 
                             'unsafe-inline'
-                            https://omni-rs.com:* https://code.iconify.design
-                            'sha256-9mThMC8NT3dPbcxJOtXiiwevtWTAPorqkXGKqI388cI=' 
-                            'sha256-fa5rxHhZ799izGRP38+h4ud5QXNT0SFaFlh4eqDumBI=';                                                  
-                       connect-src 'self' https://omni-rs.com:* http://localhost:* wss://localhost:* ws://localhost:*;">
+                            https://omni-rs.com:* 
+                            https://code.iconify.design;                                                
+                       connect-src 
+                            'self'
+                            https://omni-rs.com:*
+                            https://api.iconify.design
+                            http://localhost:* 
+                            wss://localhost:* 
+                            ws://localhost:*;">
     </HeadContent>
 }
 else
@@ -61,7 +65,10 @@ else
         <meta http-equiv="Content-Security-Policy"
               content="default-src 'self' https://omni-rs.com:* 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=' 'sha256-1P/+Nxe2LOgGHeWU2DfZCy0GyvoKMbFONJnW+b9rWP4=';
                        script-src 'self' 'wasm-unsafe-eval' 'sha256-9mThMC8NT3dPbcxJOtXiiwevtWTAPorqkXGKqI388cI=' https://omni-rs.com:* https://code.iconify.design;  
-                       connect-src 'self' https://omni-rs.com:*;">
+                       connect-src
+                            'self' 
+                            https://omni-rs.com:*
+                            https://api.iconify.design;">
     </HeadContent>
 }
 

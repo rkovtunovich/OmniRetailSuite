@@ -11,6 +11,8 @@ public static class ConfigureAppServices
         services.AddBlazoredLocalStorage();
         services.AddScoped<ILocalConfigService, LocalConfigService>();
 
+        services.AddScoped<IUserPreferenceService, UserPreferenceService>();
+
         services.AddScoped<IRetailService<Store>, RetailService<Store, StoreDto>>();
 
         services.AddMapping();

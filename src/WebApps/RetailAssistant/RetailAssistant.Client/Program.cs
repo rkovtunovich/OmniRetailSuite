@@ -25,6 +25,7 @@ builder.Services.AddOidcAuthentication(options =>
     options.ProviderOptions.DefaultScopes.Add("profile");
     options.ProviderOptions.DefaultScopes.Add("api");
     options.ProviderOptions.DefaultScopes.Add("webappsgateway");
+    options.ProviderOptions.DefaultScopes.Add("IdentityServerApi");
     options.ProviderOptions.ResponseType = "code";
 });
 

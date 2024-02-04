@@ -1,6 +1,4 @@
-﻿using BackOffice.Application.Services.Abstraction;
-using BackOffice.Client.Services;
-using BackOffice.Core.Models.UserPreferences;
+﻿using BackOffice.Core.Models.UserPreferences;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace BackOffice.Client.Shared;
