@@ -1,8 +1,8 @@
 ﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
-using BackOffice.Client.Enums;
 using BackOffice.Client.Pages.ProductCatalog.Parent;
 using BackOffice.Core.Models.ProductCatalog;
 using Microsoft.AspNetCore.Components.Web;
+using UI.Razor.Enums;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Item;
 

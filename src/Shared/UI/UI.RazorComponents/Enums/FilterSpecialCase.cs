@@ -1,4 +1,4 @@
-﻿namespace BackOffice.Client.Enums;
+﻿namespace UI.Razor.Enums;
 
 public enum FilterSpecialCase
 {
