@@ -1,8 +1,8 @@
-﻿using BackOffice.Core.Models.ExternalResources;
+﻿using Infrastructure.Http.ExternalResources;
 
-namespace BackOffice.Application.Services.Abstraction;
+namespace Infrastructure.Http;
 
-public interface IHttpService<TResource> where TResource: ExternalResource
+public interface IHttpService<TResource> where TResource : ExternalResource
 {
     Task<T?> GetAsync<T>(string uri);
 

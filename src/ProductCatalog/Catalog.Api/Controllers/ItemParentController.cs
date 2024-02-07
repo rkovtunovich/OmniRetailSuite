@@ -3,7 +3,7 @@
 namespace ProductCatalog.Api.Controllers;
 
 [ApiController]
-[Route("api/v1/catalog")]
+[Route("api/v1/productcatalog")]
 public class ItemParentController : ControllerBase
 {
     private readonly IItemParentService _itemParentService;
@@ -17,7 +17,7 @@ public class ItemParentController : ControllerBase
 
     // GET api/v1/[controller]/CatalogParents
     [HttpGet]
-    [Route("parents")]
+    [Route("productparents")]
     [ProducesResponseType(typeof(List<ItemParentDto>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<List<ItemParentDto>>> CatalogParentsAsync()
     {
@@ -27,7 +27,7 @@ public class ItemParentController : ControllerBase
     }
 
     [HttpGet]
-    [Route("parents/{id:Guid}")]
+    [Route("productparents/{id:Guid}")]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ItemParentDto), (int)HttpStatusCode.OK)]
@@ -45,7 +45,7 @@ public class ItemParentController : ControllerBase
     }
 
     //POST api/v1/[controller]/parents
-    [Route("parents")]
+    [Route("productparents")]
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
     public async Task<ActionResult> CreateParentAsync([FromBody] ItemParentDto parent)
@@ -63,7 +63,7 @@ public class ItemParentController : ControllerBase
     }
 
     //PUT api/v1/[controller]/parents
-    [Route("parents")]
+    [Route("productparents")]
     [HttpPut]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.Created)]
@@ -85,7 +85,7 @@ public class ItemParentController : ControllerBase
     }
 
     //DELETE api/v1/[controller]/parents/id
-    [Route("parents/{id}")]
+    [Route("productparents/{id}")]
     [HttpDelete]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]

@@ -7,6 +7,8 @@ global using BackOffice.Core.Models.Retail;
 global using Contracts.Dtos.ProductCatalog;
 global using Contracts.Dtos.Retail;
 
+global using Infrastructure.Http;
+global using Infrastructure.Http.ExternalResources;
 global using Infrastructure.Serialization.Abstraction;
 
 global using Microsoft.Extensions.Logging;

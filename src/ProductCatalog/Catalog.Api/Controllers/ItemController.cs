@@ -3,7 +3,7 @@
 namespace ProductCatalog.Api.Controllers;
 
 [ApiController]
-[Route("api/v1/catalog")]
+[Route("api/v1/productcatalog")]
 public class ItemController : ControllerBase
 {
     private readonly IItemService _itemService;
@@ -17,7 +17,7 @@ public class ItemController : ControllerBase
 
     // GET api/v1/[controller]/items[?pageSize=3&pageIndex=10]
     [HttpGet]
-    [Route("items")]
+    [Route("productitems")]
     [ProducesResponseType(typeof(PaginatedItemsDto), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(IEnumerable<ItemDto>), (int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
@@ -29,7 +29,7 @@ public class ItemController : ControllerBase
     }
 
     [HttpGet]
-    [Route("items/{id:Guid}")]
+    [Route("productitems/{id:Guid}")]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ItemDto), (int)HttpStatusCode.OK)]
@@ -48,7 +48,7 @@ public class ItemController : ControllerBase
 
     // GET api/v1/[controller]/items/withname/samplename[?pageSize=3&pageIndex=10]
     [HttpGet]
-    [Route("items/withname/{name:minlength(1)}")]
+    [Route("productitems/withname/{name:minlength(1)}")]
     [ProducesResponseType(typeof(ItemDto), (int)HttpStatusCode.OK)]
     public async Task<List<ItemDto>> ItemsWithNameAsync(string name, [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
     {
@@ -59,7 +59,7 @@ public class ItemController : ControllerBase
 
     // GET api/v1/[controller]/items/type/1/brand[?pageSize=3&pageIndex=10]
     [HttpGet]
-    [Route("items/type/{catalogTypeId}/brand/{catalogBrandId:int?}")]
+    [Route("productitems/type/{catalogTypeId}/brand/{catalogBrandId:int?}")]
     [ProducesResponseType(typeof(PaginatedItemsDto), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<PaginatedItemsDto>> ItemsByTypeIdAndBrandIdAsync(Guid? catalogTypeId, Guid? catalogBrandId, [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
     {
@@ -68,7 +68,7 @@ public class ItemController : ControllerBase
 
     // GET api/v1/[controller]/items/type/all/brand[?pageSize=3&pageIndex=10]
     [HttpGet]
-    [Route("items/type/all/brand/{catalogBrandId:int?}")]
+    [Route("productitems/type/all/brand/{catalogBrandId:int?}")]
     [ProducesResponseType(typeof(PaginatedItemsDto), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<PaginatedItemsDto>> ItemsByBrandIdAsync(Guid? catalogBrandId, [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
     {
@@ -80,7 +80,7 @@ public class ItemController : ControllerBase
 
     // GET api/v1/[controller]/items/parent/{id}[?pageSize=3&pageIndex=10]
     [HttpGet]
-    [Route("items/parent/{catalogParentId}")]
+    [Route("productitems/parent/{catalogParentId}")]
     [ProducesResponseType(typeof(PaginatedItemsDto), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<PaginatedItemsDto>> ItemsByParentIdAsync(Guid catalogParentId, [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
     {
@@ -88,7 +88,7 @@ public class ItemController : ControllerBase
     }
 
     //PUT api/v1/[controller]/items
-    [Route("items")]
+    [Route("productitems")]
     [HttpPut]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.Created)]
@@ -102,7 +102,7 @@ public class ItemController : ControllerBase
     }
 
     //POST api/v1/[controller]/items
-    [Route("items")]
+    [Route("productitems")]
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
     public async Task<ActionResult> CreateItemAsync([FromBody] ItemDto item)
@@ -116,7 +116,7 @@ public class ItemController : ControllerBase
     }
 
     //DELETE api/v1/[controller]/id
-    [Route("items/{id}")]
+    [Route("productitems/{id}")]
     [HttpDelete]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]

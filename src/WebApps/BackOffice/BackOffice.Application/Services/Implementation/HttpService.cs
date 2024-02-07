@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using BackOffice.Core.Models.ExternalResources;
+using Infrastructure.Http;
+using Infrastructure.Http.ExternalResources;
 
 namespace BackOffice.Application.Services.Implementation;
 

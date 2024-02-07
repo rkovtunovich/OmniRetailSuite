@@ -3,7 +3,7 @@
 namespace ProductCatalog.Api.Controllers;
 
 [ApiController]
-[Route("api/v1/catalog")]
+[Route("api/v1/productcatalog")]
 public class ItemTypeController : ControllerBase
 {
     private readonly IItemTypeService _itemTypeService;
@@ -15,7 +15,7 @@ public class ItemTypeController : ControllerBase
 
     // GET api/v1/[controller]/CatalogTypes
     [HttpGet]
-    [Route("types")]
+    [Route("producttypes")]
     [ProducesResponseType(typeof(List<ItemTypeDto>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<List<ItemTypeDto>>> CatalogTypesAsync()
     {
@@ -25,7 +25,7 @@ public class ItemTypeController : ControllerBase
     }
 
     [HttpGet]
-    [Route("types/{id:Guid}")]
+    [Route("producttypes/{id:Guid}")]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ItemTypeDto), (int)HttpStatusCode.OK)]
@@ -46,7 +46,7 @@ public class ItemTypeController : ControllerBase
     }
 
     //POST api/v1/[controller]/types
-    [Route("types")]
+    [Route("producttypes")]
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
     public async Task<ActionResult> CreateTypeAsync([FromBody] ItemTypeDto type)
@@ -63,7 +63,7 @@ public class ItemTypeController : ControllerBase
     }
 
     //PUT api/v1/[controller]/types
-    [Route("types")]
+    [Route("producttypes")]
     [HttpPut]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -81,7 +81,7 @@ public class ItemTypeController : ControllerBase
     }
 
     //DELETE api/v1/[controller]/types/id
-    [Route("types/{id}")]
+    [Route("producttypes/{id}")]
     [HttpDelete]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]

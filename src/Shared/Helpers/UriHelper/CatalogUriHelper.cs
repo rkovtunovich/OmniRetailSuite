@@ -1,4 +1,6 @@
-﻿namespace BackOffice.Application.Helpers;
+﻿using Constants;
+
+namespace UriHelper;
 
 public static class CatalogUriHelper
 {
@@ -23,32 +25,32 @@ public static class CatalogUriHelper
             filterQs = string.Empty;
         }
 
-        return $"{Constants.PRODUCT_CATALOG_URI}items{filterQs}?pageIndex={page}&pageSize={take}";
+        return $"{ResourceBasePaths.PRODUCT_CATALOG}items{filterQs}?pageIndex={page}&pageSize={take}";
     }
 
     public static string GetCatalogItemById(Guid id)
     {
-        return $"{Constants.PRODUCT_CATALOG_URI}items/{id}";
+        return $"{ResourceBasePaths.PRODUCT_CATALOG}items/{id}";
     }
 
     public static string GetCatalogItemsByIds(string ids)
     {
-        return $"{Constants.PRODUCT_CATALOG_URI}items/withids/{ids}";
+        return $"{ResourceBasePaths.PRODUCT_CATALOG}items/withids/{ids}";
     }
 
     public static string UpdateCatalogItem()
     {
-        return $"{Constants.PRODUCT_CATALOG_URI}items";
+        return $"{ResourceBasePaths.PRODUCT_CATALOG}items";
     }
 
     public static string CreateCatalogItem()
     {
-        return $"{Constants.PRODUCT_CATALOG_URI}items";
+        return $"{ResourceBasePaths.PRODUCT_CATALOG}items";
     }
 
     public static string DeleteCatalogItem(Guid id, bool useSoftDeleting)
     {
-        return $"{Constants.PRODUCT_CATALOG_URI}items/{id}?useSoftDeleting={useSoftDeleting}";
+        return $"{ResourceBasePaths.PRODUCT_CATALOG}items/{id}?useSoftDeleting={useSoftDeleting}";
     }
 
     #endregion
@@ -57,27 +59,27 @@ public static class CatalogUriHelper
 
     public static string GetAllItemParents()
     {
-        return $"{Constants.PRODUCT_CATALOG_URI}parents";
+        return $"{ResourceBasePaths.PRODUCT_CATALOG}parents";
     }
 
     public static string GetItemParentById(Guid id)
     {
-        return $"{Constants.PRODUCT_CATALOG_URI}parents/{id}";
+        return $"{ResourceBasePaths.PRODUCT_CATALOG}parents/{id}";
     }
 
     public static string CreateItemParent()
     {
-        return $"{Constants.PRODUCT_CATALOG_URI}parents";
+        return $"{ResourceBasePaths.PRODUCT_CATALOG}parents";
     }
 
     public static string UpdateItemParent()
     {
-        return $"{Constants.PRODUCT_CATALOG_URI}parents";
+        return $"{ResourceBasePaths.PRODUCT_CATALOG}parents";
     }
 
     public static string DeleteItemParent(Guid id, bool useSoftDeleting)
     {
-        return $"{Constants.PRODUCT_CATALOG_URI}parents/{id}?useSoftDeleting={useSoftDeleting}";
+        return $"{ResourceBasePaths.PRODUCT_CATALOG}parents/{id}?useSoftDeleting={useSoftDeleting}";
     }
 
     #endregion
@@ -86,27 +88,27 @@ public static class CatalogUriHelper
 
     public static string GetAllTypes()
     {
-        return $"{Constants.PRODUCT_CATALOG_URI}types";
+        return $"{ResourceBasePaths.PRODUCT_CATALOG}types";
     }
 
     public static string GetCatalogTypeById(Guid id)
     {
-        return $"{Constants.PRODUCT_CATALOG_URI}types/{id}";
+        return $"{ResourceBasePaths.PRODUCT_CATALOG}types/{id}";
     }
 
     public static string CreateCatalogType()
     {
-        return $"{Constants.PRODUCT_CATALOG_URI}types";
+        return $"{ResourceBasePaths.PRODUCT_CATALOG}types";
     }
 
     public static string UpdateCatalogType()
     {
-        return $"{Constants.PRODUCT_CATALOG_URI}types";
+        return $"{ResourceBasePaths.PRODUCT_CATALOG}types";
     }
 
     public static string DeleteCatalogType(Guid id, bool useSoftDeleting)
     {
-        return $"{Constants.PRODUCT_CATALOG_URI}types/{id}?useSoftDeleting={useSoftDeleting}";
+        return $"{ResourceBasePaths.PRODUCT_CATALOG}types/{id}?useSoftDeleting={useSoftDeleting}";
     }
 
     #endregion
@@ -115,32 +117,32 @@ public static class CatalogUriHelper
 
     public static string GetAllBrands()
     {
-        return $"{Constants.PRODUCT_CATALOG_URI}brands";
+        return $"{ResourceBasePaths.PRODUCT_CATALOG}brands";
     }
 
     public static string GetCatalogBrandById(Guid id)
     {
-        return $"{Constants.PRODUCT_CATALOG_URI}brands/{id}";
+        return $"{ResourceBasePaths.PRODUCT_CATALOG}brands/{id}";
     }
 
     public static string CreateCatalogBrand()
     {
-        return $"{Constants.PRODUCT_CATALOG_URI}brands";
+        return $"{ResourceBasePaths.PRODUCT_CATALOG}brands";
     }
 
     public static string UpdateCatalogBrand()
     {
-        return $"{Constants.PRODUCT_CATALOG_URI}brands";
+        return $"{ResourceBasePaths.PRODUCT_CATALOG}brands";
     }
 
     public static string DeleteCatalogBrand(Guid id, bool isSoftDeleting)
     {
-        return $"{Constants.PRODUCT_CATALOG_URI}brands/{id}?useSoftDeleting={isSoftDeleting}";
+        return $"{ResourceBasePaths.PRODUCT_CATALOG}brands/{id}?useSoftDeleting={isSoftDeleting}";
     }
 
     public static string GetCatalogItemsByParent(Guid parentId)
     {
-        return $"{Constants.PRODUCT_CATALOG_URI}items/parent/{parentId}";
+        return $"{ResourceBasePaths.PRODUCT_CATALOG}items/parent/{parentId}";
     }
 
     #endregion

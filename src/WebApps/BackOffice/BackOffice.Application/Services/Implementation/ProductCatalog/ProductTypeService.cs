@@ -1,7 +1,9 @@
-﻿using BackOffice.Application.Helpers;
-using BackOffice.Application.Mapping.ProductCatalog;
+﻿using BackOffice.Application.Mapping.ProductCatalog;
 using BackOffice.Application.Services.Abstraction.ProductCatalog;
 using BackOffice.Core.Models.ProductCatalog;
+using Infrastructure.Http;
+using Infrastructure.Http.ExternalResources;
+using Infrastructure.Http.Uri;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BackOffice.Application.Services.Implementation.ProductCatalog;
@@ -13,7 +15,7 @@ public class ProductTypeService: IProductTypeService
 
     public event Func<ProductType, Task>? ProductTypeChanged;
 
-    public ProductTypeService([FromKeyedServices(Constants.PRODUCT_CATALOG_HTTP_CLIENT_NAME)] IHttpService<ProductCatalogResource> httpService, ILogger<ProductItemService> logger)
+    public ProductTypeService([FromKeyedServices(ClientNames.PRODUCT_CATALOG)] IHttpService<ProductCatalogResource> httpService, ILogger<ProductItemService> logger)
     {
         _logger = logger;
         _httpService = httpService;
@@ -21,7 +23,7 @@ public class ProductTypeService: IProductTypeService
 
     public async Task<List<ProductType>> GetTypesAsync()
     {
-        var uri = CatalogUriHelper.GetAllTypes();
+        var uri = CatalogUriHelper.GetAll<ProductType>();
         var typeDtos = await _httpService.GetAsync<List<ItemTypeDto>>(uri);
 
         var types = typeDtos?.Select(x => x.ToModel()).ToList();
@@ -31,7 +33,7 @@ public class ProductTypeService: IProductTypeService
 
     public async Task<ProductType> GetTypeByIdAsync(Guid id)
     {
-        var uri = CatalogUriHelper.GetCatalogTypeById(id);
+        var uri = CatalogUriHelper.Get<ProductType>(id);
         var item = await _httpService.GetAsync<ItemTypeDto>(uri);
 
         return item?.ToModel() ?? new();
@@ -39,7 +41,7 @@ public class ProductTypeService: IProductTypeService
 
     public async Task<ProductType> CreateTypeAsync(ProductType catalogType)
     {
-        var uri = CatalogUriHelper.CreateCatalogType();
+        var uri = CatalogUriHelper.Add<ProductType>();
         await _httpService.PostAsync(uri, catalogType);
 
         ProductTypeChanged?.Invoke(catalogType);
@@ -49,7 +51,7 @@ public class ProductTypeService: IProductTypeService
 
     public async Task<ProductType> UpdateTypeAsync(ProductType catalogType)
     {
-        var uri = CatalogUriHelper.UpdateCatalogType();
+        var uri = CatalogUriHelper.Update<ProductType>();
 
         await _httpService.PutAsync(uri, catalogType);
 
@@ -60,7 +62,7 @@ public class ProductTypeService: IProductTypeService
 
     public async Task DeleteTypeAsync(Guid id, bool useSoftDeleting)
     {
-        var uri = CatalogUriHelper.DeleteCatalogType(id, useSoftDeleting);
+        var uri = CatalogUriHelper.Delete<ProductType>(id, useSoftDeleting);
         await _httpService.DeleteAsync(uri);
 
         ProductTypeChanged?.Invoke(new());

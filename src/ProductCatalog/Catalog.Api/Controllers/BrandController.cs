@@ -3,7 +3,7 @@
 namespace ProductCatalog.Api.Controllers;
 
 [ApiController]
-[Route("api/v1/catalog")]
+[Route("api/v1/productcatalog")]
 public class BrandController : ControllerBase
 {
     private readonly IBrandService _brandService;
@@ -15,7 +15,7 @@ public class BrandController : ControllerBase
 
     // GET api/v1/[controller]/CatalogBrands
     [HttpGet]
-    [Route("brands")]
+    [Route("productbrands")]
     [ProducesResponseType(typeof(List<BrandDto>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<List<BrandDto>>> CatalogBrandsAsync()
     {
@@ -25,7 +25,7 @@ public class BrandController : ControllerBase
     }
 
     [HttpGet]
-    [Route("brands/{id:Guid}")]
+    [Route("productbrands/{id:Guid}")]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(BrandDto), (int)HttpStatusCode.OK)]
@@ -43,7 +43,7 @@ public class BrandController : ControllerBase
     }
 
     //POST api/v1/[controller]/brands
-    [Route("brands")]
+    [Route("productbrands")]
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
     public async Task<ActionResult> CreateBrandAsync([FromBody] BrandDto brand)
@@ -56,7 +56,7 @@ public class BrandController : ControllerBase
     }
 
     //PUT api/v1/[controller]/types
-    [Route("brands")]
+    [Route("productbrands")]
     [HttpPut]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -74,7 +74,7 @@ public class BrandController : ControllerBase
     }
 
     //DELETE api/v1/[controller]/brands/id
-    [Route("brands/{id}")]
+    [Route("productbrands/{id}")]
     [HttpDelete]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]

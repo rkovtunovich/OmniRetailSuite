@@ -1,4 +1,4 @@
-﻿namespace BackOffice.Core.Models.ExternalResources;
+﻿namespace Infrastructure.Http.ExternalResources;
 
 public class RetailResource : ExternalResource
 {

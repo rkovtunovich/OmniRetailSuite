@@ -1,6 +1,4 @@
-﻿using BackOffice.Core.Models.ExternalResources;
-
-namespace BackOffice.Application.Helpers;
+﻿namespace Infrastructure.Http.Uri;
 
 public static class RetailUrlHelper
 {
@@ -8,7 +6,7 @@ public static class RetailUrlHelper
 
     public static string GetAll<T>()
     {
-        var resourceName =  $"{typeof(T).Name.ToLower()}s";
+        var resourceName = $"{typeof(T).Name.ToLower()}s";
 
         return $"{_retailResource.BaseAddress}{resourceName}";
     }

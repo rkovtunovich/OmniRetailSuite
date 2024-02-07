@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
-using BackOffice.Application.Helpers;
-using BackOffice.Core.Models.ExternalResources;
+using Infrastructure.Http;
+using Infrastructure.Http.ExternalResources;
+using Infrastructure.Http.Uri;
 
 namespace BackOffice.Application.Services.Implementation;
 

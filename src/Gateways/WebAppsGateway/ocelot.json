@@ -28,8 +28,8 @@
     },
     {
       "ServiceName": "catalogapi",
-      "DownstreamPathTemplate": "/api/v1/catalog/{everything}",
-      "UpstreamPathTemplate": "/api/v1/catalog/{everything}",
+      "DownstreamPathTemplate": "/api/v1/productcatalog/{everything}",
+      "UpstreamPathTemplate": "/api/v1/productcatalog/{everything}",
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "IdentityServer",
         "AllowedScopes": [ "webappsgateway" ]

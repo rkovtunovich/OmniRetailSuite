@@ -1,6 +1,7 @@
-﻿using BackOffice.Application.Helpers;
-using BackOffice.Core.Models.ExternalResources;
-using BackOffice.Core.Models.UserPreferences;
+﻿using BackOffice.Core.Models.UserPreferences;
+using Infrastructure.Http;
+using Infrastructure.Http.ExternalResources;
+using Infrastructure.Http.Uri;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BackOffice.Application.Services.Implementation;
@@ -10,7 +11,7 @@ public class UserPreferenceService : IUserPreferenceService
     private readonly IHttpService<IdentityResource> _httpService;
     private readonly ILogger<UserPreferenceService> _logger;
 
-    public UserPreferenceService([FromKeyedServices(Constants.IDENTITY_CLIENT_NAME)] IHttpService<IdentityResource> httpService, ILogger<UserPreferenceService> logger)
+    public UserPreferenceService([FromKeyedServices(ClientNames.IDENTITY)] IHttpService<IdentityResource> httpService, ILogger<UserPreferenceService> logger)
     {
         _logger = logger;
         _httpService = httpService;

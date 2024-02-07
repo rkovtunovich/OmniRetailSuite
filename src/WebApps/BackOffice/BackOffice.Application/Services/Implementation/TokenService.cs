@@ -1,5 +1,6 @@
 ﻿using BackOffice.Core.Models.Settings;
 using IdentityModel.Client;
+using Infrastructure.Http;
 using Microsoft.Extensions.Options;
 
 namespace BackOffice.Application.Services.Implementation;
@@ -15,7 +16,7 @@ public class TokenService : ITokenService
         _options = options;
         _httpClientFactory = httpClientFactory;
 
-        var httpClient = _httpClientFactory.CreateClient(Constants.IDENTITY_CLIENT_NAME);
+        var httpClient = _httpClientFactory.CreateClient(ClientNames.IDENTITY);
         _documentResponse = httpClient.GetDiscoveryDocumentAsync(_options.Value.DiscoveryUrl).Result;
 
         if (_documentResponse.IsError)
@@ -24,7 +25,7 @@ public class TokenService : ITokenService
 
     public async Task<TokenResponse> GetToken(string scope)
     {
-        var httpClient = _httpClientFactory.CreateClient(Constants.IDENTITY_CLIENT_NAME);
+        var httpClient = _httpClientFactory.CreateClient(ClientNames.IDENTITY);
         var tokenRequest = new ClientCredentialsTokenRequest
         {
             Address = _documentResponse.TokenEndpoint,

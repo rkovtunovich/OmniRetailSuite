@@ -1,7 +1,9 @@
-﻿using BackOffice.Application.Helpers;
-using BackOffice.Application.Mapping.ProductCatalog;
+﻿using BackOffice.Application.Mapping.ProductCatalog;
 using BackOffice.Application.Services.Abstraction.ProductCatalog;
 using BackOffice.Core.Models.ProductCatalog;
+using Infrastructure.Http;
+using Infrastructure.Http.ExternalResources;
+using Infrastructure.Http.Uri;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BackOffice.Application.Services.Implementation.ProductCatalog;
@@ -13,7 +15,7 @@ public class ProductItemService : IProductItemService
 
     public event Func<ProductItem, Task>? ProductItemChanged;
 
-    public ProductItemService([FromKeyedServices(Constants.PRODUCT_CATALOG_HTTP_CLIENT_NAME)] IHttpService<ProductCatalogResource> httpService, ILogger<ProductItemService> logger)
+    public ProductItemService([FromKeyedServices(ClientNames.PRODUCT_CATALOG)] IHttpService<ProductCatalogResource> httpService, ILogger<ProductItemService> logger)
     {
         _logger = logger;
         _httpService = httpService;
@@ -21,7 +23,7 @@ public class ProductItemService : IProductItemService
 
     public async Task<List<ProductItem>> GetItemsAsync(int page, int take, Guid? brand, Guid? type)
     {
-        var uri = CatalogUriHelper.GetAllCatalogItems(page, take, brand, type);
+        var uri = CatalogUriHelper.GetAll<ProductItem>(page, take);
         var paginatedItemsDto = await _httpService.GetAsync<PaginatedItemsDto>(uri);
 
         var items = paginatedItemsDto?.Data.Select(x => x.ToModel()).ToList() ?? [];
@@ -31,7 +33,7 @@ public class ProductItemService : IProductItemService
 
     public async Task<ProductItem> GetItemByIdAsync(Guid id)
     {
-        var uri = CatalogUriHelper.GetCatalogItemById(id);
+        var uri = CatalogUriHelper.Get<ProductItem>(id);
         var item = await _httpService.GetAsync<ItemDto>(uri);
 
         return item?.ToModel() ?? new();
@@ -57,7 +59,7 @@ public class ProductItemService : IProductItemService
 
     public async Task<ProductItem> UpdateItemAsync(ProductItem catalogItem)
     {
-        var uri = CatalogUriHelper.UpdateCatalogItem();
+        var uri = CatalogUriHelper.Update<ProductItem>();
 
         await _httpService.PutAsync(uri, catalogItem.ToDto());
 
@@ -68,7 +70,7 @@ public class ProductItemService : IProductItemService
 
     public async Task<ProductItem> CreateItemAsync(ProductItem catalogItem)
     {
-        var uri = CatalogUriHelper.CreateCatalogItem();
+        var uri = CatalogUriHelper.Add<ProductItem>();
         await _httpService.PostAsync(uri, catalogItem.ToDto());
 
         ProductItemChanged?.Invoke(catalogItem);
@@ -78,7 +80,7 @@ public class ProductItemService : IProductItemService
 
     public async Task DeleteItemAsync(Guid id, bool useSoftDeleting)
     {
-        var uri = CatalogUriHelper.DeleteCatalogItem(id, useSoftDeleting);
+        var uri = CatalogUriHelper.Delete<ProductItem>(id, useSoftDeleting);
         await _httpService.DeleteAsync(uri);
 
         ProductItemChanged?.Invoke(new ProductItem() { Id = id });

@@ -108,8 +108,8 @@ public class ProductCatalogHttpService : IHttpService<ProductCatalogResource>
 
     private async Task<HttpClient> GetClientAsync()
     {
-        var client = _clientFactory.CreateClient(Constants.PRODUCT_CATALOG_HTTP_CLIENT_NAME);
-        var tokenResponse = await _tokenService.GetToken(Constants.CATALOG_API_SCOPE);
+        var client = _clientFactory.CreateClient(ClientNames.PRODUCT_CATALOG);
+        var tokenResponse = await _tokenService.GetToken(ProductCatalogResource.DefaultApiScope);
         if (tokenResponse is null || tokenResponse.IsError)
             throw new Exception(tokenResponse?.Error ?? "Unable to get AccessToken");
 

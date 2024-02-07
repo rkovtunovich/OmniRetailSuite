@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Json;
-using BackOffice.Core.Models.ExternalResources;
 using IdentityModel.Client;
+using Infrastructure.Http;
+using Infrastructure.Http.ExternalResources;
 
 namespace BackOffice.Application.Services.Implementation;
 
@@ -114,8 +115,8 @@ public class IdentityHttpService : IHttpService<IdentityResource>
 
     private async Task<HttpClient> GetClientAsync()
     {
-        var client = _clientFactory.CreateClient(Constants.IDENTITY_CLIENT_NAME);
-        var tokenResponse = await _tokenService.GetToken(Constants.IDENTITY_API_SCOPE);
+        var client = _clientFactory.CreateClient(ClientNames.IDENTITY);
+        var tokenResponse = await _tokenService.GetToken(IdentityResource.DefaultApiScope);
         if (tokenResponse is null || tokenResponse.IsError)
             throw new Exception(tokenResponse?.Error ?? "Unable to get AccessToken");
 

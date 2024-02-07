@@ -17,7 +17,7 @@ public partial class SelectionTree<TItem> : OrsComponentBase where TItem : class
 
     private HashSet<TItem> _items = [];
 
-    private TItem? _selectedItem;
+    private TItem? _selectedItem = null;
 
     private void ReloadItems()
     {

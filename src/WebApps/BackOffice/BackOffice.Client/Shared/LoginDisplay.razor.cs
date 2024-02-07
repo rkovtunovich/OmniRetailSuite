@@ -1,4 +1,4 @@
-﻿using BackOffice.Application.Helpers;
+﻿using Infrastructure.Http.Uri;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace BackOffice.Client.Shared;
