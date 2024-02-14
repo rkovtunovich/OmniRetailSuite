@@ -3,19 +3,21 @@ using IdentityModel.Client;
 
 namespace BackOffice.Application.Services.Implementation.ProductCatalog;
 
-public class ProductCatalogHttpService : IHttpService<ProductCatalogResource>
+public class ProductCatalogHttpService : IHttpService<ProductCatalogClientSettings>
 {
     private readonly IHttpClientFactory _clientFactory;
     private readonly ITokenService _tokenService;
     private readonly IDataSerializer _dataSerializer;
     private readonly ILogger<ProductCatalogHttpService> _logger;
+    private readonly IOptions<ProductCatalogClientSettings> _productCatalogClientSettings;
 
-    public ProductCatalogHttpService(IHttpClientFactory clientFactory, ITokenService tokenService, IDataSerializer dataSerializer, ILogger<ProductCatalogHttpService> logger)
+    public ProductCatalogHttpService(IHttpClientFactory clientFactory, ITokenService tokenService, IDataSerializer dataSerializer, ILogger<ProductCatalogHttpService> logger, IOptions<ProductCatalogClientSettings> productCatalogClientSettings)
     {
         _clientFactory = clientFactory;
         _tokenService = tokenService;
         _logger = logger;
         _dataSerializer = dataSerializer;
+        _productCatalogClientSettings = productCatalogClientSettings;
     }
 
     public async Task<T?> GetAsync<T>(string uri)
@@ -109,7 +111,7 @@ public class ProductCatalogHttpService : IHttpService<ProductCatalogResource>
     private async Task<HttpClient> GetClientAsync()
     {
         var client = _clientFactory.CreateClient(ClientNames.PRODUCT_CATALOG);
-        var tokenResponse = await _tokenService.GetToken(ProductCatalogResource.DefaultApiScope);
+        var tokenResponse = await _tokenService.GetToken(_productCatalogClientSettings.Value.ApiScope);
         if (tokenResponse is null || tokenResponse.IsError)
             throw new Exception(tokenResponse?.Error ?? "Unable to get AccessToken");
 

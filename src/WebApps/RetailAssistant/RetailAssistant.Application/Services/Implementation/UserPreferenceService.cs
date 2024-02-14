@@ -1,17 +1,17 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Infrastructure.Http;
+using Infrastructure.Http.Clients;
+using Microsoft.Extensions.DependencyInjection;
 using RetailAssistant.Application.Helpers;
-using RetailAssistant.Core.Models.ExternalResources;
 using RetailAssistant.Core.Models.UserPreferences;
-
 
 namespace RetailAssistant.Application.Services.Implementation;
 
 public class UserPreferenceService : IUserPreferenceService
 {
-    private readonly IHttpService<IdentityResource> _httpService;
+    private readonly IHttpService<IdentityClientSettings> _httpService;
     private readonly ILogger<UserPreferenceService> _logger;
 
-    public UserPreferenceService([FromKeyedServices(Constants.IDENTITY_CLIENT_NAME)] IHttpService<IdentityResource> httpService, ILogger<UserPreferenceService> logger)
+    public UserPreferenceService([FromKeyedServices(Constants.IDENTITY_CLIENT_NAME)] IHttpService<IdentityClientSettings> httpService, ILogger<UserPreferenceService> logger)
     {
         _logger = logger;
         _httpService = httpService;

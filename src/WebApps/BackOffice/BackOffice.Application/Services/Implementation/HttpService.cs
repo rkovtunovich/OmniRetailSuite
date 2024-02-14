@@ -1,24 +1,23 @@
 ﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using Infrastructure.Http;
-using Infrastructure.Http.ExternalResources;
 
 namespace BackOffice.Application.Services.Implementation;
 
-public class HttpService<TResource>: IHttpService<TResource> where TResource: ExternalResource, new()
+public class HttpService<TResource>: IHttpService<TResource> where TResource: HttpClientSettings, new()
 {
     private readonly IHttpClientFactory _clientFactory;
     private readonly ITokenService _tokenService;
     private readonly IDataSerializer _dataSerializer;
     private readonly ILogger<HttpService<TResource>> _logger;
-    private readonly TResource _resource = new();
+    private readonly IOptions<TResource> _options;
 
-    public HttpService(IHttpClientFactory clientFactory, ITokenService tokenService, IDataSerializer dataSerializer, ILogger<HttpService<TResource>> logger)
+    public HttpService(IHttpClientFactory clientFactory, ITokenService tokenService, IDataSerializer dataSerializer, ILogger<HttpService<TResource>> logger, IOptions<TResource> options)
     {
         _clientFactory = clientFactory;
         _tokenService = tokenService;
         _logger = logger;
         _dataSerializer = dataSerializer;
+        _options = options;
     }
 
     public async Task<T?> GetAsync<T>(string uri)
@@ -113,8 +112,8 @@ public class HttpService<TResource>: IHttpService<TResource> where TResource: Ex
 
     private async Task<HttpClient> GetClientAsync()
     {
-        var client = _clientFactory.CreateClient(_resource.ClientName);
-        var tokenResponse = await _tokenService.GetToken(_resource.ApiScope);
+        var client = _clientFactory.CreateClient(_options.Value.Name);
+        var tokenResponse = await _tokenService.GetToken(_options.Value.ApiScope);
         if (tokenResponse is null || tokenResponse.IsError)
             throw new Exception(tokenResponse?.Error ?? "Unable to get AccessToken");
 

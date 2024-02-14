@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "BlazorAdmin": {
+    "BackOffice": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

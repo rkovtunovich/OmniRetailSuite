@@ -1,11 +1,12 @@
 ﻿using System.Net.Http.Json;
 using System.Net.Http.Headers;
-using RetailAssistant.Core.Models.ExternalResources;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using Infrastructure.Http;
+using Infrastructure.Http.Clients;
 
 namespace RetailAssistant.Application.Services.Implementation;
 
-public class HttpService<TResource> : IHttpService<TResource> where TResource : ExternalResource, new()
+public class HttpService<TResource> : IHttpService<TResource> where TResource : HttpClientSettings, new()
 {
     private readonly IHttpClientFactory _clientFactory;
     private readonly IDataSerializer _dataSerializer;
@@ -113,7 +114,7 @@ public class HttpService<TResource> : IHttpService<TResource> where TResource : 
 
     private async Task<HttpClient> GetClientAsync()
     {
-        var client = _clientFactory.CreateClient(_resource.ClientName);
+        var client = _clientFactory.CreateClient(_resource.Name);
 
         var tokenResponse = await _accessTokenProvider.RequestAccessToken();
 

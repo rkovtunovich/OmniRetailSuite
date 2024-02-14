@@ -1,5 +1,7 @@
-﻿global using Infrastructure.Http.ExternalResources;
+﻿global using Infrastructure.Http.Clients;
 global using Infrastructure.Http.Uri;
+
+global using Microsoft.Extensions.Options;
 
 global using System.Collections.Generic;
 global using System.IO;

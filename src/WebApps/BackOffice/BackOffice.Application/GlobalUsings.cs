@@ -1,4 +1,6 @@
-﻿global using BackOffice.Application.Mapping;
+﻿global using AutoMapper;
+
+global using BackOffice.Application.Mapping;
 global using BackOffice.Application.Services.Abstraction;
 
 global using BackOffice.Core.Models;
@@ -8,10 +10,12 @@ global using Contracts.Dtos.ProductCatalog;
 global using Contracts.Dtos.Retail;
 
 global using Infrastructure.Http;
-global using Infrastructure.Http.ExternalResources;
+global using Infrastructure.Http.Clients;
+global using Infrastructure.Http.Uri;
 global using Infrastructure.Serialization.Abstraction;
 
 global using Microsoft.Extensions.Logging;
+global using Microsoft.Extensions.Options;
 
 global using System.Collections.Generic;
 global using System.IO;

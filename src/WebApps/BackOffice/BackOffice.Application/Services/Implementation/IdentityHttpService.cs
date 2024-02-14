@@ -1,21 +1,21 @@
 ﻿using System.Net.Http.Json;
 using IdentityModel.Client;
-using Infrastructure.Http;
-using Infrastructure.Http.ExternalResources;
 
 namespace BackOffice.Application.Services.Implementation;
 
-public class IdentityHttpService : IHttpService<IdentityResource>
+public class IdentityHttpService : IHttpService<IdentityClientSettings>
 {
     private readonly IHttpClientFactory _clientFactory;
     private readonly ITokenService _tokenService;
     private readonly ILogger<IdentityHttpService> _logger;
+    private readonly IOptions<IdentityClientSettings> _identityClientSettings;
 
-    public IdentityHttpService(IHttpClientFactory clientFactory, ITokenService tokenService, ILogger<IdentityHttpService> logger)
+    public IdentityHttpService(IHttpClientFactory clientFactory, ITokenService tokenService, ILogger<IdentityHttpService> logger, IOptions<IdentityClientSettings> identityClientSettings)
     {
         _clientFactory = clientFactory;
         _tokenService = tokenService;
         _logger = logger;
+        _identityClientSettings = identityClientSettings;
     }
 
     public async Task<T?> GetAsync<T>(string uri)
@@ -116,7 +116,7 @@ public class IdentityHttpService : IHttpService<IdentityResource>
     private async Task<HttpClient> GetClientAsync()
     {
         var client = _clientFactory.CreateClient(ClientNames.IDENTITY);
-        var tokenResponse = await _tokenService.GetToken(IdentityResource.DefaultApiScope);
+        var tokenResponse = await _tokenService.GetToken(_identityClientSettings.Value.ApiScope);
         if (tokenResponse is null || tokenResponse.IsError)
             throw new Exception(tokenResponse?.Error ?? "Unable to get AccessToken");
 

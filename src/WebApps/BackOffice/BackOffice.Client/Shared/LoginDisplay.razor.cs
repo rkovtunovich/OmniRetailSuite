@@ -11,6 +11,9 @@ public partial class LoginDisplay
     [Inject]
     public IConfiguration? Configuration { get; set; }
 
+    [Inject]
+    public IdentityUriResolver IdentityUriResolver { get; set; } = null!;
+
     private string ShowUserName(AuthenticationState context)
     {
         var name = context?.User.Claims.FirstOrDefault(c => c.Type == "name")?.Value ?? "Anonymous";
@@ -24,6 +27,6 @@ public partial class LoginDisplay
 
         var identityUrl = Configuration.GetValue<string>("WebGateway"); 
 
-        return identityUrl + "/" + IdentityUriHelper.GetRegisterUrl(NavigationManager?.Uri ?? "/");
+        return identityUrl + "/" + IdentityUriResolver.GetRegisterUrl(NavigationManager?.Uri ?? "/");
     }
 }
