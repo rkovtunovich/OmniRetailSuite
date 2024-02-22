@@ -100,9 +100,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetailAssistant.Application
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityModel", "src\Identity\Identity.Model\IdentityModel.csproj", "{B5F9D739-8847-43D3-8928-89D1933B4B15}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Helpers", "Helpers", "{9394EC5F-4DD9-4096-9ABA-01ED2E781172}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Http", "src\Infrastructure\Infrastructure.Http.Abstraction\Infrastructure.Http.csproj", "{7C266459-9C73-46B7-A993-E1ECD38A2DC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Http", "src\Infrastructure\Infrastructure.Http.Abstraction\Infrastructure.Http.csproj", "{7C266459-9C73-46B7-A993-E1ECD38A2DC4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -276,7 +274,6 @@ Global
 		{D24C51BA-BDDE-40FF-B105-967B07CB71A9} = {1D91FEC3-6E74-4EF7-BBB6-8F70D14AE95D}
 		{0C43CB10-260B-4419-908E-ECFE3B4C7E2A} = {1D91FEC3-6E74-4EF7-BBB6-8F70D14AE95D}
 		{B5F9D739-8847-43D3-8928-89D1933B4B15} = {A378C569-AE07-4439-8D93-B1A595E1467C}
-		{9394EC5F-4DD9-4096-9ABA-01ED2E781172} = {5B8B3789-2B98-494A-A4A0-27FC4CDEB850}
 		{7C266459-9C73-46B7-A993-E1ECD38A2DC4} = {BE3FB256-472F-4424-B0D2-A31B37EC7229}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

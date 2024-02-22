@@ -1,7 +1,5 @@
 ﻿using Contracts.Dtos.Retail;
 using Microsoft.AspNetCore.Mvc;
-using Retail.Application.Services.Abstraction;
-using Retail.Core.Entities;
 
 namespace Retail.Api.Controllers;
 

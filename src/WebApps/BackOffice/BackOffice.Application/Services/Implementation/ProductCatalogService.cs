@@ -1,9 +1,4 @@
-﻿using AutoMapper;
-using Infrastructure.Http;
-using Infrastructure.Http.Clients;
-using Infrastructure.Http.Uri;
-
-namespace RetailAssistant.Application.Services.Implementation;
+﻿namespace BackOffice.Application.Services.Implementation;
 
 public class ProductCatalogService<TModel, TDto> : IProductCatalogService<TModel> where TModel : EntityModelBase, new()
 {
@@ -35,8 +30,8 @@ public class ProductCatalogService<TModel, TDto> : IProductCatalogService<TModel
         }
         catch (Exception e)
         {
-            _logger.LogError(e,$"Error getting all {typeof(TModel).Name}");
-            
+            _logger.LogError(e, $"Error getting all {typeof(TModel).Name}");
+
             return [];
         }
     }

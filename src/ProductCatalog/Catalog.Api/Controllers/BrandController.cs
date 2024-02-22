@@ -3,38 +3,31 @@
 namespace ProductCatalog.Api.Controllers;
 
 [ApiController]
-[Route("api/v1/productcatalog")]
-public class BrandController : ControllerBase
+[Route("api/v1/{resource}")]
+public class BrandController(IBrandService brandService) : ControllerBase
 {
-    private readonly IBrandService _brandService;
 
-    public BrandController(IBrandService brandService)
-    {
-        _brandService = brandService;
-    }
-
-    // GET api/v1/[controller]/CatalogBrands
+    // GET api/v1/{resource}
     [HttpGet]
-    [Route("productbrands")]
-    [ProducesResponseType(typeof(List<BrandDto>), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<List<BrandDto>>> CatalogBrandsAsync()
+    [ProducesResponseType(typeof(List<ProductBrandDto>), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<List<ProductBrandDto>>> CatalogBrandsAsync()
     {
-        var brands = await _brandService.GetBrandsAsync();
+        var brands = await brandService.GetBrandsAsync();
 
         return brands;
     }
 
     [HttpGet]
-    [Route("productbrands/{id:Guid}")]
+    [Route("{id:Guid}")]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType(typeof(BrandDto), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<BrandDto>> BrandByIdAsync(Guid id)
+    [ProducesResponseType(typeof(ProductBrandDto), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<ProductBrandDto>> BrandByIdAsync([FromRoute]Guid id)
     {
         if (id == Guid.Empty)
             return BadRequest();
 
-        var brand = await _brandService.GetBrandByIdAsync(id);
+        var brand = await brandService.GetBrandByIdAsync(id);
 
         if (brand is not null)
             return brand;
@@ -42,29 +35,27 @@ public class BrandController : ControllerBase
         return NotFound();
     }
 
-    //POST api/v1/[controller]/brands
-    [Route("productbrands")]
+    //POST api/v1/{resource}
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
-    public async Task<ActionResult> CreateBrandAsync([FromBody] BrandDto brand)
+    public async Task<ActionResult> CreateBrandAsync([FromBody] ProductBrandDto brand)
     {
-        var createdBrand = await _brandService.CreateBrandAsync(brand);
+        var createdBrand = await brandService.CreateBrandAsync(brand);
         if (createdBrand.Id != Guid.Empty)
             return Created();
 
         return BadRequest();
     }
 
-    //PUT api/v1/[controller]/types
-    [Route("productbrands")]
+    //PUT api/v1/{resource}
     [HttpPut]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.OK)]
-    public async Task<ActionResult> UpdateBrandAsync([FromBody] BrandDto brandToUpdate)
+    public async Task<ActionResult> UpdateBrandAsync([FromBody] ProductBrandDto brandToUpdate)
     {
         try
         {
-            await _brandService.UpdateBrandAsync(brandToUpdate);
+            await brandService.UpdateBrandAsync(brandToUpdate);
             return Ok();
         }
         catch (Exception)
@@ -73,8 +64,8 @@ public class BrandController : ControllerBase
         }
     }
 
-    //DELETE api/v1/[controller]/brands/id
-    [Route("productbrands/{id}")]
+    //DELETE api/v1/{resource}/id
+    [Route("{id}")]
     [HttpDelete]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
@@ -82,7 +73,7 @@ public class BrandController : ControllerBase
     {
         try
         {
-            await _brandService.DeleteBrandAsync(id, useSoftDeleting);
+            await brandService.DeleteBrandAsync(id, useSoftDeleting);
             return NoContent();
         }
         catch (Exception)

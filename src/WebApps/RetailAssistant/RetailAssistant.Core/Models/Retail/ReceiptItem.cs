@@ -10,7 +10,7 @@ public class ReceiptItem
 
     public Guid ProductItemId { get; set; }
 
-    public ProductItem ProductItem { get; set; } = null!;
+    public RetailProductItem ProductItem { get; set; } = null!;
 
     public double Quantity { get; set; }
 

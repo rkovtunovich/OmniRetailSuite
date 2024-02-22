@@ -8,5 +8,5 @@ public record PaginatedItemsDto
 
     public long Count { get; init; }
 
-    public List<ItemDto> Data { get; init; } = [];
+    public List<ProductItemDto> Data { get; init; } = [];
 }

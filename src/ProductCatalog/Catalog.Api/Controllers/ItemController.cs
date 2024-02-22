@@ -3,7 +3,7 @@
 namespace ProductCatalog.Api.Controllers;
 
 [ApiController]
-[Route("api/v1/productcatalog")]
+[Route("api/v1/{resource}")]
 public class ItemController : ControllerBase
 {
     private readonly IItemService _itemService;
@@ -15,11 +15,10 @@ public class ItemController : ControllerBase
         _logger = logger;
     }
 
-    // GET api/v1/[controller]/items[?pageSize=3&pageIndex=10]
+    // GET api/v1/{resource}[?pageSize=3&pageIndex=10]
     [HttpGet]
-    [Route("productitems")]
-    [ProducesResponseType(typeof(PaginatedItemsDto), (int)HttpStatusCode.OK)]
-    [ProducesResponseType(typeof(IEnumerable<ItemDto>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(List<ProductItemDto>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(IEnumerable<ProductItemDto>), (int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> ItemsAsync([FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
     {
@@ -29,11 +28,11 @@ public class ItemController : ControllerBase
     }
 
     [HttpGet]
-    [Route("productitems/{id:Guid}")]
+    [Route("{id:Guid}")]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType(typeof(ItemDto), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<ItemDto>> ItemByIdAsync(Guid id)
+    [ProducesResponseType(typeof(ProductItemDto), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<ProductItemDto>> ItemByIdAsync(Guid id)
     {
         if (id == Guid.Empty)
             return BadRequest();
@@ -46,31 +45,31 @@ public class ItemController : ControllerBase
         return item;
     }
 
-    // GET api/v1/[controller]/items/withname/samplename[?pageSize=3&pageIndex=10]
+    // GET api/v1/{resource}/withname/samplename[?pageSize=3&pageIndex=10]
     [HttpGet]
-    [Route("productitems/withname/{name:minlength(1)}")]
-    [ProducesResponseType(typeof(ItemDto), (int)HttpStatusCode.OK)]
-    public async Task<List<ItemDto>> ItemsWithNameAsync(string name, [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
+    [Route("withname/{name:minlength(1)}")]
+    [ProducesResponseType(typeof(ProductItemDto), (int)HttpStatusCode.OK)]
+    public async Task<List<ProductItemDto>> ItemsWithNameAsync(string name, [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
     {
         var items = await _itemService.GetItemsByNameAsync(name);
 
         return items;
     }
 
-    // GET api/v1/[controller]/items/type/1/brand[?pageSize=3&pageIndex=10]
+    // GET api/v1/{resource}/type/1/brand[?pageSize=3&pageIndex=10]
     [HttpGet]
-    [Route("productitems/type/{catalogTypeId}/brand/{catalogBrandId:int?}")]
-    [ProducesResponseType(typeof(PaginatedItemsDto), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<PaginatedItemsDto>> ItemsByTypeIdAndBrandIdAsync(Guid? catalogTypeId, Guid? catalogBrandId, [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
+    [Route("type/{catalogTypeId}/brand/{catalogBrandId:int?}")]
+    [ProducesResponseType(typeof(List<ProductItemDto>), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<List<ProductItemDto>>> ItemsByTypeIdAndBrandIdAsync(Guid? catalogTypeId, Guid? catalogBrandId, [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
     {
         return await _itemService.GetItemsByCategoryAsync(catalogBrandId, catalogTypeId);
     }
 
-    // GET api/v1/[controller]/items/type/all/brand[?pageSize=3&pageIndex=10]
+    // GET api/v1/{resource}/type/all/brand[?pageSize=3&pageIndex=10]
     [HttpGet]
-    [Route("productitems/type/all/brand/{catalogBrandId:int?}")]
-    [ProducesResponseType(typeof(PaginatedItemsDto), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<PaginatedItemsDto>> ItemsByBrandIdAsync(Guid? catalogBrandId, [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
+    [Route("type/all/brand/{catalogBrandId:int?}")]
+    [ProducesResponseType(typeof(List<ProductItemDto>), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<List<ProductItemDto>>> ItemsByBrandIdAsync(Guid? catalogBrandId, [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
     {
         if (catalogBrandId is null)
             throw new ArgumentNullException(nameof(catalogBrandId));
@@ -78,21 +77,20 @@ public class ItemController : ControllerBase
         return await _itemService.GetItemsByCategoryAsync(catalogBrandId, null);
     }
 
-    // GET api/v1/[controller]/items/parent/{id}[?pageSize=3&pageIndex=10]
+    // GET api/v1/{resource}/parent/{id}[?pageSize=3&pageIndex=10]
     [HttpGet]
-    [Route("productitems/parent/{catalogParentId}")]
-    [ProducesResponseType(typeof(PaginatedItemsDto), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<PaginatedItemsDto>> ItemsByParentIdAsync(Guid catalogParentId, [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
+    [Route("parent/{catalogParentId}")]
+    [ProducesResponseType(typeof(List<ProductItemDto>), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<List<ProductItemDto>>> ItemsByParentIdAsync(Guid catalogParentId, [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
     {
         return await _itemService.GetItemsByParentAsync(catalogParentId);
     }
 
-    //PUT api/v1/[controller]/items
-    [Route("productitems")]
+    //PUT api/v1/{resource}
     [HttpPut]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.Created)]
-    public async Task<ActionResult> UpdateItemAsync([FromBody] ItemDto itemDto)
+    public async Task<ActionResult> UpdateItemAsync([FromBody] ProductItemDto itemDto)
     {
         var updatedItem = await _itemService.UpdateItemAsync(itemDto);
         if (updatedItem is not null)
@@ -101,11 +99,10 @@ public class ItemController : ControllerBase
             return NotFound();
     }
 
-    //POST api/v1/[controller]/items
-    [Route("productitems")]
+    //POST api/v1/{resource}
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
-    public async Task<ActionResult> CreateItemAsync([FromBody] ItemDto item)
+    public async Task<ActionResult> CreateItemAsync([FromBody] ProductItemDto item)
     {
         var createdItem = await _itemService.CreateItemAsync(item);
 
@@ -115,8 +112,8 @@ public class ItemController : ControllerBase
         return Created();
     }
 
-    //DELETE api/v1/[controller]/id
-    [Route("productitems/{id}")]
+    //DELETE api/v1/{resource}/id
+    [Route("/{id}")]
     [HttpDelete]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]

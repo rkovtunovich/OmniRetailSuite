@@ -2,9 +2,9 @@
 
 public static class BrandMapping
 {
-    public static BrandDto ToDto(this Brand catalogBrand)
+    public static ProductBrandDto ToDto(this Brand catalogBrand)
     {
-        return new BrandDto
+        return new ProductBrandDto
         {
             Id = catalogBrand.Id,
             Name = catalogBrand.Name,
@@ -13,7 +13,7 @@ public static class BrandMapping
         };
     }
 
-    public static Brand ToEntity(this BrandDto catalogBrand)
+    public static Brand ToEntity(this ProductBrandDto catalogBrand)
     {
         return new Brand
         {

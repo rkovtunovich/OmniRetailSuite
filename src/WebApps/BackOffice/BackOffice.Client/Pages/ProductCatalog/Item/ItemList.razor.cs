@@ -1,5 +1,4 @@
-﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
-using BackOffice.Client.Pages.ProductCatalog.Parent;
+﻿using BackOffice.Client.Pages.ProductCatalog.Parent;
 using BackOffice.Core.Models.ProductCatalog;
 using Microsoft.AspNetCore.Components.Web;
 using UI.Razor.Enums;
@@ -10,9 +9,9 @@ public partial class ItemList : OrsComponentBase
 {
     #region Injects
 
-    [Inject] public IProductItemService ProductItemService { get; set; } = null!;
+    [Inject] public IProductCatalogService<ProductItem> ProductItemService { get; set; } = null!;
 
-    [Inject] public IProductParentService ProductParentService { get; set; } = null!;
+    [Inject] public IProductCatalogService<ProductParent> ProductParentService { get; set; } = null!;
 
     [Inject] private TabsService _tabsService { get; set; } = null!;
 
@@ -77,7 +76,7 @@ public partial class ItemList : OrsComponentBase
     {
         if (firstRender)
         {
-            ProductItemService.ProductItemChanged += OnProductItemChanged;
+            ProductItemService.OnChanged += OnProductItemChanged;
             await ReloadProductItems();
             await ReloadItemParents(); ;
         }
@@ -88,7 +87,7 @@ public partial class ItemList : OrsComponentBase
     public override void Dispose()
     {
         // Unsubscribe when the component is destroyed to prevent memory leaks
-        ProductItemService.ProductItemChanged -= OnProductItemChanged;
+        ProductItemService.OnChanged -= OnProductItemChanged;
     }
 
     #endregion
@@ -123,7 +122,7 @@ public partial class ItemList : OrsComponentBase
 
     private async Task CommittedItemChanges(ProductItem item)
     {
-        await ProductItemService.UpdateItemAsync(item);
+        await ProductItemService.UpdateAsync(item);
 
         CallRequestRefresh();
     }
@@ -150,12 +149,12 @@ public partial class ItemList : OrsComponentBase
     {
        if(productParent == null)
         {
-            var productItemsList = await ProductItemService.GetItemsAsync(0, 1000);
+            var productItemsList = await ProductItemService.GetAllAsync();
             _productItems = [.. productItemsList];
         }
         else
         {
-            var productItemsList = await ProductItemService.GetItemsByParent(productParent.Id);
+            var productItemsList = await ProductItemService.GetByParentAsync(productParent.Id);
             _productItems = [.. productItemsList];
         }
 
@@ -221,7 +220,7 @@ public partial class ItemList : OrsComponentBase
 
     private async Task ReloadItemParents()
     {
-        var itemParentsList = await ProductParentService.GetItemParentsAsync();
+        var itemParentsList = await ProductParentService.GetAllAsync();
         _itemParents.Clear();
         _itemParents.Add(new ProductParent { Id = Guid.NewGuid(), Name = FilterSpecialCase.All.ToString() });
         _itemParents.Add(new ProductParent { Id = Guid.NewGuid(), Name = FilterSpecialCase.Empty.ToString() });

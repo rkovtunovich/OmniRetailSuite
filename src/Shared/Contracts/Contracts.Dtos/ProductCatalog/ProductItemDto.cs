@@ -1,6 +1,6 @@
 ﻿namespace Contracts.Dtos.ProductCatalog;
 
-public record ItemDto : EntityDtoBase
+public record ProductItemDto : EntityDtoBase
 {
     public string Name { get; init; } = null!;
 
@@ -18,9 +18,9 @@ public record ItemDto : EntityDtoBase
 
     public Guid? ParentId { get; init; }
 
-    public ItemTypeDto? CatalogType { get; init; }
+    public ProductTypeDto? CatalogType { get; init; }
 
-    public BrandDto? CatalogBrand { get; init; }
+    public ProductBrandDto? CatalogBrand { get; init; }
 
     public string? Barcode { get; init; }
 }

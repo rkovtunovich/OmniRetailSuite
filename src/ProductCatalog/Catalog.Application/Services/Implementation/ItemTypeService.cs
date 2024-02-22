@@ -13,13 +13,13 @@ public class ItemTypeService: IItemTypeService
         _logger = logger;
     }
 
-    public async Task<List<ItemTypeDto>> GetItemTypesAsync()
+    public async Task<List<ProductTypeDto>> GetItemTypesAsync()
     {
         var itemTypes = await _itemTypeRepository.GetItemTypesAsync();
         return itemTypes.Select(x => x.ToDto()).ToList();
     }
 
-    public async Task<ItemTypeDto> GetItemTypeByIdAsync(Guid id)
+    public async Task<ProductTypeDto> GetItemTypeByIdAsync(Guid id)
     {
         var itemType = await _itemTypeRepository.GetItemTypeByIdAsync(id);
         if (itemType is null)
@@ -31,7 +31,7 @@ public class ItemTypeService: IItemTypeService
         return itemType.ToDto();
     }
 
-    public async Task<ItemTypeDto> CreateItemTypeAsync(ItemTypeDto itemTypeDto)
+    public async Task<ProductTypeDto> CreateItemTypeAsync(ProductTypeDto itemTypeDto)
     {
         var itemType = itemTypeDto.ToEntity();
         var result = await _itemTypeRepository.CreateItemTypeAsync(itemType);
@@ -44,7 +44,7 @@ public class ItemTypeService: IItemTypeService
         return itemType.ToDto();
     }
 
-    public async Task<ItemTypeDto> UpdateItemTypeAsync(ItemTypeDto itemTypeDto)
+    public async Task<ProductTypeDto> UpdateItemTypeAsync(ProductTypeDto itemTypeDto)
     {
         var itemType = itemTypeDto.ToEntity();
         var result = await _itemTypeRepository.UpdateItemTypeAsync(itemType);

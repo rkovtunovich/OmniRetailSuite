@@ -4,6 +4,7 @@ global using BackOffice.Application.Mapping;
 global using BackOffice.Application.Services.Abstraction;
 
 global using BackOffice.Core.Models;
+global using BackOffice.Core.Models.ProductCatalog;
 global using BackOffice.Core.Models.Retail;
 
 global using Contracts.Dtos.ProductCatalog;

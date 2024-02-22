@@ -1,13 +1,11 @@
-﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
-using BackOffice.Core.Models.ProductCatalog;
+﻿using BackOffice.Core.Models.ProductCatalog;
 using Microsoft.AspNetCore.Components.Web;
-using UI.Razor.Components.Base;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Brand;
 
 public partial class BrandCreate: CreationFormBase<ProductBrand>
 {
-    [Inject] public IProductBrandService ProductBrandService { get; set; } = null!;
+    [Inject] public IProductCatalogService<ProductBrand> ProductBrandService { get; set; } = null!;
 
     [Parameter]
     public EventCallback<string> OnSaveClick { get; set; }
@@ -17,7 +15,7 @@ public partial class BrandCreate: CreationFormBase<ProductBrand>
         if (!EditContext?.Validate() ?? false)
             return;
 
-        var result = await ProductBrandService.CreateBrandAsync(Model);
+        var result = await ProductBrandService.CreateAsync(Model);
         if (result is not null)
         {
             await OnSaveClick.InvokeAsync(null);

@@ -2,9 +2,9 @@
 
 public static class ItemParentMapping
 {
-    public static ItemParentDto ToDto(this ItemParent itemParent)
+    public static ProductParentDto ToDto(this ItemParent itemParent)
     {
-        return new ItemParentDto
+        return new ProductParentDto
         {
             Id = itemParent.Id,
             Name = itemParent.Name,
@@ -15,7 +15,7 @@ public static class ItemParentMapping
         };
     }
 
-    public static ItemParent ToEntity(this ItemParentDto itemParentDto)
+    public static ItemParent ToEntity(this ProductParentDto itemParentDto)
     {
         return new ItemParent
         {

@@ -28,7 +28,7 @@
     },
     {
       "ServiceName": "catalogapi",
-      "DownstreamPathTemplate": "/api/v1/productcatalog/{everything}",
+      "DownstreamPathTemplate": "/api/v1/{everything}",
       "UpstreamPathTemplate": "/api/v1/productcatalog/{everything}",
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "IdentityServer",
@@ -37,7 +37,7 @@
     },
     {
       "ServiceName": "retailapi",
-      "DownstreamPathTemplate": "/api/v1/retail/{everything}",
+      "DownstreamPathTemplate": "/api/v1/{everything}",
       "UpstreamPathTemplate": "/api/v1/retail/{everything}",
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "IdentityServer",

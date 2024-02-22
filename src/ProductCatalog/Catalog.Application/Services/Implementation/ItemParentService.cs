@@ -13,14 +13,14 @@ public class ItemParentService: IItemParentService
         _logger = logger;
     }
 
-    public async Task<List<ItemParentDto>> GetItemParentsAsync()
+    public async Task<List<ProductParentDto>> GetItemParentsAsync()
     {
         var parents = await _itemParentRepository.GetItemParentsAsync();
 
         return parents.Select(x => x.ToDto()).ToList();
     }
 
-    public async Task<ItemParentDto> GetItemParentByIdAsync(Guid id)
+    public async Task<ProductParentDto> GetItemParentByIdAsync(Guid id)
     {
         var parent = await _itemParentRepository.GetItemParentAsync(id);
 
@@ -33,7 +33,7 @@ public class ItemParentService: IItemParentService
         return parent.ToDto();
     }
 
-    public async Task<ItemParentDto> CreateItemParentAsync(ItemParentDto itemParent)
+    public async Task<ProductParentDto> CreateItemParentAsync(ProductParentDto itemParent)
     {
         var item = itemParent.ToEntity();
 
@@ -45,7 +45,7 @@ public class ItemParentService: IItemParentService
         throw new Exception($"ItemParent with name: {itemParent.Name} not created.");
     }
 
-    public async Task<ItemParentDto> UpdateItemParentAsync(ItemParentDto itemParent)
+    public async Task<ProductParentDto> UpdateItemParentAsync(ProductParentDto itemParent)
     {
         var item = itemParent.ToEntity();
 

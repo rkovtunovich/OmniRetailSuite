@@ -1,16 +1,14 @@
-﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
-using BackOffice.Core.Models.ProductCatalog;
-using UI.Razor.Components.Base;
+﻿using BackOffice.Core.Models.ProductCatalog;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Type;
 
 public partial class TypeList : OrsComponentBase
 {
-    [Inject] public IProductTypeService ProductTypeService { get; set; } = null!;
+    [Inject] public IProductCatalogService<ProductType> ProductTypeService { get; set; } = null!;
 
     [Inject] private TabsService _tabsService { get; set; } = null!;
 
-    private List<ProductType> _catalogTypes = [];
+    private IList<ProductType> _catalogTypes = [];
 
     private string? _searchString;
 
@@ -33,7 +31,7 @@ public partial class TypeList : OrsComponentBase
     {
         if (firstRender)
         {
-            ProductTypeService.ProductTypeChanged += OnCatalogTypeChanged;
+            ProductTypeService.OnChanged += OnCatalogTypeChanged;
 
             await ReloadCatalogTypes();
         }
@@ -58,7 +56,7 @@ public partial class TypeList : OrsComponentBase
 
     private async Task ReloadCatalogTypes()
     {
-        _catalogTypes = await ProductTypeService.GetTypesAsync();
+        _catalogTypes = await ProductTypeService.GetAllAsync();
 
         CallRequestRefresh();
     }
@@ -74,7 +72,7 @@ public partial class TypeList : OrsComponentBase
 
     private async Task CommittedItemChanges(ProductType type)
     {
-        await ProductTypeService.UpdateTypeAsync(type);
+        await ProductTypeService.UpdateAsync(type);
 
         CallRequestRefresh();
     }
@@ -94,13 +92,13 @@ public partial class TypeList : OrsComponentBase
 
     private async Task OnCatalogTypeChanged(ProductType changedType)
     {
-        _catalogTypes = await ProductTypeService.GetTypesAsync();
+        _catalogTypes = await ProductTypeService.GetAllAsync();
         CallRequestRefresh();
     }
 
     public override void Dispose()
     {
         // Unsubscribe when the component is destroyed to prevent memory leaks
-        ProductTypeService.ProductTypeChanged -= OnCatalogTypeChanged;
+        ProductTypeService.OnChanged -= OnCatalogTypeChanged;
     }
 }

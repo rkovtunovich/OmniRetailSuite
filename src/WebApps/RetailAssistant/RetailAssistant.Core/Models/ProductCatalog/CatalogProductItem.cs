@@ -2,7 +2,7 @@
 
 namespace RetailAssistant.Core.Models.ProductCatalog;
 
-public class ProductItem : EntityModelBase
+public class CatalogProductItem : EntityModelBase
 {
     public Guid? ItemTypeId { get; set; }
 

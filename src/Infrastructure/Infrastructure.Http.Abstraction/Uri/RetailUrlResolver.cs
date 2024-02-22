@@ -4,36 +4,50 @@ public class RetailUrlResolver(IOptions<RetailClientSettings> retailClientSettin
 {
     public string GetAll<T>()
     {
-        var resourceName = $"{typeof(T).Name.ToLower()}s";
+        var resourceName = GetResourceName<T>();
 
-        return $"{retailClientSettings.Value.BasePath}{resourceName}";
+        return $"{GetBasePath()}{resourceName}";
     }
 
     public string Get<T>(Guid id)
     {
-        var resourceName = $"{typeof(T).Name.ToLower()}s";
+        var resourceName = GetResourceName<T>();
 
-        return $"{retailClientSettings.Value.BasePath}{resourceName}/{id}";
+        return $"{GetBasePath()}{resourceName}/{id}";
     }
 
     public string Add<T>()
     {
-        var resourceName = $"{typeof(T).Name.ToLower()}s";
+        var resourceName = GetResourceName<T>();
 
-        return $"{retailClientSettings.Value.BasePath}{resourceName}";
+        return $"{GetBasePath()}{resourceName}";
     }
 
     public string Update<T>()
     {
-        var resourceName = $"{typeof(T).Name.ToLower()}s";
+        var resourceName = GetResourceName<T>();
 
-        return $"{retailClientSettings.Value.BasePath}{resourceName}";
+        return $"{GetBasePath()}{resourceName}";
     }
 
     public string Delete<T>(Guid id, bool isSoftDeleting)
     {
-        var resourceName = $"{typeof(T).Name.ToLower()}s";
+        var resourceName = GetResourceName<T>();
 
-        return $"{retailClientSettings.Value.BasePath}{resourceName}/{id}?useSoftDeleting={isSoftDeleting}";
+        return $"{GetBasePath()}{resourceName}/{id}?useSoftDeleting={isSoftDeleting}";
     }
+
+    #region Private
+
+    private static string GetResourceName<T>()
+    {
+        return $"{typeof(T).Name.TrimEnd("Dto".ToCharArray()).ToLower()}s";
+    }
+
+    private string GetBasePath()
+    {
+        return retailClientSettings.Value.BasePath;
+    }
+
+    #endregion
 }

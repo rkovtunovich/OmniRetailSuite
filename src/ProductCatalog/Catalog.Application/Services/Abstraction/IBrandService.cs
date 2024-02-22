@@ -2,13 +2,13 @@
 
 public interface IBrandService
 {
-    Task<List<BrandDto>> GetBrandsAsync();
+    Task<List<ProductBrandDto>> GetBrandsAsync();
 
-    Task<BrandDto> GetBrandByIdAsync(Guid id);
+    Task<ProductBrandDto> GetBrandByIdAsync(Guid id);
 
-    Task<BrandDto> CreateBrandAsync(BrandDto brand);
+    Task<ProductBrandDto> CreateBrandAsync(ProductBrandDto brand);
 
-    Task<BrandDto> UpdateBrandAsync(BrandDto brand);
+    Task<ProductBrandDto> UpdateBrandAsync(ProductBrandDto brand);
 
     Task DeleteBrandAsync(Guid id, bool isSoftDeleting);
 }

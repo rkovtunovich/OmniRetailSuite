@@ -1,5 +1,4 @@
-﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
-using BackOffice.Core.Models.ProductCatalog;
+﻿using BackOffice.Core.Models.ProductCatalog;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Item;
@@ -8,13 +7,13 @@ public partial class ItemCreate: CreationFormBase<ProductItem>
 {
     #region Injects
 
-    [Inject] public IProductItemService ProductItemService { get; set; } = null!;
+    [Inject] public IProductCatalogService<ProductItem> ProductItemService { get; set; } = null!;
 
-    [Inject] public IProductBrandService ProductBrandService { get; set; } = null!;
+    [Inject] public IProductCatalogService<ProductBrand> ProductBrandService { get; set; } = null!;
 
-    [Inject] public IProductTypeService ProductTypeService { get; set; } = null!;
+    [Inject] public IProductCatalogService<ProductType> ProductTypeService { get; set; } = null!;
 
-    [Inject] public IProductParentService ProductParentService { get; set; } = null!;
+    [Inject] public IProductCatalogService<ProductParent> ProductParentService { get; set; } = null!;
 
     #endregion
 
@@ -27,9 +26,9 @@ public partial class ItemCreate: CreationFormBase<ProductItem>
 
     #region Fields
 
-    private List<ProductType> _itemTypes = [];
+    private IList<ProductType> _itemTypes = [];
 
-    private List<ProductBrand> _itemBrands = [];
+    private IList<ProductBrand> _itemBrands = [];
 
     private string LoadPicture => string.IsNullOrEmpty(Model.PictureBase64) ? string.Empty : $"data:image/png;base64, {Model.PictureBase64}";
 
@@ -50,8 +49,8 @@ public partial class ItemCreate: CreationFormBase<ProductItem>
         if (firstRender)
         {
             _flattenedParents = await GetFlattenedParentsAsync();
-            _itemTypes = await ProductTypeService.GetTypesAsync();
-            _itemBrands = await ProductBrandService.GetBrandsAsync();
+            _itemTypes = await ProductTypeService.GetAllAsync();
+            _itemBrands = await ProductBrandService.GetAllAsync();
 
             CallRequestRefresh();
         }
@@ -98,7 +97,7 @@ public partial class ItemCreate: CreationFormBase<ProductItem>
         if (_selectedParent is not null)
             Model.ParentId = _selectedParent.Id;
 
-        var result = await ProductItemService.CreateItemAsync(Model);
+        var result = await ProductItemService.CreateAsync(Model);
         if (result is not null)
         {
             await OnSaveClick.InvokeAsync(null);
@@ -110,7 +109,7 @@ public partial class ItemCreate: CreationFormBase<ProductItem>
 
     private async Task<List<ProductParentSelectModel>> GetFlattenedParentsAsync()
     {
-        var allParents = await ProductParentService.GetItemParentsAsync();
+        var allParents = await ProductParentService.GetAllAsync();
         var flattenedList = new List<ProductParentSelectModel>();
         FlattenTree(allParents, flattenedList, 0);
 

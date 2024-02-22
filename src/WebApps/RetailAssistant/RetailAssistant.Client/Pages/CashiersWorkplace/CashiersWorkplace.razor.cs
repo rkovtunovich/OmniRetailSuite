@@ -8,7 +8,7 @@ public partial class CashiersWorkplace
 {
     [Inject] public IProductCatalogService<ProductParent> ProductParentService { get; set; } = null!;
 
-    [Inject] public IProductCatalogService<Core.Models.ProductCatalog.ProductItem> ProductItemService { get; set; } = null!;
+    [Inject] public IProductCatalogService<CatalogProductItem> ProductItemService { get; set; } = null!;
 
     private Receipt _receipt = null!;
 
@@ -16,7 +16,7 @@ public partial class CashiersWorkplace
 
     #region Product Items fields
 
-    private List<Core.Models.ProductCatalog.ProductItem> _productItems = [];
+    private List<CatalogProductItem> _productItems = [];
 
     #endregion
 

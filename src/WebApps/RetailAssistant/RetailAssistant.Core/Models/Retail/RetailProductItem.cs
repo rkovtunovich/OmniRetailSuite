@@ -1,5 +1,5 @@
 ﻿namespace RetailAssistant.Core.Models.Retail;
 
-public class ProductItem : EntityModelBase
+public class RetailProductItem : EntityModelBase
 {
 }

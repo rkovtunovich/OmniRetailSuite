@@ -2,13 +2,13 @@
 
 public interface IItemParentService
 {
-    Task<List<ItemParentDto>> GetItemParentsAsync();
+    Task<List<ProductParentDto>> GetItemParentsAsync();
 
-    Task<ItemParentDto> GetItemParentByIdAsync(Guid id);
+    Task<ProductParentDto> GetItemParentByIdAsync(Guid id);
 
-    Task<ItemParentDto> CreateItemParentAsync(ItemParentDto itemParent);
+    Task<ProductParentDto> CreateItemParentAsync(ProductParentDto itemParent);
 
-    Task<ItemParentDto> UpdateItemParentAsync(ItemParentDto itemParent);
+    Task<ProductParentDto> UpdateItemParentAsync(ProductParentDto itemParent);
 
     Task DeleteItemParentAsync(Guid id, bool isSoftDeleting);
 }

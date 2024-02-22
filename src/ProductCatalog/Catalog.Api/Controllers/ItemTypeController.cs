@@ -3,40 +3,33 @@
 namespace ProductCatalog.Api.Controllers;
 
 [ApiController]
-[Route("api/v1/productcatalog")]
-public class ItemTypeController : ControllerBase
+[Route("api/v1/{resource}")]
+public class ItemTypeController(IItemTypeService itemTypeService) : ControllerBase
 {
-    private readonly IItemTypeService _itemTypeService;
 
-    public ItemTypeController(IItemTypeService itemTypeService)
-    {
-        _itemTypeService = itemTypeService;
-    }
-
-    // GET api/v1/[controller]/CatalogTypes
+    // GET api/v1/{resource}
     [HttpGet]
-    [Route("producttypes")]
-    [ProducesResponseType(typeof(List<ItemTypeDto>), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<List<ItemTypeDto>>> CatalogTypesAsync()
+    [ProducesResponseType(typeof(List<ProductTypeDto>), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<List<ProductTypeDto>>> CatalogTypesAsync()
     {
-        var types = await _itemTypeService.GetItemTypesAsync();
+        var types = await itemTypeService.GetItemTypesAsync();
 
         return types;
     }
 
     [HttpGet]
-    [Route("producttypes/{id:Guid}")]
+    [Route("{id:Guid}")]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType(typeof(ItemTypeDto), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<ItemTypeDto>> TypeByIdAsync(Guid id)
+    [ProducesResponseType(typeof(ProductTypeDto), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<ProductTypeDto>> TypeByIdAsync(Guid id)
     {
         if (id == Guid.Empty)
             return BadRequest();
 
         try
         {
-            var type = await _itemTypeService.GetItemTypeByIdAsync(id);
+            var type = await itemTypeService.GetItemTypeByIdAsync(id);
             return type;
         }
         catch (Exception)
@@ -45,15 +38,14 @@ public class ItemTypeController : ControllerBase
         }
     }
 
-    //POST api/v1/[controller]/types
-    [Route("producttypes")]
+    //POST api/v1/{resource}
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
-    public async Task<ActionResult> CreateTypeAsync([FromBody] ItemTypeDto type)
+    public async Task<ActionResult> CreateTypeAsync([FromBody] ProductTypeDto type)
     {
         try
         {
-            var createdType = await _itemTypeService.CreateItemTypeAsync(type);
+            var createdType = await itemTypeService.CreateItemTypeAsync(type);
             return Created();
         }
         catch (Exception)
@@ -62,16 +54,15 @@ public class ItemTypeController : ControllerBase
         }
     }
 
-    //PUT api/v1/[controller]/types
-    [Route("producttypes")]
+    //PUT api/v1/{resource}
     [HttpPut]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.OK)]
-    public async Task<ActionResult> UpdateTypeAsync([FromBody] ItemTypeDto typeToUpdate)
+    public async Task<ActionResult> UpdateTypeAsync([FromBody] ProductTypeDto typeToUpdate)
     {
         try
         {
-            var updatedType = await _itemTypeService.UpdateItemTypeAsync(typeToUpdate);
+            var updatedType = await itemTypeService.UpdateItemTypeAsync(typeToUpdate);
             return Ok(updatedType);
         }
         catch (Exception)
@@ -80,8 +71,8 @@ public class ItemTypeController : ControllerBase
         }
     }
 
-    //DELETE api/v1/[controller]/types/id
-    [Route("producttypes/{id}")]
+    //DELETE api/v1/{resource}/id
+    [Route("{id}")]
     [HttpDelete]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
@@ -89,7 +80,7 @@ public class ItemTypeController : ControllerBase
     {
         try
         {
-            await _itemTypeService.DeleteItemTypeAsync(id, useSoftDeleting);
+            await itemTypeService.DeleteItemTypeAsync(id, useSoftDeleting);
             return NoContent();
         }
         catch (Exception)

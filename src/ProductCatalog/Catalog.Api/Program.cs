@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using Infrastructure.Messaging.Kafka;
+﻿using Infrastructure.Messaging.Kafka;
 using Infrastructure.Messaging.Kafka.Configuration;
 using Infrastructure.Messaging.Kafka.Configuration.Settings;
 using Infrastructure.Serialization.JsonText.Configuration;
@@ -18,11 +17,7 @@ using Steeltoe.Discovery.Client;
 
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
-if(builder.Environment.IsDevelopment())
-    builder.Logging.AddDebug();
+builder.AddLogging();
 
 builder.Services.AddDataLayerDependencies(builder.Configuration);
 builder.Services.Configure<CatalogSettings>(builder.Configuration);
@@ -43,7 +38,10 @@ builder.Services.AddDiscoveryClient(configSection);
 builder.Services.AddAppServices();
 builder.Services.AddMemoryCache();
 builder.Services.AddSwagger();
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Conventions.Add(new DtoBasedRouteConvention());
+});
 builder.Configuration.AddEnvironmentVariables();
 
 var app = builder.Build();
@@ -89,7 +87,7 @@ app.UseSwaggerUI(c =>
 
 app.MapControllers();
 
-app.Logger.LogInformation("LAUNCHING CatalogApi");
+app.Logger.LogInformation("LAUNCHING Product Catalog Api");
 app.Run();
 
 public partial class Program { }

@@ -2,9 +2,9 @@
 
 public static class ItemMapping
 {
-    public static ItemDto ToDto(this Item item)
+    public static ProductItemDto ToDto(this Item item)
     {
-        return new ItemDto
+        return new ProductItemDto
         {
             Id = item.Id,
             Name = item.Name,
@@ -20,7 +20,7 @@ public static class ItemMapping
         };
     }
 
-    public static Item ToEntity(this ItemDto itemDto)
+    public static Item ToEntity(this ProductItemDto itemDto)
     {
         return new Item
         {

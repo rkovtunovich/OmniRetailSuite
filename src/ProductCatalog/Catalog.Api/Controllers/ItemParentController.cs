@@ -3,40 +3,30 @@
 namespace ProductCatalog.Api.Controllers;
 
 [ApiController]
-[Route("api/v1/productcatalog")]
-public class ItemParentController : ControllerBase
+[Route("api/v1/{resource}")]
+public class ItemParentController(IItemParentService itemParentService, ILogger<ItemParentController> logger) : ControllerBase
 {
-    private readonly IItemParentService _itemParentService;
-    private readonly ILogger<ItemParentController> _logger;
-
-    public ItemParentController(IItemParentService itemParentService, ILogger<ItemParentController> logger)
-    {
-        _itemParentService = itemParentService;
-        _logger = logger;
-    }
-
-    // GET api/v1/[controller]/CatalogParents
+    // GET api/v1/{resource}
     [HttpGet]
-    [Route("productparents")]
-    [ProducesResponseType(typeof(List<ItemParentDto>), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<List<ItemParentDto>>> CatalogParentsAsync()
+    [ProducesResponseType(typeof(List<ProductParentDto>), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<List<ProductParentDto>>> CatalogParentsAsync()
     {
-        var parents = await _itemParentService.GetItemParentsAsync();
+        var parents = await itemParentService.GetItemParentsAsync();
 
         return Ok(parents);
     }
 
     [HttpGet]
-    [Route("productparents/{id:Guid}")]
+    [Route("{id:Guid}")]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType(typeof(ItemParentDto), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<ItemParentDto>> ParentByIdAsync(Guid id)
+    [ProducesResponseType(typeof(ProductParentDto), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<ProductParentDto>> ParentByIdAsync(Guid id)
     {
         if (id == Guid.Empty)
             return BadRequest();
 
-        var parent = await _itemParentService.GetItemParentByIdAsync(id);
+        var parent = await itemParentService.GetItemParentByIdAsync(id);
 
         if (parent is null)
             return NotFound();
@@ -44,34 +34,32 @@ public class ItemParentController : ControllerBase
         return parent;
     }
 
-    //POST api/v1/[controller]/parents
-    [Route("productparents")]
+    //POST api/v1/{resource}
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
-    public async Task<ActionResult> CreateParentAsync([FromBody] ItemParentDto parent)
+    public async Task<ActionResult> CreateParentAsync([FromBody] ProductParentDto parent)
     {
         try
         {
-            await _itemParentService.CreateItemParentAsync(parent);
+            await itemParentService.CreateItemParentAsync(parent);
             return Created();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error while creating parent");
+            logger.LogError(ex, "Error while creating parent");
             return BadRequest();
         }
     }
 
-    //PUT api/v1/[controller]/parents
-    [Route("productparents")]
+    //PUT api/v1/{resource}
     [HttpPut]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.Created)]
-    public async Task<ActionResult> UpdateParentAsync([FromBody] ItemParentDto parentToUpdate)
+    public async Task<ActionResult> UpdateParentAsync([FromBody] ProductParentDto parentToUpdate)
     {
         try
         {
-            var parent = await _itemParentService.UpdateItemParentAsync(parentToUpdate);
+            var parent = await itemParentService.UpdateItemParentAsync(parentToUpdate);
             if (parent is null)
                 return NotFound();
 
@@ -79,13 +67,13 @@ public class ItemParentController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error while updating parent");
+            logger.LogError(ex, "Error while updating parent");
             return BadRequest();
         }
     }
 
-    //DELETE api/v1/[controller]/parents/id
-    [Route("productparents/{id}")]
+    //DELETE api/v1/{resource}/id
+    [Route("{id}")]
     [HttpDelete]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
@@ -93,12 +81,12 @@ public class ItemParentController : ControllerBase
     {
         try
         {
-            await _itemParentService.DeleteItemParentAsync(id, useSoftDeleting);
+            await itemParentService.DeleteItemParentAsync(id, useSoftDeleting);
             return NoContent();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error while deleting parent");
+            logger.LogError(ex, "Error while deleting parent");
             return NotFound();
         }
     }

@@ -1,5 +1,4 @@
-﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
-using BackOffice.Core.Models.ProductCatalog;
+﻿using BackOffice.Core.Models.ProductCatalog;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Item;
@@ -8,13 +7,13 @@ public partial class ItemDetails: DetailsFormBase<ProductItem>
 {
     #region Injects
 
-    [Inject] public IProductItemService ProductItemService { get; set; } = null!;
+    [Inject] public IProductCatalogService<ProductItem> ProductItemService { get; set; } = null!;
 
-    [Inject] public IProductTypeService ProductTypeService { get; set; } = null!;
+    [Inject] public IProductCatalogService<ProductType> ProductTypeService { get; set; } = null!;
 
-    [Inject] public IProductBrandService ProductBrandService { get; set; } = null!;
+    [Inject] public IProductCatalogService<ProductBrand> ProductBrandService { get; set; } = null!;
 
-    [Inject] public IProductParentService ProductParentService { get; set; } = null!;
+    [Inject] public IProductCatalogService<ProductParent> ProductParentService { get; set; } = null!;
 
     #endregion
 
@@ -27,9 +26,9 @@ public partial class ItemDetails: DetailsFormBase<ProductItem>
 
     #region Fields
 
-    private List<ProductType> _itemTypes = [];
+    private IList<ProductType> _itemTypes = [];
 
-    private List<ProductBrand> _itemBrands = [];
+    private IList<ProductBrand> _itemBrands = [];
 
     private List<ProductParentSelectModel> _flattenedParents = [];
 
@@ -50,8 +49,8 @@ public partial class ItemDetails: DetailsFormBase<ProductItem>
         if (firstRender)
         {
             _flattenedParents = await GetFlattenedParentsAsync();
-            _itemTypes = await ProductTypeService.GetTypesAsync();
-            _itemBrands = await ProductBrandService.GetBrandsAsync();
+            _itemTypes = await ProductTypeService.GetAllAsync();
+            _itemBrands = await ProductBrandService.GetAllAsync();
 
             CallRequestRefresh();
         }
@@ -61,7 +60,7 @@ public partial class ItemDetails: DetailsFormBase<ProductItem>
 
     protected override async Task<ProductItem> GetModel()
     {
-        return await ProductItemService.GetItemByIdAsync(Id) ?? new();
+        return await ProductItemService.GetByIdAsync(Id) ?? new();
     }
 
     #endregion
@@ -108,8 +107,8 @@ public partial class ItemDetails: DetailsFormBase<ProductItem>
             Model.ParentId = _selectedParent.Id;
         
 
-        var result = await ProductItemService.UpdateItemAsync(Model);
-        if (result is not null)
+        var result = await ProductItemService.UpdateAsync(Model);
+        if (result)
         {
             await OnSaveClick.InvokeAsync(null);
             CloseClick();
@@ -118,7 +117,7 @@ public partial class ItemDetails: DetailsFormBase<ProductItem>
 
     private async Task DeleteClick()
     {
-        await ProductItemService.DeleteItemAsync(Model.Id, true);
+        await ProductItemService.DeleteAsync(Model.Id, true);
 
         CloseClick();
     }
@@ -129,7 +128,7 @@ public partial class ItemDetails: DetailsFormBase<ProductItem>
 
     private async Task<List<ProductParentSelectModel>> GetFlattenedParentsAsync()
     {
-        var allParents = await ProductParentService.GetItemParentsAsync();
+        var allParents = await ProductParentService.GetAllAsync();
         var flattenedList = new List<ProductParentSelectModel>();
         FlattenTree(allParents, flattenedList, 0);
 

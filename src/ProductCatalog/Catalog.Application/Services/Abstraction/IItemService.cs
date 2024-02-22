@@ -2,19 +2,19 @@
 
 public interface IItemService
 {
-    Task<PaginatedItemsDto> GetItemsAsync(int pageSize, int pageIndex);
+    Task<List<ProductItemDto>> GetItemsAsync(int pageSize, int pageIndex);
 
-    Task<ItemDto?> GetItemByIdAsync(Guid id);
+    Task<ProductItemDto?> GetItemByIdAsync(Guid id);
 
-    Task<List<ItemDto>> GetItemsByNameAsync(string name);
+    Task<List<ProductItemDto>> GetItemsByNameAsync(string name);
 
-    Task<PaginatedItemsDto> GetItemsByCategoryAsync(Guid? typeId, Guid? brandId);
+    Task<List<ProductItemDto>> GetItemsByCategoryAsync(Guid? typeId, Guid? brandId);
 
-    Task<PaginatedItemsDto> GetItemsByParentAsync(Guid parentId);
+    Task<List<ProductItemDto>> GetItemsByParentAsync(Guid parentId);
 
-    Task<ItemDto> CreateItemAsync(ItemDto item);
+    Task<ProductItemDto> CreateItemAsync(ProductItemDto item);
 
-    Task<ItemDto> UpdateItemAsync(ItemDto item);
+    Task<ProductItemDto> UpdateItemAsync(ProductItemDto item);
 
     Task<bool> DeleteItemAsync(Guid id, bool isSoftDeleting);
 }

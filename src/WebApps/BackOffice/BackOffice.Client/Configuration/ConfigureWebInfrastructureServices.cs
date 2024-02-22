@@ -1,5 +1,4 @@
 ﻿using BackOffice.Application.Services.Implementation;
-using BackOffice.Application.Services.Implementation.ProductCatalog;
 using BackOffice.Core.Models.Settings;
 using Infrastructure.Http;
 using Infrastructure.Http.Clients;
@@ -38,7 +37,6 @@ public static class ConfigureWebInfrastructureServices
 
         services.AddScoped<ITokenService, TokenService>();
         services.AddKeyedScoped<IHttpService<IdentityClientSettings>, IdentityHttpService>(ClientNames.IDENTITY);
-        services.AddKeyedScoped<IHttpService<ProductCatalogClientSettings>, ProductCatalogHttpService>(ClientNames.PRODUCT_CATALOG);
         services.AddScoped(typeof(IHttpService<>), typeof(HttpService<>));
         
         services.AddSingleton<IdentityUriResolver>();

@@ -1,20 +1,18 @@
-﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
-using BackOffice.Core.Models.ProductCatalog;
+﻿using BackOffice.Core.Models.ProductCatalog;
 using Microsoft.AspNetCore.Components.Web;
-using UI.Razor.Components.Base;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Parent;
 
 public partial class ItemParentDetails: DetailsFormBase<ProductParent>
 {
-    [Inject] public IProductParentService ProductParentService { get; set; } = null!;
+    [Inject] public IProductCatalogService<ProductParent> ProductParentService { get; set; } = null!;
 
     [Parameter]
     public EventCallback<string> OnSaveClick { get; set; }
 
     protected override async Task<ProductParent> GetModel()
     {
-        return await ProductParentService.GetItemParentByIdAsync(Id) ?? new();
+        return await ProductParentService.GetByIdAsync(Id) ?? new();
     }       
 
     #region Commands
@@ -52,8 +50,8 @@ public partial class ItemParentDetails: DetailsFormBase<ProductParent>
         if (!EditContext?.Validate() ?? false)
             return;
 
-        var result = await ProductParentService.UpdateItemParentAsync(Model);
-        if (result is not null)
+        var result = await ProductParentService.UpdateAsync(Model);
+        if (result)
         {
             await OnSaveClick.InvokeAsync(null);
             CloseClick();
@@ -62,7 +60,7 @@ public partial class ItemParentDetails: DetailsFormBase<ProductParent>
 
     private async Task DeleteClick()
     {
-        await ProductParentService.DeleteItemParentAsync(Model.Id, true);
+        await ProductParentService.DeleteAsync(Model.Id, true);
 
         CloseClick();
     }

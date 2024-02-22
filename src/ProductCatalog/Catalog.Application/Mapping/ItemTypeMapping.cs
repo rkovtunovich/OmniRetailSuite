@@ -2,9 +2,9 @@
 
 public static class ItemTypeMapping
 {
-    public static ItemTypeDto ToDto(this ItemType catalogType)
+    public static ProductTypeDto ToDto(this ItemType catalogType)
     {
-        return new ItemTypeDto
+        return new ProductTypeDto
         {
             Id = catalogType.Id,
             Name = catalogType.Type,
@@ -13,7 +13,7 @@ public static class ItemTypeMapping
         };
     }
 
-    public static ItemType ToEntity(this ItemTypeDto catalogTypeDto)
+    public static ItemType ToEntity(this ProductTypeDto catalogTypeDto)
     {
         return new ItemType
         {

@@ -1,4 +1,5 @@
-﻿using BackOffice.Client.Configuration;
+﻿using BackOffice.Application.Configuration;
+using BackOffice.Client.Configuration;
 using Infrastructure.Serialization.JsonText.Configuration;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -28,6 +29,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor(config => config.DetailedErrors = false);
 
 builder.Services.AddScoped<ToastService>();
+builder.Services.AddSingleton<TabsService>();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -56,7 +58,7 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-builder.Services.AddBackOfficeServices();
+builder.Services.AddAppServices();
 builder.Services.AddMudServices();
 builder.Services.AddMudExtensions();
 builder.Services.AddRadzenComponents();

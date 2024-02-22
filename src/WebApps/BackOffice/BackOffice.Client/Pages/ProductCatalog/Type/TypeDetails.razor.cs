@@ -1,20 +1,18 @@
-﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
-using BackOffice.Core.Models.ProductCatalog;
+﻿using BackOffice.Core.Models.ProductCatalog;
 using Microsoft.AspNetCore.Components.Web;
-using UI.Razor.Components.Base;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Type;
 
 public partial class TypeDetails: DetailsFormBase<ProductType>
 {
-    [Inject] public IProductTypeService ProductTypeService { get; set; } = null!;
+    [Inject] public IProductCatalogService<ProductType> ProductTypeService { get; set; } = null!;
 
     [Parameter]
     public EventCallback<string> OnSaveClick { get; set; }
 
     protected override async Task<ProductType> GetModel()
     {
-        return await ProductTypeService.GetTypeByIdAsync(Id) ?? new();
+        return await ProductTypeService.GetByIdAsync(Id) ?? new();
     }
 
     #region Commands
@@ -52,8 +50,8 @@ public partial class TypeDetails: DetailsFormBase<ProductType>
         if (!EditContext?.Validate() ?? false)
             return;
 
-        var result = await ProductTypeService.UpdateTypeAsync(Model);
-        if (result is not null)
+        var result = await ProductTypeService.UpdateAsync(Model);
+        if (result)
         {
             await OnSaveClick.InvokeAsync(null);
             CloseClick();
@@ -62,7 +60,7 @@ public partial class TypeDetails: DetailsFormBase<ProductType>
 
     private async Task DeleteClick()
     {
-        await ProductTypeService.DeleteTypeAsync(Model.Id, true);
+        await ProductTypeService.DeleteAsync(Model.Id, true);
 
         CloseClick();
     }

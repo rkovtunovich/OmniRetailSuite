@@ -1,6 +1,6 @@
 ﻿namespace Contracts.Dtos.ProductCatalog;
 
-public record BrandDto : EntityDtoBase
+public record ProductTypeDto : EntityDtoBase
 {
     public string Name { get; init; } = null!;
 

@@ -1,15 +1,14 @@
-﻿using BackOffice.Application.Services.Abstraction.ProductCatalog;
-using BackOffice.Core.Models.ProductCatalog;
+﻿using BackOffice.Core.Models.ProductCatalog;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Brand;
 
 public partial class BrandList : OrsComponentBase
 {
-    [Inject] public IProductBrandService CatalogService { get; set; } = null!;
+    [Inject] public IProductCatalogService<ProductBrand> ProductBrandService { get; set; } = null!;
 
     [Inject] private TabsService _tabsService { get; set; } = null!;
 
-    private List<ProductBrand> _catalogBrands = [];
+    private IList<ProductBrand> _catalogBrands = [];
 
     private string? _searchString;
 
@@ -32,7 +31,7 @@ public partial class BrandList : OrsComponentBase
     {
         if (firstRender)
         {
-            CatalogService.ProductBrandChanged += OnCatalogBrandChanged;
+            ProductBrandService.OnChanged += OnCatalogBrandChanged;
 
             await ReloadCatalogTypes();
         }
@@ -57,7 +56,7 @@ public partial class BrandList : OrsComponentBase
 
     private async Task ReloadCatalogTypes()
     {
-        _catalogBrands = await CatalogService.GetBrandsAsync();
+        _catalogBrands = await ProductBrandService.GetAllAsync();
 
         CallRequestRefresh();
     }
@@ -73,7 +72,7 @@ public partial class BrandList : OrsComponentBase
 
     private async Task CommittedItemChanges(ProductBrand type)
     {
-        await CatalogService.UpdateBrandAsync(type);
+        await ProductBrandService.UpdateAsync(type);
 
         CallRequestRefresh();
     }
@@ -93,13 +92,13 @@ public partial class BrandList : OrsComponentBase
 
     private async Task OnCatalogBrandChanged(ProductBrand changedBrand)
     {
-        _catalogBrands = await CatalogService.GetBrandsAsync();
+        _catalogBrands = await ProductBrandService.GetAllAsync();
         CallRequestRefresh();
     }
 
     public override void Dispose()
     {
         // Unsubscribe when the component is destroyed to prevent memory leaks
-        CatalogService.ProductBrandChanged -= OnCatalogBrandChanged;
+        ProductBrandService.OnChanged -= OnCatalogBrandChanged;
     }
 }

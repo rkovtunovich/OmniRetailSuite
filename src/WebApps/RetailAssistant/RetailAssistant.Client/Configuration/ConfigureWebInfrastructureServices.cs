@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Http;
 using Infrastructure.Http.Clients;
+using Infrastructure.Http.Uri;
 using RetailAssistant.Application.Services.Implementation;
 
 namespace RetailAssistant.Client.Configuration;
@@ -38,6 +39,10 @@ public static class ConfigureWebInfrastructureServices
         });
 
         services.AddScoped(typeof(IHttpService<>), typeof(HttpService<>));
+
+        services.AddSingleton<IdentityUriResolver>();
+        services.AddSingleton<ProductCatalogUriResolver>();
+        services.AddSingleton<RetailUrlResolver>();
 
         return services;
     }

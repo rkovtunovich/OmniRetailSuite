@@ -10,27 +10,15 @@ public class ItemService(IItemRepository itemRepository, IEventPublisher eventPu
     private readonly IEventPublisher _eventPublisher = eventPublisher;
     private readonly ILogger<ItemService> _logger = logger;
 
-    public async Task<PaginatedItemsDto> GetItemsAsync(int pageSize, int pageIndex)
+    public async Task<List<ProductItemDto>> GetItemsAsync(int pageSize, int pageIndex)
     {
-        var totalItems = await _itemRepository.GetItemsCountAsync();
-
         var items = await _itemRepository.GetItemsAsync(pageSize, pageIndex);
         var catalogItemDtos = items.Select(x => x.ToDto()).ToList();
 
-        catalogItemDtos = ChangeUriPlaceholder(catalogItemDtos);
-
-        var paginatedItems = new PaginatedItemsDto
-        {
-            PageIndex = pageIndex,
-            PageSize = pageSize,
-            Count = totalItems,
-            Data = catalogItemDtos ?? []
-        };
-
-        return paginatedItems;
+        return catalogItemDtos;
     }
 
-    public async Task<ItemDto?> GetItemByIdAsync(Guid id)
+    public async Task<ProductItemDto?> GetItemByIdAsync(Guid id)
     {
         var item = await _itemRepository.GetItemByIdAsync(id);
 
@@ -40,7 +28,7 @@ public class ItemService(IItemRepository itemRepository, IEventPublisher eventPu
         return item.ToDto();
     }
 
-    public async Task<List<ItemDto>> GetItemsByNameAsync(string name)
+    public async Task<List<ProductItemDto>> GetItemsByNameAsync(string name)
     {
         var items = await _itemRepository.GetItemsByNameAsync(name);
         var itemsDtos = items.Select(x => x.ToDto()).ToList();
@@ -50,7 +38,7 @@ public class ItemService(IItemRepository itemRepository, IEventPublisher eventPu
         return itemsDtos;
     }
 
-    public async Task<PaginatedItemsDto> GetItemsByCategoryAsync(Guid? typeId, Guid? brandId)
+    public async Task<List<ProductItemDto>> GetItemsByCategoryAsync(Guid? typeId, Guid? brandId)
     {
         var root = await _itemRepository.GetItemsByCategoryAsync(typeId, brandId);
 
@@ -63,36 +51,18 @@ public class ItemService(IItemRepository itemRepository, IEventPublisher eventPu
             .Select(x => x.ToDto())
             .ToList();
 
-        itemsOnPage = ChangeUriPlaceholder(itemsOnPage);
-
-        return new PaginatedItemsDto
-        {
-            PageIndex = 0,
-            PageSize = totalItems,
-            Count = totalItems,
-            Data = itemsOnPage
-        };
+        return itemsOnPage;
     }
 
-    public async Task<PaginatedItemsDto> GetItemsByParentAsync(Guid parentId)
+    public async Task<List<ProductItemDto>> GetItemsByParentAsync(Guid parentId)
     {
         var items = await _itemRepository.GetItemsByParentAsync(parentId);
         var itemsDtos = items.Select(x => x.ToDto()).ToList();
 
-        var totalItems = itemsDtos.Count;
-
-        var paginatedItems = new PaginatedItemsDto
-        {
-            PageIndex = 0,
-            PageSize = totalItems,
-            Count = totalItems,
-            Data = itemsDtos
-        };
-
-        return paginatedItems;
+        return itemsDtos;
     }
 
-    public async Task<ItemDto> CreateItemAsync(ItemDto item)
+    public async Task<ProductItemDto> CreateItemAsync(ProductItemDto item)
     {
         var entity = item.ToEntity();
         var result = await _itemRepository.CreateItemAsync(entity);
@@ -103,7 +73,7 @@ public class ItemService(IItemRepository itemRepository, IEventPublisher eventPu
         return item;
     }
 
-    public async Task<ItemDto> UpdateItemAsync(ItemDto item)
+    public async Task<ProductItemDto> UpdateItemAsync(ProductItemDto item)
     {
         var entity = item.ToEntity();
         var result = await _itemRepository.UpdateItemAsync(entity);
@@ -124,7 +94,7 @@ public class ItemService(IItemRepository itemRepository, IEventPublisher eventPu
         return result;
     }
 
-    private List<ItemDto> ChangeUriPlaceholder(List<ItemDto> items)
+    private List<ProductItemDto> ChangeUriPlaceholder(List<ProductItemDto> items)
     {
         //var baseUri = _settings.PicBaseUrl;
 

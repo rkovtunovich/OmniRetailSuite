@@ -2,13 +2,13 @@
 
 public interface IItemTypeService
 {
-    Task<List<ItemTypeDto>> GetItemTypesAsync();
+    Task<List<ProductTypeDto>> GetItemTypesAsync();
 
-    Task<ItemTypeDto> GetItemTypeByIdAsync(Guid id);
+    Task<ProductTypeDto> GetItemTypeByIdAsync(Guid id);
 
-    Task<ItemTypeDto> CreateItemTypeAsync(ItemTypeDto itemType);
+    Task<ProductTypeDto> CreateItemTypeAsync(ProductTypeDto itemType);
 
-    Task<ItemTypeDto> UpdateItemTypeAsync(ItemTypeDto itemType);
+    Task<ProductTypeDto> UpdateItemTypeAsync(ProductTypeDto itemType);
 
     Task DeleteItemTypeAsync(Guid id, bool isSoftDeleting);
 }

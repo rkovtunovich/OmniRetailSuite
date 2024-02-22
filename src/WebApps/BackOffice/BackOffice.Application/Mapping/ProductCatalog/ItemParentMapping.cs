@@ -4,9 +4,9 @@ namespace BackOffice.Application.Mapping.ProductCatalog;
 
 public static class ItemParentMapping
 {
-    public static ItemParentDto ToDto(this ProductParent itemParent)
+    public static ProductParentDto ToDto(this ProductParent itemParent)
     {
-        return new ItemParentDto
+        return new ProductParentDto
         {
             Id = itemParent.Id,
             Name = itemParent.Name,
@@ -17,7 +17,7 @@ public static class ItemParentMapping
         };
     }
 
-    public static ProductParent ToModel(this ItemParentDto itemParentDto)
+    public static ProductParent ToModel(this ProductParentDto itemParentDto)
     {
         return new ProductParent
         {

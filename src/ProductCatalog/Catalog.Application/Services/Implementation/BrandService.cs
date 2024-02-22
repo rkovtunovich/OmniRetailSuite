@@ -14,7 +14,7 @@ public class BrandService: IBrandService
         _logger = logger;
     }
 
-    public async Task<BrandDto> GetBrandByIdAsync(Guid id)
+    public async Task<ProductBrandDto> GetBrandByIdAsync(Guid id)
     {
         var brand = await _brandRepository.GetBrandByIdAsync(id);
         if (brand is null)
@@ -26,13 +26,13 @@ public class BrandService: IBrandService
         return brand.ToDto();
     }
 
-    public async Task<List<BrandDto>> GetBrandsAsync()
+    public async Task<List<ProductBrandDto>> GetBrandsAsync()
     {
         var brands = await _brandRepository.GetBrandsAsync();
         return brands.Select(x => x.ToDto()).ToList();
     }
 
-    public async Task<BrandDto> CreateBrandAsync(BrandDto brandDto)
+    public async Task<ProductBrandDto> CreateBrandAsync(ProductBrandDto brandDto)
     {
         var brand = brandDto.ToEntity();
         var result = await _brandRepository.CreateBrandAsync(brand);
@@ -45,7 +45,7 @@ public class BrandService: IBrandService
         return brand.ToDto();
     }
 
-    public async Task<BrandDto> UpdateBrandAsync(BrandDto brandDto)
+    public async Task<ProductBrandDto> UpdateBrandAsync(ProductBrandDto brandDto)
     {
         var brand = brandDto.ToEntity();
         var result = await _brandRepository.UpdateBrandAsync(brand);

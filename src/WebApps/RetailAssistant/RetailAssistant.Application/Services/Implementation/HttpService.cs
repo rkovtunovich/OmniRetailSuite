@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Infrastructure.Http;
 using Infrastructure.Http.Clients;
+using Microsoft.Extensions.Options;
 
 namespace RetailAssistant.Application.Services.Implementation;
 
@@ -11,15 +12,16 @@ public class HttpService<TResource> : IHttpService<TResource> where TResource : 
     private readonly IHttpClientFactory _clientFactory;
     private readonly IDataSerializer _dataSerializer;
     private readonly ILogger<HttpService<TResource>> _logger;
-    private readonly TResource _resource = new();
+    private readonly IOptions<TResource> _options;
     private readonly IAccessTokenProvider _accessTokenProvider;
 
-    public HttpService(IHttpClientFactory clientFactory, IDataSerializer dataSerializer, ILogger<HttpService<TResource>> logger, IAccessTokenProvider accessTokenProvider)
+    public HttpService(IHttpClientFactory clientFactory, IDataSerializer dataSerializer, ILogger<HttpService<TResource>> logger, IAccessTokenProvider accessTokenProvider, IOptions<TResource> options)
     {
         _clientFactory = clientFactory;
         _logger = logger;
         _dataSerializer = dataSerializer;
         _accessTokenProvider = accessTokenProvider;
+        _options = options;
     }
 
     public async Task<T?> GetAsync<T>(string uri)
@@ -114,7 +116,7 @@ public class HttpService<TResource> : IHttpService<TResource> where TResource : 
 
     private async Task<HttpClient> GetClientAsync()
     {
-        var client = _clientFactory.CreateClient(_resource.Name);
+        var client = _clientFactory.CreateClient(_options.Value.Name);
 
         var tokenResponse = await _accessTokenProvider.RequestAccessToken();
 
