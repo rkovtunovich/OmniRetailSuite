@@ -15,11 +15,10 @@
 
                         <MudCardContent>
                             <MudTextField Label="Name" Class="mt-3" @bind-Value="Model.Name" For="@(() => Model.Name)" Variant="@MudBlazor.Variant.Filled" />
-                            <MudSelect Label="Parent" T="Guid?" For="@(() => Model.ParentId)" ValueChanged="OnParentSelected">
-                                <MudSelectItem Value="null" T="Guid?">No Parent</MudSelectItem>
-                                @foreach (var parent in _allItemParents)
+                            <MudSelect T="ProductParentSelectModel" Label="Select Parent" @bind-Value="_selectedParent" ToStringFunc="@_converterProductParent" Clearable Variant="@MudBlazor.Variant.Filled">
+                                @foreach (var parent in _flattenedParents)
                                 {
-                                    <MudSelectItem Value="@parent.Id" T="Guid?">@parent.Name</MudSelectItem>
+                                    <MudSelectItem Value="@parent"></MudSelectItem>
                                 }
                             </MudSelect>
                         </MudCardContent>

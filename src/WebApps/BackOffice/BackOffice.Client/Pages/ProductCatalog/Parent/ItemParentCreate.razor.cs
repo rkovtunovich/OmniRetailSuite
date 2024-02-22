@@ -12,17 +12,30 @@ public partial class ItemParentCreate: CreationFormBase<ProductParent>
     [Parameter]
     public EventCallback<string> OnSaveClick { get; set; }
 
-    private IList<ProductParent> _allItemParents = [];
- 
-    protected override async Task OnInitializedAsync()
+    private IList<ProductParent> _allIProductParents = [];
+
+    private List<ProductParentSelectModel> _flattenedParents = [];
+
+    private ProductParentSelectModel? _selectedParent;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await LoadAllItemParents();
+        if (firstRender)
+        {
+            _flattenedParents = await GetFlattenedParentsAsync();
+            CallRequestRefresh();
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     private async Task CreateClick()
     {
         if (!EditContext?.Validate() ?? false)
             return;
+
+        if (_selectedParent is not null)
+            Model.ParentId = _selectedParent.Id;
 
         var result = await ProductParentService.CreateAsync(Model);
         if (result is not null)
@@ -32,15 +45,31 @@ public partial class ItemParentCreate: CreationFormBase<ProductParent>
         }
     }
 
-    private async Task LoadAllItemParents()
+    private async Task<List<ProductParentSelectModel>> GetFlattenedParentsAsync()
     {
-        try
+        var allParents = await ProductParentService.GetAllAsync();
+        var flattenedList = new List<ProductParentSelectModel>();
+        FlattenTree(allParents, flattenedList, 0);
+
+        if (Model.ParentId is not null)
+            _selectedParent = flattenedList.FirstOrDefault(p => p.Id == Model.ParentId);
+
+        return flattenedList;
+    }
+
+    private void FlattenTree(IEnumerable<ProductParent> parents, List<ProductParentSelectModel> list, int level)
+    {
+        foreach (var parent in parents)
         {
-            _allItemParents = await ProductParentService.GetAllAsync();
-        }
-        catch (Exception ex)
-        {
-            Logger.LogError($"Error loading item parents: {ex}");
+            var prefix = new string('-', level * 2); // 2 spaces per level for indentation
+            list.Add(new ProductParentSelectModel
+            {
+                Id = parent.Id,
+                Name = $"{prefix}{parent.Name}"
+            });
+
+            if (parent.Children is not null)
+                FlattenTree(parent.Children, list, level + 1);
         }
     }
 
@@ -52,6 +81,8 @@ public partial class ItemParentCreate: CreationFormBase<ProductParent>
         else
             Model.Parent = null;
     }
+
+    private Func<ProductParentSelectModel, string> _converterProductParent = p => p?.Name ?? "";
 
     #region Commands
 
