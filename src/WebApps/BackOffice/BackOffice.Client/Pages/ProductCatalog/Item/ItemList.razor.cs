@@ -77,6 +77,7 @@ public partial class ItemList : OrsComponentBase
         if (firstRender)
         {
             ProductItemService.OnChanged += OnProductItemChanged;
+            ProductParentService.OnChanged += OnProductItemParentChanged;
             await ReloadProductItems();
             await ReloadItemParents(); ;
         }
@@ -88,6 +89,7 @@ public partial class ItemList : OrsComponentBase
     {
         // Unsubscribe when the component is destroyed to prevent memory leaks
         ProductItemService.OnChanged -= OnProductItemChanged;
+        ProductParentService.OnChanged -= OnProductItemParentChanged;
     }
 
     #endregion
