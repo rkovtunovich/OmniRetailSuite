@@ -21,6 +21,7 @@ public abstract class DetailsFormBase<TModel> : FormBase<TModel> where TModel : 
     protected override async Task OnInitializedAsync()
     {
         Model = await GetModel();
+        EditContext = new EditContext(Model);
     }
 
     protected abstract Task<TModel> GetModel();
