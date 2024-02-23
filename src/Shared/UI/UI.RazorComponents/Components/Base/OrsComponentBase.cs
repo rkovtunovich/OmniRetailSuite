@@ -25,6 +25,6 @@ public abstract class OrsComponentBase : ComponentBase, IDisposable
 
     public virtual void Dispose()
     {
-
+        _refresh.RefreshRequested -= DoRefresh;
     }
 }

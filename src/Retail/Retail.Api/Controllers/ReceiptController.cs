@@ -1,19 +1,17 @@
 ﻿using Contracts.Dtos.Retail;
 using Microsoft.AspNetCore.Mvc;
-using Retail.Application.Services.Abstraction;
 using Retail.Core.Entities.ReceiptAggregate;
 
 namespace Retail.Api.Controllers;
 
 [ApiController]
-[Route("api/v1/[controller]")]
+[Route("api/v1/{resource}")]
 public class ReceiptController(IReceiptService receiptService, ILogger<ReceiptController> logger): ControllerBase
 {
     private readonly IReceiptService _receiptService = receiptService;
     private readonly ILogger<ReceiptController> _logger = logger;
 
     [HttpGet]
-    [Route("receipts")]
     [ProducesResponseType(typeof(List<ReceiptDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<List<ReceiptDto>>> GetReceiptsAsync()
@@ -33,7 +31,7 @@ public class ReceiptController(IReceiptService receiptService, ILogger<ReceiptCo
     }
 
     [HttpGet]
-    [Route("receipts/{id:Guid}")]
+    [Route("{id:Guid}")]
     [ProducesResponseType(typeof(ReceiptDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ReceiptDto>> GetReceiptAsync(Guid id)
@@ -56,7 +54,6 @@ public class ReceiptController(IReceiptService receiptService, ILogger<ReceiptCo
     }
 
     [HttpPost]
-    [Route("receipts")]
     [ProducesResponseType(typeof(ReceiptDto), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ReceiptDto>> CreateReceiptAsync(ReceiptDto receipt)
@@ -76,7 +73,6 @@ public class ReceiptController(IReceiptService receiptService, ILogger<ReceiptCo
     }
 
     [HttpPut]
-    [Route("receipts")]
     [ProducesResponseType(typeof(ReceiptDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ReceiptDto>> UpdateReceiptAsync(ReceiptDto receipt)
@@ -96,7 +92,7 @@ public class ReceiptController(IReceiptService receiptService, ILogger<ReceiptCo
     }
 
     [HttpDelete]
-    [Route("receipts/{id:int}")]
+    [Route("{id:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<Receipt>> DeleteReceiptAsync(Guid id, bool useSoftDeleting)

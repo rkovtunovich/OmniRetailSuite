@@ -1,16 +1,15 @@
 ﻿using Contracts.Dtos.Retail;
 using Microsoft.AspNetCore.Mvc;
-using Retail.Application.Services.Abstraction;
 
 namespace Retail.Api.Controllers;
 
+[Route("api/v1/{resource}")]
 public class ProductItemController(IProductItemService productItemService, ILogger<ProductItemController> logger): ControllerBase
 {
     private readonly IProductItemService _productItemService = productItemService;
     private readonly ILogger<ProductItemController> _logger = logger;
 
     [HttpGet]
-    [Route("catalog-items")]
     [ProducesResponseType(typeof(List<ProductItemDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<List<ProductItemDto>>> GetProductItemsAsync()
@@ -30,7 +29,7 @@ public class ProductItemController(IProductItemService productItemService, ILogg
     }
 
     [HttpGet]
-    [Route("catalog-items/{id:Guid}")]
+    [Route("{id:Guid}")]
     [ProducesResponseType(typeof(ProductItemDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<ProductItemDto>> GetProductItemAsync(Guid id)

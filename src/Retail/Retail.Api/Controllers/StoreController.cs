@@ -1,11 +1,10 @@
 ﻿using Contracts.Dtos.Retail;
 using Microsoft.AspNetCore.Mvc;
-using Retail.Application.Services.Abstraction;
 
 namespace Retail.Api.Controllers;
 
 [ApiController]
-[Route("api/v1/retail")]
+[Route("api/v1/{resource}")]
 public class StoreController: ControllerBase
 {
     IStoreService _storeService;
@@ -18,7 +17,6 @@ public class StoreController: ControllerBase
     }
 
     [HttpGet]
-    [Route("stores")]
     [ProducesResponseType(typeof(List<StoreDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<List<StoreDto>>> GetStoresAsync()
@@ -38,7 +36,7 @@ public class StoreController: ControllerBase
     }
 
     [HttpGet]
-    [Route("stores/{id:Guid}")]
+    [Route("{id:Guid}")]
     [ProducesResponseType(typeof(StoreDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<StoreDto>> GetStoreAsync(Guid id)
@@ -61,7 +59,6 @@ public class StoreController: ControllerBase
     }
 
     [HttpPost]
-    [Route("stores")]
     [ProducesResponseType(typeof(StoreDto), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<StoreDto>> CreateStoreAsync(StoreDto storeDto)
@@ -81,7 +78,6 @@ public class StoreController: ControllerBase
     }
 
     [HttpPut]
-    [Route("stores")]
     [ProducesResponseType(typeof(StoreDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<StoreDto>> UpdateStoreAsync(StoreDto storeDto)
@@ -101,7 +97,7 @@ public class StoreController: ControllerBase
     }
 
     [HttpDelete]
-    [Route("stores/{id:Guid}")]
+    [Route("{id:Guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> DeleteStoreAsync(Guid id)

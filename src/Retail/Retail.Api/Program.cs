@@ -7,13 +7,17 @@ using Retail.Data.Config;
 using Steeltoe.Discovery.Client;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.AddLogging();
 
 builder.Services.Configure<KafkaSettings>(builder.Configuration.GetRequiredSection(KafkaSettings.SectionName));
 var kafkaSettings = builder.Configuration.GetSection(KafkaSettings.SectionName).Get<KafkaSettings>();
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Conventions.Add(new DtoBasedRouteConvention());
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwagger();
 
