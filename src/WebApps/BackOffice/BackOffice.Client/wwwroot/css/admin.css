@@ -285,6 +285,8 @@ a, .btn-link {
     max-width:none;
 }
 
+/* +++catalog parent tree */
+
 .ors-tree-item-parent-code {
     white-space: nowrap;
     overflow: hidden;
@@ -313,3 +315,9 @@ a, .btn-link {
 .ors-selection-list-footer{
     display: none;
 }
+
+.mud-treeview-item .mud-treeview-group {
+    margin: 0;
+}
+
+/* ---catalog parent tree */

@@ -4,13 +4,18 @@
 
 <MudPaper Height="100%" Class="d-flex">
 
-
-    <MudSplitter Style=" min-width:100%; height:100%;" @bind-Dimension="@_splitterPercentage">
+    <MudSplitter Style=" min-width:100%; height:100%;" @bind-Dimension="@_splitterPercentage" Class="p-0 m-0">
 
         <StartContent>
 
-            <MudContainer>
-                <MudTable Items="_receipt.ReceiptItems" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+            <MudContainer Class="p-0 m-0 cashiers-workplace-receipt-container">
+
+                <MudTable Items="_receipt.ReceiptItems"
+                          Hover="true"
+                          Style="max-width: 99%"
+                          Breakpoint="Breakpoint.Sm"
+                          LoadingProgressColor="Color.Info">
+
                     <HeaderContent>
                         <MudTh>Nr</MudTh>
                         <MudTh>Item</MudTh>
@@ -18,6 +23,7 @@
                         <MudTh>Price</MudTh>
                         <MudTh>Totals</MudTh>
                     </HeaderContent>
+
                     <RowTemplate>
                         <MudTd DataLabel="Nr">@context.LineNumber</MudTd>
                         <MudTd DataLabel="Item">@context.ProductItem.Name</MudTd>
@@ -25,16 +31,23 @@
                         <MudTd DataLabel="Price">@context.UnitPrice</MudTd>
                         <MudTd DataLabel="Total">@context.TotalPrice</MudTd>
                     </RowTemplate>
+
                 </MudTable>
+
             </MudContainer>
 
         </StartContent>
 
         <EndContent>
 
-            <MudContainer Class="cashiers-keyboard-container" Style="width:100%">
+            <MudContainer Class="cashiers-workplace-keyboard-container m-0 p-0">
 
-                <MudTreeView T="ProductParent" Items="@_itemParents" Hover="true" Dense>
+                <MudTreeView T="ProductParent"
+                             Items="@_itemParents"
+                             Hover="true"
+                             Dense
+                             Class="cashiers-workplace-catalog-parent-tree">
+
                     <ItemTemplate Context="item">
 
                         <MudTreeViewItem Items="@item.Children"
@@ -53,8 +66,42 @@
                         </MudTreeViewItem>
 
                     </ItemTemplate>
+
                 </MudTreeView>
-                        
+
+                <MudTable T="CatalogProductItem" Items="@_productItems"
+                          Hover="true"
+                          Dense="true"
+                          Breakpoint="Breakpoint.Sm"
+                          Loading="@_showLoading"
+                          LoadingProgressColor="Color.Default"
+                          Class="cashiers-workplace-product-items-table"
+                          RowClass="cursor-pointer"
+                          OnRowClick="RowClickEvent"
+                          RowClassFunc="@SelectedRowClassFunc"
+                          @ref="_productItemsTable">
+
+                    <ColGroup>
+                        <col style="width: 15%;" />
+                        <col />
+                        <col style="width: 15%;" />
+                    </ColGroup>
+
+                    <HeaderContent>
+                        @foreach (var heading in _tableHeadings)
+                        {
+                            <MudTh>@heading</MudTh>
+                        }
+                    </HeaderContent>
+
+                    <RowTemplate>
+                        <MudTd DataLabel="Code">@context.GetCode()</MudTd>
+                        <MudTd DataLabel="Name">@context.Name</MudTd>
+                        <MudTd DataLabel="Price" Style="text-align:left">@context.Price</MudTd>
+                    </RowTemplate>
+
+                </MudTable>
+
             </MudContainer>
 
         </EndContent>

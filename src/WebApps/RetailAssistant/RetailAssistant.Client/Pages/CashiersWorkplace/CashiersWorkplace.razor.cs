@@ -23,10 +23,17 @@ public partial class CashiersWorkplace
     #region Product Parents fields
 
     private ProductParent? _selectedProductParent;
-
     private HashSet<ProductParent> _itemParents = [];
-
     private static readonly string selectedParentClassName = "ors-selected-parent-item";
+
+    #endregion
+
+    #region Product Items fields
+
+    private string[] _tableHeadings = ["Code", "Name", "Price"];
+    private int _selectedRowNumber = -1;
+    private MudTable<CatalogProductItem> _productItemsTable = null!;
+    private bool _showLoading = false;
 
     #endregion
 
@@ -56,7 +63,8 @@ public partial class CashiersWorkplace
 
     private async Task ReloadProductItems(ProductParent? productParent = null)
     {
-        if (productParent == null)
+        _showLoading = true;
+        if (productParent is null)
         {
             var productItemsList = await ProductItemService.GetAllAsync();
             _productItems = [.. productItemsList];
@@ -67,7 +75,31 @@ public partial class CashiersWorkplace
             _productItems = [.. productItemsList];
         }
 
+        _showLoading = false;
         CallRequestRefresh();
+    }
+
+    private void RowClickEvent(TableRowClickEventArgs<CatalogProductItem> tableRowClickEventArgs)
+    {
+        
+    }
+
+    private string SelectedRowClassFunc(CatalogProductItem productItem, int rowNumber)
+    {
+        if (_selectedRowNumber == rowNumber)
+        {
+            _selectedRowNumber = -1;
+            return string.Empty;
+        }
+        else if (_productItemsTable.SelectedItem is not null && _productItemsTable.SelectedItem.Equals(productItem))
+        {
+            _selectedRowNumber = rowNumber;
+            return "selected";
+        }
+        else
+        {
+            return string.Empty;
+        }
     }
 
     #endregion

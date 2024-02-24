@@ -1,5 +1,5 @@
 :root {
-    --mud-appbar-height: 54px!important;
+    --mud-appbar-height: 54px !important;
 }
 
 html, body {
@@ -21,7 +21,7 @@ a, .btn-link {
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 .content {
@@ -145,11 +145,73 @@ a, .btn-link {
 }
 
 /* +++Cashier's workpalce */
-
-.cashiers-keyboard-container{
-/*    min-width: 600px;
-    width:600px;*/
-    height:100%;
+.ors-tree-item-parent-code {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
+.ors-tree-item-parent-name {
+    margin-left: 16px; /* Adjust the spacing between the code and the name */
+}
+
+.ors-selected-parent-item > div.mud-treeview-item-content:first-child {
+    /*background-color: #d3d3d3;*/
+    border-radius: var(--mud-default-borderradius);
+    border-color: var(--mud-palette-lines-inputs);
+    border-width: 1px;
+    border-style: solid;
+}
+
+.mud-treeview-item .mud-treeview-group{
+    margin: 0;
+}
+
+.ors-no-select {
+    user-select: none; /* Standard syntax */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+}
+
+.ors-selection-list-footer {
+    display: none;
+}
+
+.cashiers-workplace-keyboard-container {
+    width: 100%;
+    height: 100%;
+}
+
+.cashiers-workplace-product-items-table {
+    height: 70%;
+    max-height: 70%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+    .cashiers-workplace-product-items-table .selected {
+        background-color: #1E88E5 !important;
+    }
+
+        .cashiers-workplace-product-items-table .selected > td {
+            color: white !important;
+        }
+
+            .cashiers-workplace-product-items-table .selected > td .mud-input {
+                color: white !important;
+            }
+
+.cashiers-workplace-catalog-parent-tree {
+    height: 30%;
+    max-height: 30%;
+}
+
+.cashiers-workplace-receipt-container{
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
 /* ---Cashier's workpalce */
