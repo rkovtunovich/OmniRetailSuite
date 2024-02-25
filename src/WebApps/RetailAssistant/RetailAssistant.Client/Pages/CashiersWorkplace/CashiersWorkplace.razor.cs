@@ -10,7 +10,7 @@ public partial class CashiersWorkplace
 
     [Inject] public IProductCatalogService<CatalogProductItem> ProductItemService { get; set; } = null!;
 
-    private Receipt _receipt = null!;
+    private Receipt _receipt = new();
 
     private double _splitterPercentage = 75;
 
@@ -81,7 +81,10 @@ public partial class CashiersWorkplace
 
     private void RowClickEvent(TableRowClickEventArgs<CatalogProductItem> tableRowClickEventArgs)
     {
-        
+        if (tableRowClickEventArgs.Item is not null)
+        {
+            AddProductItemToReceipt(tableRowClickEventArgs.Item);
+        }
     }
 
     private string SelectedRowClassFunc(CatalogProductItem productItem, int rowNumber)
@@ -148,6 +151,19 @@ public partial class CashiersWorkplace
             return selectedParentClassName;
 
         return _selectedProductParent.Id == productParent.Id ? selectedParentClassName : "";
+    }
+
+    #endregion
+
+    #region Receipt
+
+    private void AddProductItemToReceipt(CatalogProductItem productItem)
+    {
+        if (!_receipt.TryUpdateReceiptItemByCatalogItem(productItem))
+        {
+            var receiptItem = _receipt.CreateReceiptItemByCatalogProductItem(productItem);
+            _receipt.AddReceiptItem(receiptItem);
+        }
     }
 
     #endregion

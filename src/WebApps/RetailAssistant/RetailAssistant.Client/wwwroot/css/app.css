@@ -191,16 +191,11 @@ a, .btn-link {
 }
 
     .cashiers-workplace-product-items-table .selected {
-        background-color: #1E88E5 !important;
+        border-radius: var(--mud-default-borderradius);
+        border-color: var(--mud-palette-lines-inputs);
+        border-width: 1px;
+        border-style: solid;
     }
-
-        .cashiers-workplace-product-items-table .selected > td {
-            color: white !important;
-        }
-
-            .cashiers-workplace-product-items-table .selected > td .mud-input {
-                color: white !important;
-            }
 
 .cashiers-workplace-catalog-parent-tree {
     height: 30%;
@@ -214,4 +209,5 @@ a, .btn-link {
     overflow-y: auto;
     overflow-x: hidden;
 }
+
 /* ---Cashier's workpalce */
