@@ -10,6 +10,8 @@
 
             <MudContainer Class="p-0 m-0 cashiers-workplace-receipt-container">
 
+                <ToolBar Commands="@_receiptCommands" />
+
                 <MudTable Items="_receipt.ReceiptItems"
                           Hover="true"
                           Style="max-width: 99%"

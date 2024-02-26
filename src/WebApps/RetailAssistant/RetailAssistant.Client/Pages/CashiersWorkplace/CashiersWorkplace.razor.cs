@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
 using RetailAssistant.Core.Models.ProductCatalog;
 using UI.Razor.Enums;
+using UI.Razor.Models;
 
 namespace RetailAssistant.Client.Pages.CashiersWorkplace;
 
@@ -10,38 +11,13 @@ public partial class CashiersWorkplace
 
     [Inject] public IProductCatalogService<CatalogProductItem> ProductItemService { get; set; } = null!;
 
-    private Receipt _receipt = new();
-
     private double _splitterPercentage = 75;
-
-    #region Product Items fields
-
-    private List<CatalogProductItem> _productItems = [];
-
-    #endregion
-
-    #region Product Parents fields
-
-    private ProductParent? _selectedProductParent;
-    private HashSet<ProductParent> _itemParents = [];
-    private static readonly string selectedParentClassName = "ors-selected-parent-item";
-
-    #endregion
-
-    #region Product Items fields
-
-    private string[] _tableHeadings = ["Code", "Name", "Price"];
-    private int _selectedRowNumber = -1;
-    private MudTable<CatalogProductItem> _productItemsTable = null!;
-    private bool _showLoading = false;
-
-    #endregion
 
     #region Overrides
 
     protected override void OnInitialized()
     {
-        _receipt = new Receipt();
+        OnInitializedReceipt();
 
         base.OnInitialized();
     }
@@ -60,6 +36,18 @@ public partial class CashiersWorkplace
     #endregion
 
     #region Product Items
+
+    #region fields
+
+    private List<CatalogProductItem> _productItems = [];
+    private string[] _tableHeadings = ["Code", "Name", "Price"];
+    private int _selectedRowNumber = -1;
+    private MudTable<CatalogProductItem> _productItemsTable = null!;
+    private bool _showLoading = false;
+
+    #endregion
+
+    #region methods
 
     private async Task ReloadProductItems(ProductParent? productParent = null)
     {
@@ -107,7 +95,19 @@ public partial class CashiersWorkplace
 
     #endregion
 
+    #endregion
+
     #region Product parents
+
+    #region fields
+
+    private ProductParent? _selectedProductParent;
+    private HashSet<ProductParent> _itemParents = [];
+    private static readonly string selectedParentClassName = "ors-selected-parent-item";
+
+    #endregion
+
+    #region methods
 
     private async void OnParentItemDoubleClick(ProductParent productParent, MouseEventArgs mouseEventArgs)
     {
@@ -155,7 +155,46 @@ public partial class CashiersWorkplace
 
     #endregion
 
+    #endregion
+
     #region Receipt
+
+    #region fields
+
+    private Receipt _receipt = new();
+
+    private List<ToolbarCommand> _receiptCommands = null!;
+
+    #endregion
+
+    #region methods
+
+    private void OnInitializedReceipt()
+    {
+        _receipt = new Receipt();
+        _receiptCommands =
+        [
+            new ToolbarCommand
+            {
+                Name = "Clear",
+                Icon = Icons.Material.Outlined.Clear,
+                Callback = EventCallback.Factory.Create<MouseEventArgs>(this, ClearReceipt),
+                Tooltip = "Clear"
+            },
+            new ToolbarCommand
+            {
+                Name = "Save",
+                Icon = Icons.Material.Outlined.Save,
+                Callback = EventCallback.Factory.Create<MouseEventArgs>(this, SaveReceipt),
+                Tooltip = "Save"
+            }
+        ];
+    }
+
+    private void ClearReceipt()
+    {
+        throw new NotImplementedException();
+    }
 
     private void AddProductItemToReceipt(CatalogProductItem productItem)
     {
@@ -165,6 +204,13 @@ public partial class CashiersWorkplace
             _receipt.AddReceiptItem(receiptItem);
         }
     }
+
+    private void SaveReceipt()
+    {
+        // Save receipt
+    }
+
+    #endregion
 
     #endregion
 }
