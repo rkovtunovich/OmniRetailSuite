@@ -1,10 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc.ApplicationModels;
+﻿using Infrastructure.Http.Clients;
+using Infrastructure.Http.Uri;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.Extensions.Options;
 using ProductCatalog.Api.Controllers;
 
 namespace ProductCatalog.Api.Configuration;
 
 public class DtoBasedRouteConvention : IControllerModelConvention
 {
+    private readonly ProductCatalogUriResolver _productCatalogUriResolver = null!;
+
+    public DtoBasedRouteConvention()
+    {
+        var options = new ProductCatalogClientSettings();
+        var productCatalogUriResolver = new ProductCatalogUriResolver(Options.Create(options));
+        _productCatalogUriResolver = productCatalogUriResolver;
+    }
+
     public void Apply(ControllerModel controller)
     {
         if(controller.Selectors.Count is 0)
@@ -25,10 +37,10 @@ public class DtoBasedRouteConvention : IControllerModelConvention
 
     private string GetResourceNameByDto(string controllerName) => controllerName switch
     {
-        nameof(BrandController) => nameof(ProductBrandDto).TrimEnd("Dto".ToCharArray()).ToLower() + "s",
-        nameof(ItemTypeController) => nameof(ProductTypeDto).TrimEnd("Dto".ToCharArray()).ToLower() + "s",
-        nameof(ItemController) => nameof(ProductItemDto).TrimEnd("Dto".ToCharArray()).ToLower() + "s",
-        nameof(ItemParentController) => nameof(ProductParentDto).TrimEnd("Dto".ToCharArray()).ToLower() + "s",
+        nameof(BrandController) => _productCatalogUriResolver.GetResourceName<ProductBrandDto>(),
+        nameof(ItemTypeController) => _productCatalogUriResolver.GetResourceName<ProductTypeDto>(),
+        nameof(ItemController) => _productCatalogUriResolver.GetResourceName<ProductItemDto>(),
+        nameof(ItemParentController) => _productCatalogUriResolver.GetResourceName<ProductParentDto>(),
         _ => throw new ArgumentException("Controller not found")
     };
 }

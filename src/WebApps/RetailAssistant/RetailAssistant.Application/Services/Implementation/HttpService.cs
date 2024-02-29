@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Infrastructure.Http;
 using Infrastructure.Http.Clients;
 using Microsoft.Extensions.Options;
+using System.Net.Http;
 
 namespace RetailAssistant.Application.Services.Implementation;
 
@@ -50,8 +51,10 @@ public class HttpService<TResource> : IHttpService<TResource> where TResource : 
             var responseMessage = await client.PostAsJsonAsync(uri, data);
 
             if (!responseMessage.IsSuccessStatusCode)
-                throw new Exception($"Error post request {typeof(TResource).Name}) uri {uri}. {responseMessage.Content}");
-
+            {
+                string contentAsString = await responseMessage.Content.ReadAsStringAsync();
+                throw new Exception($"Error post request {typeof(TResource).Name}) uri {uri}. {contentAsString}");
+            }             
         }
         catch (Exception ex)
         {

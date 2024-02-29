@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\Infrastructure.Http.Abstraction\Infrastructure.Http.csproj" />
     <ProjectReference Include="..\..\Shared\Infrastructure\Infrastructure.Messaging.Kafka\Infrastructure.Messaging.Kafka.csproj" />
     <ProjectReference Include="..\..\Shared\Infrastructure\Infrastructure.Serialization.JsonText\Infrastructure.Serialization.JsonText.csproj" />
     <ProjectReference Include="..\Retail.Application\Retail.Application.csproj" />

@@ -21,7 +21,7 @@ public class ProductCatalogService<TModel, TDto> : IProductCatalogService<TModel
     {
         try
         {
-            var uri = _productCatalogUriResolver.GetAll<TModel>();
+            var uri = _productCatalogUriResolver.GetAll<TDto>();
             var dtos = await _httpService.GetAsync<List<TDto>>(uri);
 
             var all = dtos?.Select(x => _mapper.Map<TModel>(x)).ToList();
@@ -38,7 +38,7 @@ public class ProductCatalogService<TModel, TDto> : IProductCatalogService<TModel
 
     public async Task<TModel?> GetByIdAsync(Guid id)
     {
-        var uri = _productCatalogUriResolver.Get<TModel>(id);
+        var uri = _productCatalogUriResolver.Get<TDto>(id);
         var dto = await _httpService.GetAsync<TDto>(uri);
 
         return _mapper.Map<TModel>(dto);
@@ -56,7 +56,7 @@ public class ProductCatalogService<TModel, TDto> : IProductCatalogService<TModel
 
     public async Task<TModel> CreateAsync(TModel model)
     {
-        var uri = _productCatalogUriResolver.Add<TModel>();
+        var uri = _productCatalogUriResolver.Add<TDto>();
         await _httpService.PostAsync(uri, _mapper.Map<TDto>(model));
 
         OnChanged?.Invoke(model);
@@ -66,7 +66,7 @@ public class ProductCatalogService<TModel, TDto> : IProductCatalogService<TModel
 
     public async Task<bool> UpdateAsync(TModel model)
     {
-        var uri = _productCatalogUriResolver.Update<TModel>();
+        var uri = _productCatalogUriResolver.Update<TDto>();
         await _httpService.PutAsync(uri, _mapper.Map<TDto>(model));
 
         OnChanged?.Invoke(model);
@@ -76,7 +76,7 @@ public class ProductCatalogService<TModel, TDto> : IProductCatalogService<TModel
 
     public async Task<bool> DeleteAsync(Guid id, bool isSoftDeleting)
     {
-        var uri = _productCatalogUriResolver.Delete<TModel>(id, isSoftDeleting);
+        var uri = _productCatalogUriResolver.Delete<TDto>(id, isSoftDeleting);
         await _httpService.DeleteAsync(uri);
 
         OnChanged?.Invoke(new TModel { Id = id });

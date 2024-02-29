@@ -11,15 +11,17 @@ public partial class CashiersWorkplace
 
     [Inject] public IProductCatalogService<CatalogProductItem> ProductItemService { get; set; } = null!;
 
+    [Inject] public IRetailService<Receipt> ReceiptService { get; set; } = null!;
+
+    [Inject] private ILocalConfigService LocalConfigService { get; set; } = null!;
+
     private double _splitterPercentage = 75;
 
     #region Overrides
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        OnInitializedReceipt();
-
-        base.OnInitialized();
+        await OnInitializedReceipt();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -169,9 +171,8 @@ public partial class CashiersWorkplace
 
     #region methods
 
-    private void OnInitializedReceipt()
+    private async Task OnInitializedReceipt()
     {
-        _receipt = new Receipt();
         _receiptCommands =
         [
             new ToolbarCommand
@@ -189,6 +190,8 @@ public partial class CashiersWorkplace
                 Tooltip = "Save"
             }
         ];
+
+        await InitNewReceipt();     
     }
 
     private void ClearReceipt()
@@ -205,9 +208,24 @@ public partial class CashiersWorkplace
         }
     }
 
-    private void SaveReceipt()
+    private async void SaveReceipt()
     {
-        // Save receipt
+        _receipt.Date = DateTime.Now;
+
+        await ReceiptService.CreateAsync(_receipt);
+
+        await InitNewReceipt();
+    }
+
+    private async Task InitNewReceipt()
+    {
+        var localSettings = await LocalConfigService.GetConfigAsync();
+
+        _receipt = new()
+        {
+            Store = localSettings?.Store ?? throw new ArgumentNullException(nameof(localSettings.Store)),
+            StoreId = localSettings.Store.Id,
+        };
     }
 
     #endregion

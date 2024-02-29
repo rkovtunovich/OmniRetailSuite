@@ -39,7 +39,6 @@ if (app.Environment.IsDevelopment())
 
 await RetailDbContextSeed.SeedRetailDb(app);
 
-//app.UseHttpsRedirection();
 app.UseRouting();
 app.MapControllers();
 

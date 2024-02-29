@@ -14,6 +14,7 @@ public static class ConfigureAppServices
         services.AddScoped<IUserPreferenceService, UserPreferenceService>();
 
         services.AddScoped<IRetailService<Store>, RetailService<Store, StoreDto>>();
+        services.AddScoped<IRetailService<Receipt>, RetailService<Receipt, ReceiptDto>>();
         services.AddScoped<IProductCatalogService<CatalogProductItem>, ProductCatalogService<CatalogProductItem, Contracts.Dtos.ProductCatalog.ProductItemDto>>();
         services.AddScoped<IProductCatalogService<ProductParent>, ProductCatalogService<ProductParent, ProductParentDto>>();
 
