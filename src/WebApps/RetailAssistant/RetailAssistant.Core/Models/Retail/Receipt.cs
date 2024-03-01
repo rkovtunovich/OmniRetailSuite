@@ -52,10 +52,11 @@ public class Receipt : EntityModelBase
         TotalPrice = 0;
     }
 
-    public ReceiptItem CreateReceiptItemByCatalogProductItem(CatalogProductItem productItem)
+    public ReceiptItem CreateReceiptItemByCatalogProductItem(Guid id, CatalogProductItem productItem)
     {
         return new ReceiptItem
         {
+            Id = id,
             ProductItemId = productItem.Id,
             ProductItem = new RetailProductItem { Id = productItem.Id, Name = productItem.Name },
             Receipt = this,

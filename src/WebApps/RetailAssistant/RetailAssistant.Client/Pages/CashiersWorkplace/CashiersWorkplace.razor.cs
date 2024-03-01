@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.Web;
+﻿using Infrastructure.Common.Services;
+using Microsoft.AspNetCore.Components.Web;
 using RetailAssistant.Core.Models.ProductCatalog;
 using UI.Razor.Enums;
 using UI.Razor.Models;
@@ -14,6 +15,8 @@ public partial class CashiersWorkplace
     [Inject] public IRetailService<Receipt> ReceiptService { get; set; } = null!;
 
     [Inject] private ILocalConfigService LocalConfigService { get; set; } = null!;
+
+    [Inject] private IGuidGenerator _guidGenerator { get; set; } = null!; 
 
     private double _splitterPercentage = 75;
 
@@ -203,7 +206,7 @@ public partial class CashiersWorkplace
     {
         if (!_receipt.TryUpdateReceiptItemByCatalogItem(productItem))
         {
-            var receiptItem = _receipt.CreateReceiptItemByCatalogProductItem(productItem);
+            var receiptItem = _receipt.CreateReceiptItemByCatalogProductItem(_guidGenerator.Create(), productItem);
             _receipt.AddReceiptItem(receiptItem);
         }
     }
@@ -223,6 +226,7 @@ public partial class CashiersWorkplace
 
         _receipt = new()
         {
+            Id = _guidGenerator.Create(),
             Store = localSettings?.Store ?? throw new ArgumentNullException(nameof(localSettings.Store)),
             StoreId = localSettings.Store.Id,
         };

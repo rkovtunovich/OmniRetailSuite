@@ -23,7 +23,7 @@ public static class ReceiptItemMapping
         return new ReceiptItem
         {
             Id = receiptItemDto.Id,
-            ProductItem = receiptItemDto.ProductItem.ToEntity(),
+            ProductItemId = receiptItemDto.ProductItem.Id,
             Quantity = receiptItemDto.Quantity,
             LineNumber = receiptItemDto.LineNumber,
             ReceiptId = receiptItemDto.ReceiptId,

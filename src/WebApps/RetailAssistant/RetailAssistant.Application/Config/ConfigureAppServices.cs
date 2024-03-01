@@ -1,4 +1,5 @@
 ﻿using Blazored.LocalStorage;
+using Infrastructure.Common.Services;
 using Microsoft.Extensions.DependencyInjection;
 using RetailAssistant.Application.Mapping.Configuration;
 
@@ -19,6 +20,8 @@ public static class ConfigureAppServices
         services.AddScoped<IProductCatalogService<ProductParent>, ProductCatalogService<ProductParent, ProductParentDto>>();
 
         services.AddMapping();
+
+        services.AddSingleton<IGuidGenerator, GuidGenerator>();
 
         return services;
     }

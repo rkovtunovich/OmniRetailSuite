@@ -1,6 +1,6 @@
 ﻿using BackOffice.Application.Mapping.Configuration;
 using BackOffice.Application.Services.Implementation;
-using BackOffice.Core.Models.ProductCatalog;
+using Infrastructure.Common.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BackOffice.Application.Configuration;
@@ -20,6 +20,8 @@ public static class ConfigureAppServices
 
         services.AddScoped<IRetailService<Cashier>, RetailService<Cashier, CashierDto>>();
         services.AddScoped<IRetailService<Store>, RetailService<Store, StoreDto>>();
+
+        services.AddSingleton<IGuidGenerator, GuidGenerator>();
 
         return services;
     }

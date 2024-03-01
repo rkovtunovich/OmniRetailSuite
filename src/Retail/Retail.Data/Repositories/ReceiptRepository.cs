@@ -56,9 +56,9 @@ public class ReceiptRepository(RetailDbContext context, ILogger<ReceiptRepositor
 
             return receipt;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            _logger.LogError("Error while adding receipt with id {Id}", receipt.Id);
+            _logger.LogError(ex,"Error while adding receipt with id {Id}", receipt.Id);
             throw;
         }
     }

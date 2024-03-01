@@ -2,6 +2,8 @@
 
 public class ReceiptItem
 {
+    public Guid Id { get; set; }
+
     public Guid ReceiptId { get; set; }
 
     public Receipt Receipt { get; set; } = null!;
