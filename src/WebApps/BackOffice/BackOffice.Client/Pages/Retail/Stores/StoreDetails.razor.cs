@@ -117,7 +117,7 @@ public partial class StoreDetails : DetailsFormBase<Store>
         var fragmentParameters = new Dictionary<string, object>
         {
             { nameof(CashierSelectionList.Items), _allCashiers },
-            { nameof(CashierSelectionList.OnSelectionMade), EventCallback.Factory.Create<IEnumerable<Cashier>>(this, CashierTabOnSelectionChanged) }
+            { nameof(CashierSelectionList.OnMultipleSelectionMade), EventCallback.Factory.Create<IEnumerable<Cashier>>(this, CashierTabOnSelectionChanged) }
         };
 
         var content = RenderFragmentBuilder.Create<CashierSelectionList>(fragmentParameters);

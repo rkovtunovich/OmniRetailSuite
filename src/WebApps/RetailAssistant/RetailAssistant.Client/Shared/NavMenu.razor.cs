@@ -1,4 +1,4 @@
-﻿namespace Retail.Client.Wasm.Shared;
+﻿namespace RetailAssistant.Client.Shared;
 
 public partial class NavMenu
 {

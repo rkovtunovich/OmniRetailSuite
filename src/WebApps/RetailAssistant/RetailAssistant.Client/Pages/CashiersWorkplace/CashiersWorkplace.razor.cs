@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components.Web;
 using RetailAssistant.Core.Models.ProductCatalog;
 using UI.Razor.Enums;
-using UI.Razor.Models;
+using UI.Razor.Helpers;
 
 namespace RetailAssistant.Client.Pages.CashiersWorkplace;
 
@@ -16,7 +16,9 @@ public partial class CashiersWorkplace
 
     [Inject] private ILocalConfigService LocalConfigService { get; set; } = null!;
 
-    [Inject] private IGuidGenerator _guidGenerator { get; set; } = null!; 
+    [Inject] private IGuidGenerator GuidGenerator { get; set; } = null!;
+
+    [Inject] private IDialogService DialogService { get; set; } = null!;
 
     private double _splitterPercentage = 75;
 
@@ -29,13 +31,15 @@ public partial class CashiersWorkplace
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        await base.OnAfterRenderAsync(firstRender);
+
         if (firstRender)
         {
             await ReloadProductItems();
-            await ReloadItemParents(); ;
+            await ReloadItemParents();
+            
+            await ShowCashierChangeDialog();
         }
-
-        await base.OnAfterRenderAsync(firstRender);
     }
 
     #endregion
@@ -206,7 +210,7 @@ public partial class CashiersWorkplace
     {
         if (!_receipt.TryUpdateReceiptItemByCatalogItem(productItem))
         {
-            var receiptItem = _receipt.CreateReceiptItemByCatalogProductItem(_guidGenerator.Create(), productItem);
+            var receiptItem = _receipt.CreateReceiptItemByCatalogProductItem(GuidGenerator.Create(), productItem);
             _receipt.AddReceiptItem(receiptItem);
         }
     }
@@ -226,13 +230,50 @@ public partial class CashiersWorkplace
 
         _receipt = new()
         {
-            Id = _guidGenerator.Create(),
+            Id = GuidGenerator.Create(),
             Store = localSettings?.Store ?? throw new ArgumentNullException(nameof(localSettings.Store)),
             StoreId = localSettings.Store.Id,
         };
     }
 
     #endregion
+
+    #endregion
+
+    #region Cashier
+
+    private Cashier _cashier = null!;
+
+    private async Task ShowCashierChangeDialog()
+    {
+        var localSettings = await LocalConfigService.GetConfigAsync();
+        var store = localSettings?.Store ?? throw new ArgumentNullException(nameof(localSettings.Store));
+
+        var fragmentParameters = new Dictionary<string, object>
+        {
+            { nameof(CashierSelectionList.Items), store.Cashiers },
+            { nameof(CashierSelectionList.OnSingleSelectionMade), EventCallback.Factory.Create<Cashier>(this, CashierOnSelectionChanged) }
+        };
+
+        var content = RenderFragmentBuilder.Create<CashierSelectionList>(fragmentParameters);
+
+        var options = new DialogOptions
+        {
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Medium,
+            CloseButton = true,
+
+        };
+        var dialogParameters = new DialogParameters { { "ChildContent", content } };
+
+        var dialog = DialogService.Show<ModalComponent>("Select cashier", dialogParameters, options);
+    }
+
+    private void CashierOnSelectionChanged(Cashier selectedCashier)
+    {
+        if (selectedCashier is not null)
+            _cashier = selectedCashier;
+    }
 
     #endregion
 }

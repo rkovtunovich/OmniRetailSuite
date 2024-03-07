@@ -21,3 +21,9 @@ global using System.Text.Json;
 global using System.Threading;
 global using System.Threading.Tasks;
 global using System;
+
+global using UI.Razor.Components.Base;
+global using UI.Razor.Components.Common;
+global using UI.Razor.Models;
+global using UI.Razor.Services;
+

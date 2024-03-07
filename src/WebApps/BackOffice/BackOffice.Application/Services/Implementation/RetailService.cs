@@ -19,7 +19,7 @@ public class RetailService<TModel, TDto> : IRetailService<TModel> where TModel :
 
     public async Task<List<TModel>> GetAllAsync()
     {
-        var uri = _retailUrlResolver.GetAll<TModel>();
+        var uri = _retailUrlResolver.GetAll<TDto>();
         var dtos = await _httpService.GetAsync<List<TDto>>(uri);
 
         var all = dtos?.Select(x => _mapper.Map<TModel>(x)).ToList();
@@ -29,7 +29,7 @@ public class RetailService<TModel, TDto> : IRetailService<TModel> where TModel :
 
     public async Task<TModel?> GetByIdAsync(Guid id)
     {
-        var uri = _retailUrlResolver.Get<TModel>(id);
+        var uri = _retailUrlResolver.Get<TDto>(id);
         var dto = await _httpService.GetAsync<TDto>(uri);
 
         return _mapper.Map<TModel>(dto);
@@ -37,7 +37,7 @@ public class RetailService<TModel, TDto> : IRetailService<TModel> where TModel :
 
     public async Task<TModel> CreateAsync(TModel model)
     {
-        var uri = _retailUrlResolver.Add<TModel>();
+        var uri = _retailUrlResolver.Add<TDto>();
         await _httpService.PostAsync(uri, _mapper.Map<TDto>(model));
 
         OnChanged?.Invoke(model);
@@ -47,7 +47,7 @@ public class RetailService<TModel, TDto> : IRetailService<TModel> where TModel :
 
     public async Task<bool> UpdateAsync(TModel model)
     {
-        var uri = _retailUrlResolver.Update<TModel>();
+        var uri = _retailUrlResolver.Update<TDto>();
         await _httpService.PutAsync(uri, _mapper.Map<TDto>(model));
 
         OnChanged?.Invoke(model);
@@ -57,7 +57,7 @@ public class RetailService<TModel, TDto> : IRetailService<TModel> where TModel :
 
     public async Task<bool> DeleteAsync(Guid id, bool isSoftDeleting)
     {
-        var uri = _retailUrlResolver.Delete<TModel>(id, isSoftDeleting);
+        var uri = _retailUrlResolver.Delete<TDto>(id, isSoftDeleting);
         await _httpService.DeleteAsync(uri);
 
         OnChanged?.Invoke(new TModel { Id = id });

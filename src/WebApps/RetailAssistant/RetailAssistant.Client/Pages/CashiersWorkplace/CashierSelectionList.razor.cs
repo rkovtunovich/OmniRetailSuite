@@ -1,4 +1,4 @@
-﻿namespace BackOffice.Client.Pages.Retail.Cashiers;
+﻿namespace RetailAssistant.Client.Pages.CashiersWorkplace;
 
 public partial class CashierSelectionList : SelectionListBase<Cashier>
 {
@@ -8,13 +8,18 @@ public partial class CashierSelectionList : SelectionListBase<Cashier>
 
     private async Task OnOkButtonClick()
     {
-        await OnMultipleSelectionMade.InvokeAsync([.. SelectedItems]);
-        
+        await OnSingleSelectionMade.InvokeAsync(SelectedItem);
+
         MudDialog?.Close(DialogResult.Ok(true));
     }
 
     private void OnCancelButtonClick()
     {
         MudDialog?.Cancel();
+    }
+
+    private void SelectedItemChanged(Cashier? cashier)
+    {
+        SelectedItem = cashier;
     }
 }

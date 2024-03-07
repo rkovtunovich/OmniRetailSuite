@@ -5,6 +5,7 @@ using MudBlazor.Services;
 using RetailAssistant.Client.Configuration;
 using RetailAssistant.Application.Config;
 using MudExtensions.Services;
+using UI.Razor.Services.Implementation;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -18,6 +19,7 @@ builder.Services.AddRetailAssistantWebServices(builder.Configuration);
 builder.Services.AddMudServices();
 builder.Services.AddMudExtensions();
 builder.Services.AddRetailAssistantAppServices();
+builder.Services.AddSingleton<TabsService>();
 
 builder.Services.AddOidcAuthentication(options =>
 {

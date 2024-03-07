@@ -9,11 +9,11 @@ public class StoreRepository(RetailDbContext context, ILogger<ReceiptRepository>
     {
         try
         {
-            return await _context.Stores.ToListAsync();
+            return await _context.Stores.Include(s => s.Cashiers).ToListAsync();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            _logger.LogError("Error while getting stores");
+            _logger.LogError(e, "Error while getting stores");
             throw;
         }
     }
@@ -26,9 +26,9 @@ public class StoreRepository(RetailDbContext context, ILogger<ReceiptRepository>
                 .Include(s => s.Cashiers)
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            _logger.LogError("Error while getting store with id {Id}", id);
+            _logger.LogError(e, "Error while getting store with id {Id}", id);
             throw;
         }
     }
@@ -43,9 +43,9 @@ public class StoreRepository(RetailDbContext context, ILogger<ReceiptRepository>
 
             return store;
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            _logger.LogError("Error while adding store");
+            _logger.LogError(e,"Error while adding store");
             throw;
         }
     }
@@ -107,9 +107,9 @@ public class StoreRepository(RetailDbContext context, ILogger<ReceiptRepository>
                 await _context.SaveChangesAsync();
             }
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            _logger.LogError("Error while deleting store with id {Id}", id);
+            _logger.LogError(e, "Error while deleting store with id {Id}", id);
             throw;
         }
     }

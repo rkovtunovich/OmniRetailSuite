@@ -1,6 +1,4 @@
-﻿using UI.Razor.Components.Base;
-
-namespace RetailAssistant.Client.Pages.GlobalSettings;
+﻿namespace RetailAssistant.Client.Pages.GlobalSettings;
 
 public partial class AppSettings: OrsComponentBase
 {
@@ -16,10 +14,10 @@ public partial class AppSettings: OrsComponentBase
 
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
+
         _appConfig = await LocalConfigService.GetConfigAsync();
         _stores = await _retailService.GetAllAsync();
-
-         await base.OnInitializedAsync();
     }
 
     private async Task Save()
