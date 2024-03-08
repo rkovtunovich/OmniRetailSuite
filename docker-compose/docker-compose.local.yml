@@ -28,28 +28,24 @@ services:
     ports:
       - "9000:9000"  # Kafdrop web UI will be available at http://localhost:9000/
 
-  consul-server:
-    image: hashicorp/consul:1.10.0
-    container_name: consul-server-dev
-    restart: always
-    volumes:
-     - ./server.json:/consul/config/server.json:ro
-    networks:
-      - consul
+  consul:
+    image: consul:latest
     ports:
-      - "8500:8500"
-      - "8600:8600/tcp"
-      - "8600:8600/udp"
-    command: "agent"
-  consul-client:
-    image: hashicorp/consul:1.10.0
-    container_name: consul-client-dev
-    restart: always
-    volumes:
-     - ./client.json:/consul/config/client.json:ro
-    networks:
+      - 8500:8500
+    command: agent -server -bind 0.0.0.0 -client 0.0.0.0 -bootstrap-expect 1 -config-file=/consul/config/config.json
+
+  vault:
+    image: vault:latest
+    ports:
+      - 8200:8200
+    environment:
+      - VAULT_ADDR=http://127.0.0.1:8200
+      - VAULT_API_ADDR=http://127.0.0.1:8200
+    command: server -config=/vault/config/vault-config.json
+    cap_add:
+      - IPC_LOCK
+    depends_on:
       - consul
-    command: "agent"
 
 volumes:
   kafka_data:
