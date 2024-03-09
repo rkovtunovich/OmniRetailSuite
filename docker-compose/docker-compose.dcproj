@@ -11,10 +11,17 @@
   <ItemGroup>
     <None Include=".dockerignore" />
     <None Include=".env" />
+    <None Include="consul\consul-config.json" />
+    <None Include="consul\Dockerfile" />
     <None Include="docker-compose.local.yml" />
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>
     <None Include="docker-compose.yml" />
+    <None Include="postgres\Dockerfile" />
+    <None Include="postgres\get-credentials.sh" />
+    <None Include="vault\Dockerfile" />
+    <None Include="vault\unseal.sh" />
+    <None Include="vault\vault-consul-backend-config.json" />
   </ItemGroup>
 </Project>
