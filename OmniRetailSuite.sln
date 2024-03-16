@@ -8,10 +8,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{15EA4737
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0BD72BEA-EF42-4B72-8B69-12A39EC76FBA}"
 	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
 		.editorconfig = .editorconfig
+		.env = .env
 		Directory.Packages.props = Directory.Packages.props
-		docker-compose.override.yml = docker-compose.override.yml
-		docker-compose.yml = docker-compose.yml
 		.github\workflows\dotnetcore.yml = .github\workflows\dotnetcore.yml
 		README.md = README.md
 	EndProjectSection
@@ -100,7 +100,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityModel", "src\Identi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Http", "src\Infrastructure\Infrastructure.Http.Abstraction\Infrastructure.Http.csproj", "{7C266459-9C73-46B7-A993-E1ECD38A2DC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Common", "src\Infrastructure\Infrastructure.Common\Infrastructure.Common.csproj", "{6D019E3E-956E-4449-9176-6330EE3A312E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Common", "src\Infrastructure\Infrastructure.Common\Infrastructure.Common.csproj", "{6D019E3E-956E-4449-9176-6330EE3A312E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "kubernetes", "kubernetes", "{560908F4-5F4C-4A85-9158-AE47F45FFB22}"
 	ProjectSection(SolutionItems) = preProject

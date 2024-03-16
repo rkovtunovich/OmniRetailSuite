@@ -18,8 +18,10 @@
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>
     <None Include="docker-compose.yml" />
+    <None Include="postgres\docker-entrypoint.sh" />
     <None Include="postgres\Dockerfile" />
     <None Include="postgres\get-credentials.sh" />
+    <None Include="vault\docker-entrypoint.sh" />
     <None Include="vault\Dockerfile" />
     <None Include="vault\unseal.sh" />
     <None Include="vault\vault-consul-backend-config.json" />
