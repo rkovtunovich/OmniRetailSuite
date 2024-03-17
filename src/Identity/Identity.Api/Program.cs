@@ -1,4 +1,5 @@
 ﻿using Identity.Api.Configuration;
+using Identity.Api.Infrastructure.Data;
 using Infrastructure.SecretManagement.Vault.Configuration;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.HttpOverrides;

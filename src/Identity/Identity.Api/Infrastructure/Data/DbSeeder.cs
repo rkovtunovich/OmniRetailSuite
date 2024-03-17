@@ -1,10 +1,10 @@
 ﻿using Identity.Api.Infrastructure.Repositories;
 using Identity.Api.Models;
 using Microsoft.AspNetCore.Identity;
-
+using Npgsql;
 namespace Identity.Api.Infrastructure.Data;
 
-public static class DbSeeder
+public class DbSeeder
 {
     public async static Task SeedDatabase(WebApplication app)
     {
@@ -25,4 +25,6 @@ public static class DbSeeder
             app.Logger.LogError(ex, "An error occurred seeding the DB.");
         }
     }
+
+   
 }
