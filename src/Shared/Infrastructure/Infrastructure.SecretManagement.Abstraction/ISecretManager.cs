@@ -2,7 +2,5 @@
 
 public interface ISecretManager
 {
-    Task<string> GetSecretAsync(string secretName);
-
-    Task<string> GetSecretAsync(string secretName, int version);
+    Task<string> GetSecretAsync(SecretRequest request);
 }

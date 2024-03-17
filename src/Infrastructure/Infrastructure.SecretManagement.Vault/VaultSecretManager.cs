@@ -1,5 +1,5 @@
-﻿using Infrastructure.SecretManagement.Abstraction;
-using VaultSharp;
+﻿using System.Net;
+using VaultSharp.Core;
 
 namespace Infrastructure.SecretManagement.Vault;
 
@@ -12,15 +12,22 @@ public class VaultSecretManager : ISecretManager
         _vaultClient = vaultClient;
     }
 
-    public async Task<string> GetSecretAsync(string secretName)
+    public async Task<string> GetSecretAsync(SecretRequest request)
     {
-        var secret = await _vaultClient.V1.Secrets.KeyValue.V2.ReadSecretAsync(secretName);
-        return secret?.Data?.Data["value"]?.ToString() ?? string.Empty;
-    }
+        try
+        {
+            var secret = await _vaultClient.V1.Secrets.KeyValue.V2.ReadSecretAsync(request.Path, mountPoint: request.Namespace);
 
-    public async Task<string> GetSecretAsync(string secretName, int version)
-    {
-        var secret = await _vaultClient.V1.Secrets.KeyValue.V2.ReadSecretAsync(secretName, version);
-        return secret?.Data?.Data["value"]?.ToString() ?? string.Empty;
+            return secret?.Data?.Data?.Where(x => x.Key == request.SecretName).Select(x => x.Value.ToString()).FirstOrDefault() 
+                ?? throw new InvalidOperationException($"Secret {request.Path} is empty.");
+        }
+        catch (VaultApiException ex) when (ex.StatusCode is (int)HttpStatusCode.NotFound)
+        {
+            throw new InvalidOperationException($"Secret {request.Path}", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException($"Error reading secret {request.Path}", ex);
+        }
     }
 }

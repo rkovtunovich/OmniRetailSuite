@@ -1,6 +1,5 @@
 ﻿using Identity.Api.Configuration;
 using Identity.Api.Infrastructure.Data;
-using Infrastructure.SecretManagement.Vault.Configuration;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Logging;
@@ -22,6 +21,7 @@ builder.Services.AddHttpLogging(options =>
 });
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddDataManagement(builder.Configuration);
 builder.Services.AddIdentityDbContext(builder.Configuration);
 builder.Services.AddIdentityServices(builder.Configuration);
 builder.Services.AddDiscoveryClient(builder.Configuration);

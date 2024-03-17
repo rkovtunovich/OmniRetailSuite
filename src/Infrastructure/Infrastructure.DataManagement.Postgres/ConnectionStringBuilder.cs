@@ -1,13 +1,21 @@
-﻿namespace Infrastructure.DataManagement.Postgres.Configuration;
+﻿namespace Infrastructure.DataManagement.Postgres;
 
 public class ConnectionStringBuilder(IOptions<DbSettings> options, ISecretManager secretManager) : IConnectionStringBuilder
 {
     public async Task<string> BuildConnectionString()
     {
-        var user = await secretManager.GetSecretAsync("sname")
+        var secretRequest = new SecretRequest
+        {
+            Namespace = "kv",
+            Path = "postgres-root",
+            SecretName = "sname"
+        };  
+
+        var user = await secretManager.GetSecretAsync(secretRequest)
             ?? throw new InvalidOperationException("Db user is empty.");
 
-        var password = await secretManager.GetSecretAsync("spassword") 
+        secretRequest.SecretName = "spassword";
+        var password = await secretManager.GetSecretAsync(secretRequest)
             ?? throw new InvalidOperationException("Db password is empty.");
 
         var settings = options.Value;

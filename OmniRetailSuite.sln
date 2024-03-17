@@ -114,6 +114,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.SecretManage
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.SecretManagement.Vault", "src\Infrastructure\Infrastructure.SecretManagement.Vault\Infrastructure.SecretManagement.Vault.csproj", "{3A7497F2-46FC-4202-9168-F4896E03EF60}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.DataManagement.Postgres", "src\Infrastructure\Infrastructure.DataManagement.Postgres\Infrastructure.DataManagement.Postgres.csproj", "{7A10FD03-0FCF-4901-A97B-242842E9C8AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.DataManagement.Abstraction", "src\Infrastructure\Infrastructure.DataManagement.Abstraction\Infrastructure.DataManagement.Abstraction.csproj", "{D883BE21-3D2B-4199-88D5-48A924618348}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -319,6 +323,18 @@ Global
 		{3A7497F2-46FC-4202-9168-F4896E03EF60}.NoVariablesDefault|Any CPU.Build.0 = Debug|Any CPU
 		{3A7497F2-46FC-4202-9168-F4896E03EF60}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A7497F2-46FC-4202-9168-F4896E03EF60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A10FD03-0FCF-4901-A97B-242842E9C8AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A10FD03-0FCF-4901-A97B-242842E9C8AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A10FD03-0FCF-4901-A97B-242842E9C8AD}.NoVariablesDefault|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A10FD03-0FCF-4901-A97B-242842E9C8AD}.NoVariablesDefault|Any CPU.Build.0 = Debug|Any CPU
+		{7A10FD03-0FCF-4901-A97B-242842E9C8AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A10FD03-0FCF-4901-A97B-242842E9C8AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D883BE21-3D2B-4199-88D5-48A924618348}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D883BE21-3D2B-4199-88D5-48A924618348}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D883BE21-3D2B-4199-88D5-48A924618348}.NoVariablesDefault|Any CPU.ActiveCfg = Debug|Any CPU
+		{D883BE21-3D2B-4199-88D5-48A924618348}.NoVariablesDefault|Any CPU.Build.0 = Debug|Any CPU
+		{D883BE21-3D2B-4199-88D5-48A924618348}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D883BE21-3D2B-4199-88D5-48A924618348}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -369,6 +385,8 @@ Global
 		{6D019E3E-956E-4449-9176-6330EE3A312E} = {BE3FB256-472F-4424-B0D2-A31B37EC7229}
 		{E36AFB84-103B-46D1-9BBD-85D5A6674172} = {BE3FB256-472F-4424-B0D2-A31B37EC7229}
 		{3A7497F2-46FC-4202-9168-F4896E03EF60} = {BE3FB256-472F-4424-B0D2-A31B37EC7229}
+		{7A10FD03-0FCF-4901-A97B-242842E9C8AD} = {BE3FB256-472F-4424-B0D2-A31B37EC7229}
+		{D883BE21-3D2B-4199-88D5-48A924618348} = {BE3FB256-472F-4424-B0D2-A31B37EC7229}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {49813262-5DA3-4D61-ABD3-493C74CE8C2B}

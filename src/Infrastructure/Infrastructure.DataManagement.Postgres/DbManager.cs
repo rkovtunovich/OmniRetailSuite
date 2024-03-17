@@ -32,13 +32,20 @@ public class DbManager(IConnectionStringBuilder connectionStringBuilder, ILogger
         builder.Database = "postgres";
         using (var connection = new NpgsqlConnection(builder.ConnectionString))
         {
-            await connection.OpenAsync();
+            try
+            {
+                await connection.OpenAsync();
 
-            using var command = new NpgsqlCommand($"CREATE DATABASE \"{dbName}\"", connection);
-            await command.ExecuteNonQueryAsync();
+                using var command = new NpgsqlCommand($"CREATE DATABASE \"{dbName}\"", connection);
+                await command.ExecuteNonQueryAsync();
+
+                logger.LogInformation($"Database '{dbName}' created.");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"Error creating database '{dbName}'.");
+                throw;
+            }
         }
-
-        // Optionally, log that the database was created
-        logger.LogInformation($"Database '{dbName}' created.");
     }
 }
