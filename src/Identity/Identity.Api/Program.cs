@@ -1,4 +1,5 @@
 ﻿using Identity.Api.Configuration;
+using Infrastructure.SecretManagement.Vault.Configuration;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Logging;
@@ -24,6 +25,7 @@ builder.Services.AddIdentityDbContext(builder.Configuration);
 builder.Services.AddIdentityServices(builder.Configuration);
 builder.Services.AddDiscoveryClient(builder.Configuration);
 builder.Services.AddUserPreferences();
+builder.Services.AddSecretManagement(builder.Configuration);
 
 var app = builder.Build();
 

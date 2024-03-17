@@ -1,6 +1,9 @@
 version: '3.4'
 
 services:
+
+# ==============================================================================
+# Infrastructure services
   kafka:
     image: docker.io/bitnami/kafka:3.5
     ports:
@@ -72,6 +75,9 @@ services:
       - db-data:/var/lib/postgresql/data
     depends_on:
       - vault
+# ==============================================================================
+# Application services
+ 
 
 volumes:
   kafka_data:

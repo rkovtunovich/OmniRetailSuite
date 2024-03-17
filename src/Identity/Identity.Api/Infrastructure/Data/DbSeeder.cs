@@ -1,9 +1,8 @@
-﻿using Identity.Api.Infrastructure.Data;
-using Identity.Api.Infrastructure.Repositories;
+﻿using Identity.Api.Infrastructure.Repositories;
 using Identity.Api.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace Identity.Api.Configuration;
+namespace Identity.Api.Infrastructure.Data;
 
 public static class DbSeeder
 {
