@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Logging;
 using Steeltoe.Discovery.Client;
+using Winton.Extensions.Configuration.Consul;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddConsul($"configuration/identity/{builder.Environment.EnvironmentName.ToLower()}");
 
 builder.WebHost.ConfigureKestrel((context, options) =>
 {

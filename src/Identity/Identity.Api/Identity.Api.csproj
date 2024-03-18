@@ -27,6 +27,7 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
     <PackageReference Include="Steeltoe.Discovery.ClientCore" />
     <PackageReference Include="Steeltoe.Discovery.Consul" />
+    <PackageReference Include="Winton.Extensions.Configuration.Consul" />
   </ItemGroup>
 
   <ItemGroup>

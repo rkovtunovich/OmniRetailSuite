@@ -3,6 +3,7 @@ using Identity.Api.Models;
 using Infrastructure.DataManagement.Postgres.Configuration.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+
 namespace Identity.Api.Infrastructure.Data;
 
 public class DbSeeder
