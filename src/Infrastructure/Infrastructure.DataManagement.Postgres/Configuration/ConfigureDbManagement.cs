@@ -9,7 +9,6 @@ public static class ConfigureDbManagement
     {
         services.Configure<DbSettings>(configuration.GetRequiredSection(DbSettings.SectionName));
 
-        services.AddSingleton<IConnectionStringBuilder, ConnectionStringBuilder>();
         services.AddSingleton<IDbManager, DbManager>();
 
         return services;

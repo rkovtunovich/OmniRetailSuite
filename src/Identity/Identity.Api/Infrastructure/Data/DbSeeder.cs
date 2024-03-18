@@ -32,7 +32,5 @@ public class DbSeeder
         {
             app.Logger.LogError(ex, "An error occurred seeding the DB.");
         }
-    }
-
-   
+    }  
 }
