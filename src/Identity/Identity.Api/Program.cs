@@ -1,5 +1,6 @@
 ﻿using Identity.Api.Configuration;
 using Identity.Api.Infrastructure.Data;
+using Identity.Api.Infrastructure.Data.Config;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Logging;
@@ -22,13 +23,14 @@ builder.Services.AddHttpLogging(options =>
     options.LoggingFields = HttpLoggingFields.RequestPropertiesAndHeaders;
 });
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddSecretManagement(builder.Configuration);
 builder.Services.AddDataManagement(builder.Configuration);
-builder.Services.AddIdentityDbContext(builder.Configuration);
+await builder.Services.PrepareDatabase();
+await builder.Services.AddIdentityDbContext();
 builder.Services.AddIdentityServices(builder.Configuration);
 builder.Services.AddDiscoveryClient(builder.Configuration);
 builder.Services.AddUserPreferences();
-builder.Services.AddSecretManagement(builder.Configuration);
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 

@@ -6,6 +6,8 @@ global using Infrastructure.SecretManagement.Abstraction;
 global using Infrastructure.SecretManagement.Vault;
 global using Infrastructure.SecretManagement.Vault.Configuration;
 
+global using Microsoft.Extensions.DependencyInjection;
+
 global using System.Collections.Generic;
 global using System.ComponentModel.DataAnnotations;
 global using System.IO;

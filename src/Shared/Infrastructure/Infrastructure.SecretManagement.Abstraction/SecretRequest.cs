@@ -6,7 +6,7 @@ public class SecretRequest
 
     public string Path { get; set; } = string.Empty;
 
-    public string SecretName { get; set; } = string.Empty;
+    public List<string> SecretKeys { get; set; } = [];
 
     public int Version { get; set; } = 0;
 }

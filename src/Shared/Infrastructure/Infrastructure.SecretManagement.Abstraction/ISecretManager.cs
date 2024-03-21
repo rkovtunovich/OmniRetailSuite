@@ -2,5 +2,5 @@
 
 public interface ISecretManager
 {
-    Task<string> GetSecretAsync(SecretRequest request);
+    Task<Dictionary<string, string>> GetSecretAsync(SecretRequest request);
 }

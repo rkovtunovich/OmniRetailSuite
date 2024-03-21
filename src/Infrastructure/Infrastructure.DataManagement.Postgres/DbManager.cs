@@ -8,14 +8,10 @@ public class DbManager(ISecretManager secretManager, IOptions<DbSettings> option
         {
             Namespace = "kv",
             Path = "postgres-root",
-            SecretName = "sname"
+            SecretKeys = ["sname", "spassword"],
         };
-        var user = await secretManager.GetSecretAsync(secretRequest)
-            ?? throw new InvalidOperationException("Db user is empty.");
 
-        secretRequest.SecretName = "spassword";
-        var password = await secretManager.GetSecretAsync(secretRequest)
-            ?? throw new InvalidOperationException("Db password is empty.");
+        var secrets = await secretManager.GetSecretAsync(secretRequest);
 
         var settings = options.Value;
 
@@ -24,8 +20,8 @@ public class DbManager(ISecretManager secretManager, IOptions<DbSettings> option
         {
             Host = settings.Host,
             Port = settings.Port,
-            Username = user,
-            Password = password,
+            Username = secrets["sname"],
+            Password = secrets["spassword"],
             Database = dbName,
         };
 
