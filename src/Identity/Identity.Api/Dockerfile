@@ -1,19 +1,23 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 WORKDIR /app
 
-# Copy the shared projects
-COPY ../../Shared .
-
-# Copy the csproj and restore as distinct layers
-WORKDIR /app/src/Identity/Identity.Api
+# Copy all solution files
 COPY . ./
-RUN dotnet restore
-RUN mkdir -p /app/published
-RUN dotnet publish -c Release -o /app/published || exit 1
 
-# Use the .NET runtime image for the final image
+# Restore the project
+RUN dotnet restore src/Identity/Identity.Api/Identity.Api.csproj
+
+# Publish the project
+RUN dotnet publish src/Identity/Identity.Api/Identity.Api.csproj -c Release -o published 
+
+## Use the .NET runtime image for the final image
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
-WORKDIR /app
-COPY --from=build-env /app/published .
+COPY --from=build-env app/published .
+
+# add the entrypoint script
+COPY src/Identity/Identity.Api/docker-entrypoint.sh docker-entrypoint.sh
+# make the entrypoint script executable
+RUN chmod +x docker-entrypoint.sh
+
 #ENTRYPOINT ["./docker-entrypoint.sh"]
 ENTRYPOINT ["dotnet", "Identity.Api.dll"]

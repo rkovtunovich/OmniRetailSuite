@@ -80,12 +80,17 @@ services:
   identity:
     image: ${DOCKER_REGISTRY-}identity
     build:
-      context: ../src/Identity
-      dockerfile: /Identity.API/Dockerfile
+      context: ${DOCKER_CONTEXT}
+      dockerfile: src/Identity/Identity.API/Dockerfile
     ports:
       - "5401:5401"
     environment:
       BlazorAdminClient: "${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5301"
+      CONSUL_HTTP_ADDR: "consul:8500"
+      db__host: "postgres_db"
+      db__port: "5432"
+      db__database: "identity"
+      vault__address: "http://vault:8200"
     depends_on:
       - "postgres_db"  
 
