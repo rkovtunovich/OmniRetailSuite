@@ -15,8 +15,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Identity\Identity.Model\IdentityModel.csproj" />
-    <ProjectReference Include="..\..\..\Infrastructure\Infrastructure.Common\Infrastructure.Common.csproj" />
-    <ProjectReference Include="..\..\..\Infrastructure\Infrastructure.Http.Abstraction\Infrastructure.Http.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Infrastructure\Infrastructure.Common\Infrastructure.Common.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Infrastructure\Infrastructure.Http\Infrastructure.Http.csproj" />
     <ProjectReference Include="..\..\..\Shared\Infrastructure\Infrastructure.Serialization.Abstraction\Infrastructure.Serialization.Abstraction.csproj" />
     <ProjectReference Include="..\BackOffice.Core\BackOffice.Core.csproj" />
   </ItemGroup>

@@ -1,26 +1,19 @@
-#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-FROM mcr.microsoft.com/dotnet/sdk:8.0-preview AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0-preview AS build
-WORKDIR /app
-COPY . .
-#COPY ["src/PublicApi/PublicApi.csproj", "./PublicApi/"]
-#RUN dotnet restore "./PublicApi/PublicApi.csproj"
-#COPY . .
-WORKDIR "/app/src/Identity.Api"
+# Copy the shared projects
+COPY ../../Shared .
+
+# Copy the csproj and restore as distinct layers
+WORKDIR /app/src/Identity/Identity.Api
+COPY . ./
 RUN dotnet restore
+RUN mkdir -p /app/published
+RUN dotnet publish -c Release -o /app/published || exit 1
 
-RUN dotnet build "./Identity.Api.csproj" -c Release -o /app/build
-
-FROM build AS publish
-RUN dotnet publish "./Identity.Api.csproj" -c Release -o /app/publish
-
-FROM base AS final
+# Use the .NET runtime image for the final image
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
-#ENTRYPOINT ["dotnet", "Identity.Api.dll"]
-ENTRYPOINT ["./docker-entrypoint.sh"]
+COPY --from=build-env /app/published .
+#ENTRYPOINT ["./docker-entrypoint.sh"]
+ENTRYPOINT ["dotnet", "Identity.Api.dll"]

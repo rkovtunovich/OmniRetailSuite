@@ -63,7 +63,7 @@ services:
     build:
       context: postgres
       dockerfile: Dockerfile
-    #restart: always
+    restart: always
     ports:
       - "5434:5432"
     environment:
@@ -77,13 +77,28 @@ services:
       - vault
 # ==============================================================================
 # Application services
- 
+  identity:
+    image: ${DOCKER_REGISTRY-}identity
+    build:
+      context: ../src/Identity
+      dockerfile: /Identity.API/Dockerfile
+    ports:
+      - "5401:5401"
+    environment:
+      BlazorAdminClient: "${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5301"
+    depends_on:
+      - "postgres_db"  
 
+
+# ==============================================================================
+# Volumes
 volumes:
   kafka_data:
     driver: local
   db-data:
 
+# ==============================================================================
+# Networks
 networks:
   consul:
     driver: bridge   

@@ -1,5 +1,4 @@
 ﻿using BackOffice.Core.Models.UserPreferences;
-using Infrastructure.Http.Uri;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BackOffice.Application.Services.Implementation;

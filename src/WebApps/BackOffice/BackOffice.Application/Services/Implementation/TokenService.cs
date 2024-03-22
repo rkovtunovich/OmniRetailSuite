@@ -1,7 +1,5 @@
 ﻿using BackOffice.Core.Models.Settings;
 using IdentityModel.Client;
-using Infrastructure.Http;
-using Microsoft.Extensions.Options;
 
 namespace BackOffice.Application.Services.Implementation;
 

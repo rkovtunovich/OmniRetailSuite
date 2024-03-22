@@ -6,7 +6,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>1dc05e1e-0319-4e2f-a1a4-0de9218512d7</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>..\..</DockerfileContext>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
 
@@ -31,8 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Infrastructure\Infrastructure.DataManagement.Postgres\Infrastructure.DataManagement.Postgres.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\Infrastructure.SecretManagement.Vault\Infrastructure.SecretManagement.Vault.csproj" />
+    <ProjectReference Include="..\..\Shared\Infrastructure\Infrastructure.DataManagement.Postgres\Infrastructure.DataManagement.Postgres.csproj" />
+    <ProjectReference Include="..\..\Shared\Infrastructure\Infrastructure.SecretManagement.Vault\Infrastructure.SecretManagement.Vault.csproj" />
     <ProjectReference Include="..\Identity.Server\src\IdentityServer4.csproj" />
   </ItemGroup>
 

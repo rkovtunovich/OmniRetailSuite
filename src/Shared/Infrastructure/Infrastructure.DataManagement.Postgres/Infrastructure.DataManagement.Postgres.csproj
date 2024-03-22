@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Shared\Infrastructure\Infrastructure.SecretManagement.Abstraction\Infrastructure.SecretManagement.Abstraction.csproj" />
     <ProjectReference Include="..\Infrastructure.DataManagement.Abstraction\Infrastructure.DataManagement.Abstraction.csproj" />
+    <ProjectReference Include="..\Infrastructure.SecretManagement.Abstraction\Infrastructure.SecretManagement.Abstraction.csproj" />
   </ItemGroup>
 
 </Project>

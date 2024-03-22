@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Infrastructure.Http;
 using Infrastructure.Http.Clients;
 using Microsoft.Extensions.Options;
-using System.Net.Http;
 
 namespace RetailAssistant.Application.Services.Implementation;
 

@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Infrastructure.Http;
+﻿using Infrastructure.Http;
 using Infrastructure.Http.Clients;
 using RetailAssistant.Application.Helpers;
 

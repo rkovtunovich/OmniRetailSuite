@@ -2,7 +2,6 @@
 using Infrastructure.Http.Clients;
 using Microsoft.Extensions.DependencyInjection;
 using RetailAssistant.Application.Helpers;
-using RetailAssistant.Core.Models.UserPreferences;
 
 namespace RetailAssistant.Application.Services.Implementation;
 
