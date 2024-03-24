@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consul
+  labels:
+    app: consul
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consul
+  template:
+    metadata:
+      labels:
+        app: consul
+    spec:
+      containers:
+      - name: consul
+        image: consul:latest
+        args:
+        - "agent"
+        - "-server"
+        - "-bind=0.0.0.0"
+        - "-client=0.0.0.0"
+        - "-bootstrap-expect=1"
+        - "-config-file=/consul/config/config.json"
+        ports:
+        - containerPort: 8500
+        volumeMounts:
+        - name: consul-config
+          mountPath: /consul/config
+      volumes:
+      - name: consul-config
+        configMap:
+          name: consul-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: consul
+spec:
+  selector:
+    app: consul
+  ports:
+  - protocol: TCP
+    port: 8500
+    targetPort: 8500

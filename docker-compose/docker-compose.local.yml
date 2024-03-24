@@ -5,7 +5,7 @@ services:
 # ==============================================================================
 # Infrastructure services
   kafka:
-    image: docker.io/bitnami/kafka:3.5
+    image: docker.io/bitnami/kafka:3.5:latest
     ports:
       - "9092:9092"
     volumes:
@@ -23,7 +23,7 @@ services:
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
 
   kafdrop:
-    image: obsidiandynamics/kafdrop
+    image: obsidiandynamics/kafdrop:latest
     environment:
       KAFKA_BROKERCONNECT: kafka:9092  # Connect to Kafka broker service
       JVM_OPTS: "-Xms32M -Xmx64M"
@@ -32,7 +32,7 @@ services:
       - "9000:9000"  # Kafdrop web UI will be available at http://localhost:9000/
 
   consul:
-    image: consul:latest
+    image: ${DOCKER_REGISTRY-}consul:latest
     build:
       context: consul
       dockerfile: Dockerfile
@@ -78,7 +78,7 @@ services:
 # ==============================================================================
 # Application services
   identity:
-    image: ${DOCKER_REGISTRY-}identity
+    image: ${DOCKER_REGISTRY-}identity:latest
     build:
       context: ${DOCKER_CONTEXT}
       dockerfile: src/Identity/Identity.API/Dockerfile
@@ -91,6 +91,8 @@ services:
       db__port: "5432"
       db__database: "identity"
       vault__address: "http://vault:8200"
+      consul__host: "http://consul:8500"
+      consul__port: "8500"
     depends_on:
       - "postgres_db"  
 
