@@ -100,13 +100,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityModel", "src\Identi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "kubernetes", "kubernetes", "{560908F4-5F4C-4A85-9158-AE47F45FFB22}"
 	ProjectSection(SolutionItems) = preProject
+		kubernetes\consul-deployment.yml = kubernetes\consul-deployment.yml
+		kubernetes\gitlab-deployment.yaml = kubernetes\gitlab-deployment.yaml
 		persistent-volume-claims.yml = persistent-volume-claims.yml
 		kubernetes\postgres-deployment.yml = kubernetes\postgres-deployment.yml
 	EndProjectSection
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose\docker-compose.dcproj", "{1FCBE191-34FE-4B2E-8915-CA81553958AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.SecretManagement.Abstraction", "src\Shared\Infrastructure\Infrastructure.SecretManagement.Abstraction\Infrastructure.SecretManagement.Abstraction.csproj", "{E36AFB84-103B-46D1-9BBD-85D5A6674172}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.SecretManagement.Abstraction", "src\Shared\Infrastructure\Infrastructure.SecretManagement.Abstraction\Infrastructure.SecretManagement.Abstraction.csproj", "{E36AFB84-103B-46D1-9BBD-85D5A6674172}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Common", "src\Shared\Infrastructure\Infrastructure.Common\Infrastructure.Common.csproj", "{7A3FE8BD-398D-43BC-8241-E8BDF1F005A6}"
 EndProject
