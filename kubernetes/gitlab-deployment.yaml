@@ -35,6 +35,10 @@ spec:
       port: 22
       targetPort: 22
       nodePort: 30222
+    - name: registry-http
+      port: 5000
+      targetPort: 5000
+      nodePort: 30500
   selector:
     app: gitlab
 ---
@@ -63,6 +67,10 @@ spec:
         volumeMounts:
         - name: gitlab-data
           mountPath: /var/opt/gitlab
+        env:
+        - name: GITLAB_OMNIBUS_CONFIG
+          value: |
+            registry_external_url 'http://192.168.50.36:30500'
       volumes:
       - name: gitlab-data
         persistentVolumeClaim:

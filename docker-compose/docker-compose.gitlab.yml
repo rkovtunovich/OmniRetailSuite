@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  gitlab:
+    image: gitlab/gitlab-ce:latest
+    container_name: gitlab
+    restart: unless-stopped
+    #environment:
+      #GITLAB_OMNIBUS_CONFIG: |
+        #external_url 'http://localhost:30080'
+        # Add any other GitLab configuration here
+        # For example, to configure the GitLab Registry:
+        #registry_external_url 'http://localhost:30500'
+        # gitlab_rails['gitlab_shell_ssh_port'] = 30222
+    ports:
+      - '30080:80'
+      - '30443:443'
+      - '30222:22'
+      - '30500:5050' # Port for GitLab Container Registry, if you enable it.
+    volumes:
+      - './gitlab/config:/etc/gitlab'
+      - './gitlab/logs:/var/log/gitlab'
+      - './gitlab/data:/var/opt/gitlab'
+
