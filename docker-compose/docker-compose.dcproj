@@ -13,6 +13,7 @@
     <None Include=".env" />
     <None Include="consul\consul-config.json" />
     <None Include="consul\Dockerfile" />
+    <None Include="docker-compose.gitlab.yml" />
     <None Include="docker-compose.local.yml" />
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>

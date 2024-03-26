@@ -3,12 +3,15 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>{1FCBE191-34FE-4B2E-8915-CA81553958AD}</ProjectGuid>
+    <ProjectGuid>6a8e308c-2ea5-4d5f-8768-923370363c9f</ProjectGuid>
     <DockerLaunchBrowser>True</DockerLaunchBrowser>
     <DockerServiceUrl>{Scheme}://host.docker.internal:{ServicePort}</DockerServiceUrl>
     <DockerServiceName>omnis</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
-
+    <None Include="consul-deployment.yml" />
+    <None Include="gitlab-deployment.yaml" />
+    <None Include="persistent-volume-claims.yml" />
+    <None Include="postgres-deployment.yml" />
   </ItemGroup>
 </Project>

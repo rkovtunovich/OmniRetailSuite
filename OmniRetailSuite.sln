@@ -98,14 +98,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetailAssistant.Application
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityModel", "src\Identity\Identity.Model\IdentityModel.csproj", "{B5F9D739-8847-43D3-8928-89D1933B4B15}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "kubernetes", "kubernetes", "{560908F4-5F4C-4A85-9158-AE47F45FFB22}"
-	ProjectSection(SolutionItems) = preProject
-		kubernetes\consul-deployment.yml = kubernetes\consul-deployment.yml
-		kubernetes\gitlab-deployment.yaml = kubernetes\gitlab-deployment.yaml
-		persistent-volume-claims.yml = persistent-volume-claims.yml
-		kubernetes\postgres-deployment.yml = kubernetes\postgres-deployment.yml
-	EndProjectSection
-EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose\docker-compose.dcproj", "{1FCBE191-34FE-4B2E-8915-CA81553958AD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.SecretManagement.Abstraction", "src\Shared\Infrastructure\Infrastructure.SecretManagement.Abstraction\Infrastructure.SecretManagement.Abstraction.csproj", "{E36AFB84-103B-46D1-9BBD-85D5A6674172}"
@@ -119,6 +111,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.SecretManagement.Vault", "src\Shared\Infrastructure\Infrastructure.SecretManagement.Vault\Infrastructure.SecretManagement.Vault.csproj", "{C3EBDBBF-8114-4D5D-ABB2-E0F72F49CE68}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Http", "src\Shared\Infrastructure\Infrastructure.Http\Infrastructure.Http.csproj", "{10B574F7-43D8-4B0D-ADB4-D8887451A41A}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "kubernetes", "kubernetes\kubernetes.dcproj", "{6A8E308C-2EA5-4D5F-8768-923370363C9F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -337,6 +331,12 @@ Global
 		{10B574F7-43D8-4B0D-ADB4-D8887451A41A}.NoVariablesDefault|Any CPU.Build.0 = Debug|Any CPU
 		{10B574F7-43D8-4B0D-ADB4-D8887451A41A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10B574F7-43D8-4B0D-ADB4-D8887451A41A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A8E308C-2EA5-4D5F-8768-923370363C9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A8E308C-2EA5-4D5F-8768-923370363C9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A8E308C-2EA5-4D5F-8768-923370363C9F}.NoVariablesDefault|Any CPU.ActiveCfg = Release|Any CPU
+		{6A8E308C-2EA5-4D5F-8768-923370363C9F}.NoVariablesDefault|Any CPU.Build.0 = Release|Any CPU
+		{6A8E308C-2EA5-4D5F-8768-923370363C9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A8E308C-2EA5-4D5F-8768-923370363C9F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
