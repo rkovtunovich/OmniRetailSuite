@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="consul-deployment.yml" />
+    <None Include="dashboard-deployment.yaml" />
     <None Include="gitlab-deployment.yaml" />
     <None Include="persistent-volume-claims.yml" />
     <None Include="postgres-deployment.yml" />
