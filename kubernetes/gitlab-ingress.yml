@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gitlab-ingress
+  namespace: gitlab
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: gitlab.omni-rs.com
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: gitlab
+              port:
+                number: 443
+    - host: registry.omni-rs.com
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: gitlab
+              port:
+                number: 5000  
+  tls:
+  - hosts:
+    - gitlab.omni-rs.com
+    - registry.omni-rs.com
+    secretName: omni-rs-com-tls 

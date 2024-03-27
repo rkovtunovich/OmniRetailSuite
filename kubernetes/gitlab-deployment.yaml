@@ -67,12 +67,21 @@ spec:
         volumeMounts:
         - name: gitlab-data
           mountPath: /var/opt/gitlab
+        - name: gitlab-tls
+          mountPath: /etc/gitlab/ssl
         env:
         - name: GITLAB_OMNIBUS_CONFIG
           value: |
-            registry_external_url 'http://192.168.50.36:30500'
+            external_url 'https://gitlab.omni-rs.com'
+            registry_external_url 'https://registry.omni-rs.com'
             gitlab_rails['registry_enabled'] = true
+            letsencrypt['enable'] = false
+            nginx['ssl_certificate'] = "/etc/gitlab/ssl/tls.crt"
+            nginx['ssl_certificate_key'] = "/etc/gitlab/ssl/tls.key"
       volumes:
       - name: gitlab-data
         persistentVolumeClaim:
           claimName: gitlab-data
+      - name: gitlab-tls
+        secret:
+          secretName: omni-rs-com-tls
