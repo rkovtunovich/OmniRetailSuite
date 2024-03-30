@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: consul
+  namespace: consul
   labels:
     app: consul
 spec:
@@ -14,9 +15,11 @@ spec:
       labels:
         app: consul
     spec:
+      imagePullSecrets:
+      - name: gitlab-registry
       containers:
       - name: consul
-        image: consul:latest
+        image: registry.omni-rs.com/r13/omniretailsuite/consul:latest
         args:
         - "agent"
         - "-server"
@@ -34,15 +37,3 @@ spec:
         configMap:
           name: consul-config
 
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: consul
-spec:
-  selector:
-    app: consul
-  ports:
-  - protocol: TCP
-    port: 8500
-    targetPort: 8500
