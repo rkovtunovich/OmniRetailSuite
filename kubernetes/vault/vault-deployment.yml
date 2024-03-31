@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vault
+  namespace: vault
+spec:
+  selector:
+    matchLabels:
+      app: vault
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: vault
+    spec:
+      imagePullSecrets:
+      - name: gitlab-registry
+      containers:
+      - name: vault
+        image: registry.omni-rs.com/r13/omniretailsuite/vault:latest
+        ports:
+        - containerPort: 8200
+        env:
+        - name: VAULT_UNSEAL_KEY1
+          valueFrom:
+            secretKeyRef:
+              name: vault-unseal-keys
+              key: key1
+        - name: VAULT_UNSEAL_KEY2
+          valueFrom:
+            secretKeyRef:
+              name: vault-unseal-keys
+              key: key2
+        - name: VAULT_UNSEAL_KEY3
+          valueFrom:
+            secretKeyRef:
+              name: vault-unseal-keys
+              key: key3
+        - name: VAULT_CONFIG
+          value: /vault/config/vault-config.json
+        volumeMounts:
+        - name: vault-config
+          mountPath: /vault/config
+        - name: vault-unseal-keys
+          mountPath: /vault/unseal-keys
+        securityContext:
+          capabilities:
+            add: ["IPC_LOCK"]
+      volumes:
+      - name: vault-config
+        configMap:
+          name: vault-config
+      - name: vault-unseal-keys
+        secret:
+          secretName: vault-unseal-keys

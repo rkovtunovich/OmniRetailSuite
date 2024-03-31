@@ -6,7 +6,12 @@ metadata:
 spec:
   selector:
     app: consul
+  type: NodePort
   ports:
-    - protocol: TCP
+    - name: consul
       port: 8500
       targetPort: 8500
+    - name: dns
+      port: 53
+      targetPort: 53
+    

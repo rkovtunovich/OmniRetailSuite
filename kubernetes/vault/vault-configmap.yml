@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vault-config
+  namespace: vault
+data:
+  vault-config.json: |
+    {
+      "ui": true,
+      "listener": {
+        "tcp": {
+          "address": "0.0.0.0:8200",
+          "tls_disable": "true"
+        }
+      },
+      "storage": {
+        "consul": {
+          "address": "consul.consul.svc.cluster.local:8500",
+          "path": "vault/"
+        }
+      },
+      "api_addr": "http://vault.vault.svc.cluster.local:8200",
+      "max_lease_ttl": "10h",
+      "default_lease_ttl": "10h",
+      "disable_mlock": true
+    }

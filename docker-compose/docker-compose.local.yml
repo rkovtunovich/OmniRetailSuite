@@ -41,7 +41,7 @@ services:
     command: agent -server -bind 0.0.0.0 -client 0.0.0.0 -bootstrap-expect 1 -config-file=/consul/config/config.json
 
   vault:
-    image: vault:latest
+    image: ${DOCKER_REGISTRY-}vault:latest
     build:
       context: vault
       dockerfile: Dockerfile

@@ -29,11 +29,17 @@ spec:
         - "-config-file=/consul/config/config.json"
         ports:
         - containerPort: 8500
+        - containerPort: 53
         volumeMounts:
         - name: consul-config
           mountPath: /consul/config
+        - name: consul-data
+          mountPath: /consul/data
       volumes:
       - name: consul-config
         configMap:
           name: consul-config
+      - name: consul-data
+        persistentVolumeClaim:
+          claimName: consul-data
 
