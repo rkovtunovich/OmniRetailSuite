@@ -18,6 +18,7 @@ spec:
         image: docker.io/bitnami/kafka:3.5
         ports:
         - containerPort: 9092
+        - containerPort: 9093
         volumeMounts:
         - name: kafka-data
           mountPath: /bitnami
