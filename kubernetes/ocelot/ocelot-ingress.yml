@@ -1,23 +1,24 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: consul-ingress
-  namespace: consul
+  name: ocelot-ingress
+  namespace: ocelot
   annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"   
     nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.50.0/24, 83.10.135.2"
 spec:
   rules:
-  - host: consul.omni-rs.com
+  - host: ocelot.omni-rs.com
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: consul
+            name: ocelot
             port:
-              number: 8500
+              number: 7200
   tls:
   - hosts:
-    - concul.omni-rs.com
+    - ocelot.omni-rs.com
     secretName: omni-rs-com-tls-sub 

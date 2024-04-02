@@ -77,6 +77,14 @@ services:
       - vault
 # ==============================================================================
 # Application services
+  ocelot:
+    image: ${DOCKER_REGISTRY-}ocelot:latest
+    build:
+      context: ${DOCKER_CONTEXT}
+      dockerfile: src/Gateways/WebAppsGateway/Dockerfile
+    ports:
+    - "7200:7200"
+
   # identity:
   #   image: ${DOCKER_REGISTRY-}identity:latest
   #   build:

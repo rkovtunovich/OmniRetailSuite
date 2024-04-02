@@ -4,7 +4,7 @@ metadata:
   name: vault-ingress
   namespace: vault
   annotations:
-    nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.50.0/24, 83.10.120.112"
+    nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.50.0/24, 83.10.135.2"
 spec:
   rules:
   - host: vault.omni-rs.com

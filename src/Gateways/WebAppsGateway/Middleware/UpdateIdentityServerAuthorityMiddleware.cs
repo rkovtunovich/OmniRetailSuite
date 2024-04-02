@@ -14,6 +14,12 @@ public class UpdateIdentityServerAuthorityMiddleware(RequestDelegate next, ICons
 
     public async Task InvokeAsync(HttpContext context, IOptionsMonitor<IdentityServerAuthenticationOptions> optionsAccessor)
     {
+        if(context.Request.Path.StartsWithSegments("/_health", StringComparison.OrdinalIgnoreCase))
+        {
+            await _next(context);
+            return;
+        }
+
         if (_cachedAuthority is null || CacheIsStale())
         {
             var identityService = await _consulClient.Catalog.Service("identityapi");

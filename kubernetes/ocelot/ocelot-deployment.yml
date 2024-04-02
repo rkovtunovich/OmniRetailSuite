@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ocelot
+  namespace: ocelot
+  labels:
+    app: ocelot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ocelot
+  template:
+    metadata:
+      labels:
+        app: ocelot
+    spec:
+      imagePullSecrets:
+      - name: gitlab-registry
+      containers:
+      - name: ocelot
+        image: registry.omni-rs.com/r13/omniretailsuite/ocelot:latest
+        ports:
+        - containerPort: 7200
+        env:
+        - name: Kestrel__Endpoints__Https__Certificate__Path
+          value: "/app/pfx/cert" 
+        - name: Kestrel__Endpoints__Https__Certificate__Password
+          valueFrom:
+            secretKeyRef:
+              name: omni-rs-com-pfx
+              key: pass
+        - name: GatewaySettings__Url
+          value: "https://ocelot.omni-rs.com"
+        - name: GatewaySettings__UseAsIssuer
+          value: "true"
+        volumeMounts:
+        - name: ocelot-config-volume
+          mountPath: "/app/configuration"
+        - name: ocelot-pfx
+          mountPath: "/app/pfx"
+      volumes:
+      - name: ocelot-config-volume
+        configMap:
+          name: ocelot-config
+          items:
+          - key: ocelot.json
+            path: ocelot.json 
+      - name: ocelot-pfx 
+        secret:
+          secretName: omni-rs-com-pfx    
+
+
+

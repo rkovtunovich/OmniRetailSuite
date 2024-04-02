@@ -1,5 +1,7 @@
 ﻿using Consul;
+using HealthChecks.UI.Client;
 using IdentityServer4.AccessTokenValidation;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.HttpOverrides;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
@@ -15,6 +17,7 @@ builder.WebHost.ConfigureKestrel((context, options) =>
 });
 
 builder.Configuration.AddJsonFile("ocelot.json");
+builder.Services.AddHealthChecks();
 builder.Services.AddOcelot()
     .AddConsul()
     .AddDelegatingHandler<GatewayHeadersDelegationHandler>();
@@ -68,6 +71,11 @@ app.UseMiddleware<UpdateIdentityServerAuthorityMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseHealthChecks("/_health" ,new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 await app.UseOcelot();
 
