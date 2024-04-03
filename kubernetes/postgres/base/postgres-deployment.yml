@@ -22,7 +22,7 @@ spec:
         - containerPort: 5432
         env:
         - name: VAULT_ADDR
-          value: "http://vault.vault.svc.cluster.local:8200"
+          value: "http://vault:8200"
         - name: VAULT_TOKEN
           valueFrom:
             secretKeyRef:

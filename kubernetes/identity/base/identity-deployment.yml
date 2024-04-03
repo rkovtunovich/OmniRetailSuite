@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: identity
+  namespace: identity
+  labels:
+    app: identity
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: identity
+  template:
+    metadata:
+      labels:
+        app: identity
+    spec:
+      imagePullSecrets:
+      - name: gitlab-registry
+      containers:
+      - name: identity
+        image: registry.omni-rs.com/r13/omniretailsuite/identity:latest
+        ports:
+        - containerPort: 5401
+        env:
+        - name: Kestrel__Endpoints__Https__Certificate__Path
+          value: "/app/pfx/cert" 
+        - name: Kestrel__Endpoints__Https__Certificate__Password
+          valueFrom:
+            secretKeyRef:
+              name: omni-rs-com-pfx
+              key: pass
+        - name: consul__host
+          value: "consul"
+        - name: consul__port
+          value: "8500"
+        - name: CONSUL_HTTP_ADDR
+          value: "consul:8500"
+        - name: vault__address
+          value: "http://vault:8200"
+        - name: db__host
+          value: "postgres"
+        - name: db__port
+          value: "5432"
+        - name: db__database
+          value: "identity"
+      volumes:
+      - name: identity-pfx 
+        secret:
+          secretName: omni-rs-com-pfx     
+

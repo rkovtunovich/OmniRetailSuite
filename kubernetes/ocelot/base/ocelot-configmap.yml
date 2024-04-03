@@ -56,7 +56,7 @@ data:
       ],
       "GlobalConfiguration": {
         "ServiceDiscoveryProvider": {
-          "Host": "consul.consul.svc.cluster.local",
+          "Host": "consul",
           "Port": 8500,
           "Type": "Consul"
         }
