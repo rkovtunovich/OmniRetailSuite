@@ -23,6 +23,8 @@ spec:
         ports:
         - containerPort: 5401
         env:
+        - name: Kestrel__Endpoints__Https__Url
+          value: "https://+:5401"
         - name: Kestrel__Endpoints__Https__Certificate__Path
           value: "/app/pfx/cert" 
         - name: Kestrel__Endpoints__Https__Certificate__Password
@@ -50,6 +52,9 @@ spec:
           value: "http://retailassistant"
         - name: ApiGateway
           value: "http://ocelot"
+        volumeMounts:
+        - name: identity-pfx
+          mountPath: /app/pfx
       volumes:
       - name: identity-pfx 
         secret:
