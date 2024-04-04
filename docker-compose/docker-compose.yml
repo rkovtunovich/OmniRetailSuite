@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: src/Identity.Api/Dockerfile
     environment:
-      BlazorAdminClient: "${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5301"
+      Backoffice: "${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5301"
       ConnectionStrings__IdentityApiConnection: "${POSTGRES_IDENTITY_API_CONNECTION_STRING}"
     depends_on:
       - "postgres_db"  

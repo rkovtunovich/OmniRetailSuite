@@ -36,7 +36,7 @@ public static class ConfigureIdentityServices
         {
             options.AddPolicy("default", policy =>
             {
-                policy.WithOrigins(configuration["BlazorWasmClient"] ?? throw new ArgumentNullException("BlazorWasmClient"))
+                policy.WithOrigins(configuration["RetailAssistant"] ?? throw new ArgumentNullException("RetailAssistant"))
                       .AllowAnyHeader()
                       .AllowAnyMethod();
             });
@@ -117,7 +117,7 @@ public static class ConfigureIdentityServices
                     [
                         new("blazorSecret".Sha256())
                     ],
-                    ClientUri = $"{configuration["BlazorAdminClient"]}/", // public uri of the client
+                    ClientUri = $"{configuration["Backoffice"]}/", // public uri of the client
                     AllowedGrantTypes = GrantTypes.Code,
                     //AllowAccessTokensViaBrowser = false,
                     //RequireConsent = false,
@@ -128,12 +128,12 @@ public static class ConfigureIdentityServices
                     //AlwaysIncludeUserClaimsInIdToken = true,
                     RedirectUris =
                     [
-                        $"{configuration["BlazorAdminClient"]}/signin-oidc"
+                        $"{configuration["Backoffice"]}/signin-oidc"
                     ],
-                    FrontChannelLogoutUri = $"{configuration["BlazorAdminClient"]}/signout-oidc",
+                    FrontChannelLogoutUri = $"{configuration["Backoffice"]}/signout-oidc",
                     PostLogoutRedirectUris =
                     [
-                        $"{configuration["BlazorAdminClient"]}/signout-callback-oidc",
+                        $"{configuration["Backoffice"]}/signout-callback-oidc",
                     ],
                     AllowedScopes =
                     [
@@ -149,7 +149,7 @@ public static class ConfigureIdentityServices
                 {
                     ClientId = "blazorWasm",
                     ClientName = "Blazor wasm client",
-                    ClientUri = $"{configuration["BlazorWasmClient"]}/", // public uri of the client
+                    ClientUri = $"{configuration["RetailAssistant"]}/", // public uri of the client
                     AllowedGrantTypes = GrantTypes.Code,
                     RequireClientSecret = false,
                     //AllowAccessTokensViaBrowser = false,
@@ -158,16 +158,16 @@ public static class ConfigureIdentityServices
                     RequirePkce = true,
                     AllowPlainTextPkce = true,
                     AllowOfflineAccess = true,
-                    AllowedCorsOrigins = { configuration["BlazorWasmClient"] },
+                    AllowedCorsOrigins = { configuration["RetailAssistant"] },
                     //AlwaysIncludeUserClaimsInIdToken = true,
                     RedirectUris =
                     [
-                        $"{configuration["BlazorWasmClient"]}/authentication/login-callback"
+                        $"{configuration["RetailAssistant"]}/authentication/login-callback"
                     ],
-                    FrontChannelLogoutUri = $"{configuration["BlazorWasmClient"]}/authentication/logout-callback",
+                    FrontChannelLogoutUri = $"{configuration["RetailAssistant"]}/authentication/logout-callback",
                     PostLogoutRedirectUris =
                     [
-                        $"{configuration["BlazorWasmClient"]}/authentication/logout-callback",
+                        $"{configuration["RetailAssistant"]}/authentication/logout-callback",
                     ],
                     AllowedScopes =
                     [

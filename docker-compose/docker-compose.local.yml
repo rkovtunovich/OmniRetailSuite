@@ -85,24 +85,24 @@ services:
   #   ports:
   #   - "7200:7200"
 
-  identity:
-    image: ${DOCKER_REGISTRY-}identity:latest
-    build:
-      context: ${DOCKER_CONTEXT}
-      dockerfile: src/Identity/Identity.API/Dockerfile
-    ports:
-      - "5401:5401"
-    environment:
-      BlazorAdminClient: "${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5301"
-      CONSUL_HTTP_ADDR: "consul:8500"
-      db__host: "postgres_db"
-      db__port: "5432"
-      db__database: "identity"
-      vault__address: "http://vault:8200"
-      consul__host: "http://consul:8500"
-      consul__port: "8500"
-    depends_on:
-      - "postgres_db"  
+  # identity:
+  #   image: ${DOCKER_REGISTRY-}identity:latest
+  #   build:
+  #     context: ${DOCKER_CONTEXT}
+  #     dockerfile: src/Identity/Identity.API/Dockerfile
+  #   ports:
+  #     - "5401:5401"
+  #   environment:
+  #     Backoffice: "${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5301"
+  #     CONSUL_HTTP_ADDR: "consul:8500"
+  #     db__host: "postgres_db"
+  #     db__port: "5432"
+  #     db__database: "identity"
+  #     vault__address: "http://vault:8200"
+  #     consul__host: "http://consul:8500"
+  #     consul__port: "8500"
+  #   depends_on:
+  #     - "postgres_db"  
 
 
 # ==============================================================================

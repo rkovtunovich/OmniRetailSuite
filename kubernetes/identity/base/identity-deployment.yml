@@ -44,6 +44,12 @@ spec:
           value: "5432"
         - name: db__database
           value: "identity"
+        - name: Backoffice
+          value: "http://backoffice"
+        - name: RetailAssistant
+          value: "http://retailassistant"
+        - name: ApiGateway
+          value: "http://ocelot"
       volumes:
       - name: identity-pfx 
         secret:

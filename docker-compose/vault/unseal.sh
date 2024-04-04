@@ -6,6 +6,7 @@ status=$?
 sleep 10
 
 # Check if Vault is sealed
+export VAULT_ADDR='http://127.0.0.1:8200'
 cmd="vault status"
 sealed=$(eval $cmd | grep Sealed | awk '{print $2}')
 
