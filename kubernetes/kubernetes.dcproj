@@ -12,10 +12,12 @@
     <None Include="common\prod-namespace.yml" />
     <None Include="consul\base\kustomization.yml" />
     <None Include="consul\production\kustomization.yml" />
-    <None Include="identity\identity-deployment.yml" />
-    <None Include="identity\identity-ingress.yml" />
-    <None Include="identity\identity-service.yml" />
-    <None Include="identity\kustomization.yml" />
+    <None Include="identity\base\identity-configmap.yml" />
+    <None Include="identity\base\identity-deployment.yml" />
+    <None Include="identity\base\identity-ingress.yml" />
+    <None Include="identity\base\identity-service.yml" />
+    <None Include="identity\base\kustomization.yml" />
+    <None Include="identity\production\kustomization.yml" />
     <None Include="kafdrop\base\kustomization.yml" />
     <None Include="kafdrop\production\kustomization.yml" />
     <None Include="kafka\base\kustomization.yml" />
@@ -52,12 +54,19 @@
     <None Include="postgres\base\postgres-ingress.yml" />
     <None Include="postgres\base\postgres-network-policy.yml" />
     <None Include="postgres\production\kustomization.yml" />
+    <None Include="product-catalog\base\product-catalog-configmap.yml" />
+    <None Include="product-catalog\base\product-catalog-deployment.yml" />
+    <None Include="product-catalog\base\product-catalog-ingress.yml" />
+    <None Include="product-catalog\base\product-catalog-service.yml" />
+    <None Include="product-catalog\base\kustomization.yml" />
+    <None Include="product-catalog\production\kustomization.yml" />
     <None Include="vault\base\kustomization.yml" />
     <None Include="vault\base\vault-configmap.yml" />
     <None Include="vault\base\vault-ingress.yml" />
     <None Include="vault\base\vault-deployment.yml" />
     <None Include="vault\base\vault-network-policy.yml" />
     <None Include="vault\base\vault-service.yml" />
+    <None Include="vault\dynamic-role-creation.txt" />
     <None Include="vault\production\kustomization.yml" />
   </ItemGroup>
 </Project>

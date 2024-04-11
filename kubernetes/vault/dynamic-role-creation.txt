@@ -2,7 +2,7 @@
 CREATE ROLE "{{name}}" WITH LOGIN PASSWORD '{{password}}' VALID UNTIL '{{expiration}}';
 
 -- Grant privileges to the new role
-GRANT ALL PRIVILEGES ON DATABASE db_name TO "{{name}}";
+GRANT ALL PRIVILEGES ON DATABASE product_catalog TO "{{name}}";
 GRANT ALL ON SCHEMA public TO "{{name}}";
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO "{{name}}";
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO "{{name}}";
@@ -12,13 +12,15 @@ DO $$
 DECLARE
   old_role RECORD;
 BEGIN
-  FOR old_role IN SELECT rolname FROM pg_roles WHERE rolname LIKE 'v-token-identity%' AND rolname != '{{name}}' LOOP
+  FOR old_role IN SELECT rolname FROM pg_roles WHERE rolname LIKE 'v-token-product_catalog%' AND rolname != '{{name}}' LOOP
     -- Reassign ownership
     EXECUTE 'REASSIGN OWNED BY ' || quote_ident(old_role.rolname) || ' TO ' || quote_ident('{{name}}') || ';';
     
     -- Revoke privileges on database and schema
-    EXECUTE 'REVOKE ALL PRIVILEGES ON DATABASE db_name FROM ' || quote_ident(old_role.rolname) || ';';
+    EXECUTE 'REVOKE ALL PRIVILEGES ON DATABASE identity FROM ' || quote_ident(old_role.rolname) || ';';
     EXECUTE 'REVOKE ALL PRIVILEGES ON SCHEMA public FROM ' || quote_ident(old_role.rolname) || ';';
+    EXECUTE 'REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public FROM ' || quote_ident(old_role.rolname) || ';';
+    EXECUTE 'REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM ' || quote_ident(old_role.rolname) || ';';
 
     -- Attempt to drop the role
     EXECUTE 'DROP ROLE IF EXISTS ' || quote_ident(old_role.rolname) || ';';

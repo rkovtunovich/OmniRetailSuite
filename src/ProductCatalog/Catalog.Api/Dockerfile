@@ -1,25 +1,17 @@
-#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
-WORKDIR /app
-COPY . .
-#COPY ["src/PublicApi/PublicApi.csproj", "./PublicApi/"]
-#RUN dotnet restore "./PublicApi/PublicApi.csproj"
-#COPY . .
-WORKDIR "/app/src/Catalog.Api"
-RUN dotnet restore
+# Copy all solution files
+COPY . ./
 
-RUN dotnet build "./Catalog.Api.csproj" -c Release -o /app/build
+# Restore the project
+RUN dotnet restore src/ProductCatalog/Catalog.Api/ProductCatalog.Api.csproj
 
-FROM build AS publish
-RUN dotnet publish "./Catalog.Api.csproj" -c Release -o /app/publish
+# Publish the project
+RUN dotnet publish src/ProductCatalog/Catalog.Api/ProductCatalog.Api.csproj -c Release -o published 
 
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Catalog.Api.dll"]
+## Use the .NET runtime image for the final image
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+COPY --from=build-env app/published .
+
+ENTRYPOINT ["dotnet", "ProductCatalog.Api.dll"]

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Infrastructure.SecretManagement.Vault.Configuration;
+namespace Infrastructure.DataManagement.Postgres.Configuration;
 
 public static class ConfigureDbManagement
 {

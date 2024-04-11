@@ -1,19 +1,15 @@
-﻿using ProductCatalog.Core.Entities.ProductAggregate;
+﻿namespace ProductCatalog.Data;
 
-namespace ProductCatalog.Data;
-
-public class ProductDbContextSeed
+public class DbSeeder
 {
     public static async Task SeedAsync(ProductDbContext catalogContext, ILogger logger, int retry = 0)
     {
         var retryForAvailability = retry;
         try
         {
-            if (catalogContext.Database.IsNpgsql())
-            {
+            if (catalogContext.Database.IsNpgsql())          
                 catalogContext.Database.Migrate();
-            }
-
+            
             if (!await catalogContext.Brands.AnyAsync())
             {
                 await catalogContext.Brands.AddRangeAsync(GetPreconfiguredProductBrands());

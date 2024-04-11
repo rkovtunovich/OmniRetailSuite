@@ -1,6 +1,7 @@
 ﻿using Identity.Api.Configuration;
 using Identity.Api.Infrastructure.Data;
 using Identity.Api.Infrastructure.Data.Config;
+using Infrastructure.DataManagement.Postgres.Extensions;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Logging;

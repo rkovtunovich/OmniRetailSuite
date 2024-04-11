@@ -1,23 +1,23 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: kafdrop-ingress
-  namespace: kafka
+  name: product-catalog-ingress
+  namespace: product-catalog
   annotations:
     nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.50.0/24, 83.10.135.2, 83.10.123.40"
 spec:
   rules:
-  - host: kafdrop.omni-rs.com
+  - host: product-catalog.omni-rs.com
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: kafdrop
+            name: product-catalog
             port:
-              number: 9000
+              number: 5098
   tls:
   - hosts:
-    - kafdrop.omni-rs.com
+    - product-catalog.omni-rs.com
     secretName: omni-rs-com-tls-sub 

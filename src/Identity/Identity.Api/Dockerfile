@@ -14,10 +14,4 @@ RUN dotnet publish src/Identity/Identity.Api/Identity.Api.csproj -c Release -o p
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 COPY --from=build-env app/published .
 
-# add the entrypoint script
-COPY src/Identity/Identity.Api/docker-entrypoint.sh docker-entrypoint.sh
-# make the entrypoint script executable
-RUN chmod +x docker-entrypoint.sh
-
-#ENTRYPOINT ["./docker-entrypoint.sh"]
 ENTRYPOINT ["dotnet", "Identity.Api.dll"]

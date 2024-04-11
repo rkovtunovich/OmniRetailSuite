@@ -4,3 +4,4 @@ resources:
   - identity-deployment.yml
   - identity-service.yml
   - identity-ingress.yml
+  - identity-configmap.yml

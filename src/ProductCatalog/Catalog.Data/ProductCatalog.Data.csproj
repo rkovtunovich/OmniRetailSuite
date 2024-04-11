@@ -20,11 +20,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Infrastructure\Infrastructure.DataManagement.Postgres\Infrastructure.DataManagement.Postgres.csproj" />
     <ProjectReference Include="..\Catalog.Core\ProductCatalog.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="appsettings.json">
+    <None Update="appsettings.db.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

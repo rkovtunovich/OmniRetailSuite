@@ -23,40 +23,24 @@ spec:
         ports:
         - containerPort: 5401
         env:
-        - name: Kestrel__Endpoints__Https__Url
-          value: "https://+:5401"
-        - name: Kestrel__Endpoints__Https__Certificate__Path
-          value: "/app/pfx/cert" 
         - name: Kestrel__Endpoints__Https__Certificate__Password
           valueFrom:
             secretKeyRef:
               name: omni-rs-com-pfx
               key: pass
-        - name: consul__host
-          value: "consul"
-        - name: consul__port
-          value: "8500"
         - name: CONSUL_HTTP_ADDR
           value: "consul:8500"
-        - name: vault__address
-          value: "http://vault:8200"
-        - name: db__host
-          value: "postgres"
-        - name: db__port
-          value: "5432"
-        - name: db__database
-          value: "identity"
-        - name: Backoffice
-          value: "http://backoffice"
-        - name: RetailAssistant
-          value: "http://retailassistant"
-        - name: ApiGateway
-          value: "http://ocelot"
         volumeMounts:
         - name: identity-pfx
           mountPath: /app/pfx
+        - name: identity-config
+          mountPath: /appsettings.json
+          subPath: appsettings.json
       volumes:
       - name: identity-pfx 
         secret:
-          secretName: omni-rs-com-pfx     
+          secretName: omni-rs-com-pfx
+      - name: identity-config
+        configMap:
+          name: identity-config  
 
