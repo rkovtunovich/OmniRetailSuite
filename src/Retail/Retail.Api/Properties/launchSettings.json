@@ -30,6 +30,17 @@
       },
       "publishAllPorts": true,
       "useSSL": true
+    },
+    "k8s": {
+      "commandName": "Project",
+      "launchBrowser": false,
+      "launchUrl": "http://localhost:5016/swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production",
+        "ASPNETCORE_URLS": "http://localhost:5016",
+        "CONSUL_HTTP_ADDR": "consul.omni-rs.com:443",
+        "CONSUL_HTTP_SSL": "true"
+      }
     }
   }
 }

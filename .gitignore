@@ -263,3 +263,5 @@ pub/
 /ToDo List.txt
 /src/Catalog/Catalog.Data/Catalog.Data/appsettings.json
 /src/Retail/Retail.Data/appsettings.json
+/src/Retail/Retail.Data/appsettings.db.json
+/src/ProductCatalog/Catalog.Data/appsettings.db.json

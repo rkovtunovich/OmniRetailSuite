@@ -1,23 +1,23 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: vault-ingress
-  namespace: vault
+  name: retail-ingress
+  namespace: retail
   annotations:
     nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.50.0/24, 37.225.71.95"
 spec:
   rules:
-  - host: vault.omni-rs.com
+  - host: retail.omni-rs.com
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: vault
+            name: retail
             port:
-              number: 8200
+              number: 5016
   tls:
   - hosts:
-    - vault.omni-rs.com
+    - retail.omni-rs.com
     secretName: omni-rs-com-tls-sub 

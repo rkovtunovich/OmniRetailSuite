@@ -1,10 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Retail.Core.Entities;
 
 namespace Retail.Data;
 
-public class RetailDbContextSeed
+public class RetailDbSeeder
 {
     public static async Task SeedAsync(RetailDbContext retailDbContext, ILogger logger, int retry = 0)
     {
@@ -46,7 +45,7 @@ public class RetailDbContextSeed
     {
         using var scope = app.Services.CreateScope();
         var scopedProvider = scope.ServiceProvider;
-        var logger = scopedProvider.GetRequiredService<ILogger<RetailDbContextSeed>>();
+        var logger = scopedProvider.GetRequiredService<ILogger<RetailDbSeeder>>();
         try
         {
             var catalogContext = scopedProvider.GetRequiredService<RetailDbContext>();

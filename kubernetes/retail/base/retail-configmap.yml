@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: retail-config
+  namespace: retail
+data:
+  appsettings.json: |
+    {
+      "Kestrel": {
+        "Endpoints": {
+          "Http": {
+            "Url": "http://+:5016"
+          }
+        }
+      },
+      "Logging": {
+        "LogLevel": {
+          "Default": "Debug",
+          "Microsoft": "Warning",
+          "System": "Warning"
+        }
+      },
+      "spring": {
+        "application": {
+          "name": "retail"
+        }
+      },
+      "consul": {
+        "host": "consul",
+        "port": 8500
+      },
+      "Kafka": {
+        "BootstrapServers": "kafka:9092",
+         "Consumers": [
+          {
+            "Name": "KafkaEventConsumer",
+            "Topic": "item_events",
+            "GroupId": "item_events_group"
+          }
+        ]
+      },
+      "vault": {
+        "address": "http://vault:8200",
+        "token": ""
+      },
+      "db": {
+        "host": "postgres",
+        "port": 5432,
+        "database": "retail"
+      }
+    }

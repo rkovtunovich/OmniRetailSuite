@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Infrastructure\Infrastructure.DataManagement.Postgres\Infrastructure.DataManagement.Postgres.csproj" />
     <ProjectReference Include="..\Retail.Core\Retail.Core.csproj" />
   </ItemGroup>
 

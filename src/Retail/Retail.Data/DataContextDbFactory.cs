@@ -8,7 +8,7 @@ public class DataContextDbFactory : IDesignTimeDbContextFactory<RetailDbContext>
     public RetailDbContext CreateDbContext(string[] args)
     {
         var configuration = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile("appsettings.db.json", optional: false, reloadOnChange: true)
             .Build();
 
         var optionsBuilder = new DbContextOptionsBuilder<RetailDbContext>();
