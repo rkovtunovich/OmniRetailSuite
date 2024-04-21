@@ -44,7 +44,7 @@ builder.Services.AddAuthentication(options =>
     {
         options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         options.SignOutScheme = OpenIdConnectDefaults.AuthenticationScheme;
-        options.Authority = builder.Configuration.GetValue<string>("WebGateway");
+        options.Authority = builder.Configuration.GetValue<string>("IdentityServerSettings:Authority");
         options.ClientId = builder.Configuration.GetValue<string>("InteractiveServiceSettings:ClientId");
         options.ClientSecret = builder.Configuration.GetValue<string>("InteractiveServiceSettings:ClientSecret");
         options.ResponseType = "code";

@@ -33,10 +33,11 @@ spec:
         - name: GatewaySettings__Url
           value: "https://ocelot.omni-rs.com"
         - name: GatewaySettings__UseAsIssuer
-          value: "true"
+          value: "false"
         volumeMounts:
         - name: ocelot-config-volume
-          mountPath: "/app/configuration"
+          mountPath: "/ocelot.json"
+          subPath: ocelot.json
         - name: ocelot-pfx
           mountPath: "/app/pfx"
       volumes:

@@ -25,9 +25,9 @@ data:
       "baseUrls": {
         "webBase": "https://identity.omni-rs.com:5401/"
       },
-      "Backoffice": "https://backoffice.omni-rs.com:5010",
-      "RetailAssistant": "https://retail-assistant.omni-rs.com:7022",
-      "WebGateway": "https://ocelot.omni-rs.com:7200",
+      "Backoffice": "https://backoffice.omni-rs.com",
+      "RetailAssistant": "https://retail-assistant.omni-rs.com",
+      "IssuerUri": "https://identity.omni-rs.com",
       "spring": {
         "application": {
           "name": "identity"

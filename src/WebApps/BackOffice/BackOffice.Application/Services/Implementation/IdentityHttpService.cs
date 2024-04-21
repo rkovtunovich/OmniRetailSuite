@@ -23,7 +23,10 @@ public class IdentityHttpService : IHttpService<IdentityClientSettings>
         try
         {
             var client = await GetClientAsync();
-            var responseString = await client.GetStringAsync(uri) ?? throw new Exception($"Error getting request user preference uri {uri}");
+
+            _logger.LogDebug($"Get request to identity service uri {client.BaseAddress}{uri}");
+
+            var responseString = await client.GetStringAsync(uri) ?? throw new Exception($"Error getting request to identity service uri {uri}");
 
             if (string.IsNullOrEmpty(responseString))
                 return default;

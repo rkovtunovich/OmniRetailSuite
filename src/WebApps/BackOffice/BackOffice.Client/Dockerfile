@@ -1,25 +1,17 @@
-
-FROM mcr.microsoft.com/dotnet/aspnet:8.0-preview AS base
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 WORKDIR /app
-#EXPOSE 8080
-EXPOSE 8081
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0-preview AS build
-WORKDIR /app
-COPY . .
+# Copy all solution files
+COPY . ./
 
-WORKDIR "/app/src/BackOffice"
-RUN dotnet restore
+# Restore the project
+RUN dotnet restore src/WebApps/BackOffice/BackOffice.Client/BackOffice.Client.csproj
 
-RUN dotnet build "./BackOffice.csproj" -c Release -o /app/build
+# Publish the project
+RUN dotnet publish src/WebApps/BackOffice/BackOffice.Client/BackOffice.Client.csproj -c Release -o published 
 
-FROM build AS publish
-RUN dotnet publish "./BackOffice.csproj" -c Release -o /app/publish
+## Use the .NET runtime image for the final image
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+COPY --from=build-env app/published .
 
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
-#ENTRYPOINT ["dotnet", "BackOffice.dll"]
-COPY ./docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
-ENTRYPOINT ["./docker-entrypoint.sh"]
+ENTRYPOINT ["dotnet", "BackOffice.Client.dll"]
