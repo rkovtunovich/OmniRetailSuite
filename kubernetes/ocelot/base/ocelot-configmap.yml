@@ -63,3 +63,30 @@ data:
         }
       }
     }
+  appsettings.json : |
+    {
+      "Kestrel": {
+        "Endpoints": {
+          "Https": {
+            "Url": "https://+:7200",
+            "Certificate": {
+              "Path": "/app/pfx/cert"
+            }
+          }
+        }
+      },
+      "Logging": {
+        "LogLevel": {
+          "Default": "Information",
+          "Microsoft.AspNetCore": "Warning"
+        }
+      },
+      "AllowedHosts": "*",
+      "GatewaySettings": {
+        "Url": "https://ocelot.omni-rs.com",
+        "UseAsIssuer": false
+      },
+       "IdentitySettings": {
+          "Authority": "https://identity.omni-rs.com"
+      }
+    }    

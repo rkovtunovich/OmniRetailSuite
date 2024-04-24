@@ -1,11 +1,11 @@
 ﻿using Consul;
 using HealthChecks.UI.Client;
-using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.HttpOverrides;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Provider.Consul;
+using WebAppsGateway.Configuration;
 using WebAppsGateway.DelegatingHandlers;
 using WebAppsGateway.Middleware;
 
@@ -43,15 +43,7 @@ builder.Services.AddSingleton<IConsulClient, ConsulClient>(p => new ConsulClient
    consulConfig.Address = new Uri($"http://{consulHost}:{consulPort}");
 }));
 
-builder.Services.AddAuthentication("IdentityServer")
-       .AddIdentityServerAuthentication("IdentityServer", options =>
-       {
-           options.Authority = null; // Set in middleware
-           options.RequireHttpsMetadata = false; // Set to true in production
-           options.ApiName = "webappsgateway";
-           options.ApiSecret = "webappsgateway-secret";
-           options.SupportedTokens = SupportedTokens.Both;
-       });
+builder.Services.AddIdentityServer(builder.Configuration);
 
 var app = builder.Build();
 

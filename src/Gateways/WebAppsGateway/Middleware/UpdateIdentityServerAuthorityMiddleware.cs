@@ -22,7 +22,7 @@ public class UpdateIdentityServerAuthorityMiddleware(RequestDelegate next, ICons
 
         if (_cachedAuthority is null || CacheIsStale())
         {
-            var identityService = await _consulClient.Catalog.Service("identityapi");
+            var identityService = await _consulClient.Catalog.Service("identity");
             var serviceEntry = identityService.Response.FirstOrDefault();
 
             if (serviceEntry is not null)

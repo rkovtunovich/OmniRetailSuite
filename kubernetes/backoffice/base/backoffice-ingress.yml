@@ -5,7 +5,7 @@ metadata:
   namespace: backoffice
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"   
-    nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.50.0/24, 37.225.0.46"
+    # nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.50.0/24, 37.225.0.46"
 spec:
   rules:
   - host: backoffice.omni-rs.com

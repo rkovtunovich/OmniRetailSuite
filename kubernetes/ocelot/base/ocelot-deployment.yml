@@ -23,21 +23,18 @@ spec:
         ports:
         - containerPort: 7200
         env:
-        - name: Kestrel__Endpoints__Https__Certificate__Path
-          value: "/app/pfx/cert" 
         - name: Kestrel__Endpoints__Https__Certificate__Password
           valueFrom:
             secretKeyRef:
               name: omni-rs-com-pfx
               key: pass
-        - name: GatewaySettings__Url
-          value: "https://ocelot.omni-rs.com"
-        - name: GatewaySettings__UseAsIssuer
-          value: "false"
         volumeMounts:
         - name: ocelot-config-volume
           mountPath: "/ocelot.json"
           subPath: ocelot.json
+        - name: ocelot-config-volume
+          mountPath: "/appsettings.json"
+          subPath: appsettings.json
         - name: ocelot-pfx
           mountPath: "/app/pfx"
       volumes:
@@ -47,6 +44,8 @@ spec:
           items:
           - key: ocelot.json
             path: ocelot.json 
+          - key: appsettings.json
+            path: appsettings.json
       - name: ocelot-pfx 
         secret:
           secretName: omni-rs-com-pfx    

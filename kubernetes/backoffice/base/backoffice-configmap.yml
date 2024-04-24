@@ -37,7 +37,7 @@ data:
         "IdentityClient": {
           "Name": "IdentityClient",
           "ApiScope": "IdentityServerApi",
-          "BasePath": "api/v1/identity/"
+          "BasePath": "api/v1/"
          }
       },
       "ProductCatalogClient": {

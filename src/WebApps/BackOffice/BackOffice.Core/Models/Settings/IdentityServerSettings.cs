@@ -9,4 +9,6 @@ public class IdentityServerSettings
     public string ClientSecret { get; set; } = null!;
 
     public bool UseHttps { get; set; }
+
+    public string Authority { get; set; } = null!;
 }
