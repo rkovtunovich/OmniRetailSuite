@@ -21,7 +21,7 @@ spec:
       - name: retail
         image: registry.omni-rs.com/r13/omniretailsuite/retail:latest
         ports:
-        - containerPort: 5099
+        - containerPort: 5016
         env:
         - name: CONSUL_HTTP_ADDR
           value: "consul:8500"

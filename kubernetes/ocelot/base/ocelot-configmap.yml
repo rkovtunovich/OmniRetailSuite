@@ -34,7 +34,7 @@ data:
           "DownstreamPathTemplate": "/connect/{everything}"
         },
         {
-          "ServiceName": "catalogapi",
+          "ServiceName": "product-catalog",
           "DownstreamScheme": "http",
           "UpstreamPathTemplate": "/api/v1/productcatalog/{everything}",
           "DownstreamPathTemplate": "/api/v1/{everything}",
@@ -44,7 +44,7 @@ data:
           }
         },
         {
-          "ServiceName": "retailapi",
+          "ServiceName": "retail",
           "DownstreamScheme": "http",
           "UpstreamPathTemplate": "/api/v1/retail/{everything}",
           "DownstreamPathTemplate": "/api/v1/{everything}",
@@ -60,6 +60,13 @@ data:
           "Host": "consul",
           "Port": 8500,
           "Type": "Consul"
+        },
+        "RateLimitOptions": {
+            "ClientWhitelist": [],
+            "EnableRateLimiting": true,
+            "Period": "1s",
+            "PeriodTimespan": 1,
+            "Limit": 10
         }
       }
     }

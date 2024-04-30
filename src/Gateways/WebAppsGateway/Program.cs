@@ -7,7 +7,6 @@ using Ocelot.Middleware;
 using Ocelot.Provider.Consul;
 using WebAppsGateway.Configuration;
 using WebAppsGateway.DelegatingHandlers;
-using WebAppsGateway.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,8 +57,6 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost
 });
-
-app.UseMiddleware<UpdateIdentityServerAuthorityMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();

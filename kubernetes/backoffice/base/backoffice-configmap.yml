@@ -38,16 +38,16 @@ data:
           "Name": "IdentityClient",
           "ApiScope": "IdentityServerApi",
           "BasePath": "api/v1/"
-         }
+         },
+        "ProductCatalogClient": {
+          "Name": "ProductCatalogClient",
+          "ApiScope": "webappsgateway",
+          "BasePath": "api/v1/productcatalog/"
       },
-      "ProductCatalogClient": {
-        "Name": "ProductCatalogClient",
-        "ApiScope": "webappsgateway",
-        "BasePath": "api/v1/productcatalog/"
-      },
-      "RetailClient": {
-        "Name": "RetailClient",
-        "ApiScope": "webappsgateway",
-        "BasePath": "api/v1/retail/"
+        "RetailClient": {
+          "Name": "RetailClient",
+          "ApiScope": "webappsgateway",
+          "BasePath": "api/v1/retail/"
+        }
       }
     }
