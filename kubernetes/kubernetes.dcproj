@@ -26,7 +26,9 @@
     <None Include="identity\production\kustomization.yml" />
     <None Include="kafdrop\base\kustomization.yml" />
     <None Include="kafdrop\production\kustomization.yml" />
+    <None Include="kafka\base\kafka-ingress.yml" />
     <None Include="kafka\base\kustomization.yml" />
+    <None Include="kafka\base\kafka-network-policy.yml" />
     <None Include="kafka\production\kustomization.yml" />
     <None Include="nginx\nginx-configmap.yml" />
     <None Include="ocelot\base\kustomization.yml" />
@@ -39,7 +41,7 @@
     <None Include="consul\base\consul-persistent-volume-claim.yml" />
     <None Include="consul\base\consul-service.yml" />
     <None Include="consul\base\consul-network-policy.yml" />
-    <None Include="dashboard-deployment.yaml" />
+    <None Include="kubernetes-dashboard\dashboard-deployment.yaml" />
     <None Include="gitlab\gitlab-deployment.yml" />
     <None Include="gitlab\gitlab-namespace.yml" />
     <None Include="gitlab\gitlab-persistent-volume-claim.yml" />

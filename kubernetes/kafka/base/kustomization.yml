@@ -2,5 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:   
   - kafka-deployment.yml
+  - kafka-ingress.yml 
+  - kafka-network-policy.yml
   - kafka-service.yml
   - kafka-persistent-volume-claim.yml 

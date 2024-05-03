@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: to-kafka
+  namespace: kafka
+spec:
+  podSelector: {}
+  ingress:
+  - from:
+    - namespaceSelector: {}
+    - ipBlock:
+        cidr: 10.0.0.0/8
+    - ipBlock:
+        cidr: 192.168.50.0/24
+    ports:
+    - protocol: TCP
+      port: 9092
+    - protocol: TCP
+      port: 30092
+    - protocol: TCP
+      port: 9093
+    - protocol: TCP
+      port: 30093

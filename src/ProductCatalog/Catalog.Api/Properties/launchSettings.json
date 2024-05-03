@@ -16,7 +16,7 @@
         "ASPNETCORE_URLS": "http://localhost:5098"
       }
     },
-    "k8s": {
+    "Production": {
       "commandName": "Project",
       "launchBrowser": false,
       "launchUrl": "http://localhost:5098/swagger",

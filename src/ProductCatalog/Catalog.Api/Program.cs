@@ -1,7 +1,6 @@
 ﻿using HealthChecks.UI.Client;
 using Infrastructure.DataManagement.Postgres.Configuration;
 using Infrastructure.DataManagement.Postgres.Extensions;
-using Infrastructure.Messaging.Kafka;
 using Infrastructure.Messaging.Kafka.Configuration;
 using Infrastructure.Messaging.Kafka.Configuration.Settings;
 using Infrastructure.SecretManagement.Vault.Configuration;
@@ -71,8 +70,7 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-var topicManager = app.Services.GetService<TopicManager>() ?? throw new NullReferenceException(nameof(TopicManager));
-await topicManager.EnsureTopicsCreatedAsync();
+await app.EnsureKafkaTopicsCreated();
 
 if (app.Environment.IsDevelopment())
 {
