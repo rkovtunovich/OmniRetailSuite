@@ -11,6 +11,7 @@ using MudExtensions.Services;
 using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddJsonFile("appsettings.untracked.json", optional: true, reloadOnChange: true);
 
 builder.WebHost.ConfigureKestrel((context, options) =>
 {

@@ -265,3 +265,4 @@ pub/
 /src/Retail/Retail.Data/appsettings.json
 /src/Retail/Retail.Data/appsettings.db.json
 /src/ProductCatalog/Catalog.Data/appsettings.db.json
+/src/WebApps/BackOffice/BackOffice.Client/appsettings.untracked.json

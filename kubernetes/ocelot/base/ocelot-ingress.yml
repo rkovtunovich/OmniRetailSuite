@@ -5,7 +5,7 @@ metadata:
   namespace: ocelot
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"   
-    nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.50.0/24, 83.10.135.2, 83.10.123.40"
+    nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.50.0/24, 91.207.126.100"
 spec:
   rules:
   - host: ocelot.omni-rs.com

@@ -8,6 +8,13 @@
       },
       "applicationUrl": "https://omni-rs.com:5010"
     },
+    "Production": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      }
+    },
     "Docker": {
       "commandName": "Docker",
       "launchBrowser": true,
