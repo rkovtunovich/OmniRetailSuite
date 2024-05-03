@@ -14,8 +14,8 @@ public static class ItemMapping
             Price = item.Price,
             PictureUri = item.PictureUri,
             ParentId = item.ParentId,
-            CatalogBrand = item.CatalogBrand?.ToDto(),
-            CatalogType = item.CatalogType?.ToDto(),
+            ProductBrand = item.CatalogBrand?.ToDto(),
+            ProductType = item.CatalogType?.ToDto(),
             Barcode = item.Barcode
         };
     }
@@ -32,10 +32,10 @@ public static class ItemMapping
             Price = itemDto.Price,
             PictureUri = itemDto.PictureUri,
             ParentId = itemDto.ParentId,
-            CatalogBrandId = itemDto?.CatalogBrand?.Id,
-            CatalogBrand = itemDto?.CatalogBrand?.ToEntity(),
-            CatalogTypeId = itemDto?.CatalogType?.Id,
-            CatalogType = itemDto?.CatalogType?.ToEntity(),
+            CatalogBrandId = itemDto?.ProductBrand?.Id,
+            CatalogBrand = itemDto?.ProductBrand?.ToEntity(),
+            CatalogTypeId = itemDto?.ProductType?.Id,
+            CatalogType = itemDto?.ProductType?.ToEntity(),
             Barcode = itemDto?.Barcode
         };
     }

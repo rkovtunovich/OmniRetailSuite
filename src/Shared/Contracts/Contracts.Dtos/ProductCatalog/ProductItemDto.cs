@@ -18,9 +18,9 @@ public record ProductItemDto : EntityDtoBase
 
     public Guid? ParentId { get; init; }
 
-    public ProductTypeDto? CatalogType { get; init; }
+    public ProductTypeDto? ProductType { get; init; }
 
-    public ProductBrandDto? CatalogBrand { get; init; }
+    public ProductBrandDto? ProductBrand { get; init; }
 
     public string? Barcode { get; init; }
 }
