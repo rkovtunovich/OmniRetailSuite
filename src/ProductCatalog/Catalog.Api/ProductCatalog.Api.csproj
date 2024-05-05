@@ -12,16 +12,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ardalis.ApiEndpoints" />
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" />
     <PackageReference Include="Steeltoe.Discovery.ClientCore" />
-    <PackageReference Include="Steeltoe.Discovery.Consul" />
-    <PackageReference Include="Swashbuckle.AspNetCore" />
+    <PackageReference Include="Steeltoe.Discovery.Consul">
+      <TreatAsUsed>true</TreatAsUsed>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore">
+      <TreatAsUsed>true</TreatAsUsed>
+    </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" />
-
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
 
     <PackageReference Include="Winton.Extensions.Configuration.Consul" />
   </ItemGroup>

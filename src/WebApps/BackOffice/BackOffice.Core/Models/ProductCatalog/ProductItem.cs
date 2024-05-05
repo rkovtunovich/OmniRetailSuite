@@ -4,18 +4,14 @@ namespace BackOffice.Core.Models.ProductCatalog;
 
 public class ProductItem : EntityModelBase
 {
-    public Guid? ItemTypeId { get; set; }
+    [Required(ErrorMessage = "The Description field is required")]
+    public string Description { get; set; } = null!;
 
     public Guid? ParentId { get; set; }
 
-    public ProductType? ItemType { get; set; }
+    public ProductType? ProductType { get; set; }
 
-    public Guid? CatalogBrandId { get; set; }
-
-    public ProductBrand? Brand { get; set; }
-
-    [Required(ErrorMessage = "The Description field is required")]
-    public string Description { get; set; } = null!;
+    public ProductBrand? ProductBrand { get; set; }
 
     [MaxLength(13)]
     public string? Barcode { get; set; }

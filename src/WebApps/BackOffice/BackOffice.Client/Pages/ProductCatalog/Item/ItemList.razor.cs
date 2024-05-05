@@ -42,10 +42,10 @@ public partial class ItemList : OrsComponentBase
         if (x.Description.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
             return true;
 
-        if (x.Brand?.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ?? false)
+        if (x.ProductBrand?.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ?? false)
             return true;
 
-        if (x.ItemType?.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ?? false)
+        if (x.ProductType?.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ?? false)
             return true;
 
         if ($"{x.Id} {x.Price}".Contains(_searchString))

@@ -22,14 +22,14 @@
                                 }
                             </MudSelect>
 
-                            <MudSelect T="ProductType" @bind-Value=Model.ItemType ToStringFunc="@_converterItemType" Label="Select item type" Clearable Variant="@MudBlazor.Variant.Filled">
+                            <MudSelect T="ProductType" @bind-Value=Model.ProductType ToStringFunc="@_converterItemType" Label="Select item type" Clearable Variant="@MudBlazor.Variant.Filled">
                                  @foreach (var item in _itemTypes)
                                 {
                                     <MudSelectItem Value="@item"></MudSelectItem>
                                 }
                             </MudSelect>
 
-                            <MudSelect T="ProductBrand" @bind-Value=Model.Brand ToStringFunc="@_converterItemBrand" Label="Select item brand" Clearable Variant="@MudBlazor.Variant.Filled">
+                            <MudSelect T="ProductBrand" @bind-Value=Model.ProductBrand ToStringFunc="@_converterItemBrand" Label="Select item brand" Clearable Variant="@MudBlazor.Variant.Filled">
                                  @foreach (var item in _itemBrands)
                                 {
                                     <MudSelectItem Value="@item"></MudSelectItem>

@@ -8,7 +8,6 @@ global using Swashbuckle.AspNetCore.SwaggerGen;
 
 global using System.Collections.Generic;
 global using System.ComponentModel.DataAnnotations;
-global using System.IdentityModel.Tokens.Jwt;
 global using System.IO;
 global using System.Linq;
 global using System.Net;

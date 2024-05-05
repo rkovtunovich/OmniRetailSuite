@@ -13,11 +13,8 @@
   <ItemGroup>
 		<PackageReference Include="CodeBeam.MudBlazor.Extensions" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Configuration" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
 		<PackageReference Include="Radzen.Blazor" />
-		<PackageReference Include="System.Net.Http.Json" />
 	</ItemGroup>
   
   <ItemGroup>

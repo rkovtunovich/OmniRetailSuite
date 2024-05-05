@@ -16,11 +16,11 @@ public record ProductItemDto : EntityDtoBase
 
     public string PictureBase64 { get; init; } = string.Empty;
 
+    public string? Barcode { get; init; }
+
     public Guid? ParentId { get; init; }
 
     public ProductTypeDto? ProductType { get; init; }
 
     public ProductBrandDto? ProductBrand { get; init; }
-
-    public string? Barcode { get; init; }
 }
