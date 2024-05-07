@@ -1,0 +1,7 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:   
+  - retail-assistant-deployment.yml
+  - retail-assistant-service.yml
+  - retail-assistant-ingress.yml
+  - retail-assistant-configmap.yml

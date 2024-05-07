@@ -3,6 +3,7 @@
 global using MudBlazor;
 
 global using RetailAssistant.Application.Services.Abstraction;
+global using RetailAssistant.Application.Services.Implementation;
 
 global using RetailAssistant.Client;
 

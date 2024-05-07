@@ -1,7 +1,6 @@
 ﻿using Infrastructure.Http;
 using Infrastructure.Http.Clients;
-using Microsoft.Extensions.DependencyInjection;
-using RetailAssistant.Application.Helpers;
+using Infrastructure.Http.Uri;
 
 namespace RetailAssistant.Application.Services.Implementation;
 
@@ -9,16 +8,18 @@ public class UserPreferenceService : IUserPreferenceService
 {
     private readonly IHttpService<IdentityClientSettings> _httpService;
     private readonly ILogger<UserPreferenceService> _logger;
+    private readonly IdentityUriResolver _identityUriResolver;
 
-    public UserPreferenceService([FromKeyedServices(Constants.IDENTITY_CLIENT_NAME)] IHttpService<IdentityClientSettings> httpService, ILogger<UserPreferenceService> logger)
+    public UserPreferenceService(IHttpService<IdentityClientSettings> httpService, ILogger<UserPreferenceService> logger, IdentityUriResolver identityUriResolver)
     {
         _logger = logger;
         _httpService = httpService;
+        _identityUriResolver = identityUriResolver;
     }
 
     public async Task<Settings?> GetPreferencesAsync(string userId)
     {
-        var uri = IdentityUriHelper.GetPreferences(userId);
+        var uri = _identityUriResolver.GetPreferences(userId);
 
         var preference = await _httpService.GetAsync<UserPreference>(uri);
 
@@ -27,7 +28,7 @@ public class UserPreferenceService : IUserPreferenceService
 
     public Task UpdatePreferencesAsync(string userId, Settings settings)
     {
-        var uri = IdentityUriHelper.UpdatePreferences(userId);
+        var uri = _identityUriResolver.UpdatePreferences(userId);
 
         return _httpService.PutAsync(uri, settings);
     }

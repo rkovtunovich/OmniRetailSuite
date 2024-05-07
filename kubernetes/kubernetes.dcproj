@@ -2,7 +2,6 @@
 <Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk" DefaultTargets="Build">
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
-    <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>6a8e308c-2ea5-4d5f-8768-923370363c9f</ProjectGuid>
     <DockerLaunchBrowser>True</DockerLaunchBrowser>
     <DockerServiceUrl>{Scheme}://host.docker.internal:{ServicePort}</DockerServiceUrl>
@@ -63,6 +62,12 @@
     <None Include="postgres\base\postgres-ingress.yml" />
     <None Include="postgres\base\postgres-network-policy.yml" />
     <None Include="postgres\production\kustomization.yml" />
+    <None Include="retail-assistant\base\retail-assistant-configmap.yml" />
+    <None Include="retail-assistant\base\retail-assistant-deployment.yml" />
+    <None Include="retail-assistant\base\retail-assistant-ingress.yml" />
+    <None Include="retail-assistant\base\retail-assistant-service.yml" />
+    <None Include="retail-assistant\base\kustomization.yml" />
+    <None Include="retail-assistant\production\kustomization.yml" />
     <None Include="retail\base\kustomization.yml" />
     <None Include="retail\base\retail-configmap.yml" />
     <None Include="retail\base\retail-deployment.yml" />

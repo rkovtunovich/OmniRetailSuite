@@ -8,6 +8,7 @@ using MudExtensions.Services;
 using UI.Razor.Services.Implementation;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
+builder.Configuration.AddJsonFile("appsettings.untracked.json", optional: true, reloadOnChange: true);
 
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");

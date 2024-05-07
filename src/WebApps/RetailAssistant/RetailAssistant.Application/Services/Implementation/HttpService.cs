@@ -1,9 +1,9 @@
-﻿using System.Net.Http.Json;
-using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-using Infrastructure.Http;
+﻿using Infrastructure.Http;
 using Infrastructure.Http.Clients;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.Extensions.Options;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
 namespace RetailAssistant.Application.Services.Implementation;
 

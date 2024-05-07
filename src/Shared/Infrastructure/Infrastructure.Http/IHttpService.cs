@@ -1,8 +1,6 @@
-﻿using Infrastructure.Http.Clients;
+﻿namespace Infrastructure.Http;
 
-namespace Infrastructure.Http;
-
-public interface IHttpService<TResource> where TResource : HttpClientSettings
+public interface IHttpService<TResource> where TResource : HttpClientSettings, new()
 {
     Task<T?> GetAsync<T>(string uri);
 

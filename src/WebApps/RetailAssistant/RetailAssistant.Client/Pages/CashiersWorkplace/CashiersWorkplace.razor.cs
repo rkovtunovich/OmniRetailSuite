@@ -203,7 +203,7 @@ public partial class CashiersWorkplace
 
     private void ClearReceipt()
     {
-        throw new NotImplementedException();
+        _receipt.ClearReceiptItems();
     }
 
     private void AddProductItemToReceipt(CatalogProductItem productItem)
