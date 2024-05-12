@@ -3,28 +3,29 @@ using VaultSharp.Core;
 
 namespace Infrastructure.SecretManagement.Vault;
 
-public class GetDatabaseSecretCommand : IGetSecretCommand
+public class GetDatabaseSecretCommand(IVaultClient vaultClient) : IGetSecretCommand
 {
-    private readonly IVaultClient _vaultClient;
-
-    public GetDatabaseSecretCommand(IVaultClient vaultClient)
-    {
-        _vaultClient = vaultClient;
-    }
-
-    public async Task<Dictionary<string, string>> ExecuteAsync(SecretRequest request)
+    public async Task<VaultSecretResponse> ExecuteAsync(SecretRequest request)
     {
         try
         {
-            var secret = await _vaultClient.V1.Secrets.Database.GetCredentialsAsync(request.Path, mountPoint: request.Namespace);
+            var secret = await vaultClient.V1.Secrets.Database.GetCredentialsAsync(request.Path, mountPoint: request.Namespace);
 
-            var result = new Dictionary<string, string>
+            var data = new Dictionary<string, string>
             {
                 { "username", secret?.Data?.Username ?? throw new InvalidOperationException("Db user is empty.") },
                 { "password", secret?.Data?.Password ?? throw new InvalidOperationException("Db password is empty.") }
             };
 
-            return result;
+            var response = new VaultSecretResponse
+            {
+                Data = data,
+                Renewable = secret.Renewable,
+                LeaseDuration = secret.LeaseDurationSeconds,
+                LeaseId = secret.LeaseId
+            };
+
+            return response;
         }
         catch (VaultApiException ex) when (ex.StatusCode is (int)HttpStatusCode.NotFound)
         {

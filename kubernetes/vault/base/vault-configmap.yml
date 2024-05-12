@@ -20,7 +20,7 @@ data:
         }
       },
       "api_addr": "http://vault:8200",
-      "max_lease_ttl": "10h",
-      "default_lease_ttl": "10h",
+      "default_lease_ttl": "1d",
+      "max_lease_ttl": "30d",
       "disable_mlock": true
     }

@@ -2,5 +2,5 @@
 
 public interface IGetSecretCommand
 {
-    Task<Dictionary<string, string>> ExecuteAsync(SecretRequest request);
+    Task<VaultSecretResponse> ExecuteAsync(SecretRequest request);
 }

@@ -2,30 +2,32 @@
 using VaultSharp.Core;
 
 namespace Infrastructure.SecretManagement.Vault;
-public class GetKeyValueSecretCommand : IGetSecretCommand
+
+public class GetKeyValueSecretCommand(IVaultClient vaultClient) : IGetSecretCommand
 {
-    private readonly IVaultClient _vaultClient;
-
-    public GetKeyValueSecretCommand(IVaultClient vaultClient)
-    {
-        _vaultClient = vaultClient;
-    }
-
-    public async Task<Dictionary<string, string>> ExecuteAsync(SecretRequest request)
+    public async Task<VaultSecretResponse> ExecuteAsync(SecretRequest request)
     {
         try
         {
-            var secret = await _vaultClient.V1.Secrets.KeyValue.V2.ReadSecretAsync(request.Path, mountPoint: request.Namespace);
+            var secret = await vaultClient.V1.Secrets.KeyValue.V2.ReadSecretAsync(request.Path, mountPoint: request.Namespace);
             var secretData = (secret?.Data?.Data) ?? throw new InvalidOperationException($"Secret {request.Path} is empty.");
 
-            var result = new Dictionary<string, string>();
+            var data = new Dictionary<string, string>();
             foreach( var key in request.SecretKeys)
             {
                 if (secretData.TryGetValue(key, out var value))            
-                    result.Add(key, value.ToString() ?? string.Empty);             
+                    data.Add(key, value.ToString() ?? string.Empty);             
             }
 
-            return result;
+            var response = new VaultSecretResponse
+            {
+                Data = data,
+                Renewable = secret.Renewable,
+                LeaseDuration = secret.LeaseDurationSeconds,
+                LeaseId = secret.LeaseId
+            };
+
+            return response;
         }
         catch (VaultApiException ex) when (ex.StatusCode is (int)HttpStatusCode.NotFound)
         {
