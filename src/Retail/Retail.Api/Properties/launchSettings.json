@@ -1,24 +1,17 @@
 {
   "profiles": {
-    "http": {
+    "Development": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "http://localhost:5016/swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://+:5016",
+        "CONSUL_HTTP_ADDR": "consul.omni-rs.com:443",
+        "CONSUL_HTTP_SSL": "true"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5016"
-    },
-    "https": {
-      "commandName": "Project",
-      "launchBrowser": false,
-      "launchUrl": "https://localhost:7100/swagger",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7100;http://localhost:5016"
     },
     "Docker": {
       "commandName": "Docker",
@@ -34,8 +27,7 @@
     "Production": {
       "commandName": "Project",
       "launchBrowser": false,
-      "launchUrl":
-      "http://+:5016/swagger",
+      "launchUrl": "http://+:5016/swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Production",
         "ASPNETCORE_URLS": "http://+:5016",

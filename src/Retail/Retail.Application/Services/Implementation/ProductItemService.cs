@@ -1,29 +1,21 @@
-﻿using Retail.Core.Repositories;
+﻿using Retail.Core.Entities.ReceiptAggregate;
+using Retail.Core.Repositories;
 
 namespace Retail.Application.Services.Implementation;
 
-public class ProductItemService : IProductItemService
+public class ProductItemService(ICatalogItemRepository productItemRepository, IMapper mapper, ILogger<ProductItemService> logger) : IProductItemService
 {
-    private readonly ICatalogItemRepository _productItemRepository;
-    private readonly ILogger<ProductItemService> _logger;
-
-    public ProductItemService(ICatalogItemRepository productItemRepository, ILogger<ProductItemService> logger)
-    {
-        _productItemRepository = productItemRepository;
-        _logger = logger;
-    }
-
     public async Task<ProductItemDto?> GetProductItemAsync(Guid id)
     {
         try
         {
-            var productItem = await _productItemRepository.GetProductItemAsync(id);
+            var productItem = await productItemRepository.GetProductItemAsync(id);
 
-            return productItem?.ToDto();
+            return mapper.Map<ProductItemDto>(productItem);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Error while getting productItem: id {id}");
+            logger.LogError(e, $"Error while getting productItem: id {id}");
             throw;
         }
     }
@@ -32,12 +24,12 @@ public class ProductItemService : IProductItemService
     {
         try
         {
-            var productItems = await _productItemRepository.GetProductItemsAsync();
-            return productItems.Select(productItem => productItem.ToDto()).ToList();
+            var productItems = await productItemRepository.GetProductItemsAsync();
+            return mapper.Map<List<ProductItemDto>>(productItems);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Error while getting productItems");
+            logger.LogError(e, "Error while getting productItems");
             throw;
         }
     }
@@ -46,13 +38,13 @@ public class ProductItemService : IProductItemService
     {
         try
         {
-            var productItem = ProductItemDto.ToEntity();
-            await _productItemRepository.AddProductItemAsync(productItem);
-            return productItem.ToDto();
+            var productItem = mapper.Map<ProductItem>(ProductItemDto);
+            await productItemRepository.AddProductItemAsync(productItem);
+            return mapper.Map<ProductItemDto>(productItem);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Error whole creating productItem");
+            logger.LogError(e, $"Error whole creating productItem");
             throw;
         }
     }
@@ -61,14 +53,16 @@ public class ProductItemService : IProductItemService
     {
         try
         {
-            var productItem = await _productItemRepository.GetProductItemAsync(productItemDto.Id) ?? throw new Exception($"ProductItem with id {productItemDto.Id} not found");
+            var productItem = await productItemRepository.GetProductItemAsync(productItemDto.Id) 
+                ?? throw new Exception($"ProductItem with id {productItemDto.Id} not found");
+
             productItem.Name = productItemDto.Name;
 
-            await _productItemRepository.UpdateProductItemAsync(productItem);
+            await productItemRepository.UpdateProductItemAsync(productItem);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Error while updating productItem: id {productItemDto.Id}");
+            logger.LogError(e, $"Error while updating productItem: id {productItemDto.Id}");
         }
     }
 
@@ -76,12 +70,11 @@ public class ProductItemService : IProductItemService
     {
         try
         {
-            await _productItemRepository.DeleteProductItemAsync(id, isSoftDeleting);
-
+            await productItemRepository.DeleteProductItemAsync(id, isSoftDeleting);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Error while deleting productItem: id {id}");
+            logger.LogError(e, $"Error while deleting productItem: id {id}");
         }
     }
 }

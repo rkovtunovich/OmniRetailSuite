@@ -1,9 +1,8 @@
-﻿using Retail.Core.Entities;
-using Retail.Core.Repositories;
+﻿using Retail.Core.Repositories;
 
 namespace Retail.Application.Services.Implementation;
 
-public class StoreService(IRetailRepository<Store> storeRepository, ILogger<StoreService> logger) : IStoreService
+public class StoreService(IRetailRepository<Store> storeRepository, IMapper mapper, ILogger<StoreService> logger) : IStoreService
 {
     public async Task<IEnumerable<StoreDto>> GetStoresAsync()
     {
@@ -11,11 +10,11 @@ public class StoreService(IRetailRepository<Store> storeRepository, ILogger<Stor
         {
             var stores = await storeRepository.GetEntitiesAsync();
 
-            return stores.Select(s => s.ToDto()).ToList();
+            return mapper.Map<IEnumerable<StoreDto>>(stores);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            logger.LogError("Error while getting stores");
+            logger.LogError(ex,"Error while getting stores");
             throw;
         }
     }
@@ -26,11 +25,11 @@ public class StoreService(IRetailRepository<Store> storeRepository, ILogger<Stor
         {
             var store = await storeRepository.GetEntityAsync(id);
 
-            return store?.ToDto();
+            return mapper.Map<StoreDto>(store);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            logger.LogError("Error while getting store with id {Id}", id);
+            logger.LogError(ex, $"Error while getting store with id {id}");
             throw;
         }
     }
@@ -39,13 +38,14 @@ public class StoreService(IRetailRepository<Store> storeRepository, ILogger<Stor
     {
         try
         {
-            var store = await storeRepository.AddEntityAsync(storeDto.ToEntity());
+            var entity = mapper.Map<Store>(storeDto);
+            var store = await storeRepository.AddEntityAsync(entity);
 
-            return store.ToDto();
+            return mapper.Map<StoreDto>(store);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            logger.LogError("Error while creating store");
+            logger.LogError(ex, "Error while creating store");
             throw;
         }
     }
@@ -54,13 +54,14 @@ public class StoreService(IRetailRepository<Store> storeRepository, ILogger<Stor
     {
         try
         {
-            var store = await storeRepository.UpdateEntityAsync(storeDto.ToEntity());
+            var entity = mapper.Map<Store>(storeDto);
+            var store = await storeRepository.UpdateEntityAsync(entity);
 
-            return store.ToDto();
+            return mapper.Map<StoreDto>(store);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            logger.LogError("Error while updating store");
+            logger.LogError(ex, "Error while updating store");
             throw;
         }
     }
@@ -71,9 +72,9 @@ public class StoreService(IRetailRepository<Store> storeRepository, ILogger<Stor
         {
             await storeRepository.DeleteEntityAsync(id, isSoftDeleting);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            logger.LogError("Error while deleting store with id {Id}", id);
+            logger.LogError(ex, "Error while deleting store with id {Id}", id);
             throw;
         }
     }

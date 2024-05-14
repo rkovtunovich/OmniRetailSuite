@@ -2,27 +2,18 @@
 
 namespace Retail.Application.Services.Implementation;
 
-public class CashierService: ICashierService
+public class CashierService(IRetailRepository<Cashier> cashierRepository, IMapper mapper, ILogger<CashierService> logger) : ICashierService
 {
-    private readonly IRetailRepository<Cashier> _cashierRepository;
-    private readonly ILogger<CashierService> _logger;
-
-    public CashierService(IRetailRepository<Cashier> cashierRepository, ILogger<CashierService> logger)
-    {
-        _cashierRepository = cashierRepository;
-        _logger = logger;
-    }
-
     public async Task<List<CashierDto>> GetCashiersAsync()
     {
         try
         {
-            var cashiers = await _cashierRepository.GetEntitiesAsync();
-            return cashiers.Select(cashier => cashier.ToDto()).ToList();
+            var cashiers = await cashierRepository.GetEntitiesAsync();
+            return mapper.Map<List<CashierDto>>(cashiers);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Error while getting cashiers");
+            logger.LogError(e, "Error while getting cashiers");
             throw;
         }
     }
@@ -31,38 +22,38 @@ public class CashierService: ICashierService
     {
         try
         {
-            var cashier = await _cashierRepository.GetEntityAsync(id);
+            var cashier = await cashierRepository.GetEntityAsync(id);
 
-            return cashier?.ToDto();
+            return mapper.Map<CashierDto>(cashier);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Error while getting cashier: id {id}");
+            logger.LogError(e, $"Error while getting cashier: id {id}");
             throw;
         }
     }
 
     public async Task<CashierDto> CreateCashierAsync(CashierDto cashierDto)
     {
-        var cashier = cashierDto.ToEntity();
-        await _cashierRepository.AddEntityAsync(cashier);
-        return cashier.ToDto();
+        var cashier = mapper.Map<Cashier>(cashierDto);
+        await cashierRepository.AddEntityAsync(cashier);
+        return mapper.Map<CashierDto>(cashier);
     }
 
     public async Task<CashierDto> UpdateCashierAsync(CashierDto cashierDto)
     {
         try
         {
-            var cashier = await _cashierRepository.GetEntityAsync(cashierDto.Id) ?? throw new Exception($"Cashier with id {cashierDto.Id} not found");
+            var cashier = await cashierRepository.GetEntityAsync(cashierDto.Id) ?? throw new Exception($"Cashier with id {cashierDto.Id} not found");
             cashier.Name = cashierDto.Name;
 
-            await _cashierRepository.UpdateEntityAsync(cashier);
+            await cashierRepository.UpdateEntityAsync(cashier);
 
-            return cashier.ToDto();
+            return mapper.Map<CashierDto>(cashier);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Error while updating cashier: id {cashierDto.Id}");
+            logger.LogError(e, $"Error while updating cashier: id {cashierDto.Id}");
             throw;
         }
     }
@@ -71,11 +62,11 @@ public class CashierService: ICashierService
     {
         try
         {
-            await _cashierRepository.DeleteEntityAsync(id, isSoftDeleting);
+            await cashierRepository.DeleteEntityAsync(id, isSoftDeleting);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Error while deleting cashier: id {id}");
+            logger.LogError(e, $"Error while deleting cashier: id {id}");
             throw;
         }
     }

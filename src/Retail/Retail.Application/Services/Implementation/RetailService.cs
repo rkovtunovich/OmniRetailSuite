@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Contracts.Dtos;
+﻿using Contracts.Dtos;
 using Core.Abstraction;
 using Retail.Core.Repositories;
 

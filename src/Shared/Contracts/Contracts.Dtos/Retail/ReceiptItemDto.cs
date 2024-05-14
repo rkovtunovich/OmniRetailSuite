@@ -6,7 +6,7 @@ public record ReceiptItemDto : EntityDtoBase
 
     public Guid ReceiptId { get; init; }
 
-    public ProductItemDto ProductItem { get; init; }
+    public Guid ProductItemId { get; init; }
 
     public double Quantity { get; init; }
 

@@ -1,6 +1,6 @@
-﻿using Contracts.Dtos.Retail;
-using Contracts.Events.Item;
+﻿using Contracts.Events.Item;
 using Infrastructure.Messaging.Abstraction;
+using Microsoft.Extensions.DependencyInjection;
 using Retail.Application.EventsHandlers.CatalogItem;
 using Retail.Application.Mapping.Configuration;
 

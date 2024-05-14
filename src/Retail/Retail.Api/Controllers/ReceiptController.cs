@@ -62,7 +62,7 @@ public class ReceiptController(IReceiptService receiptService, ILogger<ReceiptCo
         {
             var createdReceipt = await _receiptService.CreateReceiptAsync(receipt);
 
-            return CreatedAtAction(nameof(GetReceiptAsync), new { id = createdReceipt.Id }, createdReceipt);
+            return Created();
         }
         catch (Exception e)
         {
