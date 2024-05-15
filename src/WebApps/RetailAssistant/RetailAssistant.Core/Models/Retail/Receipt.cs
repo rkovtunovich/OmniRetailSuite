@@ -2,15 +2,45 @@
 
 public class Receipt : EntityModelBase
 {
+    private Cashier _cashier = null!;
+
+    private Store _store = null!;
+
     public DateTimeOffset Date { get; set; }
 
     public Guid StoreId { get; set; }
 
-    public Store Store { get; set; } = null!;
+    // when store is set, it should be set to the same value as StoreId
+    public Store Store
+    {
+        get => _store;
+        set
+        {
+            _store = value;
+
+            if (value is not null)
+                StoreId = value.Id;
+            else
+                StoreId = Guid.Empty;
+        }
+    }
 
     public Guid CashierId { get; set; }
 
-    public Cashier Cashier { get; set; } = null!;
+    // when cashier is set, it should be set to the same value as CashierId
+    public Cashier Cashier
+    {
+        get => _cashier;
+        set
+        {
+            _cashier = value;
+
+            if (value is not null)
+                CashierId = value.Id;
+            else
+                CashierId = Guid.Empty;
+        }
+    }
 
     public decimal TotalPrice { get; set; }
 
@@ -34,9 +64,9 @@ public class Receipt : EntityModelBase
     {
         var receiptItem = ReceiptItems.FirstOrDefault(ri => ri.ProductItemId == catalogProductItem.Id);
 
-        if (receiptItem is null)    
+        if (receiptItem is null)
             return false;
-        
+
         receiptItem.Quantity += quantity;
         receiptItem.TotalPrice = (decimal)receiptItem.Quantity * catalogProductItem.Price;
 
@@ -57,7 +87,6 @@ public class Receipt : EntityModelBase
         return new ReceiptItem
         {
             Id = id,
-            ProductItemId = productItem.Id,
             ProductItem = new RetailProductItem { Id = productItem.Id, Name = productItem.Name },
             Receipt = this,
             ReceiptId = Id,

@@ -24,9 +24,9 @@ public partial class CashiersWorkplace
 
     #region Overrides
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await OnInitializedReceipt();
+        InitializeReceiptCommands();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -37,8 +37,9 @@ public partial class CashiersWorkplace
         {
             await ReloadProductItems();
             await ReloadItemParents();
-            
+
             await ShowCashierChangeDialog();
+            await InitNewReceipt();
         }
     }
 
@@ -178,7 +179,7 @@ public partial class CashiersWorkplace
 
     #region methods
 
-    private async Task OnInitializedReceipt()
+    private void InitializeReceiptCommands()
     {
         _receiptCommands =
         [
@@ -197,8 +198,6 @@ public partial class CashiersWorkplace
                 Tooltip = "Save"
             }
         ];
-
-        await InitNewReceipt();     
     }
 
     private void ClearReceipt()
@@ -218,21 +217,23 @@ public partial class CashiersWorkplace
     private async void SaveReceipt()
     {
         _receipt.Date = DateTime.Now;
-
         await ReceiptService.CreateAsync(_receipt);
 
         await InitNewReceipt();
+
+        CallRequestRefresh();
     }
 
     private async Task InitNewReceipt()
     {
+        ClearReceipt();
         var localSettings = await LocalConfigService.GetConfigAsync();
 
         _receipt = new()
         {
             Id = GuidGenerator.Create(),
             Store = localSettings?.Store ?? throw new ArgumentNullException(nameof(localSettings.Store)),
-            StoreId = localSettings.Store.Id,
+            Cashier = _cashier,
         };
     }
 
@@ -271,8 +272,11 @@ public partial class CashiersWorkplace
 
     private void CashierOnSelectionChanged(Cashier selectedCashier)
     {
-        if (selectedCashier is not null)
-            _cashier = selectedCashier;
+        if (selectedCashier is null)
+            return;
+
+        _cashier = selectedCashier;
+        _receipt.Cashier = selectedCashier;
     }
 
     #endregion
