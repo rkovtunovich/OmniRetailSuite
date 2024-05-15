@@ -12,11 +12,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Steeltoe.Discovery.ClientCore" />
-    <PackageReference Include="Steeltoe.Discovery.Consul" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" />
-    <PackageReference Include="Winton.Extensions.Configuration.Consul" />
+    <PackageReference Include="Steeltoe.Discovery.ClientCore" Version="[3.2.0, )" />
+    <PackageReference Include="Steeltoe.Discovery.Consul" Version="[3.2.0, )"/>
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="[6.5.0, )"/>
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="[6.5.0, )"/>
+    <PackageReference Include="Winton.Extensions.Configuration.Consul" Version="[3.4.0, )"/>
   </ItemGroup>
 
   <ItemGroup>
