@@ -214,7 +214,7 @@ public partial class CashiersWorkplace
         }
     }
 
-    private async void SaveReceipt()
+    private async Task SaveReceipt()
     {
         _receipt.Date = DateTime.Now;
         await ReceiptService.CreateAsync(_receipt);
