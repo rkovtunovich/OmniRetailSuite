@@ -4,7 +4,7 @@ using VaultSharp.Core;
 
 namespace Infrastructure.SecretManagement.Vault;
 
-public class GetDatabaseSecretCommand(IVaultClient vaultClient, ILogger<GetDatabaseSecretCommand> logger) : IGetSecretCommand
+public class GetDatabaseSecretCommand(IVaultClient vaultClient, ILogger<VaultSecretManager> logger) : IGetSecretCommand
 {
     public async Task<VaultSecretResponse> ExecuteAsync(SecretRequest request)
     {

@@ -5,10 +5,10 @@ WORKDIR /app
 COPY . ./
 
 # Restore the project
-RUN dotnet restore src/ProductCatalog/Catalog.Api/ProductCatalog.Api.csproj
+RUN dotnet restore src/ProductCatalog/ProductCatalog.Api/ProductCatalog.Api.csproj
 
 # Publish the project
-RUN dotnet publish src/ProductCatalog/Catalog.Api/ProductCatalog.Api.csproj -c Release -o published 
+RUN dotnet publish src/ProductCatalog/ProductCatalog.Api/ProductCatalog.Api.csproj -c Release -o published 
 
 ## Use the .NET runtime image for the final image
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final

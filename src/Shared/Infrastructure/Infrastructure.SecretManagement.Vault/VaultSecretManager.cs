@@ -16,7 +16,7 @@ public class VaultSecretManager : ISecretManager, IDisposable
         _vaultClient = vaultClient;
 
         _commands.Add("kv", new GetKeyValueSecretCommand(vaultClient));
-        _commands.Add("database", new GetDatabaseSecretCommand(vaultClient));
+        _commands.Add("database", new GetDatabaseSecretCommand(vaultClient, logger));
         _logger = logger;
     }
 
