@@ -20,6 +20,7 @@ public static class ConfigureAppServices
 
         services.AddScoped<IRetailService<Cashier>, RetailService<Cashier, CashierDto>>();
         services.AddScoped<IRetailService<Store>, RetailService<Store, StoreDto>>();
+        services.AddScoped<IRetailService<Receipt>, RetailService<Receipt, ReceiptDto>>();
 
         services.AddSingleton<IGuidGenerator, GuidGenerator>();
 

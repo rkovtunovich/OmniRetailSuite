@@ -1,0 +1,36 @@
+﻿@attribute [Authorize]
+@inherits ListBase<Receipt>
+
+@namespace BackOffice.Client.Pages.Retail.Receipts
+@using BackOffice.Core.Models.Retail
+
+<PageTitle>Receipts</PageTitle>
+
+<MudDataGrid T="Receipt"
+             Items="@Items"
+             Filterable="true"
+             QuickFilter="@_quickFilter"
+             ReadOnly="false"
+             FixedHeader="true"
+             HeaderClass="data-grid-header"
+             Style="height:100%; display:flex; flex-direction:column">
+
+    <ToolBarContent>
+
+        <MudSpacer />
+        <MudTextField @bind-Value="@_quickFilterSearchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+
+    <Columns>
+        <PropertyColumn Property="x => x.GetCode()" Title="Code" IsEditable="false" />
+        <PropertyColumn Property="x => x.Date" />
+        <PropertyColumn Property="x => x.TotalPrice" />
+        <TemplateColumn CellClass="d-flex justify-end" Sortable="false" Filterable="false">
+            <CellTemplate>
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.FilterNone" OnClick="@(() => OpenClick(context))" />
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+
+</MudDataGrid>
