@@ -7,14 +7,13 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..\..</DockerfileContext>
     <UserSecretsId>60780061-642b-4e89-abed-5a366672c580</UserSecretsId>
-    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   
   <ItemGroup>
-		<PackageReference Include="CodeBeam.MudBlazor.Extensions" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" />
-		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
-		<PackageReference Include="Radzen.Blazor" />
+		<PackageReference Include="CodeBeam.MudBlazor.Extensions" Version="6.9.2" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.5" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />
+		<PackageReference Include="Radzen.Blazor" Version="4.31.5" />
 	</ItemGroup>
   
   <ItemGroup>
