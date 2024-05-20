@@ -40,7 +40,7 @@
                 <PropertyColumn Property="x => x.Barcode" />
                 <TemplateColumn CellClass="justify-end" Sortable="false" Filterable="false">
                     <CellTemplate>
-                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.FilterNone" OnClick="@(() => OpenItemClick(context))" />
+                        <MudIconButton Size="@Size.Small" Icon="@IconHelper.Open" OnClick="@(() => OpenItemClick(context))" />
                     </CellTemplate>
                 </TemplateColumn>
             </Columns>
@@ -74,7 +74,7 @@
                                 <MudText Class="ors-tree-item-parent-code" Style="flex-basis: 20%; margin-right: 16px;">@item.GetCode()</MudText>
                                 <MudText Class="ors-tree-item-parent-name" Style="flex-grow: 1;">@item.Name</MudText>
                                 <MudIconButton Size="@Size.Small" 
-                                    Icon="@Icons.Material.Outlined.FilterNone" 
+                                    Icon="@IconHelper.Open" 
                                     OnClick="@(() => OpenItemParentClick(context))"
                                    />
                             </div>

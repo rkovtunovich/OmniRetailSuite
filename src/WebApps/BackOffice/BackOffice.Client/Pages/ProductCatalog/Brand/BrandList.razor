@@ -25,7 +25,7 @@
         <PropertyColumn Property="x => x.Name" />
         <TemplateColumn CellClass="d-flex justify-end" Sortable="false" Filterable="false">
             <CellTemplate>
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.FilterNone" OnClick="@(() => OpenBrandClick(context))" />
+                <MudIconButton Size="@Size.Small" Icon="@IconHelper.Open" OnClick="@(() => OpenBrandClick(context))" />
             </CellTemplate>
         </TemplateColumn>
     </Columns>
