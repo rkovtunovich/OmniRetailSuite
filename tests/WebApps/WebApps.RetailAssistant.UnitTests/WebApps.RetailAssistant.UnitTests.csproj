@@ -34,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\WebApps\BackOffice\BackOffice.Application\BackOffice.Application.csproj" />
+    <ProjectReference Include="..\..\..\src\WebApps\RetailAssistant\RetailAssistant.Client\RetailAssistant.Client.csproj" />
   </ItemGroup>
 
   <ItemGroup>

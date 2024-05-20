@@ -3,7 +3,7 @@
     @foreach (var command in Commands)
     {
         <MudTooltip Text=@command.Tooltip>
-            <MudIconButton Icon="@command.Icon" Color="Color.Inherit" Class="mr-5" OnClick="@(command.Callback)" />
+            <MudIconButton Icon="@command.Icon" Color="Color.Inherit" Class=@($"mr-5 {command.CssClass}") OnClick="@(command.Callback)" />
         </MudTooltip>
     }
 

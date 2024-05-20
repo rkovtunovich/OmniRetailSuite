@@ -6,7 +6,7 @@ using UI.Razor.Helpers;
 
 namespace RetailAssistant.Client.Pages.CashiersWorkplace;
 
-public partial class CashiersWorkplace
+public partial class CashiersMain
 {
     [Inject] public IProductCatalogService<ProductParent> ProductParentService { get; set; } = null!;
 
@@ -19,6 +19,10 @@ public partial class CashiersWorkplace
     [Inject] private IGuidGenerator GuidGenerator { get; set; } = null!;
 
     [Inject] private IDialogService DialogService { get; set; } = null!;
+
+
+    [Parameter]
+    public Cashier? Cashier { get; set; }
 
     private double _splitterPercentage = 75;
 
@@ -38,7 +42,9 @@ public partial class CashiersWorkplace
             await ReloadProductItems();
             await ReloadItemParents();
 
-            await ShowCashierChangeDialog();
+            if (Cashier is null)
+                await ShowCashierChangeDialog();
+
             await InitNewReceipt();
         }
     }
@@ -195,7 +201,8 @@ public partial class CashiersWorkplace
                 Name = "Save",
                 Icon = Icons.Material.Outlined.Save,
                 Callback = EventCallback.Factory.Create<MouseEventArgs>(this, SaveReceipt),
-                Tooltip = "Save"
+                Tooltip = "Save",
+                CssClass = "cashiers-receipt-save-button"
             }
         ];
     }
@@ -205,7 +212,7 @@ public partial class CashiersWorkplace
         _receipt.ClearReceiptItems();
     }
 
-    private void AddProductItemToReceipt(CatalogProductItem productItem)
+    public void AddProductItemToReceipt(CatalogProductItem productItem)
     {
         if (!_receipt.TryUpdateReceiptItemByCatalogItem(productItem))
         {
@@ -233,7 +240,7 @@ public partial class CashiersWorkplace
         {
             Id = GuidGenerator.Create(),
             Store = localSettings?.Store ?? throw new ArgumentNullException(nameof(localSettings.Store)),
-            Cashier = _cashier,
+            Cashier = Cashier ?? throw new ArgumentNullException(nameof(Cashier))
         };
     }
 
@@ -243,7 +250,6 @@ public partial class CashiersWorkplace
 
     #region Cashier
 
-    private Cashier _cashier = null!;
 
     private async Task ShowCashierChangeDialog()
     {
@@ -275,7 +281,7 @@ public partial class CashiersWorkplace
         if (selectedCashier is null)
             return;
 
-        _cashier = selectedCashier;
+        Cashier = selectedCashier;
         _receipt.Cashier = selectedCashier;
     }
 

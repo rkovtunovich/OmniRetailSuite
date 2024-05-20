@@ -8,7 +8,9 @@ public class ToolbarCommand
 
     public string? Icon { get; set; }
 
-    public EventCallback<MouseEventArgs> Callback { get; set; }
-
     public string? Tooltip { get; set; }
+
+    public string? CssClass { get; set; }
+
+    public EventCallback<MouseEventArgs> Callback { get; set; }
 }
