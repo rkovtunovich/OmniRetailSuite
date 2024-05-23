@@ -300,8 +300,15 @@ a, .btn-link {
 .ors-selected-parent-item > div.mud-treeview-item-content:first-child {
     /*background-color: #d3d3d3;*/
     border-radius: var(--mud-default-borderradius);
-    border-color: var(--mud-palette-lines-inputs);
+    border-color: var(--mud-palette-primary);
     border-width: 1px;
+    border-style: solid;
+}
+
+.ors-selected-row {
+    border-radius: var(--mud-default-borderradius);
+    border-color: var(--mud-palette-primary);
+    border-width: 2px;
     border-style: solid;
 }
 

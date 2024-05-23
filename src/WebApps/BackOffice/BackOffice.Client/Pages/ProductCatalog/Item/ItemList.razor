@@ -24,6 +24,7 @@
                      RowClick="RowClick"
                      RowContextMenuClick="RowClickContextMenu"
                      RowClass="cursor-pointer"
+                     RowClassFunc="@((item, line) => SelectedRowClassFunc(item, line))"
                      EditDialogOptions="_dialogOptions"
                      FixedHeader="true"
                      HeaderClass="data-grid-header"
@@ -38,13 +39,14 @@
 
                 <MudButton OnClick="@CreateItemClick" Color="@Color.Success" Class="add-item-btn">Add</MudButton>
                 <MudSpacer />
+                <MudTextField @bind-Value="@_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0" Style="max-width:30%"></MudTextField>
                 <MudTooltip Text="hierarchy">
                     <MudButton Color="@Color.Primary" @onclick="@ShowCatalogParentsClick">
                         <iconify-icon icon="mdi:family-tree" width="24" height="24"></iconify-icon>
                     </MudButton>
                 </MudTooltip>
-                <MudTextField @bind-Value="@_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
-                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0" Style="max-width:30%"></MudTextField>
+
             </ToolBarContent>
 
             <Columns>

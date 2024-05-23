@@ -60,6 +60,7 @@ public partial class ItemList : OrsComponentBase
     };
 
     private string _contextMenuId = "ors-context-menu";
+    private static readonly string _selectedRowClassName = "ors-selected-row";
 
     private MudMenu _contextMenu = null!;
 
@@ -73,7 +74,7 @@ public partial class ItemList : OrsComponentBase
 
     private bool _isItemParentsOpen = true;
 
-    private static readonly string selectedParentClassName = "ors-selected-parent-item";
+    private static readonly string _selectedParentClassName = "ors-selected-parent-item";
 
     #endregion
 
@@ -140,6 +141,8 @@ public partial class ItemList : OrsComponentBase
 
     private void RowClick(DataGridRowClickEventArgs<ProductItem> eventArg)
     {
+        _selectedItem = eventArg.Item;
+
         if (eventArg.MouseEventArgs.Detail is 1)
             return;
 
@@ -149,6 +152,8 @@ public partial class ItemList : OrsComponentBase
 
     private async Task RowClickContextMenu(DataGridRowClickEventArgs<ProductItem> eventArg)
     {
+        _selectedItem = eventArg.Item;
+
         var contextMenu = await JSRuntime.InvokeAsync<IJSObjectReference>("document.getElementById", _contextMenuId);
         await contextMenu.InvokeVoidAsync("style.setProperty", "left", $"{eventArg.MouseEventArgs.ClientX}px");
         await contextMenu.InvokeVoidAsync("style.setProperty", "top", $"{eventArg.MouseEventArgs.ClientY}px");
@@ -204,6 +209,17 @@ public partial class ItemList : OrsComponentBase
         CallRequestRefresh();
     }
 
+    private string SelectedRowClassFunc(ProductItem currentItem, int line)
+    {
+        if (_selectedItem is null)
+            return string.Empty;
+
+        if(_selectedItem.Id == currentItem.Id)
+            return _selectedRowClassName;
+
+        return string.Empty;
+    }
+
     #endregion
 
     #region Product Parents
@@ -223,6 +239,7 @@ public partial class ItemList : OrsComponentBase
     private async void OnParentItemDoubleClick(ProductParent productParent, MouseEventArgs mouseEventArgs)
     {
         _selectedProductParent = productParent;
+        _selectedItem = null;
 
         if (productParent.Name == FilterSpecialCase.All.ToString())
         {
@@ -282,12 +299,12 @@ public partial class ItemList : OrsComponentBase
             return "";
 
         if (_selectedProductParent.Name == FilterSpecialCase.All.ToString() && productParent.Name == _selectedProductParent.Name)
-            return selectedParentClassName;
+            return _selectedParentClassName;
 
         if (_selectedProductParent.Name == FilterSpecialCase.Empty.ToString() && productParent.Name == _selectedProductParent.Name)
-            return selectedParentClassName;
+            return _selectedParentClassName;
 
-        return _selectedProductParent.Id == productParent.Id ? selectedParentClassName : "";
+        return _selectedProductParent.Id == productParent.Id ? _selectedParentClassName : "";
     }
 
     #endregion
