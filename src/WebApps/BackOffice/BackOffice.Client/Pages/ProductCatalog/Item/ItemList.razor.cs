@@ -1,6 +1,7 @@
 ﻿using BackOffice.Client.Pages.ProductCatalog.Parent;
 using BackOffice.Core.Models.ProductCatalog;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 using UI.Razor.Enums;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Item;
@@ -14,6 +15,8 @@ public partial class ItemList : OrsComponentBase
     [Inject] public IProductCatalogService<ProductParent> ProductParentService { get; set; } = null!;
 
     [Inject] private TabsService _tabsService { get; set; } = null!;
+
+    [Inject] private IJSRuntime JSRuntime { get; set; } = null!;
 
     #endregion
 
@@ -30,6 +33,8 @@ public partial class ItemList : OrsComponentBase
     private DataGridEditMode _editMode = DataGridEditMode.Form;
     private DataGridEditTrigger _editTrigger = DataGridEditTrigger.Manual;
     private DialogOptions _dialogOptions = new() { DisableBackdropClick = true };
+
+    private ProductItem? _selectedItem;
 
     private Func<ProductItem, bool> _quickFilter => x =>
     {
@@ -53,6 +58,10 @@ public partial class ItemList : OrsComponentBase
 
         return false;
     };
+
+    private string _contextMenuId = "ors-context-menu";
+
+    private MudMenu _contextMenu = null!;
 
     #endregion
 
@@ -79,7 +88,7 @@ public partial class ItemList : OrsComponentBase
             ProductItemService.OnChanged += OnProductItemChanged;
             ProductParentService.OnChanged += OnProductItemParentChanged;
             await ReloadProductItems();
-            await ReloadItemParents(); ;
+            await ReloadItemParents();
         }
 
         await base.OnAfterRenderAsync(firstRender);
@@ -129,18 +138,50 @@ public partial class ItemList : OrsComponentBase
         CallRequestRefresh();
     }
 
-    private async Task RowClick(DataGridRowClickEventArgs<ProductItem> eventArg)
+    private void RowClick(DataGridRowClickEventArgs<ProductItem> eventArg)
     {
-        if (eventArg.MouseEventArgs.Detail == 1)
+        if (eventArg.MouseEventArgs.Detail is 1)
             return;
 
         _editMode = DataGridEditMode.Form;
         _editTrigger = DataGridEditTrigger.OnRowClick;
-
-        await Task.Run(() =>
-        {
-        });
     }
+
+    private async Task RowClickContextMenu(DataGridRowClickEventArgs<ProductItem> eventArg)
+    {
+        var contextMenu = await JSRuntime.InvokeAsync<IJSObjectReference>("document.getElementById", _contextMenuId);
+        await contextMenu.InvokeVoidAsync("style.setProperty", "left", $"{eventArg.MouseEventArgs.ClientX}px");
+        await contextMenu.InvokeVoidAsync("style.setProperty", "top", $"{eventArg.MouseEventArgs.ClientY}px");
+        await contextMenu.InvokeVoidAsync("style.setProperty", "display", "block");
+
+        _selectedItem = eventArg.Item;
+        await _contextMenu.SetParametersAsync(ParameterView.FromDictionary(new Dictionary<string, object?>
+        {
+            { "Disabled", false }
+        }));
+        _contextMenu.OpenMenu(eventArg.MouseEventArgs);
+    }
+
+    private void CreateNewItemBasedOnExisting()
+    {
+        if (_selectedItem is null)
+            return;
+
+        // TODO: Create new item based on existing item
+
+        CallRequestRefresh();
+    }
+
+    private async Task OnContextMenuOpenChanged()
+    {
+        if(_contextMenu.IsOpen)
+            return;
+
+        await _contextMenu.SetParametersAsync(ParameterView.FromDictionary(new Dictionary<string, object?>
+        {
+            { "Disabled", !_contextMenu.Disabled }
+        }));
+    } 
 
     private async Task OnProductItemChanged(ProductItem changedItem)
     {
@@ -149,7 +190,7 @@ public partial class ItemList : OrsComponentBase
 
     private async Task ReloadProductItems(ProductParent? productParent = null)
     {
-       if(productParent == null)
+        if (productParent == null)
         {
             var productItemsList = await ProductItemService.GetAllAsync();
             _productItems = [.. productItemsList];
@@ -171,7 +212,7 @@ public partial class ItemList : OrsComponentBase
     {
         _isItemParentsOpen = !_isItemParentsOpen;
 
-        if(_isItemParentsOpen)
+        if (_isItemParentsOpen)
             _splitterPercentage = 75;
         else
             _splitterPercentage = 100;
@@ -181,9 +222,9 @@ public partial class ItemList : OrsComponentBase
 
     private async void OnParentItemDoubleClick(ProductParent productParent, MouseEventArgs mouseEventArgs)
     {
-        _selectedProductParent = productParent; 
-        
-        if(productParent.Name == FilterSpecialCase.All.ToString())
+        _selectedProductParent = productParent;
+
+        if (productParent.Name == FilterSpecialCase.All.ToString())
         {
             await ReloadProductItems();
             _selectedProductParent = null;
@@ -226,7 +267,7 @@ public partial class ItemList : OrsComponentBase
         _itemParents.Clear();
         _itemParents.Add(new ProductParent { Id = Guid.NewGuid(), Name = FilterSpecialCase.All.ToString() });
         _itemParents.Add(new ProductParent { Id = Guid.NewGuid(), Name = FilterSpecialCase.Empty.ToString() });
-        
+
         foreach (var itemParent in itemParentsList)
         {
             _itemParents.Add(itemParent);
@@ -243,7 +284,7 @@ public partial class ItemList : OrsComponentBase
         if (_selectedProductParent.Name == FilterSpecialCase.All.ToString() && productParent.Name == _selectedProductParent.Name)
             return selectedParentClassName;
 
-        if(_selectedProductParent.Name == FilterSpecialCase.Empty.ToString() && productParent.Name == _selectedProductParent.Name)
+        if (_selectedProductParent.Name == FilterSpecialCase.Empty.ToString() && productParent.Name == _selectedProductParent.Name)
             return selectedParentClassName;
 
         return _selectedProductParent.Id == productParent.Id ? selectedParentClassName : "";

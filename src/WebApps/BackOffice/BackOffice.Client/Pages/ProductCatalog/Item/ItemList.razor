@@ -11,10 +11,27 @@
 
     <StartContent>
 
-        <MudDataGrid T="ProductItem" Items="@_productItems" Filterable="true" QuickFilter="@_quickFilter" EditMode="@(_editMode)" EditTrigger="@(_editTrigger)"
-                     StartedEditingItem="@StartedEditingItem" CanceledEditingItem="@CanceledEditingItem" CommittedItemChanges="@CommittedItemChanges" ReadOnly="false" RowClick="RowClick"
-                     EditDialogOptions="_dialogOptions" FixedHeader="true" HeaderClass="data-grid-header" Dense="true" ColumnResizeMode="ResizeMode.Column"
-                     DragDropColumnReordering="true" Style="height:100%; display:flex; flex-direction:column; width:100%; resize:horizontal">
+        <MudDataGrid T="ProductItem"
+                     Items="@_productItems"
+                     Filterable="true"
+                     QuickFilter="@_quickFilter"
+                     EditMode="@(_editMode)"
+                     EditTrigger="@(_editTrigger)"
+                     StartedEditingItem="@StartedEditingItem"
+                     CanceledEditingItem="@CanceledEditingItem"
+                     CommittedItemChanges="@CommittedItemChanges"
+                     ReadOnly="false"
+                     RowClick="RowClick"
+                     RowContextMenuClick="RowClickContextMenu"
+                     RowClass="cursor-pointer"
+                     EditDialogOptions="_dialogOptions"
+                     FixedHeader="true"
+                     HeaderClass="data-grid-header"
+                     Dense
+                     Hover
+                     ColumnResizeMode="ResizeMode.Column"
+                     DragDropColumnReordering="true"
+                     Style="height:100%; display:flex; flex-direction:column; width:100%; resize:horizontal">
 
 
             <ToolBarContent>
@@ -47,6 +64,19 @@
 
         </MudDataGrid>
 
+        <MudMenu Id="@_contextMenuId"
+                 @ref="_contextMenu"
+                 Style="position: fixed; display: none;" 
+                 Dense
+                 Disabled
+                 IsOpenChanged="OnContextMenuOpenChanged"
+                 ActivationEvent="MouseEvent.MouseOver"
+                 AnchorOrigin="Origin.BottomLeft" 
+                 TransformOrigin="Origin.TopLeft">
+
+            <MudMenuItem OnClick="CreateNewItemBasedOnExisting">Create New Item</MudMenuItem>
+        </MudMenu>
+
     </StartContent>
 
     <EndContent>
@@ -63,20 +93,19 @@
             <MudTreeView T="ProductParent" Items="@_itemParents" Hover="true" Dense>
                 <ItemTemplate Context="item">
 
-                    <MudTreeViewItem Items="@item.Children" 
-                        Icon="@Icons.Material.Outlined.Folder" 
-                        Value="item" 
-                        OnDoubleClick="@(e => OnParentItemDoubleClick(item, e))"
-                        Class="@($"{GetItemClass(item)} ors-no-select")">
+                    <MudTreeViewItem Items="@item.Children"
+                                     Icon="@Icons.Material.Outlined.Folder"
+                                     Value="item"
+                                     OnDoubleClick="@(e => OnParentItemDoubleClick(item, e))"
+                                     Class="@($"{GetItemClass(item)} ors-no-select")">
 
                         <BodyContent>
                             <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
                                 <MudText Class="ors-tree-item-parent-code" Style="flex-basis: 20%; margin-right: 16px;">@item.GetCode()</MudText>
                                 <MudText Class="ors-tree-item-parent-name" Style="flex-grow: 1;">@item.Name</MudText>
-                                <MudIconButton Size="@Size.Small" 
-                                    Icon="@IconHelper.Open" 
-                                    OnClick="@(() => OpenItemParentClick(context))"
-                                   />
+                                <MudIconButton Size="@Size.Small"
+                                               Icon="@IconHelper.Open"
+                                               OnClick="@(() => OpenItemParentClick(context))" />
                             </div>
                         </BodyContent>
 
