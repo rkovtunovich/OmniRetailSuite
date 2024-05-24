@@ -1,7 +1,7 @@
 ﻿@namespace BackOffice.Client.Pages.Retail.Cashiers
 @inherits SelectionListBase<Cashier>
 
-<MudDataGrid T="Cashier" Items="@Items" Filterable="true" QuickFilter="@_quickFilter"
+<MudDataGrid T="Cashier" Items="@Items" Filterable="true" QuickFilter="@QuickFilter"
              ReadOnly="true"
              SelectedItems="SelectedItems"
              MultiSelection="true"
@@ -12,7 +12,7 @@
     <ToolBarContent>
 
         <MudSpacer />
-        <MudTextField @bind-Value="@_quickFilterSearchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+        <MudTextField @bind-Value="@QuickFilterSearchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
     </ToolBarContent>
 

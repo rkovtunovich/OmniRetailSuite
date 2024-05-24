@@ -6,15 +6,13 @@ using UI.Razor.Enums;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Item;
 
-public partial class ItemList : OrsComponentBase
+public partial class ItemList : ListBase<ProductItem>
 {
     #region Injects
 
     [Inject] public IProductCatalogService<ProductItem> ProductItemService { get; set; } = null!;
 
     [Inject] public IProductCatalogService<ProductParent> ProductParentService { get; set; } = null!;
-
-    [Inject] private TabsService _tabsService { get; set; } = null!;
 
     [Inject] private IJSRuntime JSRuntime { get; set; } = null!;
 
@@ -26,42 +24,11 @@ public partial class ItemList : OrsComponentBase
 
     #region Product Items
 
-    private List<ProductItem> _productItems = [];
-
-    private string? _searchString;
-
     private DataGridEditMode _editMode = DataGridEditMode.Form;
     private DataGridEditTrigger _editTrigger = DataGridEditTrigger.Manual;
     private DialogOptions _dialogOptions = new() { DisableBackdropClick = true };
 
-    private ProductItem? _selectedItem;
-
-    private Func<ProductItem, bool> _quickFilter => x =>
-    {
-        if (string.IsNullOrWhiteSpace(_searchString))
-            return true;
-
-        if (x.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
-
-        if (x.Description.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
-
-        if (x.ProductBrand?.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ?? false)
-            return true;
-
-        if (x.ProductType?.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ?? false)
-            return true;
-
-        if ($"{x.Id} {x.Price}".Contains(_searchString))
-            return true;
-
-        return false;
-    };
-
     private string _contextMenuId = "ors-context-menu";
-    private static readonly string _selectedRowClassName = "ors-selected-row";
-
     private MudMenu _contextMenu = null!;
 
     #endregion
@@ -108,9 +75,35 @@ public partial class ItemList : OrsComponentBase
 
     #region Product Items
 
+    private void SetFilterString()
+    {
+        QuickFilter = x =>
+        {
+            if (string.IsNullOrWhiteSpace(QuickFilterSearchString))
+                return true;
+
+            if (x.Name.Contains(QuickFilterSearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            if (x.Description.Contains(QuickFilterSearchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            if (x.ProductBrand?.Name.Contains(QuickFilterSearchString, StringComparison.OrdinalIgnoreCase) ?? false)
+                return true;
+
+            if (x.ProductType?.Name.Contains(QuickFilterSearchString, StringComparison.OrdinalIgnoreCase) ?? false)
+                return true;
+
+            if ($"{x.Id} {x.Price}".Contains(QuickFilterSearchString))
+                return true;
+
+            return false;
+        };
+    }
+
     private void CreateItemClick()
     {
-        _tabsService.TryCreateTab<ItemCreate>();
+        TabsService.TryCreateTab<ItemCreate>();
     }
 
     private void OpenItemClick(CellContext<ProductItem> context)
@@ -120,7 +113,7 @@ public partial class ItemList : OrsComponentBase
             { nameof(ItemDetails.Id), context.Item.Id }
         };
 
-        _tabsService.TryCreateTab<ItemDetails>(parameters);
+        TabsService.TryCreateTab<ItemDetails>(parameters);
     }
 
     private void StartedEditingItem(ProductItem item)
@@ -141,7 +134,7 @@ public partial class ItemList : OrsComponentBase
 
     private void RowClick(DataGridRowClickEventArgs<ProductItem> eventArg)
     {
-        _selectedItem = eventArg.Item;
+        SelectedItem = eventArg.Item;
 
         if (eventArg.MouseEventArgs.Detail is 1)
             return;
@@ -152,14 +145,14 @@ public partial class ItemList : OrsComponentBase
 
     private async Task RowClickContextMenu(DataGridRowClickEventArgs<ProductItem> eventArg)
     {
-        _selectedItem = eventArg.Item;
+        SelectedItem = eventArg.Item;
 
         var contextMenu = await JSRuntime.InvokeAsync<IJSObjectReference>("document.getElementById", _contextMenuId);
         await contextMenu.InvokeVoidAsync("style.setProperty", "left", $"{eventArg.MouseEventArgs.ClientX}px");
         await contextMenu.InvokeVoidAsync("style.setProperty", "top", $"{eventArg.MouseEventArgs.ClientY}px");
         await contextMenu.InvokeVoidAsync("style.setProperty", "display", "block");
 
-        _selectedItem = eventArg.Item;
+        SelectedItem = eventArg.Item;
         await _contextMenu.SetParametersAsync(ParameterView.FromDictionary(new Dictionary<string, object?>
         {
             { "Disabled", false }
@@ -169,17 +162,17 @@ public partial class ItemList : OrsComponentBase
 
     private void CreateNewItemBasedOnExisting()
     {
-        if (_selectedItem is null)
+        if (SelectedItem is null)
             return;
 
-        var clonedItem = _selectedItem.Clone();
+        var clonedItem = SelectedItem.Clone();
 
         var parameters = new Dictionary<string, object>
         {
             { nameof(ItemCreate.Model), clonedItem }
         };
 
-        _tabsService.TryCreateTab<ItemCreate>(parameters);
+        TabsService.TryCreateTab<ItemCreate>(parameters);
 
         CallRequestRefresh();
     }
@@ -205,26 +198,15 @@ public partial class ItemList : OrsComponentBase
         if (productParent == null)
         {
             var productItemsList = await ProductItemService.GetAllAsync();
-            _productItems = [.. productItemsList];
+            Items = [.. productItemsList];
         }
         else
         {
             var productItemsList = await ProductItemService.GetByParentAsync(productParent.Id);
-            _productItems = [.. productItemsList];
+            Items = [.. productItemsList];
         }
 
         CallRequestRefresh();
-    }
-
-    private string SelectedRowClassFunc(ProductItem currentItem, int line)
-    {
-        if (_selectedItem is null)
-            return string.Empty;
-
-        if(_selectedItem.Id == currentItem.Id)
-            return _selectedRowClassName;
-
-        return string.Empty;
     }
 
     #endregion
@@ -246,7 +228,7 @@ public partial class ItemList : OrsComponentBase
     private async void OnParentItemDoubleClick(ProductParent productParent, MouseEventArgs mouseEventArgs)
     {
         _selectedProductParent = productParent;
-        _selectedItem = null;
+        SelectedItem = null;
 
         if (productParent.Name == FilterSpecialCase.All.ToString())
         {
@@ -272,12 +254,12 @@ public partial class ItemList : OrsComponentBase
             { nameof(ItemParentDetails.Id), viewItem.Value.Id }
         };
 
-        _tabsService.TryCreateTab<ItemParentDetails>(parameters);
+        TabsService.TryCreateTab<ItemParentDetails>(parameters);
     }
 
     private void CreateCatalogParentClick()
     {
-        _tabsService.TryCreateTab<ItemParentCreate>();
+        TabsService.TryCreateTab<ItemParentCreate>();
     }
 
     private async Task OnProductItemParentChanged(ProductParent changedItem)

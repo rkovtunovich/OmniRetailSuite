@@ -1,9 +1,9 @@
 ﻿@page "/product-items"
 @* @attribute [Authorize(Roles = BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS)] *@
 @attribute [Authorize]
-@inherits OrsComponentBase
-
 @namespace BackOffice.Client.Pages.ProductCatalog.Item
+
+@inherits ListBase<ProductItem>
 
 <PageTitle>Manage Product Item</PageTitle>
 
@@ -12,9 +12,9 @@
     <StartContent>
 
         <MudDataGrid T="ProductItem"
-                     Items="@_productItems"
+                     Items="@Items"
                      Filterable="true"
-                     QuickFilter="@_quickFilter"
+                     QuickFilter="@QuickFilter"
                      EditMode="@(_editMode)"
                      EditTrigger="@(_editTrigger)"
                      StartedEditingItem="@StartedEditingItem"
@@ -39,7 +39,7 @@
 
                 <MudButton OnClick="@CreateItemClick" Color="@Color.Success" Class="add-item-btn">Add</MudButton>
                 <MudSpacer />
-                <MudTextField @bind-Value="@_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                <MudTextField @bind-Value="@QuickFilterSearchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
                               AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0" Style="max-width:30%"></MudTextField>
                 <MudTooltip Text="hierarchy">
                     <MudButton Color="@Color.Primary" @onclick="@ShowCatalogParentsClick">
@@ -76,7 +76,7 @@
                  AnchorOrigin="Origin.BottomLeft" 
                  TransformOrigin="Origin.TopLeft">
 
-            <MudMenuItem OnClick="CreateNewItemBasedOnExisting">Create by copying</MudMenuItem>
+            <MudMenuItem OnClick="CreateNewItemBasedOnExisting" >Create by copying</MudMenuItem>
         </MudMenu>
 
     </StartContent>

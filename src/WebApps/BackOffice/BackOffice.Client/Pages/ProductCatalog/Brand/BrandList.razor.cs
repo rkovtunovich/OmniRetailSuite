@@ -1,31 +1,20 @@
 ﻿using BackOffice.Core.Models.ProductCatalog;
+using Microsoft.JSInterop;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Brand;
 
-public partial class BrandList : OrsComponentBase
+public partial class BrandList : ListBase<ProductBrand>
 {
     [Inject] public IProductCatalogService<ProductBrand> ProductBrandService { get; set; } = null!;
 
-    [Inject] private TabsService _tabsService { get; set; } = null!;
-
-    private IList<ProductBrand> _catalogBrands = [];
-
-    private string? _searchString;
+    [Inject] private IJSRuntime JSRuntime { get; set; } = null!;
 
     private DataGridEditMode _editMode = DataGridEditMode.Form;
     private DataGridEditTrigger _editTrigger = DataGridEditTrigger.Manual;
     private DialogOptions _dialogOptions = new() { DisableBackdropClick = true };
 
-    private Func<ProductBrand, bool> _quickFilter => x =>
-    {
-        if (string.IsNullOrWhiteSpace(_searchString))
-            return true;
-
-        if (x.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
-
-        return false;
-    };
+    private string _contextMenuId = "ors-context-menu";
+    private MudMenu _contextMenu = null!;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -41,7 +30,7 @@ public partial class BrandList : OrsComponentBase
 
     private void CreateBrandClick()
     {
-        _tabsService.TryCreateTab<BrandCreate>();
+        TabsService.TryCreateTab<BrandCreate>();
     }
 
     private void OpenBrandClick(CellContext<ProductBrand> context)
@@ -51,12 +40,12 @@ public partial class BrandList : OrsComponentBase
             { nameof(BrandDetails.Id), context.Item.Id }
         };
 
-        _tabsService.TryCreateTab<BrandDetails>(parameters);
+        TabsService.TryCreateTab<BrandDetails>(parameters);
     }
 
     private async Task ReloadCatalogTypes()
     {
-        _catalogBrands = await ProductBrandService.GetAllAsync();
+        Items = await ProductBrandService.GetAllAsync();
 
         CallRequestRefresh();
     }
@@ -92,8 +81,25 @@ public partial class BrandList : OrsComponentBase
 
     private async Task OnCatalogBrandChanged(ProductBrand changedBrand)
     {
-        _catalogBrands = await ProductBrandService.GetAllAsync();
+        Items = await ProductBrandService.GetAllAsync();
         CallRequestRefresh();
+    }
+
+    private async Task RowClickContextMenu(DataGridRowClickEventArgs<ProductBrand> eventArg)
+    {
+        SelectedItem = eventArg.Item;
+
+        var contextMenu = await JSRuntime.InvokeAsync<IJSObjectReference>("document.getElementById", _contextMenuId);
+        await contextMenu.InvokeVoidAsync("style.setProperty", "left", $"{eventArg.MouseEventArgs.ClientX}px");
+        await contextMenu.InvokeVoidAsync("style.setProperty", "top", $"{eventArg.MouseEventArgs.ClientY}px");
+        await contextMenu.InvokeVoidAsync("style.setProperty", "display", "block");
+
+        SelectedItem = eventArg.Item;
+        await _contextMenu.SetParametersAsync(ParameterView.FromDictionary(new Dictionary<string, object?>
+        {
+            { "Disabled", false }
+        }));
+        _contextMenu.OpenMenu(eventArg.MouseEventArgs);
     }
 
     public override void Dispose()

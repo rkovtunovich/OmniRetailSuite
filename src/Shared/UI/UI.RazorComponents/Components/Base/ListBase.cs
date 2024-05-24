@@ -8,11 +8,13 @@ public abstract class ListBase<TItem> : OrsComponentBase where TItem : class
     public List<ToolbarCommand> ToolbarCommands { get; set; } = null!;
 
     [Parameter]
-    public List<TItem> Items { get; set; } = [];
+    public IList<TItem> Items { get; set; } = [];
 
-    protected string? _quickFilterSearchString;
+    protected TItem? SelectedItem { get; set; }
 
-    protected Func<TItem, bool> _quickFilter = null!;
+    protected string? QuickFilterSearchString { get; set; }
+
+    protected Func<TItem, bool> QuickFilter { get; set; } = null!;
 
     protected virtual void DefineToolbarCommands()
     {
@@ -32,11 +34,22 @@ public abstract class ListBase<TItem> : OrsComponentBase where TItem : class
         TabsService.RemoveTab(TabsService.Tabs?.ActivePanel);
     }
 
+    protected virtual string SelectedRowClassFunc(TItem currentItem, int line)
+    {
+        if (SelectedItem is null)
+            return string.Empty;
+
+        if (SelectedItem == currentItem)
+            return CssClassNamesHelper.SelectedRow;
+
+        return string.Empty;
+    }
+
     private void SetDefaultQuickFilter()
     {
-        _quickFilter = x =>
+        QuickFilter = x =>
         {
-            if (string.IsNullOrWhiteSpace(_quickFilterSearchString))
+            if (string.IsNullOrWhiteSpace(QuickFilterSearchString))
                 return true;
 
             var properties = typeof(TItem).GetProperties();
@@ -48,7 +61,7 @@ public abstract class ListBase<TItem> : OrsComponentBase where TItem : class
                 if (value is null)
                     continue;
 
-                if (value.ToString()?.Contains(_quickFilterSearchString, StringComparison.OrdinalIgnoreCase) ?? false)
+                if (value.ToString()?.Contains(QuickFilterSearchString, StringComparison.OrdinalIgnoreCase) ?? false)
                     return true;
             }
 

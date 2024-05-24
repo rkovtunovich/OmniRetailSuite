@@ -9,7 +9,7 @@
 <MudDataGrid T="Receipt"
              Items="@Items"
              Filterable="true"
-             QuickFilter="@_quickFilter"
+             QuickFilter="@QuickFilter"
              ReadOnly="false"
              FixedHeader="true"
              HeaderClass="data-grid-header"
@@ -18,7 +18,7 @@
     <ToolBarContent>
 
         <MudSpacer />
-        <MudTextField @bind-Value="@_quickFilterSearchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+        <MudTextField @bind-Value="@QuickFilterSearchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
     </ToolBarContent>
 

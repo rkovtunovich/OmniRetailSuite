@@ -8,7 +8,7 @@
 
 <PageTitle>Manage Cashier</PageTitle>
 
-<MudDataGrid T="Cashier" Items="@Items" Filterable="true" QuickFilter="@_quickFilter" EditMode="@(_editMode)" EditTrigger="@(_editTrigger)"
+<MudDataGrid T="Cashier" Items="@Items" Filterable="true" QuickFilter="@QuickFilter" EditMode="@(_editMode)" EditTrigger="@(_editTrigger)"
              StartedEditingItem="@StartedEditingItem" CanceledEditingItem="@CanceledEditingItem" CommittedItemChanges="@CommittedItemChanges" ReadOnly="false" RowClick="RowClick"
              EditDialogOptions="_dialogOptions" FixedHeader="true" HeaderClass="data-grid-header"
              Style="height:100%; display:flex; flex-direction:column">
@@ -17,7 +17,7 @@
 
         <MudButton OnClick="@CreateClick" Color="@Color.Success" Class="add-item-btn">Add</MudButton>
         <MudSpacer />
-        <MudTextField @bind-Value="@_quickFilterSearchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+        <MudTextField @bind-Value="@QuickFilterSearchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
     </ToolBarContent>
 
