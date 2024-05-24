@@ -172,7 +172,14 @@ public partial class ItemList : OrsComponentBase
         if (_selectedItem is null)
             return;
 
-        // TODO: Create new item based on existing item
+        var clonedItem = _selectedItem.Clone();
+
+        var parameters = new Dictionary<string, object>
+        {
+            { nameof(ItemCreate.Model), clonedItem }
+        };
+
+        _tabsService.TryCreateTab<ItemCreate>(parameters);
 
         CallRequestRefresh();
     }
