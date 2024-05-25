@@ -66,18 +66,7 @@
 
         </MudDataGrid>
 
-        <MudMenu Id="@_contextMenuId"
-                 @ref="_contextMenu"
-                 Style="position: fixed; display: none;" 
-                 Dense
-                 Disabled
-                 IsOpenChanged="OnContextMenuOpenChanged"
-                 ActivationEvent="MouseEvent.MouseOver"
-                 AnchorOrigin="Origin.BottomLeft" 
-                 TransformOrigin="Origin.TopLeft">
-
-            <MudMenuItem OnClick="CreateNewItemBasedOnExisting" >Create by copying</MudMenuItem>
-        </MudMenu>
+        <ContextMenu @ref="ContextMenu" Items="ContextMenuItems" />
 
     </StartContent>
 

@@ -1,7 +1,6 @@
 ﻿using BackOffice.Client.Pages.ProductCatalog.Parent;
 using BackOffice.Core.Models.ProductCatalog;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.JSInterop;
 using UI.Razor.Enums;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Item;
@@ -14,8 +13,6 @@ public partial class ItemList : ListBase<ProductItem>
 
     [Inject] public IProductCatalogService<ProductParent> ProductParentService { get; set; } = null!;
 
-    [Inject] private IJSRuntime JSRuntime { get; set; } = null!;
-
     #endregion
 
     #region Fields
@@ -27,9 +24,6 @@ public partial class ItemList : ListBase<ProductItem>
     private DataGridEditMode _editMode = DataGridEditMode.Form;
     private DataGridEditTrigger _editTrigger = DataGridEditTrigger.Manual;
     private DialogOptions _dialogOptions = new() { DisableBackdropClick = true };
-
-    private string _contextMenuId = "ors-context-menu";
-    private MudMenu _contextMenu = null!;
 
     #endregion
 
@@ -48,6 +42,23 @@ public partial class ItemList : ListBase<ProductItem>
     #endregion
 
     #region Overrides
+
+    private void DefineContextMenuItems()
+    {
+        ContextMenuItems =
+        [
+            new () {
+                Text = "Open",
+                Icon = Icons.Material.Outlined.OpenInNew,
+                OnClick = EventCallback.Factory.Create(this, () => OpenItem(SelectedItem))
+            },
+            new() {
+                Text = "Create by copying",
+                Icon = Icons.Material.Outlined.Add,
+                OnClick = EventCallback.Factory.Create(this, CreateNewItemBasedOnExisting)
+            },
+        ];
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -75,32 +86,6 @@ public partial class ItemList : ListBase<ProductItem>
 
     #region Product Items
 
-    private void SetFilterString()
-    {
-        QuickFilter = x =>
-        {
-            if (string.IsNullOrWhiteSpace(QuickFilterSearchString))
-                return true;
-
-            if (x.Name.Contains(QuickFilterSearchString, StringComparison.OrdinalIgnoreCase))
-                return true;
-
-            if (x.Description.Contains(QuickFilterSearchString, StringComparison.OrdinalIgnoreCase))
-                return true;
-
-            if (x.ProductBrand?.Name.Contains(QuickFilterSearchString, StringComparison.OrdinalIgnoreCase) ?? false)
-                return true;
-
-            if (x.ProductType?.Name.Contains(QuickFilterSearchString, StringComparison.OrdinalIgnoreCase) ?? false)
-                return true;
-
-            if ($"{x.Id} {x.Price}".Contains(QuickFilterSearchString))
-                return true;
-
-            return false;
-        };
-    }
-
     private void CreateItemClick()
     {
         TabsService.TryCreateTab<ItemCreate>();
@@ -108,9 +93,17 @@ public partial class ItemList : ListBase<ProductItem>
 
     private void OpenItemClick(CellContext<ProductItem> context)
     {
+        OpenItem(context.Item);
+    }
+
+    private void OpenItem(ProductItem? item)
+    {
+        if (item is null)
+            return;
+
         var parameters = new Dictionary<string, object>
         {
-            { nameof(ItemDetails.Id), context.Item.Id }
+            { nameof(ItemDetails.Id), item.Id }
         };
 
         TabsService.TryCreateTab<ItemDetails>(parameters);
@@ -146,18 +139,9 @@ public partial class ItemList : ListBase<ProductItem>
     private async Task RowClickContextMenu(DataGridRowClickEventArgs<ProductItem> eventArg)
     {
         SelectedItem = eventArg.Item;
+        DefineContextMenuItems();
 
-        var contextMenu = await JSRuntime.InvokeAsync<IJSObjectReference>("document.getElementById", _contextMenuId);
-        await contextMenu.InvokeVoidAsync("style.setProperty", "left", $"{eventArg.MouseEventArgs.ClientX}px");
-        await contextMenu.InvokeVoidAsync("style.setProperty", "top", $"{eventArg.MouseEventArgs.ClientY}px");
-        await contextMenu.InvokeVoidAsync("style.setProperty", "display", "block");
-
-        SelectedItem = eventArg.Item;
-        await _contextMenu.SetParametersAsync(ParameterView.FromDictionary(new Dictionary<string, object?>
-        {
-            { "Disabled", false }
-        }));
-        _contextMenu.OpenMenu(eventArg.MouseEventArgs);
+        await ContextMenu.ShowContextMenu(eventArg.MouseEventArgs);
     }
 
     private void CreateNewItemBasedOnExisting()
@@ -176,17 +160,6 @@ public partial class ItemList : ListBase<ProductItem>
 
         CallRequestRefresh();
     }
-
-    private async Task OnContextMenuOpenChanged()
-    {
-        if(_contextMenu.IsOpen)
-            return;
-
-        await _contextMenu.SetParametersAsync(ParameterView.FromDictionary(new Dictionary<string, object?>
-        {
-            { "Disabled", !_contextMenu.Disabled }
-        }));
-    } 
 
     private async Task OnProductItemChanged(ProductItem changedItem)
     {

@@ -1,4 +1,6 @@
-﻿namespace UI.Razor.Components.Base;
+﻿using UI.Razor.Components.Common;
+
+namespace UI.Razor.Components.Base;
 
 public abstract class ListBase<TItem> : OrsComponentBase where TItem : class
 {
@@ -15,6 +17,10 @@ public abstract class ListBase<TItem> : OrsComponentBase where TItem : class
     protected string? QuickFilterSearchString { get; set; }
 
     protected Func<TItem, bool> QuickFilter { get; set; } = null!;
+
+    protected ContextMenu ContextMenu { get; set; } = null!;
+
+    protected List<ContextMenuItem> ContextMenuItems { get; set; } = [];
 
     protected virtual void DefineToolbarCommands()
     {
