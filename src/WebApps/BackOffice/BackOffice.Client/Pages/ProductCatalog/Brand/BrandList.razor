@@ -22,7 +22,7 @@
              RowClass="cursor-pointer"
              RowClassFunc="@((item, line) => SelectedRowClassFunc(item, line))"
              EditDialogOptions="_dialogOptions" 
-             FixedHeader="true"
+             FixedHeader
              Dense
              Hover
              HeaderClass="data-grid-header"
@@ -47,3 +47,5 @@
     </Columns>
 
 </MudDataGrid>
+
+<ContextMenu @ref="ContextMenu" Items="ContextMenuItems" />

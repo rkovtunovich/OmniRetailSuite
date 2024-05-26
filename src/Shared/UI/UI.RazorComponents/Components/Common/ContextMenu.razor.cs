@@ -13,10 +13,10 @@ public partial class ContextMenu : OrsComponentBase
     [Parameter]
     public EventCallback<bool> OnOpenChanged { get; set; }
 
-    private string _contextMenuId = "ors-context-menu";
+    private string _contextMenuId = null!;
     private MudMenu _contextMenu = null!;
 
-    public async Task ShowContextMenu(MouseEventArgs eventArg)
+    public async Task Show(MouseEventArgs eventArg)
     {
         var contextMenu = await JSRuntime.InvokeAsync<IJSObjectReference>("document.getElementById", _contextMenuId);
         await contextMenu.InvokeVoidAsync("style.setProperty", "left", $"{eventArg.ClientX}px");
@@ -37,6 +37,8 @@ public partial class ContextMenu : OrsComponentBase
 
         if(!OnOpenChanged.HasDelegate)
             OnOpenChanged = EventCallback.Factory.Create<bool>(this, OnContextMenuOpenChanged);
+
+        _contextMenuId = GenerateContextMenuId();
     }
 
     private async Task OnContextMenuOpenChanged(bool state)
@@ -48,5 +50,10 @@ public partial class ContextMenu : OrsComponentBase
         {
             { "Disabled", !_contextMenu.Disabled }
         }));
+    }
+    
+    private string GenerateContextMenuId()
+    {
+        return $"ors-context-menu-{Guid.NewGuid()}";
     }
 }

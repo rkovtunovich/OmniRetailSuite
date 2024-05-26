@@ -1,5 +1,4 @@
 ﻿using BackOffice.Core.Models.ProductCatalog;
-using Microsoft.JSInterop;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Brand;
 
@@ -7,14 +6,11 @@ public partial class BrandList : ListBase<ProductBrand>
 {
     [Inject] public IProductCatalogService<ProductBrand> ProductBrandService { get; set; } = null!;
 
-    [Inject] private IJSRuntime JSRuntime { get; set; } = null!;
-
     private DataGridEditMode _editMode = DataGridEditMode.Form;
     private DataGridEditTrigger _editTrigger = DataGridEditTrigger.Manual;
     private DialogOptions _dialogOptions = new() { DisableBackdropClick = true };
 
-    private string _contextMenuId = "ors-context-menu";
-    private MudMenu _contextMenu = null!;
+    #region Overrides
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -28,19 +24,46 @@ public partial class BrandList : ListBase<ProductBrand>
         await base.OnAfterRenderAsync(firstRender);
     }
 
+    #endregion
+
+    private void DefineContextMenuItems()
+    {
+        ContextMenuItems =
+        [
+            new () {
+                Text = "Open",
+                Icon = Icons.Material.Outlined.OpenInNew,
+                OnClick = EventCallback.Factory.Create(this, () => OpenItem(SelectedItem))
+            },
+            new() {
+                Text = "Create by copying",
+                Icon = Icons.Material.Outlined.Add,
+                OnClick = EventCallback.Factory.Create(this, CreateNewItemBasedOnExisting)
+            },
+        ];
+    }
+
     private void CreateBrandClick()
     {
         TabsService.TryCreateTab<BrandCreate>();
     }
 
-    private void OpenBrandClick(CellContext<ProductBrand> context)
+    private void OpenItem(ProductBrand? item)
     {
+        if (item is null)
+            return;
+
         var parameters = new Dictionary<string, object>
         {
-            { nameof(BrandDetails.Id), context.Item.Id }
+            { nameof(BrandDetails.Id), item.Id }
         };
 
         TabsService.TryCreateTab<BrandDetails>(parameters);
+    }
+
+    private void OpenBrandClick(CellContext<ProductBrand> context)
+    {
+        OpenItem(context.Item);
     }
 
     private async Task ReloadCatalogTypes()
@@ -66,17 +89,15 @@ public partial class BrandList : ListBase<ProductBrand>
         CallRequestRefresh();
     }
 
-    private async Task RowClick(DataGridRowClickEventArgs<ProductBrand> eventArg)
+    private void RowClick(DataGridRowClickEventArgs<ProductBrand> eventArg)
     {
-        if (eventArg.MouseEventArgs.Detail == 1)
+        SelectedItem = eventArg.Item;
+
+        if (eventArg.MouseEventArgs.Detail is 1)
             return;
 
         _editMode = DataGridEditMode.Form;
         _editTrigger = DataGridEditTrigger.OnRowClick;
-
-        await Task.Run(() =>
-        {
-        });
     }
 
     private async Task OnCatalogBrandChanged(ProductBrand changedBrand)
@@ -88,18 +109,26 @@ public partial class BrandList : ListBase<ProductBrand>
     private async Task RowClickContextMenu(DataGridRowClickEventArgs<ProductBrand> eventArg)
     {
         SelectedItem = eventArg.Item;
+        DefineContextMenuItems();
 
-        var contextMenu = await JSRuntime.InvokeAsync<IJSObjectReference>("document.getElementById", _contextMenuId);
-        await contextMenu.InvokeVoidAsync("style.setProperty", "left", $"{eventArg.MouseEventArgs.ClientX}px");
-        await contextMenu.InvokeVoidAsync("style.setProperty", "top", $"{eventArg.MouseEventArgs.ClientY}px");
-        await contextMenu.InvokeVoidAsync("style.setProperty", "display", "block");
+        await ContextMenu.Show(eventArg.MouseEventArgs);
+    }
 
-        SelectedItem = eventArg.Item;
-        await _contextMenu.SetParametersAsync(ParameterView.FromDictionary(new Dictionary<string, object?>
+    private void CreateNewItemBasedOnExisting()
+    {
+        if (SelectedItem is null)
+            return;
+
+        var clonedItem = SelectedItem.Clone();
+
+        var parameters = new Dictionary<string, object>
         {
-            { "Disabled", false }
-        }));
-        _contextMenu.OpenMenu(eventArg.MouseEventArgs);
+            { nameof(BrandCreate.Model), clonedItem }
+        };
+
+        TabsService.TryCreateTab<BrandCreate>(parameters);
+
+        CallRequestRefresh();
     }
 
     public override void Dispose()

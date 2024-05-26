@@ -43,23 +43,6 @@ public partial class ItemList : ListBase<ProductItem>
 
     #region Overrides
 
-    private void DefineContextMenuItems()
-    {
-        ContextMenuItems =
-        [
-            new () {
-                Text = "Open",
-                Icon = Icons.Material.Outlined.OpenInNew,
-                OnClick = EventCallback.Factory.Create(this, () => OpenItem(SelectedItem))
-            },
-            new() {
-                Text = "Create by copying",
-                Icon = Icons.Material.Outlined.Add,
-                OnClick = EventCallback.Factory.Create(this, CreateNewItemBasedOnExisting)
-            },
-        ];
-    }
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -85,6 +68,23 @@ public partial class ItemList : ListBase<ProductItem>
     #region Private Methods
 
     #region Product Items
+
+    private void DefineContextMenuItems()
+    {
+        ContextMenuItems =
+        [
+            new () {
+                Text = "Open",
+                Icon = Icons.Material.Outlined.OpenInNew,
+                OnClick = EventCallback.Factory.Create(this, () => OpenItem(SelectedItem))
+            },
+            new() {
+                Text = "Create by copying",
+                Icon = Icons.Material.Outlined.Add,
+                OnClick = EventCallback.Factory.Create(this, CreateNewItemBasedOnExisting)
+            },
+        ];
+    }
 
     private void CreateItemClick()
     {
@@ -141,7 +141,7 @@ public partial class ItemList : ListBase<ProductItem>
         SelectedItem = eventArg.Item;
         DefineContextMenuItems();
 
-        await ContextMenu.ShowContextMenu(eventArg.MouseEventArgs);
+        await ContextMenu.Show(eventArg.MouseEventArgs);
     }
 
     private void CreateNewItemBasedOnExisting()
