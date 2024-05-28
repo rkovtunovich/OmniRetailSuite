@@ -40,17 +40,17 @@ public class DbSeeder
         }
     }
 
-    static IEnumerable<Brand> GetPreconfiguredProductBrands()
+    static IEnumerable<ProductBrand> GetPreconfiguredProductBrands()
     {
         return [];
     }
 
-    static IEnumerable<ItemType> GetPreconfiguredProductTypes()
+    static IEnumerable<ProductType> GetPreconfiguredProductTypes()
     {
         return [];
     }
 
-    static IEnumerable<Item> GetPreconfiguredItems()
+    static IEnumerable<ProductItem> GetPreconfiguredItems()
     {
         return [];
     }

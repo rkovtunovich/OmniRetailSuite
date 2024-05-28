@@ -30,10 +30,6 @@ public partial class ItemCreate: CreationFormBase<ProductItem>
 
     private IList<ProductBrand> _itemBrands = [];
 
-    private string LoadPicture => string.IsNullOrEmpty(Model.PictureBase64) ? string.Empty : $"data:image/png;base64, {Model.PictureBase64}";
-
-    private bool HasPicture => !string.IsNullOrEmpty(Model.PictureBase64);
-
     private string _badFileMessage = string.Empty;
 
     private List<ProductParentSelectModel> _flattenedParents = [];

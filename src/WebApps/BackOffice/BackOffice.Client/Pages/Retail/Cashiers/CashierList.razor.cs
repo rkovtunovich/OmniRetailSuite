@@ -8,6 +8,8 @@ public partial class CashierList : ListBase<Cashier>
     private DataGridEditTrigger _editTrigger = DataGridEditTrigger.Manual;
     private DialogOptions _dialogOptions = new() { DisableBackdropClick = true };
 
+    #region Overrides
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -20,19 +22,46 @@ public partial class CashierList : ListBase<Cashier>
         await base.OnAfterRenderAsync(firstRender);
     }
 
+    #endregion
+
+    private void DefineContextMenuItems()
+    {
+        ContextMenuItems =
+        [
+            new () {
+                Text = "Open",
+                Icon = Icons.Material.Outlined.OpenInNew,
+                OnClick = EventCallback.Factory.Create(this, () => OpenItem(SelectedItem))
+            },
+            new() {
+                Text = "Create by copying",
+                Icon = Icons.Material.Outlined.Add,
+                OnClick = EventCallback.Factory.Create(this, CreateNewItemBasedOnExisting)
+            },
+        ];
+    }
+    
     private void CreateClick()
     {
         TabsService.TryCreateTab<CashierCreate>();
     }
 
-    private void OpenClick(CellContext<Cashier> context)
+    private void OpenItem(Cashier? item)
     {
+        if (item is null)
+            return;
+
         var parameters = new Dictionary<string, object>
         {
-            { nameof(CashierDetails.Id), context.Item.Id }
+            { nameof(Cashier.Id), item.Id }
         };
 
         TabsService.TryCreateTab<CashierDetails>(parameters);
+    }
+
+    private void OpenClick(CellContext<Cashier> context)
+    {
+        OpenItem(context.Item); 
     }
 
     private async Task ReloadItems()
@@ -58,22 +87,45 @@ public partial class CashierList : ListBase<Cashier>
         CallRequestRefresh();
     }
 
-    private async Task RowClick(DataGridRowClickEventArgs<Cashier> eventArg)
+    private void RowClick(DataGridRowClickEventArgs<Cashier> eventArg)
     {
-        if (eventArg.MouseEventArgs.Detail == 1)
+        SelectedItem = eventArg.Item;
+
+        if (eventArg.MouseEventArgs.Detail is 1)
             return;
 
         _editMode = DataGridEditMode.Form;
         _editTrigger = DataGridEditTrigger.OnRowClick;
-
-        await Task.Run(() =>
-        {
-        });
     }
 
     private async Task OnChanged(Cashier changed)
     {
         Items = await RetailService.GetAllAsync();
+        CallRequestRefresh();
+    }
+
+    private async Task RowClickContextMenu(DataGridRowClickEventArgs<Cashier> eventArg)
+    {
+        SelectedItem = eventArg.Item;
+        DefineContextMenuItems();
+
+        await ContextMenu.Show(eventArg.MouseEventArgs);
+    }
+
+    private void CreateNewItemBasedOnExisting()
+    {
+        if (SelectedItem is null)
+            return;
+
+        var clonedItem = SelectedItem.Clone();
+
+        var parameters = new Dictionary<string, object>
+        {
+            { nameof(CashierCreate.Model), clonedItem }
+        };
+
+        TabsService.TryCreateTab<CashierCreate>(parameters);
+
         CallRequestRefresh();
     }
 

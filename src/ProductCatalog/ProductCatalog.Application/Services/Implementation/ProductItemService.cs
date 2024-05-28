@@ -4,16 +4,16 @@ using Microsoft.Extensions.Logging;
 
 namespace ProductCatalog.Application.Services.Implementation;
 
-public class ItemService(IItemRepository itemRepository, IEventPublisher eventPublisher, ILogger<ItemService> logger) : IItemService
+public class ProductItemService(IItemRepository itemRepository, IEventPublisher eventPublisher, IMapper mapper, ILogger<ProductItemService> logger) : IItemService
 {
     private readonly IItemRepository _itemRepository = itemRepository;
     private readonly IEventPublisher _eventPublisher = eventPublisher;
-    private readonly ILogger<ItemService> _logger = logger;
+    private readonly ILogger<ProductItemService> _logger = logger;
 
     public async Task<List<ProductItemDto>> GetItemsAsync(int pageSize, int pageIndex)
     {
         var items = await _itemRepository.GetItemsAsync(pageSize, pageIndex);
-        var catalogItemDtos = items.Select(x => x.ToDto()).ToList();
+        var catalogItemDtos = mapper.Map<List<ProductItemDto>>(items);
 
         return catalogItemDtos;
     }
@@ -22,16 +22,16 @@ public class ItemService(IItemRepository itemRepository, IEventPublisher eventPu
     {
         var item = await _itemRepository.GetItemByIdAsync(id);
 
-        if (item == null)
+        if (item is null)
             return null;
 
-        return item.ToDto();
+        return mapper.Map<ProductItemDto>(item);
     }
 
     public async Task<List<ProductItemDto>> GetItemsByNameAsync(string name)
     {
         var items = await _itemRepository.GetItemsByNameAsync(name);
-        var itemsDtos = items.Select(x => x.ToDto()).ToList();
+        var itemsDtos = mapper.Map<List<ProductItemDto>>(items);
 
         itemsDtos = ChangeUriPlaceholder(itemsDtos);
 
@@ -41,15 +41,7 @@ public class ItemService(IItemRepository itemRepository, IEventPublisher eventPu
     public async Task<List<ProductItemDto>> GetItemsByCategoryAsync(Guid? typeId, Guid? brandId)
     {
         var root = await _itemRepository.GetItemsByCategoryAsync(typeId, brandId);
-
-        var totalItems = root.Count;
-
-        var itemsOnPage = root
-            // TODO:
-            //.Skip(pageSize * pageIndex)
-            //.Take(pageSize)
-            .Select(x => x.ToDto())
-            .ToList();
+        var itemsOnPage = mapper.Map<List<ProductItemDto>>(root);
 
         return itemsOnPage;
     }
@@ -57,14 +49,14 @@ public class ItemService(IItemRepository itemRepository, IEventPublisher eventPu
     public async Task<List<ProductItemDto>> GetItemsByParentAsync(Guid parentId)
     {
         var items = await _itemRepository.GetItemsByParentAsync(parentId);
-        var itemsDtos = items.Select(x => x.ToDto()).ToList();
+        var itemsDtos = mapper.Map<List<ProductItemDto>>(items);
 
         return itemsDtos;
     }
 
     public async Task<ProductItemDto> CreateItemAsync(ProductItemDto item)
     {
-        var entity = item.ToEntity();
+        var entity = mapper.Map<ProductItem>(item);
         var result = await _itemRepository.CreateItemAsync(entity);
 
         if (result)
@@ -75,7 +67,7 @@ public class ItemService(IItemRepository itemRepository, IEventPublisher eventPu
 
     public async Task<ProductItemDto> UpdateItemAsync(ProductItemDto item)
     {
-        var entity = item.ToEntity();
+        var entity = mapper.Map<ProductItem>(item);
         var result = await _itemRepository.UpdateItemAsync(entity);
 
         if (result)

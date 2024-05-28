@@ -1,6 +1,6 @@
 ﻿namespace ProductCatalog.Core.Entities.ProductAggregate;
 
-public class ItemParent : EntityBase, ICodedEntity
+public class ProductParent : EntityBase, ICodedEntity
 {
     public string? CodePrefix { get; set; }
 
@@ -10,7 +10,7 @@ public class ItemParent : EntityBase, ICodedEntity
 
     public Guid? ParentId { get; set; }
 
-    public ItemParent? Parent { get; set; }
+    public ProductParent? Parent { get; set; }
 
-    public List<ItemParent>? Children { get; set; }
+    public List<ProductParent>? Children { get; set; }
 }

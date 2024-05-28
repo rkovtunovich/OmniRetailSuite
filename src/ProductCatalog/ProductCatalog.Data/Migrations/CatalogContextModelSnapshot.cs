@@ -17,7 +17,7 @@ namespace ProductCatalog.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "8.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -30,7 +30,7 @@ namespace ProductCatalog.Data.Migrations
 
             modelBuilder.HasSequence<int>("item_type_codes");
 
-            modelBuilder.Entity("ProductCatalog.Core.Entities.ProductAggregate.Brand", b =>
+            modelBuilder.Entity("ProductCatalog.Core.Entities.ProductAggregate.ProductBrand", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -76,7 +76,7 @@ namespace ProductCatalog.Data.Migrations
                     b.ToTable("brands", (string)null);
                 });
 
-            modelBuilder.Entity("ProductCatalog.Core.Entities.ProductAggregate.Item", b =>
+            modelBuilder.Entity("ProductCatalog.Core.Entities.ProductAggregate.ProductItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -87,14 +87,6 @@ namespace ProductCatalog.Data.Migrations
                         .HasMaxLength(13)
                         .HasColumnType("character varying(13)")
                         .HasColumnName("barcode");
-
-                    b.Property<Guid?>("CatalogBrandId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("catalog_brand_id");
-
-                    b.Property<Guid?>("CatalogTypeId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("catalog_type_id");
 
                     b.Property<int>("CodeNumber")
                         .ValueGeneratedOnAdd()
@@ -112,8 +104,8 @@ namespace ProductCatalog.Data.Migrations
                         .HasColumnName("created_at");
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(4000)
+                        .HasColumnType("character varying(4000)")
                         .HasColumnName("description");
 
                     b.Property<bool>("IsDeleted")
@@ -130,10 +122,6 @@ namespace ProductCatalog.Data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("parent_id");
 
-                    b.Property<string>("PictureFileName")
-                        .HasColumnType("text")
-                        .HasColumnName("picture_file_name");
-
                     b.Property<string>("PictureUri")
                         .HasColumnType("text")
                         .HasColumnName("picture_uri");
@@ -142,6 +130,14 @@ namespace ProductCatalog.Data.Migrations
                         .HasColumnType("decimal(18,2)")
                         .HasColumnName("price");
 
+                    b.Property<Guid?>("ProductBrandId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("product_brand_id");
+
+                    b.Property<Guid?>("ProductTypeId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("product_type_id");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
@@ -149,14 +145,14 @@ namespace ProductCatalog.Data.Migrations
                     b.HasKey("Id")
                         .HasName("pk_items");
 
-                    b.HasIndex("CatalogBrandId")
-                        .HasDatabaseName("ix_items_catalog_brand_id");
-
-                    b.HasIndex("CatalogTypeId")
-                        .HasDatabaseName("ix_items_catalog_type_id");
-
                     b.HasIndex("ParentId")
                         .HasDatabaseName("ix_items_parent_id");
+
+                    b.HasIndex("ProductBrandId")
+                        .HasDatabaseName("ix_items_product_brand_id");
+
+                    b.HasIndex("ProductTypeId")
+                        .HasDatabaseName("ix_items_product_type_id");
 
                     b.HasIndex("CodePrefix", "CodeNumber")
                         .IsUnique()
@@ -165,7 +161,7 @@ namespace ProductCatalog.Data.Migrations
                     b.ToTable("items", (string)null);
                 });
 
-            modelBuilder.Entity("ProductCatalog.Core.Entities.ProductAggregate.ItemParent", b =>
+            modelBuilder.Entity("ProductCatalog.Core.Entities.ProductAggregate.ProductParent", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -218,7 +214,7 @@ namespace ProductCatalog.Data.Migrations
                     b.ToTable("item_parents", (string)null);
                 });
 
-            modelBuilder.Entity("ProductCatalog.Core.Entities.ProductAggregate.ItemType", b =>
+            modelBuilder.Entity("ProductCatalog.Core.Entities.ProductAggregate.ProductType", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -244,11 +240,11 @@ namespace ProductCatalog.Data.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_deleted");
 
-                    b.Property<string>("Type")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
-                        .HasColumnName("type");
+                        .HasColumnName("name");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -264,42 +260,42 @@ namespace ProductCatalog.Data.Migrations
                     b.ToTable("item_types", (string)null);
                 });
 
-            modelBuilder.Entity("ProductCatalog.Core.Entities.ProductAggregate.Item", b =>
+            modelBuilder.Entity("ProductCatalog.Core.Entities.ProductAggregate.ProductItem", b =>
                 {
-                    b.HasOne("ProductCatalog.Core.Entities.ProductAggregate.Brand", "CatalogBrand")
-                        .WithMany()
-                        .HasForeignKey("CatalogBrandId")
-                        .HasConstraintName("fk_items_brands_catalog_brand_id");
-
-                    b.HasOne("ProductCatalog.Core.Entities.ProductAggregate.ItemType", "CatalogType")
-                        .WithMany()
-                        .HasForeignKey("CatalogTypeId")
-                        .HasConstraintName("fk_items_item_types_catalog_type_id");
-
-                    b.HasOne("ProductCatalog.Core.Entities.ProductAggregate.ItemParent", "Parent")
+                    b.HasOne("ProductCatalog.Core.Entities.ProductAggregate.ProductParent", "Parent")
                         .WithMany()
                         .HasForeignKey("ParentId")
                         .HasConstraintName("fk_items_item_parents_parent_id");
 
-                    b.Navigation("CatalogBrand");
+                    b.HasOne("ProductCatalog.Core.Entities.ProductAggregate.ProductBrand", "ProductBrand")
+                        .WithMany()
+                        .HasForeignKey("ProductBrandId")
+                        .HasConstraintName("fk_items_brands_product_brand_id");
 
-                    b.Navigation("CatalogType");
+                    b.HasOne("ProductCatalog.Core.Entities.ProductAggregate.ProductType", "ProductType")
+                        .WithMany()
+                        .HasForeignKey("ProductTypeId")
+                        .HasConstraintName("fk_items_item_types_product_type_id");
 
                     b.Navigation("Parent");
+
+                    b.Navigation("ProductBrand");
+
+                    b.Navigation("ProductType");
                 });
 
-            modelBuilder.Entity("ProductCatalog.Core.Entities.ProductAggregate.ItemParent", b =>
+            modelBuilder.Entity("ProductCatalog.Core.Entities.ProductAggregate.ProductParent", b =>
                 {
-                    b.HasOne("ProductCatalog.Core.Entities.ProductAggregate.ItemParent", "Parent")
+                    b.HasOne("ProductCatalog.Core.Entities.ProductAggregate.ProductParent", "Parent")
                         .WithMany("Children")
                         .HasForeignKey("ParentId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .HasConstraintName("fk_item_parents_item_parents_item_parent_id");
+                        .HasConstraintName("fk_item_parents_item_parents_parent_id");
 
                     b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("ProductCatalog.Core.Entities.ProductAggregate.ItemParent", b =>
+            modelBuilder.Entity("ProductCatalog.Core.Entities.ProductAggregate.ProductParent", b =>
                 {
                     b.Navigation("Children");
                 });

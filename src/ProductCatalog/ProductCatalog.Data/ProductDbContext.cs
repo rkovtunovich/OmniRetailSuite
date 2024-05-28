@@ -5,13 +5,13 @@ namespace ProductCatalog.Data;
 
 public class ProductDbContext(DbContextOptions<ProductDbContext> options) : DbContext(options)
 {
-    public DbSet<Item> Items { get; set; } = null!;
+    public DbSet<ProductItem> Items { get; set; } = null!;
 
-    public DbSet<ItemParent> ItemParents { get; set; } = null!;
+    public DbSet<ProductParent> ItemParents { get; set; } = null!;
 
-    public DbSet<Brand> Brands { get; set; } = null!;
+    public DbSet<ProductBrand> Brands { get; set; } = null!;
 
-    public DbSet<ItemType> ItemTypes { get; set; } = null!;
+    public DbSet<ProductType> ItemTypes { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

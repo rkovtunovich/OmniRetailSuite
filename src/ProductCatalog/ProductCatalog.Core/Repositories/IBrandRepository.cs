@@ -4,13 +4,13 @@ namespace ProductCatalog.Core.Repositories;
 
 public interface IBrandRepository
 {
-    Task<IReadOnlyList<Brand>> GetBrandsAsync();
+    Task<IReadOnlyList<ProductBrand>> GetBrandsAsync();
 
-    Task<Brand?> GetBrandByIdAsync(Guid id);
+    Task<ProductBrand?> GetBrandByIdAsync(Guid id);
 
-    Task<bool> CreateBrandAsync(Brand brand);
+    Task<bool> CreateBrandAsync(ProductBrand brand);
 
-    Task<bool> UpdateBrandAsync(Brand brand);
+    Task<bool> UpdateBrandAsync(ProductBrand brand);
 
     Task<bool> DeleteBrandAsync(Guid id, bool isSoftDeleting);
 }

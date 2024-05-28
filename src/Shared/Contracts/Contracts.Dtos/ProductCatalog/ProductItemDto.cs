@@ -8,13 +8,11 @@ public record ProductItemDto : EntityDtoBase
 
     public string? CodePrefix { get; init; }
 
-    public string Description { get; init; } = string.Empty;
+    public string? Description { get; init; }
 
     public decimal Price { get; init; }
 
     public string PictureUri { get; init; } = string.Empty;
-
-    public string PictureBase64 { get; init; } = string.Empty;
 
     public string? Barcode { get; init; }
 

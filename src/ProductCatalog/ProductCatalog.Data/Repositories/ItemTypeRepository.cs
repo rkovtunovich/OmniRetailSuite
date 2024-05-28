@@ -11,7 +11,7 @@ public class ItemTypeRepository : IItemTypeRepository
         _logger = logger;
     }
 
-    public async Task<bool> CreateItemTypeAsync(ItemType itemType)
+    public async Task<bool> CreateItemTypeAsync(ProductType itemType)
     {
         try
         {
@@ -56,7 +56,7 @@ public class ItemTypeRepository : IItemTypeRepository
         }
     }
 
-    public async Task<ItemType?> GetItemTypeByIdAsync(Guid id)
+    public async Task<ProductType?> GetItemTypeByIdAsync(Guid id)
     {
         try
         {
@@ -70,7 +70,7 @@ public class ItemTypeRepository : IItemTypeRepository
         }
     }
 
-    public async Task<IReadOnlyList<ItemType>> GetItemTypesAsync()
+    public async Task<IReadOnlyList<ProductType>> GetItemTypesAsync()
     {
         try
         {
@@ -84,7 +84,7 @@ public class ItemTypeRepository : IItemTypeRepository
         }
     }
 
-    public async Task<bool> UpdateItemTypeAsync(ItemType itemType)
+    public async Task<bool> UpdateItemTypeAsync(ProductType itemType)
     {
         try
         {

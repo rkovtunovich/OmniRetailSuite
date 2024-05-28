@@ -37,7 +37,6 @@ public class ProductItemProfileShould
             Description = "Test Description",
             Price = 10.0m,
             PictureUri = "http://test.com",
-            PictureBase64 = "base64",
             Barcode = "1234567890",
             CodeNumber = 1,
             CodePrefix = "Test",
@@ -62,7 +61,6 @@ public class ProductItemProfileShould
         productItemDto.Description.Should().Be(productItem.Description);
         productItemDto.Price.Should().Be(productItem.Price);
         productItemDto.PictureUri.Should().Be(productItem.PictureUri);
-        productItemDto.PictureBase64.Should().Be(productItem.PictureBase64);
         productItemDto.Barcode.Should().Be(productItem.Barcode);
         productItemDto.CodeNumber.Should().Be(productItem.CodeNumber);
         productItemDto.CodePrefix.Should().Be(productItem.CodePrefix);

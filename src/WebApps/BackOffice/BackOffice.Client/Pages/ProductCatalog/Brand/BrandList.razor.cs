@@ -2,30 +2,15 @@
 
 namespace BackOffice.Client.Pages.ProductCatalog.Brand;
 
-public partial class BrandList : OrsComponentBase
+public partial class BrandList : ListBase<ProductBrand>
 {
     [Inject] public IProductCatalogService<ProductBrand> ProductBrandService { get; set; } = null!;
-
-    [Inject] private TabsService _tabsService { get; set; } = null!;
-
-    private IList<ProductBrand> _catalogBrands = [];
-
-    private string? _searchString;
 
     private DataGridEditMode _editMode = DataGridEditMode.Form;
     private DataGridEditTrigger _editTrigger = DataGridEditTrigger.Manual;
     private DialogOptions _dialogOptions = new() { DisableBackdropClick = true };
 
-    private Func<ProductBrand, bool> _quickFilter => x =>
-    {
-        if (string.IsNullOrWhiteSpace(_searchString))
-            return true;
-
-        if (x.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
-
-        return false;
-    };
+    #region Overrides
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -39,24 +24,51 @@ public partial class BrandList : OrsComponentBase
         await base.OnAfterRenderAsync(firstRender);
     }
 
+    #endregion
+
+    private void DefineContextMenuItems()
+    {
+        ContextMenuItems =
+        [
+            new () {
+                Text = "Open",
+                Icon = Icons.Material.Outlined.OpenInNew,
+                OnClick = EventCallback.Factory.Create(this, () => OpenItem(SelectedItem))
+            },
+            new() {
+                Text = "Create by copying",
+                Icon = Icons.Material.Outlined.Add,
+                OnClick = EventCallback.Factory.Create(this, CreateNewItemBasedOnExisting)
+            },
+        ];
+    }
+
     private void CreateBrandClick()
     {
-        _tabsService.TryCreateTab<BrandCreate>();
+        TabsService.TryCreateTab<BrandCreate>();
+    }
+
+    private void OpenItem(ProductBrand? item)
+    {
+        if (item is null)
+            return;
+
+        var parameters = new Dictionary<string, object>
+        {
+            { nameof(BrandDetails.Id), item.Id }
+        };
+
+        TabsService.TryCreateTab<BrandDetails>(parameters);
     }
 
     private void OpenBrandClick(CellContext<ProductBrand> context)
     {
-        var parameters = new Dictionary<string, object>
-        {
-            { nameof(BrandDetails.Id), context.Item.Id }
-        };
-
-        _tabsService.TryCreateTab<BrandDetails>(parameters);
+        OpenItem(context.Item);
     }
 
     private async Task ReloadCatalogTypes()
     {
-        _catalogBrands = await ProductBrandService.GetAllAsync();
+        Items = await ProductBrandService.GetAllAsync();
 
         CallRequestRefresh();
     }
@@ -77,22 +89,45 @@ public partial class BrandList : OrsComponentBase
         CallRequestRefresh();
     }
 
-    private async Task RowClick(DataGridRowClickEventArgs<ProductBrand> eventArg)
+    private void RowClick(DataGridRowClickEventArgs<ProductBrand> eventArg)
     {
-        if (eventArg.MouseEventArgs.Detail == 1)
+        SelectedItem = eventArg.Item;
+
+        if (eventArg.MouseEventArgs.Detail is 1)
             return;
 
         _editMode = DataGridEditMode.Form;
         _editTrigger = DataGridEditTrigger.OnRowClick;
-
-        await Task.Run(() =>
-        {
-        });
     }
 
     private async Task OnCatalogBrandChanged(ProductBrand changedBrand)
     {
-        _catalogBrands = await ProductBrandService.GetAllAsync();
+        Items = await ProductBrandService.GetAllAsync();
+        CallRequestRefresh();
+    }
+
+    private async Task RowClickContextMenu(DataGridRowClickEventArgs<ProductBrand> eventArg)
+    {
+        SelectedItem = eventArg.Item;
+        DefineContextMenuItems();
+
+        await ContextMenu.Show(eventArg.MouseEventArgs);
+    }
+
+    private void CreateNewItemBasedOnExisting()
+    {
+        if (SelectedItem is null)
+            return;
+
+        var clonedItem = SelectedItem.Clone();
+
+        var parameters = new Dictionary<string, object>
+        {
+            { nameof(BrandCreate.Model), clonedItem }
+        };
+
+        TabsService.TryCreateTab<BrandCreate>(parameters);
+
         CallRequestRefresh();
     }
 

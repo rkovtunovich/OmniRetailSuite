@@ -4,13 +4,13 @@ namespace ProductCatalog.Core.Repositories;
 
 public interface IItemTypeRepository
 {
-    Task<IReadOnlyList<ItemType>> GetItemTypesAsync();
+    Task<IReadOnlyList<ProductType>> GetItemTypesAsync();
 
-    Task<ItemType?> GetItemTypeByIdAsync(Guid id);
+    Task<ProductType?> GetItemTypeByIdAsync(Guid id);
 
-    Task<bool> CreateItemTypeAsync(ItemType itemType);
+    Task<bool> CreateItemTypeAsync(ProductType itemType);
 
-    Task<bool> UpdateItemTypeAsync(ItemType itemType);
+    Task<bool> UpdateItemTypeAsync(ProductType itemType);
 
     Task<bool> DeleteItemTypeAsync(Guid id, bool isSoftDeleting);
 }

@@ -1,92 +1,86 @@
 ﻿namespace ProductCatalog.Data.Repositories;
 
-public class ItemRepository : IItemRepository
+public class ItemRepository(ProductDbContext context, ILogger<ItemRepository> logger) : IItemRepository
 {
-    private readonly ProductDbContext _context;
-    private readonly ILogger<ItemRepository> _logger;
-
-    public ItemRepository(ProductDbContext context, ILogger<ItemRepository> logger)
-    {
-        _context = context;
-        _logger = logger;
-    }
-
-    public async Task<bool> CreateItemAsync(Item item)
+    public async Task<bool> CreateItemAsync(ProductItem item)
     {
         try
         {
-            _context.Items.Add(item);
+            context.Items.Add(item);
 
-            if (item.CatalogBrand is not null)
-                _context.Entry(item.CatalogBrand).State = EntityState.Unchanged;
+            if (item.ProductBrand is not null)
+                context.Entry(item.ProductBrand).State = EntityState.Unchanged;
 
-            if (item.CatalogType is not null)
-                _context.Entry(item.CatalogType).State = EntityState.Unchanged;
+            if (item.ProductType is not null)
+                context.Entry(item.ProductType).State = EntityState.Unchanged;
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
 
             return true;
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Error in {nameof(CreateItemAsync)}: {nameof(item)}: {item}", ex);
+            logger.LogError($"Error in {nameof(CreateItemAsync)}: {nameof(item)}: {item}", ex);
             throw;
         }
     }
 
-    public async Task<Item?> GetItemByIdAsync(Guid id)
+    public async Task<ProductItem?> GetItemByIdAsync(Guid id)
     {
         try
         {
-            var item = await _context.Items.SingleOrDefaultAsync(ci => ci.Id == id);
+            var item = await context.Items
+                .Include(c => c.ProductType)
+                .Include(c => c.ProductBrand)
+                .SingleOrDefaultAsync(ci => ci.Id == id);         
 
             return item;
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Error in {nameof(GetItemByIdAsync)}: {nameof(id)}: {id}", ex);
+            logger.LogError($"Error in {nameof(GetItemByIdAsync)}: {nameof(id)}: {id}", ex);
             throw;
         }
     }
 
-    public async Task<List<Item>> GetItemsAsync(int pageSize, int pageIndex)
+    public async Task<List<ProductItem>> GetItemsAsync(int pageSize, int pageIndex)
     {
         try
         {
-            var itemsOnPage = await _context.Items
+            var itemsOnPage = await context.Items
                 .Where(ci => !ci.IsDeleted)
                 .OrderBy(c => c.Name)
                 .Skip(pageSize * pageIndex)
                 .Take(pageSize)
-                .Include(c => c.CatalogType)
-                .Include(c => c.CatalogBrand)
+                .Include(c => c.ProductType)
+                .Include(c => c.ProductBrand)
                 .ToListAsync();
 
-            return itemsOnPage ?? new();
+            return itemsOnPage ?? [];
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Error in {nameof(GetItemsAsync)}: {nameof(pageSize)}: {pageSize}, {nameof(pageIndex)}: {pageIndex}", ex);
+            logger.LogError($"Error in {nameof(GetItemsAsync)}: {nameof(pageSize)}: {pageSize}, {nameof(pageIndex)}: {pageIndex}", ex);
             throw;
         }
     }
 
-    public async Task<List<Item>> GetItemsByCategoryAsync(Guid? catalogBrandId, Guid? catalogTypeId)
+    public async Task<List<ProductItem>> GetItemsByCategoryAsync(Guid? catalogBrandId, Guid? catalogTypeId)
     {
         try
         {
             if (catalogBrandId is null && catalogTypeId is null)
-                return await _context.Items
+                return await context.Items
                     .Where(ci => !ci.IsDeleted)
                     .ToListAsync();
 
-            var root = (IQueryable<Item>)_context.Items;
+            var root = (IQueryable<ProductItem>)context.Items;
 
             if (catalogTypeId.HasValue)
-                root = root.Where(ci => ci.CatalogTypeId == catalogTypeId);
+                root = root.Where(ci => ci.ProductTypeId == catalogTypeId);
 
             if (catalogBrandId.HasValue)
-                root = root.Where(ci => ci.CatalogBrandId == catalogBrandId);
+                root = root.Where(ci => ci.ProductBrandId == catalogBrandId);
 
             var itemsOnPage = await root
                 .ToListAsync();
@@ -95,7 +89,7 @@ public class ItemRepository : IItemRepository
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Error in {nameof(GetItemsByCategoryAsync)}: {nameof(catalogBrandId)}: {catalogBrandId}, {nameof(catalogTypeId)}: {catalogTypeId}", ex);
+            logger.LogError($"Error in {nameof(GetItemsByCategoryAsync)}: {nameof(catalogBrandId)}: {catalogBrandId}, {nameof(catalogTypeId)}: {catalogTypeId}", ex);
             throw;
         }
     }
@@ -104,54 +98,54 @@ public class ItemRepository : IItemRepository
     {
         try
         {
-            return await _context.Items
+            return await context.Items
                 .Where(ci => !ci.IsDeleted)
                 .CountAsync();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error in {nameof(GetItemsCountAsync)}");
+            logger.LogError(ex, $"Error in {nameof(GetItemsCountAsync)}");
             throw;
         }
     }
 
-    public Task<List<Item>> GetItemsByIdAsync(IEnumerable<Guid> ids)
+    public Task<List<ProductItem>> GetItemsByIdAsync(IEnumerable<Guid> ids)
     {
         try
         {
-            var items = _context.Items.Where(ci => ids.Contains(ci.Id)).ToListAsync();
+            var items = context.Items.Where(ci => ids.Contains(ci.Id)).ToListAsync();
 
             return items;
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Error in {nameof(GetItemsByIdAsync)}: {nameof(ids)}: {ids}", ex);
+            logger.LogError($"Error in {nameof(GetItemsByIdAsync)}: {nameof(ids)}: {ids}", ex);
             throw;
         }
     }
 
-    public async Task<List<Item>> GetItemsByNameAsync(string name)
+    public async Task<List<ProductItem>> GetItemsByNameAsync(string name)
     {
         try
         {
-            var itemsOnPage = await _context.Items
+            var itemsOnPage = await context.Items
                 .Where(c => c.Name.StartsWith(name))
                 .ToListAsync();
 
-            return itemsOnPage ?? new();
+            return itemsOnPage ?? [];
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Error in {nameof(GetItemsByNameAsync)}: {nameof(name)}: {name}", ex);
+            logger.LogError($"Error in {nameof(GetItemsByNameAsync)}: {nameof(name)}: {name}", ex);
             throw;
         }
     }
 
-    public async Task<List<Item>> GetItemsByParentAsync(Guid catalogParentId)
+    public async Task<List<ProductItem>> GetItemsByParentAsync(Guid catalogParentId)
     {
         try
         {
-            var itemsOnPage = await _context.Items
+            var itemsOnPage = await context.Items
                 .Where(ci => ci.ParentId == catalogParentId)
                 .ToListAsync();
 
@@ -159,24 +153,24 @@ public class ItemRepository : IItemRepository
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Error in {nameof(GetItemsByParentAsync)}: {nameof(catalogParentId)}: {catalogParentId}", ex);
+            logger.LogError($"Error in {nameof(GetItemsByParentAsync)}: {nameof(catalogParentId)}: {catalogParentId}", ex);
             throw;
         }
     }
 
-    public async Task<bool> UpdateItemAsync(Item itemToUpdate)
+    public async Task<bool> UpdateItemAsync(ProductItem itemToUpdate)
     {
         try
         {
-            _context.Items.Update(itemToUpdate);
+            context.Items.Update(itemToUpdate);
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
 
             return true;
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Error in {nameof(UpdateItemAsync)}: {nameof(itemToUpdate)}: {itemToUpdate}", ex);
+            logger.LogError($"Error in {nameof(UpdateItemAsync)}: {nameof(itemToUpdate)}: {itemToUpdate}", ex);
             throw;
         }
     }
@@ -185,27 +179,27 @@ public class ItemRepository : IItemRepository
     {
         try
         {
-            var product = _context.Items.SingleOrDefault(x => x.Id == id);
+            var product = context.Items.SingleOrDefault(x => x.Id == id);
             if (product is null)
                 return false;
 
             if (isSoftDeleting)
             {
                 product.IsDeleted = true;
-                _context.Items.Update(product);
-                await _context.SaveChangesAsync();
+                context.Items.Update(product);
+                await context.SaveChangesAsync();
                 return true;
             }
 
-            _context.Items.Remove(product);
+            context.Items.Remove(product);
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
 
             return true;
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Error in {nameof(DeleteItemAsync)}: {nameof(id)}: {id}", ex);
+            logger.LogError($"Error in {nameof(DeleteItemAsync)}: {nameof(id)}: {id}", ex);
             throw;
         }
     }

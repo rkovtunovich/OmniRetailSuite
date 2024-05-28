@@ -1,6 +1,8 @@
-﻿namespace BackOffice.Core.Models.ProductCatalog;
+﻿using Core.Abstraction;
 
-public class ProductType : EntityModelBase
+namespace BackOffice.Core.Models.ProductCatalog;
+
+public class ProductType : EntityModelBase, ICloneable<ProductType>
 {
     public override string? ToString()
     {
@@ -14,4 +16,12 @@ public class ProductType : EntityModelBase
     }
 
     public override int GetHashCode() => Id.GetHashCode();
+
+    public ProductType Clone()
+    {
+        return new ProductType
+        {
+            Name = $"{Name} (Copy)",
+        };
+    }
 }

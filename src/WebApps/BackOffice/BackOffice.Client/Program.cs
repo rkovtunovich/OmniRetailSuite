@@ -30,7 +30,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor(config => config.DetailedErrors = false);
 
 builder.Services.AddScoped<ToastService>();
-builder.Services.AddSingleton<TabsService>();
+builder.Services.AddScoped<TabsService>();
 
 builder.Services.AddAuthentication(options =>
 {
