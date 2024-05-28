@@ -1,4 +1,6 @@
-﻿global using Contracts.Dtos.ProductCatalog;
+﻿global using AutoMapper;
+
+global using Contracts.Dtos.ProductCatalog;
 
 global using ProductCatalog.Application.Mapping;
 global using ProductCatalog.Application.Services.Abstraction;

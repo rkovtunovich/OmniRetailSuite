@@ -33,10 +33,14 @@ public class GetDatabaseSecretCommand(IVaultClient vaultClient, ILogger<VaultSec
         }
         catch (VaultApiException ex) when (ex.StatusCode is (int)HttpStatusCode.NotFound)
         {
+            logger.LogError(ex.Message, ex);
+
             throw new InvalidOperationException($"Secret {request.Path}", ex);
         }
         catch (Exception ex)
         {
+            logger.LogError(ex.Message, ex);
+
             throw new InvalidOperationException($"Error reading secret {request.Path}", ex);
         }
     }

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace ProductCatalog.Data;
 
+// This class is used by EF Core tools to create migrations
 public class DataContextDbFactory : IDesignTimeDbContextFactory<ProductDbContext>
 {
     public ProductDbContext CreateDbContext(string[] args)

@@ -2,18 +2,18 @@
 
 namespace ProductCatalog.Data.Config;
 
-public class ItemTypeDbConfiguration : IEntityTypeConfiguration<ItemType>
+public class ItemTypeDbConfiguration : IEntityTypeConfiguration<ProductType>
 {
     public static readonly string CodeSequenceName = "item_type_codes";
 
-    public void Configure(EntityTypeBuilder<ItemType> builder)
+    public void Configure(EntityTypeBuilder<ProductType> builder)
     {
         builder.HasKey(ci => ci.Id);
 
         builder.Property(ci => ci.Id)
            .IsRequired();
 
-        builder.Property(cb => cb.Type)
+        builder.Property(cb => cb.Name)
             .IsRequired()
             .HasMaxLength(100);
 

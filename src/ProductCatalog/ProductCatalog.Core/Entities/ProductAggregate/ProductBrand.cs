@@ -1,6 +1,6 @@
 ﻿namespace ProductCatalog.Core.Entities.ProductAggregate;
 
-public class Brand : EntityBase, IAggregateRoot, ICodedEntity
+public class ProductBrand : EntityBase, IAggregateRoot, ICodedEntity
 {
     public string Name { get; set; } = string.Empty;
 
@@ -8,12 +8,12 @@ public class Brand : EntityBase, IAggregateRoot, ICodedEntity
 
     public int CodeNumber { get; set; }
 
-    public Brand(string brand)
+    public ProductBrand(string brand)
     {
         Name = brand;
     }
 
-    public Brand()
+    public ProductBrand()
     {
     }
 }

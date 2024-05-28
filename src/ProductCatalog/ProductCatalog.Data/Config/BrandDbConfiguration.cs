@@ -2,11 +2,11 @@
 
 namespace ProductCatalog.Data.Config;
 
-public class BrandDbConfiguration : IEntityTypeConfiguration<Brand>
+public class BrandDbConfiguration : IEntityTypeConfiguration<ProductBrand>
 {
     public static readonly string CodeSequenceName = "brand_codes";
 
-    public void Configure(EntityTypeBuilder<Brand> builder)
+    public void Configure(EntityTypeBuilder<ProductBrand> builder)
     {
         builder.HasKey(ci => ci.Id);
 

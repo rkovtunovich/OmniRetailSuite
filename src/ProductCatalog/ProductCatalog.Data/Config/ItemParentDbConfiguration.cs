@@ -2,11 +2,11 @@
 
 namespace ProductCatalog.Data.Config;
 
-public class ItemParentDbConfiguration : IEntityTypeConfiguration<ItemParent>
+public class ItemParentDbConfiguration : IEntityTypeConfiguration<ProductParent>
 {
     public static readonly string CodeSequenceName = "item_parent_codes";
 
-    public void Configure(EntityTypeBuilder<ItemParent> builder)
+    public void Configure(EntityTypeBuilder<ProductParent> builder)
     {
         builder.HasKey(ci => ci.Id);
 

@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProductCatalog.Api.Configuration;
 using ProductCatalog.Api.Middleware;
+using ProductCatalog.Application.Configuration;
 using ProductCatalog.Core;
 using ProductCatalog.Core.Logging;
 using ProductCatalog.Data;

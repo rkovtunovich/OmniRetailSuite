@@ -34,10 +34,6 @@ public partial class ItemDetails: DetailsFormBase<ProductItem>
 
     private ProductParentSelectModel? _selectedParent;
 
-    private string LoadPicture => string.IsNullOrEmpty(Model.PictureBase64) ? string.Empty : $"data:image/png;base64, {Model.PictureBase64}";
-
-    private bool HasPicture => !string.IsNullOrEmpty(Model.PictureBase64);
-
     private string _badFileMessage = string.Empty;
 
     #endregion

@@ -5,8 +5,7 @@ namespace BackOffice.Core.Models.ProductCatalog;
 
 public class ProductItem : EntityModelBase, ICloneable<ProductItem>
 {
-    [Required(ErrorMessage = "The Description field is required")]
-    public string Description { get; set; } = null!;
+    public string? Description { get; set; }
 
     public Guid? ParentId { get; set; }
 
@@ -24,8 +23,6 @@ public class ProductItem : EntityModelBase, ICloneable<ProductItem>
     public decimal Price { get; set; }
 
     public string PictureUri { get; set; } = string.Empty;
-
-    public string PictureBase64 { get; set; } = string.Empty;
 
     public string PictureName { get; set; } = null!;
 
@@ -72,7 +69,6 @@ public class ProductItem : EntityModelBase, ICloneable<ProductItem>
             ProductBrand = ProductBrand,
             Price = Price,
             PictureUri = PictureUri,
-            PictureBase64 = PictureBase64,
             PictureName = PictureName
         };
     }

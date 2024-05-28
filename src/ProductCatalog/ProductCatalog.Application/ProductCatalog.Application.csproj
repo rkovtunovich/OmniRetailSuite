@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Shared\Contracts\Contracts.Dtos\Contracts.Dtos.csproj" />
     <ProjectReference Include="..\..\Shared\Contracts\Contracts.Events\Contracts.Events.csproj" />
     <ProjectReference Include="..\..\Shared\Infrastructure\Infrastructure.Messaging.Abstraction\Infrastructure.Messaging.Abstraction.csproj" />

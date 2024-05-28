@@ -11,7 +11,7 @@ public class BrandRepository : IBrandRepository
         _logger = logger;
     }
 
-    public async Task<bool> CreateBrandAsync(Brand brand)
+    public async Task<bool> CreateBrandAsync(ProductBrand brand)
     {
         try
         {
@@ -56,7 +56,7 @@ public class BrandRepository : IBrandRepository
         }
     }
 
-    public async Task<Brand?> GetBrandByIdAsync(Guid id)
+    public async Task<ProductBrand?> GetBrandByIdAsync(Guid id)
     {
         try
         {
@@ -71,7 +71,7 @@ public class BrandRepository : IBrandRepository
         }
     }
 
-    public async Task<IReadOnlyList<Brand>> GetBrandsAsync()
+    public async Task<IReadOnlyList<ProductBrand>> GetBrandsAsync()
     {
         try
         {
@@ -86,7 +86,7 @@ public class BrandRepository : IBrandRepository
         }
     }
 
-    public async Task<bool> UpdateBrandAsync(Brand brand)
+    public async Task<bool> UpdateBrandAsync(ProductBrand brand)
     {
         try
         {

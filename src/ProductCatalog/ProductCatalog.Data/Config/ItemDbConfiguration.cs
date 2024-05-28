@@ -2,11 +2,11 @@
 
 namespace ProductCatalog.Data.Config;
 
-public class ItemDbConfiguration : IEntityTypeConfiguration<Item>
+public class ItemDbConfiguration : IEntityTypeConfiguration<ProductItem>
 {
     public static readonly string CodeSequenceName = "item_codes";
 
-    public void Configure(EntityTypeBuilder<Item> builder)
+    public void Configure(EntityTypeBuilder<ProductItem> builder)
     {
         builder.ToTable("items");
 
@@ -17,6 +17,10 @@ public class ItemDbConfiguration : IEntityTypeConfiguration<Item>
             .IsRequired(true)
             .HasMaxLength(50);
 
+        builder.Property(ci => ci.Description)
+            .IsRequired(false)
+            .HasMaxLength(4000);
+
         builder.Property(ci => ci.Price)
             .IsRequired(true)
             .HasColumnType("decimal(18,2)");
@@ -24,13 +28,13 @@ public class ItemDbConfiguration : IEntityTypeConfiguration<Item>
         builder.Property(ci => ci.PictureUri)
             .IsRequired(false);
 
-        builder.HasOne(ci => ci.CatalogBrand)
+        builder.HasOne(ci => ci.ProductBrand)
             .WithMany()
-            .HasForeignKey(ci => ci.CatalogBrandId);
+            .HasForeignKey(ci => ci.ProductBrandId);
 
-        builder.HasOne(ci => ci.CatalogType)
+        builder.HasOne(ci => ci.ProductType)
             .WithMany()
-            .HasForeignKey(ci => ci.CatalogTypeId);
+            .HasForeignKey(ci => ci.ProductTypeId);
 
         builder.HasOne(ci => ci.Parent)
             .WithMany()

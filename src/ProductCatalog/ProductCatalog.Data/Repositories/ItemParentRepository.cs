@@ -11,7 +11,7 @@ public class ItemParentRepository : IItemParentRepository
         _logger = logger;
     }
 
-    public async Task<List<ItemParent>> GetItemParentsAsync()
+    public async Task<List<ProductParent>> GetItemParentsAsync()
     {
         try
         {
@@ -27,7 +27,7 @@ public class ItemParentRepository : IItemParentRepository
         }
     }
 
-    public async Task<ItemParent?> GetItemParentAsync(Guid id)
+    public async Task<ProductParent?> GetItemParentAsync(Guid id)
     {
         try
         {
@@ -42,7 +42,7 @@ public class ItemParentRepository : IItemParentRepository
         }
     }
 
-    public async Task<bool> CreateItemParentAsync(ItemParent itemParent)
+    public async Task<bool> CreateItemParentAsync(ProductParent itemParent)
     {
         try
         {
@@ -62,7 +62,7 @@ public class ItemParentRepository : IItemParentRepository
         }
     }
 
-    public async Task<bool> UpdateItemParentAsync(ItemParent itemParent)
+    public async Task<bool> UpdateItemParentAsync(ProductParent itemParent)
     {
         try
         {
