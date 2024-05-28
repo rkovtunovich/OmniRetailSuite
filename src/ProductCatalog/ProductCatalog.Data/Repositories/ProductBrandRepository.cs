@@ -1,11 +1,11 @@
 ﻿namespace ProductCatalog.Data.Repositories;
 
-public class BrandRepository : IBrandRepository
+public class ProductBrandRepository : IBrandRepository
 {
     private readonly ProductDbContext _context;
-    private readonly ILogger<BrandRepository> _logger;
+    private readonly ILogger<ProductBrandRepository> _logger;
 
-    public BrandRepository(ProductDbContext context, ILogger<BrandRepository> logger)
+    public ProductBrandRepository(ProductDbContext context, ILogger<ProductBrandRepository> logger)
     {
         _context = context;
         _logger = logger;

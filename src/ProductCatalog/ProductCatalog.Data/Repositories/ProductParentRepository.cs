@@ -1,11 +1,11 @@
 ﻿namespace ProductCatalog.Data.Repositories;
 
-public class ItemParentRepository : IItemParentRepository
+public class ProductParentRepository : IItemParentRepository
 {
     private readonly ProductDbContext _context;
-    private readonly ILogger<ItemParentRepository> _logger;
+    private readonly ILogger<ProductParentRepository> _logger;
 
-    public ItemParentRepository(ProductDbContext context, ILogger<ItemParentRepository> logger)
+    public ProductParentRepository(ProductDbContext context, ILogger<ProductParentRepository> logger)
     {
         _context = context;
         _logger = logger;

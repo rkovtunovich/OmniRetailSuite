@@ -1,6 +1,6 @@
 ﻿namespace ProductCatalog.Data.Repositories;
 
-public class ItemRepository(ProductDbContext context, ILogger<ItemRepository> logger) : IItemRepository
+public class ProductItemRepository(ProductDbContext context, ILogger<ProductItemRepository> logger) : IItemRepository
 {
     public async Task<bool> CreateItemAsync(ProductItem item)
     {

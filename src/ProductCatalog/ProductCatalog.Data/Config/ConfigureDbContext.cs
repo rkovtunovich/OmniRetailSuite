@@ -9,7 +9,7 @@ namespace ProductCatalog.Data.Config;
 
 public static class ConfigureDbContext
 {
-    public static async Task<IServiceCollection> AddDataLayerDependencies(this IServiceCollection services, IConfiguration configuration)
+    public static async ValueTask<IServiceCollection> AddDataLayerDependencies(this IServiceCollection services, IConfiguration configuration)
     {
         var useOnlyInMemoryDatabase = false;
         if (configuration["UseOnlyInMemoryDatabase"] is not null)
@@ -55,10 +55,10 @@ public static class ConfigureDbContext
             c.UseSnakeCaseNamingConvention();
         });
 
-        services.AddScoped<IItemRepository, ItemRepository>();
-        services.AddScoped<IItemParentRepository, ItemParentRepository>();
-        services.AddScoped<IBrandRepository, BrandRepository>();
-        services.AddScoped<IItemTypeRepository, ItemTypeRepository>();
+        services.AddScoped<IItemRepository, ProductItemRepository>();
+        services.AddScoped<IItemParentRepository, ProductParentRepository>();
+        services.AddScoped<IBrandRepository, ProductBrandRepository>();
+        services.AddScoped<IItemTypeRepository, ProductTypeRepository>();
 
         return services;
     }
