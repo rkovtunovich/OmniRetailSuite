@@ -16,19 +16,29 @@
                         <MudCardContent>
 
                             <MudTextField Label="Id" Class="mt-3" @bind-Value="Model.Id" For="@(() => Model.Id)" Variant="@MudBlazor.Variant.Filled" Disabled />
-                             <MudTextField Label="Name" Class="mt-3" @bind-Value="Model.Name" For="@(() => Model.Name)" Variant="@MudBlazor.Variant.Filled" />
+                            <MudTextField Label="Name" Class="mt-3" @bind-Value="Model.Name" For="@(() => Model.Name)" Variant="@MudBlazor.Variant.Filled" />
+                            <MudSelect T="ProductParentSelectModel" Label="Select Parent" @bind-Value="_selectedParent" ToStringFunc="@_converterProductParent" Clearable Variant="@MudBlazor.Variant.Filled">
+                                @foreach (var parent in _flattenedParents)
+                                {
+                                    // If the parent is the current item, don't show it in the dropdown
+                                    if (parent.Id != Model.Id)
+                                    {
+                                        <MudSelectItem Value="@parent"></MudSelectItem>
+                                    }
+                                }
+                            </MudSelect>
 
-                         </MudCardContent>
+                        </MudCardContent>
 
-                     </MudCard>
-                 </MudItem>
-             </MudGrid>
+                    </MudCard>
+                </MudItem>
+            </MudGrid>
 
-         </EditForm>
+        </EditForm>
 
 
-     </FormContent>
- </Form>
+    </FormContent>
+</Form>
 
 
 

@@ -18,6 +18,8 @@ public partial class ItemParentCreate: CreationFormBase<ProductParent>
 
     private ProductParentSelectModel? _selectedParent;
 
+    #region Overrides
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -28,6 +30,8 @@ public partial class ItemParentCreate: CreationFormBase<ProductParent>
 
         await base.OnAfterRenderAsync(firstRender);
     }
+
+    #endregion
 
     private async Task CreateClick()
     {

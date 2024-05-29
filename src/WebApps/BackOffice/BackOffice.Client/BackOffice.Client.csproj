@@ -11,7 +11,7 @@
   
   <ItemGroup>
 		<PackageReference Include="CodeBeam.MudBlazor.Extensions" Version="6.9.2" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.5" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.6" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />
 		<PackageReference Include="Radzen.Blazor" Version="4.31.5" />
 	</ItemGroup>
