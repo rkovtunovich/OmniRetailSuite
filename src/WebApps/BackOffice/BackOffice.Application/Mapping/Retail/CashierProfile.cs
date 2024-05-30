@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-
-namespace BackOffice.Application.Mapping.Retail;
+﻿namespace BackOffice.Application.Mapping.Retail;
 
 public class CashierProfile: Profile
 {

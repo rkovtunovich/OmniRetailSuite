@@ -1,4 +1,5 @@
-﻿using BackOffice.Core.Models.ProductCatalog;
+﻿using AutoMapper;
+using BackOffice.Core.Models.ProductCatalog;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Item;
@@ -15,6 +16,8 @@ public partial class ItemCreate: CreationFormBase<ProductItem>
 
     [Inject] public IProductCatalogService<ProductParent> ProductParentService { get; set; } = null!;
 
+    [Inject] public IMapper Mapper { get; set; } = null!;
+
     #endregion
 
     #region Parameters
@@ -30,11 +33,7 @@ public partial class ItemCreate: CreationFormBase<ProductItem>
 
     private IList<ProductBrand> _itemBrands = [];
 
-    private string _badFileMessage = string.Empty;
-
-    private List<ProductParentSelectModel> _flattenedParents = [];
-
-    private ProductParentSelectModel? _selectedParent;
+    private IList<ProductParent> _allProductParents = [];
 
     #endregion
 
@@ -44,7 +43,7 @@ public partial class ItemCreate: CreationFormBase<ProductItem>
     {
         if (firstRender)
         {
-            _flattenedParents = await GetFlattenedParentsAsync();
+            _allProductParents = await ProductParentService.GetAllAsync();
             _itemTypes = await ProductTypeService.GetAllAsync();
             _itemBrands = await ProductBrandService.GetAllAsync();
 
@@ -90,9 +89,6 @@ public partial class ItemCreate: CreationFormBase<ProductItem>
         if (!EditContext?.Validate() ?? false)
             return;
 
-        if (_selectedParent is not null)
-            Model.ParentId = _selectedParent.Id;
-
         var result = await ProductItemService.CreateAsync(Model);
         if (result is not null)
         {
@@ -103,34 +99,6 @@ public partial class ItemCreate: CreationFormBase<ProductItem>
 
     #endregion
 
-    private async Task<List<ProductParentSelectModel>> GetFlattenedParentsAsync()
-    {
-        var allParents = await ProductParentService.GetAllAsync();
-        var flattenedList = new List<ProductParentSelectModel>();
-        FlattenTree(allParents, flattenedList, 0);
-
-        if (Model.ParentId is not null)
-            _selectedParent = flattenedList.FirstOrDefault(p => p.Id == Model.ParentId);
-
-        return flattenedList;
-    }
-
-    private void FlattenTree(IEnumerable<ProductParent> parents, List<ProductParentSelectModel> list, int level)
-    {
-        foreach (var parent in parents)
-        {
-            var prefix = new string('-', level * 2); // 2 spaces per level for indentation
-            list.Add(new ProductParentSelectModel
-            {
-                Id = parent.Id,
-                Name = $"{prefix}{parent.Name}"
-            });
-
-            if (parent.Children is not null)
-                FlattenTree(parent.Children, list, level + 1);
-        }
-    }
-
     #endregion
 
     #region Delegate Handlers
@@ -139,7 +107,10 @@ public partial class ItemCreate: CreationFormBase<ProductItem>
 
     private Func<ProductBrand, string> _converterItemBrand = p => p?.Name ?? "";
 
-    private Func<ProductParentSelectModel, string> _converterItemParent = p => p?.Name ?? "";
-
     #endregion
+
+    private void OnParentChanged(HierarchySelectModel selectModel)
+    {
+        Model.ParentId = selectModel?.Id;
+    }
 }

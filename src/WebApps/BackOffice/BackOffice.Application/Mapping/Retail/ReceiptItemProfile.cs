@@ -4,6 +4,9 @@ public class ReceiptItemProfile : Profile
 {
     public ReceiptItemProfile()
     {
-        CreateMap<ReceiptItem, ReceiptItemDto>().ReverseMap();
+        CreateMap<ReceiptItem, ReceiptItemDto>();
+
+        CreateMap<ReceiptItemDto, ReceiptItem>().
+            ForMember(dest => dest.Receipt, opt => opt.Ignore());
     }
 }

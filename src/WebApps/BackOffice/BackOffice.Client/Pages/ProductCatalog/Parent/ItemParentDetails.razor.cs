@@ -1,4 +1,5 @@
-﻿using BackOffice.Core.Models.ProductCatalog;
+﻿using AutoMapper;
+using BackOffice.Core.Models.ProductCatalog;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace BackOffice.Client.Pages.ProductCatalog.Parent;
@@ -7,21 +8,17 @@ public partial class ItemParentDetails : DetailsFormBase<ProductParent>
 {
     [Inject] public IProductCatalogService<ProductParent> ProductParentService { get; set; } = null!;
 
+    [Inject] public IMapper Mapper { get; set; } = null!;
+
     [Parameter]
     public EventCallback<string> OnSaveClick { get; set; }
+
+    private IList<ProductParent> _allProductParents = [];
 
     protected override async Task<ProductParent> GetModel()
     {
         return await ProductParentService.GetByIdAsync(Id) ?? new();
     }
-
-    private IList<ProductParent> _allIProductParents = [];
-
-    private List<ProductParentSelectModel> _flattenedParents = [];
-
-    private ProductParentSelectModel? _selectedParent;
-
-    #region Overrides
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -29,12 +26,11 @@ public partial class ItemParentDetails : DetailsFormBase<ProductParent>
 
         if (firstRender)
         {
-            _flattenedParents = await GetFlattenedParentsAsync();
+            _allProductParents = await ProductParentService.GetAllAsync();
+
             CallRequestRefresh();
         }
     }
-
-    #endregion
 
     #region Commands
 
@@ -71,8 +67,6 @@ public partial class ItemParentDetails : DetailsFormBase<ProductParent>
         if (!EditContext?.Validate() ?? false)
             return;
 
-        Model.ParentId = _selectedParent?.Id;
-
         var result = await ProductParentService.UpdateAsync(Model);
         if (result)
         {
@@ -90,34 +84,13 @@ public partial class ItemParentDetails : DetailsFormBase<ProductParent>
 
     #endregion
 
-    private async Task<List<ProductParentSelectModel>> GetFlattenedParentsAsync()
+    private async Task OnParentChanged(HierarchySelectModel selectModel)
     {
-        var allParents = await ProductParentService.GetAllAsync();
-        var flattenedList = new List<ProductParentSelectModel>();
-        FlattenTree(allParents, flattenedList, 0);
+        Model.ParentId = selectModel?.Id;
+        if (Model.ParentId is null || Model.ParentId == Guid.Empty)
+            Model.Parent = null;
+        else
+            Model.Parent = await ProductParentService.GetByIdAsync(Model.ParentId.Value);
 
-        if (Model.ParentId is not null)
-            _selectedParent = flattenedList.FirstOrDefault(p => p.Id == Model.ParentId);
-
-        return flattenedList;
     }
-
-    private void FlattenTree(IEnumerable<ProductParent> parents, List<ProductParentSelectModel> list, int level)
-    {
-        foreach (var parent in parents)
-        {
-            var prefix = new string('-', level * 2); // 2 spaces per level for indentation
-            list.Add(new ProductParentSelectModel
-            {
-                Id = parent.Id,
-                Name = $"{prefix}{parent.Name}"
-            });
-
-            if (parent.Children is not null)
-                FlattenTree(parent.Children, list, level + 1);
-        }
-    }
-
-    private Func<ProductParentSelectModel, string> _converterProductParent = p => p?.Name ?? "";
-
 }
