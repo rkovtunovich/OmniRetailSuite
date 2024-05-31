@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.dockerignore = .dockerignore
 		.editorconfig = .editorconfig
 		.env = .env
+		.gitlab-ci.yml = .gitlab-ci.yml
 		Directory.Packages.props = Directory.Packages.props
 		.github\workflows\dotnetcore.yml = .github\workflows\dotnetcore.yml
 		README.md = README.md
@@ -122,7 +123,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApps.RetailAssistant.Uni
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BackendServices", "BackendServices", "{64418041-DA61-47C4-BC4F-B4E7714599DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductCatalog.Tests", "tests\BackendServices\ProductCatalog.Tests\ProductCatalog.Tests.csproj", "{5C211947-F666-42D0-859C-E5D6503C153F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductCatalog.Tests", "tests\BackendServices\ProductCatalog.Tests\ProductCatalog.Tests.csproj", "{5C211947-F666-42D0-859C-E5D6503C153F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
