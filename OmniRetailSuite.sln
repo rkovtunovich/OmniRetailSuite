@@ -125,6 +125,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BackendServices", "BackendS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductCatalog.Tests", "tests\BackendServices\ProductCatalog.Tests\ProductCatalog.Tests.csproj", "{5C211947-F666-42D0-859C-E5D6503C153F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{58E1251E-31CB-4AD7-ADCA-7035DA5164B2}"
+	ProjectSection(SolutionItems) = preProject
+		doc\High-Level Architecture Overview.drawio = doc\High-Level Architecture Overview.drawio
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
