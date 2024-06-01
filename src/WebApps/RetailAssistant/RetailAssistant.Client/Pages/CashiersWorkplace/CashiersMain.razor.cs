@@ -8,6 +8,8 @@ namespace RetailAssistant.Client.Pages.CashiersWorkplace;
 
 public partial class CashiersMain
 {
+    #region Injected services
+
     [Inject] public IProductCatalogService<ProductParent> ProductParentService { get; set; } = null!;
 
     [Inject] public IProductCatalogService<CatalogProductItem> ProductItemService { get; set; } = null!;
@@ -20,6 +22,7 @@ public partial class CashiersMain
 
     [Inject] private IDialogService DialogService { get; set; } = null!;
 
+    #endregion
 
     [Parameter]
     public Cashier? Cashier { get; set; }
@@ -59,7 +62,7 @@ public partial class CashiersMain
     private string[] _tableHeadings = ["Code", "Name", "Price"];
     private int _selectedRowNumber = -1;
     private MudTable<CatalogProductItem> _productItemsTable = null!;
-    private bool _showLoading = false;
+    private bool _isTableLoading = false;
 
     #endregion
 
@@ -67,7 +70,6 @@ public partial class CashiersMain
 
     private async Task ReloadProductItems(ProductParent? productParent = null)
     {
-        _showLoading = true;
         if (productParent is null)
         {
             var productItemsList = await ProductItemService.GetAllAsync();
@@ -79,7 +81,6 @@ public partial class CashiersMain
             _productItems = [.. productItemsList];
         }
 
-        _showLoading = false;
         CallRequestRefresh();
     }
 
@@ -125,9 +126,10 @@ public partial class CashiersMain
 
     #region methods
 
-    private async void OnParentItemDoubleClick(ProductParent productParent, MouseEventArgs mouseEventArgs)
+    private async void OnParentItemClick(ProductParent productParent, MouseEventArgs mouseEventArgs)
     {
         _selectedProductParent = productParent;
+        _isTableLoading = true;
 
         if (productParent.Name == FilterSpecialCase.All.ToString())
         {
@@ -138,6 +140,10 @@ public partial class CashiersMain
         {
             await ReloadProductItems(productParent);
         }
+
+        _isTableLoading = false;
+
+        StateHasChanged();
     }
 
     private async Task ReloadItemParents()
@@ -240,8 +246,10 @@ public partial class CashiersMain
         {
             Id = GuidGenerator.Create(),
             Store = localSettings?.Store ?? throw new ArgumentNullException(nameof(localSettings.Store)),
-            Cashier = Cashier ?? throw new ArgumentNullException(nameof(Cashier))
         };
+
+        if (Cashier is not null)
+            _receipt.Cashier = Cashier;
     }
 
     #endregion
