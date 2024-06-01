@@ -57,7 +57,7 @@
                         <MudTreeViewItem Items="@item.Children"
                                          Icon="@Icons.Material.Outlined.Folder"
                                          Value="item"
-                                         OnDoubleClick="@(e => OnParentItemDoubleClick(item, e))"
+                                         OnClick="@(e => OnParentItemClick(item, e))"
                                          Class="@($"{GetItemClass(item)} ors-no-select")">
 
                             <BodyContent>
@@ -77,7 +77,7 @@
                           Hover="true"
                           Dense="true"
                           Breakpoint="Breakpoint.Sm"
-                          Loading="@_showLoading"
+                          Loading="@_isTableLoading"
                           LoadingProgressColor="Color.Default"
                           Class="cashiers-workplace-product-items-table"
                           RowClass="cursor-pointer"
