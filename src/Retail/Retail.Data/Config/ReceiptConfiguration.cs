@@ -5,13 +5,9 @@ namespace Retail.Data.Config;
 public class ReceiptConfiguration : IEntityTypeConfiguration<Receipt>
 {
     public static readonly string CodeSequenceName = "receipt_codes";
-
+ 
     public void Configure(EntityTypeBuilder<Receipt> builder)
     {
-        var navigation = builder.Metadata.FindNavigation(nameof(Receipt.ReceiptItems));
-
-        navigation?.SetPropertyAccessMode(PropertyAccessMode.Field);
-
         builder.HasOne(x => x.Cashier)
             .WithMany()
             .HasForeignKey(x => x.CashierId)
@@ -37,6 +33,10 @@ public class ReceiptConfiguration : IEntityTypeConfiguration<Receipt>
 
         builder.HasIndex(e => new { e.CodePrefix, e.CodeNumber })
             .IsUnique();
+
+        builder.HasMany(x => x.ReceiptItems)
+            .WithOne(x => x.Receipt)
+            .HasForeignKey(x => x.ReceiptId);
 
         builder.HasQueryFilter(p => !p.IsDeleted);
     }

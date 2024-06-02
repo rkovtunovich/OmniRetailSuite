@@ -9,7 +9,8 @@ public class ReceiptRepository(RetailDbContext context, ILogger<ReceiptRepositor
     {
         try
         {
-            return await _context.Receipts.ToListAsync();
+            return await _context.Receipts
+                .ToListAsync();
         }
         catch (Exception)
         {
@@ -23,6 +24,7 @@ public class ReceiptRepository(RetailDbContext context, ILogger<ReceiptRepositor
         try
         {
             return await _context.Receipts
+                .Include(items => items.ReceiptItems)
                 .FirstOrDefaultAsync(r => r.CodeNumber == code && r.CodePrefix == prefix);
         }
         catch (Exception)
@@ -37,6 +39,7 @@ public class ReceiptRepository(RetailDbContext context, ILogger<ReceiptRepositor
         try
         {
             return await _context.Receipts
+                .Include(items => items.ReceiptItems)
                 .FirstOrDefaultAsync(r => r.Id == receiptId);
         }
         catch (Exception)
@@ -58,7 +61,7 @@ public class ReceiptRepository(RetailDbContext context, ILogger<ReceiptRepositor
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex,"Error while adding receipt with id {Id}", receipt.Id);
+            _logger.LogError(ex, "Error while adding receipt with id {Id}", receipt.Id);
             throw;
         }
     }
