@@ -1,10 +1,11 @@
 ﻿using Infrastructure.Serialization.JsonText.Configuration;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.JSInterop;
 using MudBlazor.Services;
-using RetailAssistant.Client.Configuration;
-using RetailAssistant.Application.Config;
 using MudExtensions.Services;
+using RetailAssistant.Application.Config;
+using RetailAssistant.Client.Configuration;
 using UI.Razor.Services.Implementation;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -35,5 +36,17 @@ builder.Services.AddOidcAuthentication(options =>
 });
 
 var app = builder.Build();
+
+try
+{
+    var jsRuntime = app.Services.GetRequiredService<IJSRuntime>();
+    // This is a workaround for the issue with the service worker not updating the cache after the first load
+    await jsRuntime.InvokeVoidAsync("checkForServiceWorkerUpdate");
+}
+catch (Exception ex)
+{
+    Console.WriteLine(ex.Message);
+}
+
 
 await app.RunAsync();
