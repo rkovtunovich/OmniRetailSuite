@@ -10,6 +10,11 @@ public class SecretRequest
 
     public int Version { get; set; } = 0;
 
+    public static string ConvertPathFromSnakeToKebabCase(string path)
+    {
+       return path.Replace('_', '-');
+    }
+
     public override int GetHashCode()
     {
         return HashCode.Combine(Namespace, Path, SecretKeys, Version);

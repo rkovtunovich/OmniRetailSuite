@@ -29,7 +29,7 @@ public static class ConfigureDbContext
         var secretRequest = new SecretRequest
         {
             Namespace = "database",
-            Path = dbOptions.Value.Database
+            Path = SecretRequest.ConvertPathFromSnakeToKebabCase(dbOptions.Value.Database)
         };
 
         var credentials = await secretManager.GetSecretAsync(secretRequest)
