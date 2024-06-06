@@ -8,8 +8,6 @@ public class ReceiptItem
 
     public Guid ReceiptId { get; set; }
 
-    public Receipt Receipt { get; set; } = null!;
-
     public int LineNumber { get; set; }
 
     public RetailProductItem ProductItem { get; set; } = null!;

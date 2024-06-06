@@ -14,4 +14,9 @@ public class Store : EntityModelBase, ICloneable<Store>
             Address = Address
         };
     }
+
+    public override string ToString()
+    {
+        return Name;
+    }
 }

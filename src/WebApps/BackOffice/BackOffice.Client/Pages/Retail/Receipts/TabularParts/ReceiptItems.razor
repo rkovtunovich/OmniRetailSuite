@@ -7,7 +7,8 @@
     <MudTable Items="Items" Context="rowContext">
 
         <HeaderContent>
-            <MudTh>LineNumber</MudTh>
+            <MudTh>N</MudTh>
+            <MudTh>Item</MudTh>
             <MudTh>Quantity</MudTh>
             <MudTh>UnitPrice</MudTh>
             <MudTh>TotalPrice</MudTh>
@@ -15,6 +16,7 @@
 
         <RowTemplate>
             <MudTd>@rowContext.LineNumber</MudTd>
+            <MudTd>@rowContext.ProductItem</MudTd>
             <MudTd>@rowContext.Quantity</MudTd>
             <MudTd>@rowContext.UnitPrice</MudTd>
             <MudTd>@rowContext.TotalPrice</MudTd>

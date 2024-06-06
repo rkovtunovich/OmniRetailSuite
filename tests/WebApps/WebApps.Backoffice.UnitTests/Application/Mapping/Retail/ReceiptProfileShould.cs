@@ -12,6 +12,8 @@ public class ReceiptProfileShould
         var configuration = new MapperConfiguration(cfg =>
         {
             cfg.AddProfile<ReceiptProfile>();
+            cfg.AddProfile<StoreProfile>();
+            cfg.AddProfile<CashierProfile>();
             cfg.AddProfile<ReceiptItemProfile>();
             cfg.AddProfile<RetailProductItemProfile>();
         });

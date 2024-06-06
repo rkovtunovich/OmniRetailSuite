@@ -9,4 +9,9 @@ public class Cashier : EntityModelBase, ICloneable<Cashier>
             Name = $"{Name} (Copy)",
         };
     }
+
+    public override string ToString()
+    {
+        return Name;
+    }
 }

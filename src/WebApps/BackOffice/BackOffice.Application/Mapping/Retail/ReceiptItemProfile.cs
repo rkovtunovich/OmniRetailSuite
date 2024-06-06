@@ -6,7 +6,6 @@ public class ReceiptItemProfile : Profile
     {
         CreateMap<ReceiptItem, ReceiptItemDto>();
 
-        CreateMap<ReceiptItemDto, ReceiptItem>().
-            ForMember(dest => dest.Receipt, opt => opt.Ignore());
+        CreateMap<ReceiptItemDto, ReceiptItem>();
     }
 }

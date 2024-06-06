@@ -11,7 +11,6 @@ public class ReceiptItemProfileShould
         // Arrange
         var configuration = new MapperConfiguration(cfg =>
         {
-            cfg.AddProfile<ReceiptProfile>();
             cfg.AddProfile<ReceiptItemProfile>();
             cfg.AddProfile<RetailProductItemProfile>();
         });
