@@ -130,6 +130,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{58E1251E-31C
 		doc\High-Level Architecture Overview.drawio = doc\High-Level Architecture Overview.drawio
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Retail.Tests", "tests\BackendServices\Retail.Tests\Retail.Tests.csproj", "{B01ABF79-306C-40D9-9FA7-887E76D328A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -370,6 +372,12 @@ Global
 		{5C211947-F666-42D0-859C-E5D6503C153F}.NoVariablesDefault|Any CPU.Build.0 = Debug|Any CPU
 		{5C211947-F666-42D0-859C-E5D6503C153F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C211947-F666-42D0-859C-E5D6503C153F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B01ABF79-306C-40D9-9FA7-887E76D328A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B01ABF79-306C-40D9-9FA7-887E76D328A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B01ABF79-306C-40D9-9FA7-887E76D328A3}.NoVariablesDefault|Any CPU.ActiveCfg = Debug|Any CPU
+		{B01ABF79-306C-40D9-9FA7-887E76D328A3}.NoVariablesDefault|Any CPU.Build.0 = Debug|Any CPU
+		{B01ABF79-306C-40D9-9FA7-887E76D328A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B01ABF79-306C-40D9-9FA7-887E76D328A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -427,6 +435,7 @@ Global
 		{9719D438-2655-4EBE-9BA2-548B41E425E3} = {64FC1769-CF4E-4DC5-BEAD-AF64EC433759}
 		{64418041-DA61-47C4-BC4F-B4E7714599DA} = {15EA4737-125B-4E6E-A806-E13B7EBCDCCF}
 		{5C211947-F666-42D0-859C-E5D6503C153F} = {64418041-DA61-47C4-BC4F-B4E7714599DA}
+		{B01ABF79-306C-40D9-9FA7-887E76D328A3} = {64418041-DA61-47C4-BC4F-B4E7714599DA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {49813262-5DA3-4D61-ABD3-493C74CE8C2B}

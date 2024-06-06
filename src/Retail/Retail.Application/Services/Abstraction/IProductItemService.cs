@@ -2,13 +2,13 @@
 
 public interface IProductItemService
 {
-    Task<ProductItemDto?> GetProductItemAsync(Guid id);
+    Task<RetailProductItemDto?> GetProductItemAsync(Guid id);
 
-    Task<List<ProductItemDto>> GetProductItemsAsync();
+    Task<List<RetailProductItemDto>> GetProductItemsAsync();
 
-    Task<ProductItemDto> CreateProductItemAsync(ProductItemDto catalogItemDto);
+    Task<RetailProductItemDto> CreateProductItemAsync(RetailProductItemDto catalogItemDto);
 
-    Task UpdateProductItemAsync(ProductItemDto catalogItemDto);
+    Task UpdateProductItemAsync(RetailProductItemDto catalogItemDto);
 
     Task DeleteProductItemAsync(Guid id, bool isSoftDeleting);
 }

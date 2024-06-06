@@ -39,7 +39,7 @@ public class DtoBasedRouteConvention : IControllerModelConvention
     private string GetResourceNameByDto(string controllerName) => controllerName switch
     {
         nameof(CashierController) => _retailUrlResolver.GetResourceName<CashierDto>(),
-        nameof(ProductItemController) => _retailUrlResolver.GetResourceName<ProductItemDto>(),
+        nameof(RetailProductItemController) => _retailUrlResolver.GetResourceName<RetailProductItemDto>(),
         nameof(ReceiptController) => _retailUrlResolver.GetResourceName<ReceiptDto>(),
         nameof(StoreController) => _retailUrlResolver.GetResourceName<StoreDto>(),
         _ => throw new ArgumentException("Controller not found")

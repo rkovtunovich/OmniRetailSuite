@@ -4,15 +4,15 @@ using Microsoft.AspNetCore.Mvc;
 namespace Retail.Api.Controllers;
 
 [Route("api/v1/{resource}")]
-public class ProductItemController(IProductItemService productItemService, ILogger<ProductItemController> logger): ControllerBase
+public class RetailProductItemController(IProductItemService productItemService, ILogger<RetailProductItemController> logger): ControllerBase
 {
     private readonly IProductItemService _productItemService = productItemService;
-    private readonly ILogger<ProductItemController> _logger = logger;
+    private readonly ILogger<RetailProductItemController> _logger = logger;
 
     [HttpGet]
-    [ProducesResponseType(typeof(List<ProductItemDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<RetailProductItemDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<List<ProductItemDto>>> GetProductItemsAsync()
+    public async Task<ActionResult<List<RetailProductItemDto>>> GetProductItemsAsync()
     {
         try
         {
@@ -30,9 +30,9 @@ public class ProductItemController(IProductItemService productItemService, ILogg
 
     [HttpGet]
     [Route("{id:Guid}")]
-    [ProducesResponseType(typeof(ProductItemDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RetailProductItemDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<ProductItemDto>> GetProductItemAsync(Guid id)
+    public async Task<ActionResult<RetailProductItemDto>> GetProductItemAsync(Guid id)
     {
         try
         {

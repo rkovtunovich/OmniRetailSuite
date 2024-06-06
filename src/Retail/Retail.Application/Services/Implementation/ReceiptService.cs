@@ -5,6 +5,20 @@ namespace Retail.Application.Services.Implementation;
 
 public class ReceiptService(IReceiptRepository receiptRepository, IMapper mapper, ILogger<ReceiptService> logger) : IReceiptService
 {
+    public async Task<List<ReceiptDto>> GetReceiptsAsync()
+    {
+        try
+        {
+            var receipts = await receiptRepository.GetReceiptsAsync();
+            return mapper.Map<List<ReceiptDto>>(receipts);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Error while getting receipts");
+            throw;
+        }
+    }
+
     public async Task<ReceiptDto?> GetReceiptAsync(Guid id)
     {
         try
@@ -16,20 +30,6 @@ public class ReceiptService(IReceiptRepository receiptRepository, IMapper mapper
         catch (Exception e)
         {
             logger.LogError(e, $"Error while getting receipt: id {id}");
-            throw;
-        }
-    }
-
-    public async Task<List<ReceiptDto>> GetReceiptsAsync()
-    {
-        try
-        {
-            var receipts = await receiptRepository.GetReceiptsAsync();
-            return mapper.Map<List<ReceiptDto>>(receipts);
-        }
-        catch (Exception e)
-        {
-            logger.LogError(e, "Error while getting receipts");
             throw;
         }
     }
@@ -49,8 +49,8 @@ public class ReceiptService(IReceiptRepository receiptRepository, IMapper mapper
             receipt.Date = receiptDto.Date;
             receipt.CodeNumber = receiptDto.CodeNumber;
             receipt.CodePrefix = receiptDto.CodePrefix;
-            receipt.CashierId = receiptDto.CashierId;
-            receipt.StoreId = receiptDto.StoreId;
+            receipt.CashierId = receiptDto.Cashier.Id;
+            receipt.StoreId = receiptDto.Store.Id;
             receipt.TotalPrice = receiptDto.TotalPrice;
             receipt.ReceiptItems = mapper.Map<List<ReceiptItem>>(receiptDto.ReceiptItems);
 

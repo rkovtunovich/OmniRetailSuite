@@ -6,9 +6,9 @@ public record StoreDto : EntityDtoBase
 
     public int CodeNumber { get; init; }
 
-    public string? CodePrefix { get; init; } = null!;
+    public string? CodePrefix { get; init; }
 
-    public string Address { get; init; } = null!;
+    public string? Address { get; init; }
 
-    public List<CashierDto> Cashiers { get; init; } = null!;
+    public List<CashierDto>? Cashiers { get; init; }
 }

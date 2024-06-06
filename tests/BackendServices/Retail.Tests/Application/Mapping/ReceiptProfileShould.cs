@@ -1,9 +1,8 @@
-﻿using AutoMapper;
-using BackOffice.Application.Mapping.Retail;
+﻿using Retail.Application.Mapping;
 
-namespace WebApps.Backoffice.UnitTests.Application.Mapping.Retail;
+namespace Retail.Tests.Application.Mapping;
 
-public class ReceiptItemProfileShould
+public class ReceiptProfileShould
 {
     [Fact]
     public void HaveValidConfiguration()
@@ -12,11 +11,13 @@ public class ReceiptItemProfileShould
         var configuration = new MapperConfiguration(cfg =>
         {
             cfg.AddProfile<ReceiptProfile>();
+            cfg.AddProfile<StoreProfile>();
+            cfg.AddProfile<CashierProfile>();
             cfg.AddProfile<ReceiptItemProfile>();
-            cfg.AddProfile<RetailProductItemProfile>();
+            cfg.AddProfile<ProductItemProfile>();
         });
 
-        // Assert & Act
+        // Act & Assert
         configuration.AssertConfigurationIsValid();
     }
 }

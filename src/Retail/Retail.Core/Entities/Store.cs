@@ -8,7 +8,7 @@ public class Store: EntityBase, ICodedEntity
 
     public string Name { get; set; } = null!;
 
-    public string Address { get; set; } = null!;
+    public string? Address { get; set; }
 
-    public List<Cashier> Cashiers { get; set; } = [];
+    public List<Cashier>? Cashiers { get; set; }
 }

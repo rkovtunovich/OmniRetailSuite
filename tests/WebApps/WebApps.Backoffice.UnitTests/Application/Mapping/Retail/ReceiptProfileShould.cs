@@ -13,6 +13,7 @@ public class ReceiptProfileShould
         {
             cfg.AddProfile<ReceiptProfile>();
             cfg.AddProfile<ReceiptItemProfile>();
+            cfg.AddProfile<RetailProductItemProfile>();
         });
 
         // Assert & Act

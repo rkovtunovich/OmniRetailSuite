@@ -14,6 +14,7 @@ public static class ConfigureSerialization
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             PropertyNameCaseInsensitive = true,
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
             
             Converters = 
             {

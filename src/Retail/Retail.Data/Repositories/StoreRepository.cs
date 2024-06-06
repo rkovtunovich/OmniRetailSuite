@@ -63,17 +63,20 @@ public class StoreRepository(RetailDbContext context, ILogger<ReceiptRepository>
             _context.Entry(existingStore).CurrentValues.SetValues(store);
 
             // Update many-to-many relationship
-            var existingCashiers = existingStore.Cashiers.ToList();
+            var existingCashiers = existingStore.Cashiers?.ToList() ?? [];
             foreach (var cashier in existingCashiers)
             {
-                if (!store.Cashiers.Any(c => c.Id == cashier.Id))             
-                    existingStore.Cashiers.Remove(cashier);           
+                if (store.Cashiers?.Any(c => c.Id == cashier.Id) ?? false)             
+                    existingStore.Cashiers?.Remove(cashier);           
             }
 
-            foreach (var cashier in store.Cashiers)
+            if(store.Cashiers is not null)
             {
-                if (!existingCashiers.Any(c => c.Id == cashier.Id))               
-                    existingStore.Cashiers.Add(cashier);             
+                foreach (var cashier in store.Cashiers)
+                {
+                    if (!existingCashiers.Any(c => c.Id == cashier.Id))
+                        existingStore.Cashiers?.Add(cashier);
+                }
             }
 
             // Save changes

@@ -6,6 +6,12 @@ public class ReceiptItemProfile : Profile
 {
     public ReceiptItemProfile()
     {
-        CreateMap<ReceiptItem, ReceiptItemDto>().ReverseMap();
+        CreateMap<ReceiptItem, ReceiptItemDto>();
+
+        CreateMap<ReceiptItemDto, ReceiptItem>()
+            .ForMember(dest => dest.Receipt, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.IsDeleted, opt => opt.Ignore());
     }
 }

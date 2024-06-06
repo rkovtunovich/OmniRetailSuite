@@ -18,5 +18,5 @@ public class Receipt: EntityBase, ICodedEntity
 
     public decimal TotalPrice { get; set; }
 
-    public List<ReceiptItem> ReceiptItems { get; set; } = [];
+    public List<ReceiptItem>? ReceiptItems { get; set; }
 }

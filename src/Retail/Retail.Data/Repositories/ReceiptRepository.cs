@@ -10,6 +10,26 @@ public class ReceiptRepository(RetailDbContext context, ILogger<ReceiptRepositor
         try
         {
             return await _context.Receipts
+                .Select(r => new Receipt
+                {
+                    Id = r.Id,
+                    CodeNumber = r.CodeNumber,
+                    CodePrefix = r.CodePrefix,
+                    Date = r.Date,
+                    Cashier = new Cashier
+                    {
+                        Id = r.Cashier.Id,
+                        Name = r.Cashier.Name,
+                        CodeNumber = r.Cashier.CodeNumber,
+                    },
+                    Store = new Store
+                    {
+                        Id = r.Store.Id,
+                        Name = r.Store.Name,
+                        CodeNumber = r.Store.CodeNumber,
+                    },
+                    TotalPrice = r.TotalPrice
+                })
                 .ToListAsync();
         }
         catch (Exception)
@@ -24,7 +44,10 @@ public class ReceiptRepository(RetailDbContext context, ILogger<ReceiptRepositor
         try
         {
             return await _context.Receipts
-                .Include(items => items.ReceiptItems)
+                .Include(cashier => cashier.Cashier)
+                .Include(store => store.Store)
+                .Include(items => items.ReceiptItems!)
+                    .ThenInclude(p => p.ProductItem)
                 .FirstOrDefaultAsync(r => r.CodeNumber == code && r.CodePrefix == prefix);
         }
         catch (Exception)
@@ -39,7 +62,8 @@ public class ReceiptRepository(RetailDbContext context, ILogger<ReceiptRepositor
         try
         {
             return await _context.Receipts
-                .Include(items => items.ReceiptItems)
+                .Include(items => items.ReceiptItems!)
+                    .ThenInclude(p => p.ProductItem)
                 .FirstOrDefaultAsync(r => r.Id == receiptId);
         }
         catch (Exception)

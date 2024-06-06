@@ -1,12 +1,13 @@
-﻿using Contracts.Dtos.Retail;
+﻿using System.Net.Mime;
+using Contracts.Dtos.Retail;
+using Infrastructure.Serialization.Abstraction;
 using Microsoft.AspNetCore.Mvc;
-using Retail.Core.Entities.ReceiptAggregate;
 
 namespace Retail.Api.Controllers;
 
 [ApiController]
 [Route("api/v1/{resource}")]
-public class ReceiptController(IReceiptService receiptService, ILogger<ReceiptController> logger): ControllerBase
+public class ReceiptController(IReceiptService receiptService, IDataSerializer dataSerializer, ILogger<ReceiptController> logger): ControllerBase
 {
     private readonly IReceiptService _receiptService = receiptService;
     private readonly ILogger<ReceiptController> _logger = logger;
@@ -14,13 +15,14 @@ public class ReceiptController(IReceiptService receiptService, ILogger<ReceiptCo
     [HttpGet]
     [ProducesResponseType(typeof(List<ReceiptDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<List<ReceiptDto>>> GetReceiptsAsync()
+    public async Task<IActionResult> GetReceiptsAsync()
     {
         try
         {
             var receipts = await _receiptService.GetReceiptsAsync();
+            var serializedReceipts = dataSerializer.Serialize(receipts);
 
-            return Ok(receipts);
+            return Content(serializedReceipts, MediaTypeNames.Application.Json);
         }
         catch (Exception e)
         {
@@ -34,7 +36,7 @@ public class ReceiptController(IReceiptService receiptService, ILogger<ReceiptCo
     [Route("{id:Guid}")]
     [ProducesResponseType(typeof(ReceiptDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<ReceiptDto>> GetReceiptAsync(Guid id)
+    public async Task<IActionResult> GetReceiptAsync(Guid id)
     {
         try
         {
@@ -42,8 +44,10 @@ public class ReceiptController(IReceiptService receiptService, ILogger<ReceiptCo
 
             if (receipt is null)         
                 return NotFound();
-            
-            return Ok(receipt);
+
+            var serializedReceipt = dataSerializer.Serialize(receipt);
+
+            return Content(serializedReceipt, MediaTypeNames.Application.Json);
         }
         catch (Exception e)
         {
@@ -56,7 +60,7 @@ public class ReceiptController(IReceiptService receiptService, ILogger<ReceiptCo
     [HttpPost]
     [ProducesResponseType(typeof(ReceiptDto), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<ReceiptDto>> CreateReceiptAsync(ReceiptDto receipt)
+    public async Task<IActionResult> CreateReceiptAsync(ReceiptDto receipt)
     {
         try
         {
@@ -75,13 +79,15 @@ public class ReceiptController(IReceiptService receiptService, ILogger<ReceiptCo
     [HttpPut]
     [ProducesResponseType(typeof(ReceiptDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<ReceiptDto>> UpdateReceiptAsync(ReceiptDto receipt)
+    public async Task<IActionResult> UpdateReceiptAsync(ReceiptDto receipt)
     {
         try
         {
             await _receiptService.UpdateReceiptAsync(receipt);
 
-            return Ok(receipt);
+            var serializedReceipt = dataSerializer.Serialize(receipt);
+
+            return Content(serializedReceipt, MediaTypeNames.Application.Json);
         }
         catch (Exception e)
         {
@@ -95,7 +101,7 @@ public class ReceiptController(IReceiptService receiptService, ILogger<ReceiptCo
     [Route("{id:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<Receipt>> DeleteReceiptAsync(Guid id, bool useSoftDeleting)
+    public async Task<IActionResult> DeleteReceiptAsync(Guid id, bool useSoftDeleting)
     {
         try
         {

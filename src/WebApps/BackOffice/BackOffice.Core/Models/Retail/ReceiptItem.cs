@@ -1,4 +1,6 @@
-﻿namespace BackOffice.Core.Models.Retail;
+﻿using BackOffice.Core.Models.ProductCatalog;
+
+namespace BackOffice.Core.Models.Retail;
 
 public class ReceiptItem
 {
@@ -10,7 +12,7 @@ public class ReceiptItem
 
     public int LineNumber { get; set; }
 
-    public Guid ProductItemId { get; set; }
+    public RetailProductItem ProductItem { get; set; } = null!;
 
     public double Quantity { get; set; }
 

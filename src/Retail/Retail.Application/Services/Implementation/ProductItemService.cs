@@ -5,13 +5,13 @@ namespace Retail.Application.Services.Implementation;
 
 public class ProductItemService(ICatalogItemRepository productItemRepository, IMapper mapper, ILogger<ProductItemService> logger) : IProductItemService
 {
-    public async Task<ProductItemDto?> GetProductItemAsync(Guid id)
+    public async Task<RetailProductItemDto?> GetProductItemAsync(Guid id)
     {
         try
         {
             var productItem = await productItemRepository.GetProductItemAsync(id);
 
-            return mapper.Map<ProductItemDto>(productItem);
+            return mapper.Map<RetailProductItemDto>(productItem);
         }
         catch (Exception e)
         {
@@ -20,12 +20,12 @@ public class ProductItemService(ICatalogItemRepository productItemRepository, IM
         }
     }
 
-    public async Task<List<ProductItemDto>> GetProductItemsAsync()
+    public async Task<List<RetailProductItemDto>> GetProductItemsAsync()
     {
         try
         {
             var productItems = await productItemRepository.GetProductItemsAsync();
-            return mapper.Map<List<ProductItemDto>>(productItems);
+            return mapper.Map<List<RetailProductItemDto>>(productItems);
         }
         catch (Exception e)
         {
@@ -34,13 +34,13 @@ public class ProductItemService(ICatalogItemRepository productItemRepository, IM
         }
     }
 
-    public async Task<ProductItemDto> CreateProductItemAsync(ProductItemDto ProductItemDto)
+    public async Task<RetailProductItemDto> CreateProductItemAsync(RetailProductItemDto ProductItemDto)
     {
         try
         {
             var productItem = mapper.Map<ProductItem>(ProductItemDto);
             await productItemRepository.AddProductItemAsync(productItem);
-            return mapper.Map<ProductItemDto>(productItem);
+            return mapper.Map<RetailProductItemDto>(productItem);
         }
         catch (Exception e)
         {
@@ -49,7 +49,7 @@ public class ProductItemService(ICatalogItemRepository productItemRepository, IM
         }
     }
 
-    public async Task UpdateProductItemAsync(ProductItemDto productItemDto)
+    public async Task UpdateProductItemAsync(RetailProductItemDto productItemDto)
     {
         try
         {

@@ -8,11 +8,11 @@ public record ReceiptDto : EntityDtoBase
 
     public DateTimeOffset Date { get; init; }
 
-    public Guid CashierId { get; init; }
+    public CashierDto Cashier { get; init; }
 
-    public Guid StoreId { get; init; }
+    public StoreDto Store { get; init; }
 
     public decimal TotalPrice { get; init; }
 
-    public List<ReceiptItemDto> ReceiptItems { get; init; } = null!;
+    public List<ReceiptItemDto>? ReceiptItems { get; init; }
 }

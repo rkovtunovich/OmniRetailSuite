@@ -1,10 +1,11 @@
-﻿namespace RetailAssistant.Application.Mapping.Retail;
+﻿namespace BackOffice.Application.Mapping.Retail;
 
-public class RetailProcutItemProfile : Profile
+public class RetailProductItemProfile : Profile
 {
-    public RetailProcutItemProfile()
+    public RetailProductItemProfile()
     {
         CreateMap<RetailProductItem, RetailProductItemDto>();
+
         CreateMap<RetailProductItemDto, RetailProductItem>();
     }
 }

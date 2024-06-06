@@ -20,7 +20,7 @@ public class ItemCreatedEventHandler: IEventHandler<ItemCreatedEvent>
 
         try
         {
-            var catalogItemDto = new ProductItemDto
+            var catalogItemDto = new RetailProductItemDto
             {
                 Id = @event.Id,
                 Name = @event.Name,
