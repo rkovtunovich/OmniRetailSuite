@@ -62,6 +62,8 @@ public class ReceiptRepository(RetailDbContext context, ILogger<ReceiptRepositor
         try
         {
             return await _context.Receipts
+                .Include(cashier => cashier.Cashier)
+                .Include(store => store.Store)
                 .Include(items => items.ReceiptItems!)
                     .ThenInclude(p => p.ProductItem)
                 .FirstOrDefaultAsync(r => r.Id == receiptId);
