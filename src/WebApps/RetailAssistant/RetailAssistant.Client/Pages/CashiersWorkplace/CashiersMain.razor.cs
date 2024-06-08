@@ -29,6 +29,8 @@ public partial class CashiersMain
 
     private double _splitterPercentage = 75;
 
+    private IDialogReference? _paymentDialog;
+
     #region Overrides
 
     protected override void OnInitialized()
@@ -204,10 +206,10 @@ public partial class CashiersMain
             },
             new ToolbarCommand
             {
-                Name = "Save",
-                Icon = Icons.Material.Outlined.Save,
-                Callback = EventCallback.Factory.Create<MouseEventArgs>(this, SaveReceipt),
-                Tooltip = "Save",
+                Name = "Payment",
+                Icon = IconHelper.ShoppingCartCheckout,
+                Callback = EventCallback.Factory.Create<MouseEventArgs>(this, TakeReceiptPayment),
+                Tooltip = "Payment",
                 CssClass = "cashiers-receipt-save-button"
             }
         ];
@@ -227,14 +229,50 @@ public partial class CashiersMain
         }
     }
 
-    private async Task SaveReceipt()
+    private async Task TakeReceiptPayment()
     {
+        if (_receipt.TotalPrice is 0)
+            return;
+
+        var fragmentParameters = new Dictionary<string, object>
+        {
+            { nameof(ReceiptPayment.TotalPrice), _receipt.TotalPrice },
+            { nameof(ReceiptPayment.OnPaymentCompleted), EventCallback.Factory.Create<decimal>(this, ReceiptPaymentMade) },
+            { nameof(ReceiptPayment.OnPaymentCancelled), EventCallback.Factory.Create(this, ReceiptPaymentCancelled) }
+        };
+
+        var content = RenderFragmentBuilder.Create<ReceiptPayment>(fragmentParameters);
+
+        var options = new DialogOptions
+        {
+            CloseOnEscapeKey = false,
+            MaxWidth = MaxWidth.Medium,
+            DisableBackdropClick = true
+        };
+
+        var dialogParameters = new DialogParameters { { "ChildContent", content } };
+
+        _paymentDialog = await DialogService.ShowAsync<ModalComponent>("Payment", dialogParameters, options);
+    }
+
+    private async Task ReceiptPaymentMade(decimal paymentAmount)
+    {
+        if (paymentAmount < _receipt.TotalPrice)
+            return;
+
+        _paymentDialog?.Close();
+
         _receipt.Date = DateTime.Now;
         await ReceiptService.CreateAsync(_receipt);
 
         await InitNewReceipt();
 
         CallRequestRefresh();
+    }
+
+    private void ReceiptPaymentCancelled()
+    {
+        _paymentDialog?.Close();
     }
 
     private async Task InitNewReceipt()

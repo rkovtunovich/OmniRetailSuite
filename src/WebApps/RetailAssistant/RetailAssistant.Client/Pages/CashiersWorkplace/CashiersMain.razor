@@ -14,7 +14,7 @@
 
                 <MudTable Items="_receipt.ReceiptItems"
                           Hover="true"
-                          Style="max-width: 99%"
+                          Style="max-width: 99%; height: 90%"
                           Breakpoint="Breakpoint.Sm"
                           Class="cashiers-workplace-receipt-table"
                           RowClass="cashiers-workplace-receipt-table-row"
@@ -35,6 +35,12 @@
                         <MudTd DataLabel="Price">@context.UnitPrice</MudTd>
                         <MudTd DataLabel="Total">@context.TotalPrice</MudTd>
                     </RowTemplate>
+
+                    <FooterContent>
+
+                        <MudTd Style="text-align:right" colspan="5">Total: @_receipt.TotalPrice</MudTd>
+
+                    </FooterContent>
 
                 </MudTable>
 
