@@ -10,6 +10,8 @@ public class ReceiptItemProfile : Profile
 
         CreateMap<ReceiptItemDto, ReceiptItem>()
             .ForMember(dest => dest.Receipt, opt => opt.Ignore())
+            .ForMember(dest => dest.ProductItemId, opt => opt.MapFrom(src => src.ProductItem.Id))
+            .ForMember(dest => dest.ProductItem, opt => opt.Ignore())
             .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
             .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
             .ForMember(dest => dest.IsDeleted, opt => opt.Ignore());

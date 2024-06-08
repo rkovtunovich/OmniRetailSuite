@@ -5,6 +5,7 @@ using Infrastructure.Messaging.Kafka.Configuration.Settings;
 using Infrastructure.SecretManagement.Vault.Configuration;
 using Infrastructure.Serialization.JsonText.Configuration;
 using Retail.Api.Configuration;
+using Retail.Application.Configuration;
 using Retail.Data;
 using Retail.Data.Config;
 using Steeltoe.Discovery.Client;

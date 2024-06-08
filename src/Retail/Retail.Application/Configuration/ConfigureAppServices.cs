@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Retail.Application.EventsHandlers.CatalogItem;
 using Retail.Application.Mapping.Configuration;
 
-namespace Retail.Api.Configuration;
+namespace Retail.Application.Configuration;
 
 public static class ConfigureAppServices
 {
