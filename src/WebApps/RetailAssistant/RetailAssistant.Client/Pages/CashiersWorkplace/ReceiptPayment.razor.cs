@@ -31,7 +31,7 @@ public partial class ReceiptPayment
     }
     private void PayClick(MouseEventArgs e)
     {
-        if (_paymentAmount != TotalPrice)
+        if (_paymentAmount < TotalPrice)
             return;
 
         if (OnPaymentCompleted.HasDelegate)
