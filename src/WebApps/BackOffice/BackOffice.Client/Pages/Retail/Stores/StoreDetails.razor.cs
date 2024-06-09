@@ -131,8 +131,7 @@ public partial class StoreDetails : DetailsFormBase<Store>
         };
         var dialogParameters = new DialogParameters { { "ChildContent", content } };
 
-        var dialog = DialogService.Show<ModalComponent>("Select cashiers", dialogParameters, options);
-
+        DialogService.Show<ModalComponent>("Select cashiers", dialogParameters, options);
     }
 
     private async Task<List<Cashier>> GetAllCashiers()

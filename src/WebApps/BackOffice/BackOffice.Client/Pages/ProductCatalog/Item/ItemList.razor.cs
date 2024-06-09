@@ -116,6 +116,7 @@ public partial class ItemList : ListBase<ProductItem>
 
     private void CanceledEditingItem(ProductItem item)
     {
+        // Do nothing
     }
 
     private async Task CommittedItemChanges(ProductItem item)
@@ -198,7 +199,7 @@ public partial class ItemList : ListBase<ProductItem>
         CallRequestRefresh();
     }
 
-    private async void OnParentItemDoubleClick(ProductParent productParent, MouseEventArgs mouseEventArgs)
+    private async void OnParentItemDoubleClick(ProductParent productParent)
     {
         _selectedProductParent = productParent;
         SelectedItem = null;

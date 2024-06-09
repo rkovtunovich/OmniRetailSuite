@@ -8,7 +8,6 @@ using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using MudBlazor.Services;
 using MudExtensions.Services;
-using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.untracked.json", optional: true, reloadOnChange: true);
@@ -29,7 +28,6 @@ builder.Services.AddJsonTextSerialization();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor(config => config.DetailedErrors = false);
 
-builder.Services.AddScoped<ToastService>();
 builder.Services.AddScoped<TabsService>();
 
 builder.Services.AddAuthentication(options =>
@@ -62,7 +60,6 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAppServices();
 builder.Services.AddMudServices();
 builder.Services.AddMudExtensions();
-builder.Services.AddRadzenComponents();
 
 builder.Logging.AddConfiguration(builder.Configuration.GetRequiredSection("Logging"));
 
@@ -83,6 +80,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapRazorPages();
 app.MapBlazorHub();
-app.MapFallbackToPage("/_Host");
+app.MapFallbackToPage("/App");
 
 await app.RunAsync();

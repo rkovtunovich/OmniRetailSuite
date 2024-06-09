@@ -17,7 +17,6 @@
     <link rel="stylesheet" href="_content/UI.Razor/css/defaults.css" asp-append-version=true />
     <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
     <link href="_content/CodeBeam.MudBlazor.Extensions/MudExtensions.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="_content/Radzen.Blazor/css/material-base.css">
     <link rel="stylesheet" href="~/css/admin.css" asp-append-version=true />
     <link rel="stylesheet" href="BackOffice.Client.styles.css" />
     <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
@@ -25,14 +24,13 @@
 
 <body>
     
-    <component type="typeof(App)" render-mode="ServerPrerendered" />
+    <component type="typeof(Routes)" render-mode="ServerPrerendered" />
 
     <script src="_framework/blazor.server.js"></script>
     <script src="~/js/backoffice.js" asp-append-version=true></script>
     <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
     <script src="_content/CodeBeam.MudBlazor.Extensions/MudExtensions.min.js"></script>
-    <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
     <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 
 </body>

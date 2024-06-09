@@ -80,6 +80,7 @@ public partial class BrandList : ListBase<ProductBrand>
 
     private void CanceledEditingItem(ProductBrand item)
     {
+        // Do nothing
     }
 
     private async Task CommittedItemChanges(ProductBrand type)

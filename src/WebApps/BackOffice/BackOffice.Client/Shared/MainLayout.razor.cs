@@ -22,13 +22,7 @@ public partial class MainLayout
 
     protected override async Task OnInitializedAsync()
     {
-        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState?.User;
-
-        if (!user?.Identity?.IsAuthenticated ?? true)
-            return;
-
-        var userId = user?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        var userId = await GetUserId();
         if (userId is null)
             return;
 
@@ -44,13 +38,7 @@ public partial class MainLayout
     {
         _isDarkMode = !_isDarkMode;
 
-        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState?.User;
-
-        if (!user?.Identity?.IsAuthenticated ?? true)
-            return;
-
-        var userId = user?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        var userId = await GetUserId();
         if (userId is null)
             return;
 
@@ -82,4 +70,17 @@ public partial class MainLayout
     }
 
     #endregion
+
+    private async  Task<string?> GetUserId()
+    {
+        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState?.User;
+        if (user is null)
+            return null;
+
+        if (!user.Identity?.IsAuthenticated ?? true)
+            return null;
+
+         return user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+    }
 }

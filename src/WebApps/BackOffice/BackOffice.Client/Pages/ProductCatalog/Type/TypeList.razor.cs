@@ -81,6 +81,7 @@ public partial class TypeList : ListBase<ProductType>
 
     private void CanceledEditingItem(ProductType item)
     {
+        // Do nothing
     }
 
     private async Task CommittedItemChanges(ProductType type)

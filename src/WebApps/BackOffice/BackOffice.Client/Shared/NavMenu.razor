@@ -14,15 +14,15 @@
         <Authorized>
 
             <MudNavGroup Title="Product Catalog" Icon="@IconHelper.Product" Expanded="false" Class="my-nav-menu-group">
-                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<ItemList>(nameof(ItemList), e)">Items</MudNavLink>
-                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<BrandList>(nameof(BrandList), e)">Brands</MudNavLink>
-                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<TypeList>(nameof(TypeList), e)">Types</MudNavLink>
+                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<ItemList>()">Items</MudNavLink>
+                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<BrandList>()">Brands</MudNavLink>
+                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<TypeList>()">Types</MudNavLink>
             </MudNavGroup>
 
             <MudNavGroup Title="Retail" Icon="@IconHelper.Retail" Expanded="false" Class="my-nav-menu-group">
-                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<CashierList>(nameof(CashierList), e)">Cashiers</MudNavLink>
-                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<StoreList>(nameof(StoreList), e)">Stores</MudNavLink>
-                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<ReceiptList>(nameof(Receipt), e)">Receipts</MudNavLink>
+                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<CashierList>()">Cashiers</MudNavLink>
+                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<StoreList>()">Stores</MudNavLink>
+                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<ReceiptList>()">Receipts</MudNavLink>
             </MudNavGroup>
 
         </Authorized>

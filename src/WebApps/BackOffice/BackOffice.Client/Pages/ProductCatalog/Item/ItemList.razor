@@ -87,7 +87,7 @@
                     <MudTreeViewItem Items="@item.Children"
                                      Icon="@Icons.Material.Outlined.Folder"
                                      Value="item"
-                                     OnDoubleClick="@(e => OnParentItemDoubleClick(item, e))"
+                                     OnDoubleClick="@(e => OnParentItemDoubleClick(item))"
                                      Class="@($"{GetItemClass(item)} ors-no-select")">
 
                         <BodyContent>

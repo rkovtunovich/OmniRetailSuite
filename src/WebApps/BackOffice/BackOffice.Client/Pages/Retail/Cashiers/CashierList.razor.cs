@@ -78,6 +78,7 @@ public partial class CashierList : ListBase<Cashier>
 
     private void CanceledEditingItem(Cashier item)
     {
+        // Do nothing
     }
 
     private async Task CommittedItemChanges(Cashier cashier)

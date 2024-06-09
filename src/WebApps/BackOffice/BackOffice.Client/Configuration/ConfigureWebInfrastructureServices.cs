@@ -1,4 +1,5 @@
 ﻿using BackOffice.Application.Services.Implementation;
+using BackOffice.Client.Exceptions;
 using BackOffice.Core.Models.Settings;
 using Infrastructure.Http;
 using Infrastructure.Http.Clients;
@@ -23,26 +24,26 @@ public static class ConfigureWebInfrastructureServices
         services.AddSignalR(options => options.MaximumReceiveMessageSize = 10 * 1024 * 1024);
 
         logger.LogInformation("Configuring Http Clients...");
-        logger.LogInformation($"IdentityServer: {identityServerSettings?.Authority}");
-        logger.LogInformation($"ProductCatalog: {configuration[ClientNames.WEB_GATEWAY]}");
-        logger.LogInformation($"Retail: {configuration[ClientNames.WEB_GATEWAY]}");
+        logger.LogInformation("IdentityServer: {IdentityServer}", identityServerSettings?.Authority);
+        logger.LogInformation("ProductCatalog: {ProductCatalog}", configuration[ClientNames.WEB_GATEWAY]);
+        logger.LogInformation("Retail: {Retail}", configuration[ClientNames.WEB_GATEWAY]);
 
         services.AddHttpClient(ClientNames.IDENTITY, client =>
         {
             client.BaseAddress = new Uri(identityServerSettings?.Authority 
-                ?? throw new Exception($"Identity Server isn't settled in configuration {nameof(IdentityServerSettings.Authority)}"));
+                ?? throw new AbsentConfigurationParameterException($"Identity Server isn't settled in configuration {nameof(IdentityServerSettings.Authority)}"));
         });
 
         services.AddHttpClient(ClientNames.PRODUCT_CATALOG, client =>
         {
             client.BaseAddress = new Uri(configuration[ClientNames.WEB_GATEWAY] 
-                ?? throw new Exception("Api Gateway isn't settled in configuration"));
+                ?? throw new AbsentConfigurationParameterException("Api Gateway isn't settled in configuration"));
         });
 
         services.AddHttpClient(ClientNames.RETAIL, client =>
         {
             client.BaseAddress = new Uri(configuration[ClientNames.WEB_GATEWAY] 
-                ?? throw new Exception("Api Gateway isn't settled in configuration"));
+                ?? throw new AbsentConfigurationParameterException("Api Gateway isn't settled in configuration"));
         });
 
         services.AddHttpLogging(options =>
