@@ -1,0 +1,34 @@
+﻿@using BackOffice.Client.Components.Pages.ProductCatalog.Brand
+@using BackOffice.Client.Components.Pages.ProductCatalog.Item
+@using BackOffice.Client.Components.Pages.ProductCatalog.Type
+@using BackOffice.Client.Components.Pages.Retail.Cashiers
+@using BackOffice.Client.Components.Pages.Retail.Receipts
+@using BackOffice.Client.Components.Pages.Retail.Stores
+
+@inherits OrsComponentBase
+
+<MudNavMenu>
+
+    <AuthorizeView>
+
+        <Authorized>
+
+            <MudNavGroup Title="Product Catalog" Icon="@IconHelper.Product" Expanded="false" Class="my-nav-menu-group">
+                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<ItemList>()">Items</MudNavLink>
+                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<BrandList>()">Brands</MudNavLink>
+                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<TypeList>()">Types</MudNavLink>
+            </MudNavGroup>
+
+            <MudNavGroup Title="Retail" Icon="@IconHelper.Retail" Expanded="false" Class="my-nav-menu-group">
+                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<CashierList>()">Cashiers</MudNavLink>
+                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<StoreList>()">Stores</MudNavLink>
+                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<ReceiptList>()">Receipts</MudNavLink>
+            </MudNavGroup>
+
+        </Authorized>
+
+    </AuthorizeView>
+
+</MudNavMenu>
+
+

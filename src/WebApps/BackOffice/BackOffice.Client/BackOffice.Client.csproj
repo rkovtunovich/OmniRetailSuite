@@ -25,16 +25,4 @@
     <ProjectReference Include="..\BackOffice.Application\BackOffice.Application.csproj" />
   </ItemGroup>
 
-	<ItemGroup>
-		<Compile Update="Services\CatalogItem\Delete.EditCatalogItemResult.cs">
-			<DependentUpon>Delete.cs</DependentUpon>
-		</Compile>
-		<Compile Update="Services\CatalogItem\GetById.EditCatalogItemResult.cs">
-			<DependentUpon>GetById.cs</DependentUpon>
-		</Compile>
-		<Compile Update="Services\CatalogItem\Edit.CreateCatalogItemResult.cs">
-			<DependentUpon>Edit.cs</DependentUpon>
-		</Compile>
-	</ItemGroup>
-
 </Project>

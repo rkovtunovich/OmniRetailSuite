@@ -25,8 +25,8 @@ builder.WebHost.UseWebRoot("wwwroot").UseStaticWebAssets();
 builder.Services.AddWebServices(builder.Configuration);
 builder.Services.AddJsonTextSerialization();
 
-builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor(config => config.DetailedErrors = false);
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents();
 
 builder.Services.AddScoped<TabsService>();
 
@@ -53,7 +53,7 @@ builder.Services.AddAuthentication(options =>
         options.UseSecurityTokenValidator = false;
         options.TokenValidationParameters = new TokenValidationParameters
         {
-           ValidateIssuer = false
+            ValidateIssuer = false
         };
     });
 
@@ -64,22 +64,32 @@ builder.Services.AddMudExtensions();
 builder.Logging.AddConfiguration(builder.Configuration.GetRequiredSection("Logging"));
 
 var app = builder.Build();
-app.UseHsts();
+
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error", createScopeForErrors: true);
+    // The default HSTS value is 30 days.
+    app.UseHsts();
+}
+
 app.UseHttpsRedirection();
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
 });
-app.UseCookiePolicy(new CookiePolicyOptions {
+app.UseCookiePolicy(new CookiePolicyOptions
+{
     MinimumSameSitePolicy = SameSiteMode.Lax,
     Secure = CookieSecurePolicy.SameAsRequest
 });
+
 app.UseStaticFiles();
-app.UseRouting();
+app.UseAntiforgery();
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapRazorPages();
-app.MapBlazorHub();
-app.MapFallbackToPage("/App");
+
+app.MapAuthenticationEndpoints();
+app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode();
 
 await app.RunAsync();
