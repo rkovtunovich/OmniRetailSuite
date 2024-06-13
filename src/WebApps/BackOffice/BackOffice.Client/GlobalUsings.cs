@@ -1,6 +1,7 @@
 ﻿global using BackOffice.Application.Services.Abstraction;
 
 global using BackOffice.Client;
+global using BackOffice.Client.Components;
 global using BackOffice.Client.Model.UI;
 global using BackOffice.Client.Services;
 global using BackOffice.Client.Shared;
@@ -9,6 +10,7 @@ global using BackOffice.Core.Models;
 global using BackOffice.Core.Models.Retail;
 
 global using Microsoft.AspNetCore.Components;
+global using Microsoft.AspNetCore.Components.Web;
 
 global using MudBlazor;
 

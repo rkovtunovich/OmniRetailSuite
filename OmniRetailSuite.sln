@@ -130,7 +130,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{58E1251E-31C
 		doc\High-Level Architecture Overview.drawio = doc\High-Level Architecture Overview.drawio
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Retail.Tests", "tests\BackendServices\Retail.Tests\Retail.Tests.csproj", "{B01ABF79-306C-40D9-9FA7-887E76D328A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Retail.Tests", "tests\BackendServices\Retail.Tests\Retail.Tests.csproj", "{B01ABF79-306C-40D9-9FA7-887E76D328A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

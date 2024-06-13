@@ -22,6 +22,7 @@ public static class ConfigureWebInfrastructureServices
         services.Configure<RetailClientSettings>(configuration.GetSection($"HttpClients:RetailClient"));
 
         services.AddSignalR(options => options.MaximumReceiveMessageSize = 10 * 1024 * 1024);
+        services.AddHttpContextAccessor();
 
         logger.LogInformation("Configuring Http Clients...");
         logger.LogInformation("IdentityServer: {IdentityServer}", identityServerSettings?.Authority);
