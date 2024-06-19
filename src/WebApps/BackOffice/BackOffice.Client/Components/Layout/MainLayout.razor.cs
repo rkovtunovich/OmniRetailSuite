@@ -1,5 +1,5 @@
-﻿using BackOffice.Core.Models.UserPreferences;
-using Microsoft.AspNetCore.Components.Authorization;
+﻿using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.Localization;
 
 namespace BackOffice.Client.Components.Layout;
 
@@ -10,6 +10,10 @@ public partial class MainLayout
     [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; } = default!;
 
     [Inject] private TabsService _tabsService { get; set; } = default!;
+
+    [Inject] private IDialogService _dialogService { get; set; } = default!;
+
+    [Inject] private IStringLocalizer<MainLayout> _localizer { get; set; } = default!;
 
     private MudTheme _theme = new();
     private bool _isDarkMode;
@@ -22,7 +26,7 @@ public partial class MainLayout
 
     protected override async Task OnInitializedAsync()
     {
-        var userId = await GetUserId();
+        var userId = await _authenticationStateProvider.GetUserId();
         if (userId is null)
             return;
 
@@ -32,33 +36,6 @@ public partial class MainLayout
             _isDarkMode = settings.IsDarkMode;
 
         _tabsService.OnTabChanged += CallRequestRefresh;
-    }
-
-    private async Task ChangeTheme()
-    {
-        _isDarkMode = !_isDarkMode;
-
-        var userId = await GetUserId();
-        if (userId is null)
-            return;
-
-        var settings = await _userPreferenceService.GetPreferencesAsync(userId);
-
-        if (settings is null)
-        {
-            settings = new Settings
-            {
-                Theme = _isDarkMode ? "dark" : "light",
-            };
-
-            await _userPreferenceService.UpdatePreferencesAsync(userId, settings);
-        }
-        else
-        {
-            settings.Theme = _isDarkMode ? "dark" : "light";
-
-            await _userPreferenceService.UpdatePreferencesAsync(userId, settings);
-        }
     }
 
     #region Tabs
@@ -71,16 +48,30 @@ public partial class MainLayout
 
     #endregion
 
-    private async Task<string?> GetUserId()
+    #region App Settings
+
+    private void OpenAppSettings()
     {
-        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState?.User;
-        if (user is null)
-            return null;
+        var options = new DialogOptions
+        {
+            MaxWidth = MaxWidth.Medium,
+            FullWidth = true,
+            CloseOnEscapeKey = true,
+            DisableBackdropClick = true
+        };
 
-        if (!user.Identity?.IsAuthenticated ?? true)
-            return null;
+        var parameters = new DialogParameters
+        {
+            { "OnThemeChanged", EventCallback.Factory.Create<bool>(this, ChangeThemeInSettings) }
+        };
 
-        return user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        _dialogService.Show<AppSettingsDialog>(@_localizer["Settings"], parameters, options);
     }
+
+    private void ChangeThemeInSettings(bool isDarkMode)
+    {
+        _isDarkMode = isDarkMode;
+    }
+
+    #endregion
 }

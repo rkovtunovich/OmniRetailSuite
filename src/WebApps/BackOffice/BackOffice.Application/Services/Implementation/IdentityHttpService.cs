@@ -39,7 +39,11 @@ public class IdentityHttpService(IHttpClientFactory clientFactory,
         try
         {
             var client = await GetClientAsync();
-            var responseMessage = await client.PostAsJsonAsync(uri, data);
+
+            var serializedData = dataSerializer.Serialize(data);
+            var content = new StringContent(serializedData, Encoding.UTF8, "application/json");
+
+            var responseMessage = await client.PostAsync(uri, content);
 
             if (!responseMessage.IsSuccessStatusCode)
                 throw new Exception($"Error post request catalog uri {uri}. {responseMessage.Content}");
@@ -74,7 +78,11 @@ public class IdentityHttpService(IHttpClientFactory clientFactory,
         try
         {
             var client = await GetClientAsync();
-            var responseMessage = await client.PutAsJsonAsync(uri, data);
+
+            var serializedData = dataSerializer.Serialize(data);
+            var content = new StringContent(serializedData, Encoding.UTF8, "application/json");
+
+            var responseMessage = await client.PutAsync(uri, content);
 
             if (!responseMessage.IsSuccessStatusCode)
                 throw new Exception($"Error put request catalog uri {uri}. {responseMessage.Content}");

@@ -1,0 +1,44 @@
+﻿@using BackOffice.Client.Components.Pages.Retail.ReceiptPages.TabularParts
+@inherits DetailsFormBase<Receipt>
+
+<Form Commands="@ToolbarCommands">
+    <FormContent>
+
+        <EditForm EditContext="@EditContext" OnValidSubmit="@CloseClick">
+
+            <DataAnnotationsValidator />
+
+            <MudGrid>
+
+                <MudItem Style="min-width:50%">
+                    <MudCard>
+
+                        <MudCardContent>
+
+                            <MudTextField Label="@_localizer["Id"]" Class="mt-3" @bind-Value="Model.Id" For="@(() => Model.Id)" Variant="@MudBlazor.Variant.Filled" Disabled />
+                            <MudTextField Label="@_localizer["Number"]" Class="mt-3" @bind-Value="Model.CodeNumber" For="@(() => Model.CodeNumber)" Variant="@MudBlazor.Variant.Filled" />
+                            <MudTextField Label="@_localizer["Date"]" Class="mt-3" @bind-Value="Model.Date" For="@(() => Model.Date)" Variant="@MudBlazor.Variant.Filled" />
+                            <MudTextField Label="@_localizer["Total"]" Class="mt-3" @bind-Value="Model.TotalPrice" For="@(() => Model.TotalPrice)" Variant="@MudBlazor.Variant.Filled" />
+
+                        </MudCardContent>
+
+                    </MudCard>
+                </MudItem>
+
+                <MudItem xs="6">
+                    <MudCard>
+                        <MudCardContent>
+                            <MudTextField Label="@_localizer["Store"]" Class="mt-3" @bind-Value="Model.Store" For="@(() => Model.Store)" Variant="@MudBlazor.Variant.Filled" />
+                            <MudTextField Label="@_localizer["Cashier"]" Class="mt-3" @bind-Value="Model.Cashier" For="@(() => Model.Cashier)" Variant="@MudBlazor.Variant.Filled" />
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+
+            </MudGrid>
+
+            <ReceiptItems Items="@Model.ReceiptItems" Commands="_itemsTabToolbarCommands" />
+
+        </EditForm>
+
+    </FormContent>
+</Form>

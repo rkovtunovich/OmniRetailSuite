@@ -1,7 +1,7 @@
 @inherits OrsComponentBase
 
 <MudSelect T="HierarchySelectModel"
-           Label=@($"Select {Label}")
+           Label=@Label
            ToStringFunc="@_converterItem"
            Clearable
            Value="_selectedItem"

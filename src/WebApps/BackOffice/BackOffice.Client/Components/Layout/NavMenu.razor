@@ -1,9 +1,9 @@
-﻿@using BackOffice.Client.Components.Pages.ProductCatalog.Brand
-@using BackOffice.Client.Components.Pages.ProductCatalog.Item
-@using BackOffice.Client.Components.Pages.ProductCatalog.Type
-@using BackOffice.Client.Components.Pages.Retail.Cashiers
-@using BackOffice.Client.Components.Pages.Retail.Receipts
-@using BackOffice.Client.Components.Pages.Retail.Stores
+﻿@using BackOffice.Client.Components.Pages.ProductCatalog.BrandPages
+@using BackOffice.Client.Components.Pages.ProductCatalog.ItemPages
+@using BackOffice.Client.Components.Pages.ProductCatalog.TypePages
+@using BackOffice.Client.Components.Pages.Retail.CashierPages
+@using BackOffice.Client.Components.Pages.Retail.ReceiptPages
+@using BackOffice.Client.Components.Pages.Retail.StorePages
 
 @inherits OrsComponentBase
 
@@ -13,16 +13,16 @@
 
         <Authorized>
 
-            <MudNavGroup Title="Product Catalog" Icon="@IconHelper.Product" Expanded="false" Class="my-nav-menu-group">
-                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<ItemList>()">Items</MudNavLink>
-                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<BrandList>()">Brands</MudNavLink>
-                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<TypeList>()">Types</MudNavLink>
+            <MudNavGroup Title="@_localizer["ProductCatalog"]" Icon="@IconHelper.Product" Expanded="false" Class="my-nav-menu-group">
+                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<ItemList>()">@_localizer["Items"]</MudNavLink>
+                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<BrandList>()">@_localizer["Brands"]</MudNavLink>
+                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<TypeList>()">@_localizer["Types"]</MudNavLink>
             </MudNavGroup>
 
-            <MudNavGroup Title="Retail" Icon="@IconHelper.Retail" Expanded="false" Class="my-nav-menu-group">
-                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<CashierList>()">Cashiers</MudNavLink>
-                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<StoreList>()">Stores</MudNavLink>
-                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<ReceiptList>()">Receipts</MudNavLink>
+            <MudNavGroup Title="@_localizer["Retail"]" Icon="@IconHelper.Retail" Expanded="false" Class="my-nav-menu-group">
+                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<CashierList>()">@_localizer["Cashiers"]</MudNavLink>
+                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<StoreList>()">@_localizer["Stores"]</MudNavLink>
+                <MudNavLink Match="NavLinkMatch.All" OnClick="e => ClickOpenTab<ReceiptList>()">@_localizer["Receipts"]</MudNavLink>
             </MudNavGroup>
 
         </Authorized>

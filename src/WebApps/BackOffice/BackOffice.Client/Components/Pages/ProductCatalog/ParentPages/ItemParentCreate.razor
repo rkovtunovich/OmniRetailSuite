@@ -1,0 +1,38 @@
+﻿@inherits CreationFormBase<ProductParent>
+
+@namespace BackOffice.Client.Components.Pages.ProductCatalog.ParentPages
+
+<Form Commands="@ToolbarCommands">
+    <FormContent>
+
+        <EditForm EditContext="@EditContext" OnValidSubmit="@CreateClick">
+
+            <DataAnnotationsValidator />
+
+            <MudGrid>
+                <MudItem Style="min-width:50%">
+                    <MudCard>
+
+                        <MudCardContent>
+
+                            <MudTextField Label="@_localizer["Name"]"
+                                          Class="mt-3"
+                                          @bind-Value="Model.Name"
+                                          For="@(() => Model.Name)"
+                                          Variant="@MudBlazor.Variant.Filled" />
+
+                            <HierarchySelect Label="@_localizer["Parent"]"
+                                             OwnerId="@Model.Id"
+                                             SelectedId="@Model.ParentId"
+                                             OnChanged="@OnParentChanged"
+                                             Items="@(Mapper.Map<List<HierarchySelectModel>>(_allProductParents))" />
+                        </MudCardContent>
+
+                    </MudCard>
+                </MudItem>
+            </MudGrid>
+
+        </EditForm>
+
+    </FormContent>
+</Form>

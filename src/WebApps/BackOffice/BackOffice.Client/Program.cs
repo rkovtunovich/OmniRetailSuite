@@ -1,5 +1,7 @@
 ﻿using BackOffice.Application.Configuration;
 using BackOffice.Client.Configuration;
+using BackOffice.Client.Endpoints;
+using BackOffice.Client.Localization;
 using Infrastructure.Serialization.JsonText.Configuration;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -29,6 +31,8 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddScoped<TabsService>();
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.AddScoped<MudLocalizer, BackofficeLocalizer>();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -84,11 +88,18 @@ app.UseCookiePolicy(new CookiePolicyOptions
 });
 
 app.UseStaticFiles();
-app.UseAntiforgery();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseAntiforgery();
 
+var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(SupportedCultures.Default)
+    .AddSupportedCultures(SupportedCultures.All)
+    .AddSupportedUICultures(SupportedCultures.All);
+app.UseRequestLocalization(localizationOptions);
+
+app.MapCultureChangingEndpoint();
 app.MapAuthenticationEndpoints();
+
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
