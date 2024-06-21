@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.Localization;
 
 namespace BackOffice.Client.Components.Shared;
 
@@ -14,6 +15,8 @@ public partial class LoginDisplay
 
     [Inject]
     NavigationManager UriHelper { get; set; } = default!;
+
+    [Inject] private IStringLocalizer<LoginDisplay> _localizer { get; set; } = default!;
 
     [Parameter]
     public string? RedirectUri { get; set; }

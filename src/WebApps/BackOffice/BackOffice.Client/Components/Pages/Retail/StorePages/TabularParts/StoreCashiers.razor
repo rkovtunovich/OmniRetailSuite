@@ -1,0 +1,21 @@
+﻿@inherits TabularPartBase<Cashier>
+
+<MudContainer MaxWidth="MaxWidth.False" Class="p-0">
+
+    <ToolBar Commands="@Commands" />
+
+    <MudTable Items="Items" Context="rowContext">
+
+        <HeaderContent>
+            <MudTh>@_localizer["Code"]</MudTh>
+            <MudTh>@_localizer["Name"]</MudTh>
+        </HeaderContent>
+
+        <RowTemplate>
+            <MudTd>@rowContext.GetCode()</MudTd>
+            <MudTd>@rowContext.Name</MudTd>
+        </RowTemplate>
+
+    </MudTable>
+
+</MudContainer>

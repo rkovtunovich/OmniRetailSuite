@@ -1,0 +1,29 @@
+﻿@inherits CreationFormBase<Cashier>
+
+@namespace BackOffice.Client.Components.Pages.Retail.CashierPages
+
+<Form Commands="@ToolbarCommands">
+    <FormContent>
+
+        <EditForm EditContext="@EditContext" OnValidSubmit="@CreateClick">
+
+            <DataAnnotationsValidator />
+
+            <MudGrid>
+                <MudItem Style="min-width:50%">
+                    <MudCard>
+
+                        <MudTextField Label="@_localizer["Name"]"
+                                      Class="mt-3"
+                                      @bind-Value="Model.Name"
+                                      For="@(() => Model.Name)"
+                                      Variant="@MudBlazor.Variant.Filled" />
+
+                    </MudCard>
+                </MudItem>
+            </MudGrid>
+
+        </EditForm>
+
+    </FormContent>
+</Form>

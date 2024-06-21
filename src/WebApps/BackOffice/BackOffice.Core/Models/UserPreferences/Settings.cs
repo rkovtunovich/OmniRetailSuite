@@ -2,9 +2,9 @@
 
 public class Settings
 {
-    public Language Language { get; set; }
+    public Language Language { get; set; } = Language.EN;
 
-    public string Theme { get; set; } = null!;
+    public UITheme Theme { get; set; } = UITheme.Light;
 
-    public bool IsDarkMode => Theme == "dark";
+    public bool IsDarkMode => Theme is UITheme.Dark;
 }

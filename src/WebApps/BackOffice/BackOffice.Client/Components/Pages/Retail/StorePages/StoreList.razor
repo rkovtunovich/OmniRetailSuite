@@ -1,0 +1,58 @@
+﻿@attribute [Authorize]
+@inherits ListBase<Store>
+
+@namespace BackOffice.Client.Components.Pages.Retail.StorePages
+@using BackOffice.Core.Models.Retail
+
+<PageTitle>Manage Stores</PageTitle>
+
+<MudDataGrid T="Store" 
+             Items="@Items" 
+             Filterable="true" 
+             QuickFilter="@QuickFilter"
+             EditMode="@(_editMode)" 
+             EditTrigger="@(_editTrigger)"
+             StartedEditingItem="@StartedEditingItem" 
+             CanceledEditingItem="@CanceledEditingItem" 
+             CommittedItemChanges="@CommittedItemChanges" 
+             ReadOnly="false" 
+             RowClick="RowClick"
+             RowContextMenuClick="RowClickContextMenu"
+             RowClass="cursor-pointer"
+             RowClassFunc="@((item, line) => SelectedRowClassFunc(item, line))"
+             EditDialogOptions="_dialogOptions"
+             FixedHeader
+             Dense
+             Hover
+             HeaderClass="data-grid-header"
+             Style="height:100%; display:flex; flex-direction:column">
+
+    <ToolBarContent>
+
+        <MudButton OnClick="@CreateClick" Color="@Color.Success" Class="add-item-btn">@_localizer["Add"]</MudButton>
+
+        <MudSpacer />
+
+        <MudTextField @bind-Value="@QuickFilterSearchString"
+                      Placeholder="@_localizer["Search"]"
+                      Adornment="Adornment.Start"
+                      Immediate="true"
+                      AdornmentIcon="@Icons.Material.Filled.Search"
+                      IconSize="Size.Medium"
+                      Class="mt-0" />
+
+    </ToolBarContent>
+
+    <Columns>
+        <PropertyColumn Property="x => x.GetCode()" Title="@_localizer["Code"]" IsEditable="false" />
+        <PropertyColumn Property="x => x.Name" Title="@_localizer["Name"]" />
+        <TemplateColumn CellClass="d-flex justify-end" Sortable="false" Filterable="false">
+            <CellTemplate>
+                <MudIconButton Size="@Size.Small" Icon="@IconHelper.Open" OnClick="@(() => OpenClick(context))" />
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+
+</MudDataGrid>
+
+<ContextMenu @ref="ContextMenu" Items="ContextMenuItems" />

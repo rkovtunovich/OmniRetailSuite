@@ -13,7 +13,7 @@
 		<PackageReference Include="CodeBeam.MudBlazor.Extensions" Version="6.9.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.6" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />
-		<PackageReference Include="SonarAnalyzer.CSharp" Version="9.26.0.92422">
+		<PackageReference Include="SonarAnalyzer.CSharp" Version="9.27.0.93347">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
@@ -24,5 +24,5 @@
     <ProjectReference Include="..\..\..\Shared\UI\UI.RazorComponents\UI.Razor.csproj" />
     <ProjectReference Include="..\BackOffice.Application\BackOffice.Application.csproj" />
   </ItemGroup>
-
+ 
 </Project>

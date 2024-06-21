@@ -3,5 +3,5 @@
 public enum Language
 {
     EN = 1,
-    UA = 2
+    UK = 2
 }
