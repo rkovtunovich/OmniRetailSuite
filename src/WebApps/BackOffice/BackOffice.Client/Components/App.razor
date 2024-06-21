@@ -1,25 +1,25 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-
+<title>Backoffice</title>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-csale=1.0" />
     <base href="/" />
-    <link rel="stylesheet" href="~/css/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="_content/UI.Razor/css/defaults.css" asp-append-version=true />
+    <link rel="stylesheet" href="_content/UI.Razor/css/defaults.css" />
     <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
     <link href="_content/CodeBeam.MudBlazor.Extensions/MudExtensions.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="css/admin.css" asp-append-version=true />
+    <link rel="stylesheet" href="css/admin.css" />
     <link rel="stylesheet" href="BackOffice.Client.styles.css" />
     <HeadOutlet @rendermode="@InteractiveServer" />
 </head>
 
 <body>
-    
+
     <Routes @rendermode="@InteractiveServer" />
     <script src="_framework/blazor.web.js"></script>
-    <script src="js/backoffice.js" asp-append-version=true></script>
+    <script src="js/backoffice.js"></script>
     <script src="lib/bootstrap/js/bootstrap.min.js"></script>
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
     <script src="_content/CodeBeam.MudBlazor.Extensions/MudExtensions.min.js"></script>
