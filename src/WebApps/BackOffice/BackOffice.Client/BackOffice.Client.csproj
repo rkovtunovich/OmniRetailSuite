@@ -20,6 +20,7 @@
 	</ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\Helpers\Helpers.IOHelper\Helpers.IOHelper.csproj" />
     <ProjectReference Include="..\..\..\Shared\Infrastructure\Infrastructure.Serialization.JsonText\Infrastructure.Serialization.JsonText.csproj" />
     <ProjectReference Include="..\..\..\Shared\UI\UI.RazorComponents\UI.Razor.csproj" />
     <ProjectReference Include="..\BackOffice.Application\BackOffice.Application.csproj" />

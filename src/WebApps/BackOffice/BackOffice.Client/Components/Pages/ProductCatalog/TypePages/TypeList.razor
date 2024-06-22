@@ -37,10 +37,12 @@
         <MudTextField @bind-Value="@QuickFilterSearchString"
                       Placeholder="@_localizer["Search"]"
                       Adornment="Adornment.Start"
-                      Immediate="true"
                       AdornmentIcon="@Icons.Material.Filled.Search"
+                      Immediate
+                      Clearable
                       IconSize="Size.Medium"
-                      Class="mt-0" />
+                      Class="ors-list-search-field" />
+
     </ToolBarContent>
 
     <Columns>

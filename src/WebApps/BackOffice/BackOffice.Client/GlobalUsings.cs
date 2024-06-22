@@ -4,7 +4,6 @@ global using BackOffice.Client;
 global using BackOffice.Client.Components;
 global using BackOffice.Client.Exceptions;
 global using BackOffice.Client.Extensions;
-global using BackOffice.Client.Model.UI;
 global using BackOffice.Client.Services;
 global using BackOffice.Client.Shared;
 

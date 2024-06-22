@@ -35,13 +35,14 @@
         
         <MudSpacer />
 
-        <MudTextField @bind-Value="@QuickFilterSearchString" 
-                      Placeholder="@_localizer["Search"]" 
-                      Adornment="Adornment.Start" 
-                      Immediate="true"
-                      AdornmentIcon="@Icons.Material.Filled.Search" 
-                      IconSize="Size.Medium" 
-                      Class="mt-0" />
+        <MudTextField @bind-Value="@QuickFilterSearchString"
+                      Placeholder="@_localizer["Search"]"
+                      Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search"
+                      Immediate
+                      Clearable
+                      IconSize="Size.Medium"
+                      Class="ors-list-search-field" />
 
     </ToolBarContent>
 

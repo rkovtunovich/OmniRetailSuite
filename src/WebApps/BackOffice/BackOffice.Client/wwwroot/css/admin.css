@@ -328,3 +328,11 @@ a, .btn-link {
 }
 
 /* ---catalog parent tree */
+
+/* +++lists */
+
+.ors-list-search-field .mud-input{
+  align-self: end;
+}
+
+/* ---lists */
