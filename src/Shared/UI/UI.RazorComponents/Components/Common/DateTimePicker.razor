@@ -1,0 +1,27 @@
+
+<div class="d-inline-flex">
+
+    <MudDatePicker Label="@Label"
+                   Date="_dateTime"
+                   DateChanged="DateChanged"
+                   DateFormat="@DatePattern"
+                   TitleDateFormat="@DatePatternLong"
+                   FirstDayOfWeek="@FirstDayOfWeek"
+                   Editable="true"
+                   Disabled="ReadOnly" 
+                   Required="Required" 
+                   RequiredError="@RequiredError" 
+                   Style="@(string.IsNullOrEmpty(Label)?"margin-top:0px;":"")" />
+
+    <MudTimePicker Label="@LabelTime"
+                   Time="@(_dateTime.HasValue ? _dateTime.Value.TimeOfDay : null)"
+                   TimeChanged="TimeChanged"
+                   AmPm="TimeAmPm" Culture="CultureInfo.CurrentCulture"
+                   Editable="true"
+                   Disabled="ReadOnly" 
+                   Required="Required" 
+                   RequiredError="@RequiredError" 
+                   Style="@(string.IsNullOrEmpty(Label)?"margin-top:0px;":"")" />
+
+</div>
+

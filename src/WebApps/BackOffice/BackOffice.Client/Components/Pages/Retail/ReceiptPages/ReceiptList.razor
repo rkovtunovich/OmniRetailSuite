@@ -9,7 +9,8 @@
              Filterable="true"
              QuickFilter="@QuickFilter"
              ReadOnly="false"
-             FixedHeader="true"
+             FixedHeader
+             RowContextMenuClick="RowClickContextMenu"
              HeaderClass="data-grid-header"
              Style="height:100%; display:flex; flex-direction:column">
 
@@ -30,7 +31,7 @@
 
     <Columns>
         <PropertyColumn Property="x => x.GetCode()" Title="@_localizer["Number"]" IsEditable="false" />
-        <PropertyColumn Property="x => x.Date" Title="@_localizer["Date"]" />
+        <PropertyColumn Property="x => Converter.UtcToLocalDateTime(x.Date)" Title="@_localizer["Date"]" />
         <PropertyColumn Property="x => x.Store" Title="@_localizer["Store"]" />
         <PropertyColumn Property="x => x.Cashier" Title="@_localizer["Cashier"]" />
         <PropertyColumn Property="x => x.TotalPrice" Title="@_localizer["TotalPrice"]" />
@@ -42,3 +43,5 @@
     </Columns>
 
 </MudDataGrid>
+
+<ContextMenu @ref="ContextMenu" Items="ContextMenuItems" />

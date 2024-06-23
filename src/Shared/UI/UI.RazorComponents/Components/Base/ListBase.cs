@@ -22,10 +22,7 @@ public abstract class ListBase<TItem> : OrsComponentBase where TItem : class
 
     protected List<ContextMenuItem> ContextMenuItems { get; set; } = [];
 
-    protected virtual void DefineToolbarCommands()
-    {
-
-    }
+    #region Overrides
 
     protected override void OnInitialized()
     {
@@ -35,9 +32,29 @@ public abstract class ListBase<TItem> : OrsComponentBase where TItem : class
         SetDefaultQuickFilter();
     }
 
+    #endregion
+
+    #region Virtual Methods
+
+    protected virtual void DefineToolbarCommands()
+    {
+
+    }
+
     protected virtual void CloseClick()
     {
         TabsService.RemoveTab(TabsService.Tabs?.ActivePanel);
+    }
+
+    protected virtual void OpenItem<TDetails>(Guid? id) where TDetails : ComponentBase
+    {
+        if (!id.HasValue)
+            return;
+
+        TabsService.TryCreateTab<TDetails>(new Dictionary<string, object>
+        {
+            { "Id", id }
+        });
     }
 
     protected virtual string SelectedRowClassFunc(TItem currentItem, int line)
@@ -50,6 +67,8 @@ public abstract class ListBase<TItem> : OrsComponentBase where TItem : class
 
         return string.Empty;
     }
+
+    #endregion
 
     private void SetDefaultQuickFilter()
     {

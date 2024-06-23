@@ -18,14 +18,29 @@ public partial class ReceiptList : ListBase<Receipt>
         await base.OnAfterRenderAsync(firstRender);
     }
 
+    private async Task RowClickContextMenu(DataGridRowClickEventArgs<Receipt> eventArg)
+    {
+        SelectedItem = eventArg.Item;
+        DefineContextMenuItems();
+
+        await ContextMenu.Show(eventArg.MouseEventArgs);
+    }
+
+    private void DefineContextMenuItems()
+    {
+        ContextMenuItems =
+        [
+            new () {
+                Text = _localizer["Open"],
+                Icon = Icons.Material.Outlined.OpenInNew,
+                OnClick = EventCallback.Factory.Create(this, () => OpenItem<ReceiptDetails>(SelectedItem?.Id))
+            }
+        ];
+    }
+
     private void OpenClick(CellContext<Receipt> context)
     {
-        var parameters = new Dictionary<string, object>
-        {
-            { nameof(ReceiptDetails.Id), context.Item.Id }
-        };
-
-        TabsService.TryCreateTab<ReceiptDetails>(parameters);
+        OpenItem<ReceiptDetails>(context.Item?.Id);
     }
 
     private async Task ReloadItems()
