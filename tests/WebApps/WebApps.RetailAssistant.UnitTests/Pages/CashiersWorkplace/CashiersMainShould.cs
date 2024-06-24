@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Services;
+using RetailAssistant.Client.Components.Pages.CashiersWorkplace;
 using RetailAssistant.Core.Models;
 using RetailAssistant.Core.Models.ProductCatalog;
 using RetailAssistant.Core.Models.Retail;
