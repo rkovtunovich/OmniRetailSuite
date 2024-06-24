@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using RetailAssistant.Core.Models.UserPreferences;
 
-namespace RetailAssistant.Client.Shared;
+namespace RetailAssistant.Client.Components.Layout;
 
 public partial class MainLayout
 {

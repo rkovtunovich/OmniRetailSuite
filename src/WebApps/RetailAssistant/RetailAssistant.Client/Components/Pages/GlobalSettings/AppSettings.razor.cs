@@ -1,6 +1,6 @@
-﻿namespace RetailAssistant.Client.Pages.GlobalSettings;
+﻿namespace RetailAssistant.Client.Components.Pages.GlobalSettings;
 
-public partial class AppSettings: OrsComponentBase
+public partial class AppSettings : OrsComponentBase
 {
     [Inject]
     private ILocalConfigService LocalConfigService { get; set; } = null!;

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
 
-namespace RetailAssistant.Client.Pages.CashiersWorkplace;
+namespace RetailAssistant.Client.Components.Pages.CashiersWorkplace;
 
 public partial class ReceiptPayment
 {

@@ -1,4 +1,4 @@
-﻿namespace RetailAssistant.Client.Shared;
+﻿namespace RetailAssistant.Client.Components.Layout;
 
 public partial class NavMenu
 {

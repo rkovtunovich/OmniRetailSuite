@@ -4,7 +4,7 @@ using RetailAssistant.Core.Models.ProductCatalog;
 using UI.Razor.Enums;
 using UI.Razor.Helpers;
 
-namespace RetailAssistant.Client.Pages.CashiersWorkplace;
+namespace RetailAssistant.Client.Components.Pages.CashiersWorkplace;
 
 public partial class CashiersMain
 {

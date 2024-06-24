@@ -1,4 +1,4 @@
-﻿namespace RetailAssistant.Client.Pages.CashiersWorkplace;
+﻿namespace RetailAssistant.Client.Components.Pages.CashiersWorkplace;
 
 public partial class CashierSelectionList : SelectionListBase<Cashier>
 {
