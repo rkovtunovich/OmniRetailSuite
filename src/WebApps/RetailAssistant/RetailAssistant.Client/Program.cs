@@ -14,6 +14,7 @@ builder.Configuration.AddJsonFile("appsettings.untracked.json", optional: true, 
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
 builder.Services.AddJsonTextSerialization();

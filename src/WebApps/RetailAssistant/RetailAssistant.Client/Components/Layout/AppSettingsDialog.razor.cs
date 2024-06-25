@@ -1,7 +1,8 @@
-﻿using BackOffice.Core.Models.UserPreferences;
-using Microsoft.AspNetCore.Components.Authorization;
+﻿using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.Localization;
+using RetailAssistant.Core.Models.UserPreferences;
 
-namespace BackOffice.Client.Components.Layout;
+namespace RetailAssistant.Client.Components.Layout;
 
 public partial class AppSettingsDialog
 {
@@ -47,7 +48,7 @@ public partial class AppSettingsDialog
     {
         _isLanguageChanged = true;
 
-        _settings.Language = language;        
+        _settings.Language = language;
     }
 
     private async Task SaveSettings()

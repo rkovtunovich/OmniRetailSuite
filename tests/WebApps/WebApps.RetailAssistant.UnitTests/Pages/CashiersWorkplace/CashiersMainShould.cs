@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Services;
-using RetailAssistant.Client.Components.Pages.CashiersWorkplace;
 using RetailAssistant.Core.Models;
 using RetailAssistant.Core.Models.ProductCatalog;
 using RetailAssistant.Core.Models.Retail;
@@ -14,7 +13,6 @@ public class CashiersMainShould : TestContext
     private readonly IRetailService<Receipt> _receiptService;
     private readonly ILocalConfigService _localConfigService;
     private readonly IGuidGenerator _guidGenerator;
-    private readonly IDialogService _dialogService;
 
     public CashiersMainShould()
     {
@@ -25,7 +23,6 @@ public class CashiersMainShould : TestContext
         _receiptService = Substitute.For<IRetailService<Receipt>>();
         _localConfigService = Substitute.For<ILocalConfigService>();
         _guidGenerator = Substitute.For<IGuidGenerator>();
-        _dialogService = Substitute.For<IDialogService>();
 
         Services.AddMudServices();
         Services.AddSingleton(_productParentService);
@@ -33,13 +30,16 @@ public class CashiersMainShould : TestContext
         Services.AddSingleton(_receiptService);
         Services.AddSingleton(_localConfigService);
         Services.AddSingleton(_guidGenerator);
-        Services.AddSingleton(_dialogService);
     }
 
     [Fact]
-    public void SaveReceipt_ButtonClicked_ReceiptTableEmpty()
+    public void Payment_ButtonClicked_ReceiptTableEmpty()
     {
         // Arrange
+        JSInterop.SetupVoid("mudPopover.initialize", _ => true);
+        JSInterop.SetupVoid("mudKeyInterceptor.connect", _ => true);
+        JSInterop.SetupVoid("mudElementRef.saveFocus", _ => true);
+        JSInterop.SetupVoid("mudScrollManager.lockScroll", _ => true);
         _productParentService.GetAllAsync().Returns([]);
         _productItemService.GetAllAsync().Returns([new() { Id = Guid.NewGuid() }]);
         _localConfigService.GetConfigAsync().Returns(new RetailAssistantAppConfig()
@@ -47,18 +47,42 @@ public class CashiersMainShould : TestContext
             Store = new Store()
         });
 
-        var component = RenderComponent<CashiersMain>(parameters => parameters
+        var cashierMainComponent = RenderComponent<CashiersMain>(parameters => parameters
             .Add(p => p.Cashier, new Cashier())
         );
-        component.Instance.AddProductItemToReceipt(new() { Id = Guid.NewGuid() });
-        component.Render();
+
+        cashierMainComponent.Instance.AddProductItemToReceipt(new()
+        {
+            Id = Guid.NewGuid(),
+            Price = 1
+        });
+
+        cashierMainComponent.Render();
 
         // Act
-        var button = component.Find(".cashiers-receipt-save-button");
+        var button = cashierMainComponent.Find(".cashiers-receipt-save-button");
         button.Click();
 
+        cashierMainComponent.WaitForState(() => cashierMainComponent.Instance.PaymentDialog is not null, TimeSpan.FromSeconds(10));
+
+        var dialogService = Services.GetRequiredService<IDialogService>();
+        var paymentDialog = cashierMainComponent.Instance.PaymentDialog;
+
+        if (paymentDialog is not null)
+        {
+            var fragment = Render(paymentDialog.RenderFragment);
+            var receiptPaymentComponent = fragment.FindComponent<ReceiptPayment>();
+            var payButton =  receiptPaymentComponent.Find("#receipt-payment-pay-button");
+            payButton.Click();
+        }
+
+        // Wait for the ReceiptPaymentMade method to complete
+        cashierMainComponent.WaitForState(() => cashierMainComponent.Instance.PaymentDialog is null, TimeSpan.FromSeconds(10));
+
+        //cashierMainComponent.Render();
+
         // Assert
-        var rows = component.FindAll(".cashiers-workplace-receipt-table-row");
+        var rows = cashierMainComponent.FindAll(".cashiers-workplace-receipt-table-row");
         rows.Should().BeEmpty();
     }
 

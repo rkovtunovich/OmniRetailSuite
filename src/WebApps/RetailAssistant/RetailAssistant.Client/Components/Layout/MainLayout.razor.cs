@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
-using RetailAssistant.Core.Models.UserPreferences;
+using Microsoft.Extensions.Localization;
 
 namespace RetailAssistant.Client.Components.Layout;
 
@@ -8,6 +8,10 @@ public partial class MainLayout
     [Inject] private IUserPreferenceService _userPreferenceService { get; set; } = default!;
 
     [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; } = default!;
+
+    [Inject] private IDialogService _dialogService { get; set; } = default!;
+
+    [Inject] private IStringLocalizer<MainLayout> _localizer { get; set; } = default!;
 
     private MudTheme _theme = new();
     private bool _isDarkMode;
@@ -26,39 +30,29 @@ public partial class MainLayout
         await SetTheme();
     }
 
-    private async Task ChangeTheme()
+    #region App Settings
+
+    private void OpenAppSettings()
     {
-        _isDarkMode = !_isDarkMode;
-
-        await Task.FromResult(0);
-
-        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState?.User;
-
-        if (!user?.Identity?.IsAuthenticated ?? true)
-            return;
-
-        var userId = user?.FindFirst(c => c.Type == "sub")?.Value;
-        if (userId is null)
-            return;
-
-        var settings = await _userPreferenceService.GetPreferencesAsync(userId);
-
-        if (settings is null)
+        var options = new DialogOptions
         {
-            settings = new Settings
-            {
-                Theme = _isDarkMode ? "dark" : "light",
-            };
+            MaxWidth = MaxWidth.Medium,
+            FullWidth = true,
+            CloseOnEscapeKey = true,
+            DisableBackdropClick = true
+        };
 
-            await _userPreferenceService.UpdatePreferencesAsync(userId, settings);
-        }
-        else
+        var parameters = new DialogParameters
         {
-            settings.Theme = _isDarkMode ? "dark" : "light";
+            { "OnThemeChanged", EventCallback.Factory.Create<bool>(this, ChangeThemeInSettings) }
+        };
 
-            await _userPreferenceService.UpdatePreferencesAsync(userId, settings);
-        }
+        _dialogService.Show<AppSettingsDialog>(@_localizer["Settings"], parameters, options);
+    }
+
+    private void ChangeThemeInSettings(bool isDarkMode)
+    {
+        _isDarkMode = isDarkMode;
     }
 
     private async Task SetTheme()
@@ -81,8 +75,10 @@ public partial class MainLayout
         var settings = await _userPreferenceService.GetPreferencesAsync(userId);
 
         if (settings is not null)
-            _isDarkMode = settings.Theme is "dark";
+            _isDarkMode = settings.IsDarkMode;
 
         StateHasChanged();
     }
+
+    #endregion
 }

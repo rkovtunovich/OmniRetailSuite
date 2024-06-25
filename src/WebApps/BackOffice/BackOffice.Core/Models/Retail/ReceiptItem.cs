@@ -1,6 +1,4 @@
-﻿using BackOffice.Core.Models.ProductCatalog;
-
-namespace BackOffice.Core.Models.Retail;
+﻿namespace BackOffice.Core.Models.Retail;
 
 public class ReceiptItem
 {

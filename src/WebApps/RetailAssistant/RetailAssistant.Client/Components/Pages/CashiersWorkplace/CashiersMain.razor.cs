@@ -27,9 +27,9 @@ public partial class CashiersMain
     [Parameter]
     public Cashier? Cashier { get; set; }
 
-    private double _splitterPercentage = 75;
+    public IDialogReference? PaymentDialog { get; private set; }
 
-    private IDialogReference? _paymentDialog;
+    private double _splitterPercentage = 75;
 
     #region Overrides
 
@@ -252,7 +252,7 @@ public partial class CashiersMain
 
         var dialogParameters = new DialogParameters { { "ChildContent", content } };
 
-        _paymentDialog = await DialogService.ShowAsync<ModalComponent>("Payment", dialogParameters, options);
+        PaymentDialog = await DialogService.ShowAsync<ModalComponent>("Payment", dialogParameters, options);
     }
 
     private async Task ReceiptPaymentMade(decimal paymentAmount)
@@ -260,7 +260,7 @@ public partial class CashiersMain
         if (paymentAmount < _receipt.TotalPrice)
             return;
 
-        _paymentDialog?.Close();
+        PaymentDialog?.Close();
 
         _receipt.Date = DateTime.Now;
         await ReceiptService.CreateAsync(_receipt);
@@ -268,11 +268,13 @@ public partial class CashiersMain
         await InitNewReceipt();
 
         CallRequestRefresh();
+
+        PaymentDialog = null;
     }
 
     private void ReceiptPaymentCancelled()
     {
-        _paymentDialog?.Close();
+        PaymentDialog?.Close();
     }
 
     private async Task InitNewReceipt()
