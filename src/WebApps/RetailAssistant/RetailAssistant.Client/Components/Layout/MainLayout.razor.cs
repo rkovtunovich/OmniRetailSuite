@@ -60,13 +60,7 @@ public partial class MainLayout
         if (_isThemeSet)
             return;
 
-        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState?.User;
-
-        if (!user?.Identity?.IsAuthenticated ?? true)
-            return;
-
-        var userId = user?.FindFirst(c => c.Type == "sub")?.Value;
+        var userId = await _authenticationStateProvider.GetUserId();
         if (userId is null)
             return;
 

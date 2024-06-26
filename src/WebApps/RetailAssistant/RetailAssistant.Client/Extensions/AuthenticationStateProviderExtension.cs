@@ -9,6 +9,6 @@ public static class AuthenticationStateProviderExtension
         var state = await authenticationStateProvider.GetAuthenticationStateAsync();
         var user = state.User;
 
-        return user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        return user.FindFirst(c => c.Type == "sub")?.Value; 
     }
 }
