@@ -10,6 +10,8 @@ global using BackOffice.Core.Models.Retail;
 global using Contracts.Dtos.ProductCatalog;
 global using Contracts.Dtos.Retail;
 
+global using Core.WebApps.UserPreferences;
+
 global using Infrastructure.Http;
 global using Infrastructure.Http.Clients;
 global using Infrastructure.Http.Uri;

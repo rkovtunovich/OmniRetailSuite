@@ -1,6 +1,4 @@
-﻿using RetailAssistant.Core.Models.UserPreferences;
-
-namespace RetailAssistant.Application.Services.Abstraction;
+﻿namespace RetailAssistant.Application.Services.Abstraction;
 
 public interface IUserPreferenceService
 {

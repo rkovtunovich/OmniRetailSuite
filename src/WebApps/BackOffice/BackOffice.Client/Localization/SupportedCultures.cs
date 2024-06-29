@@ -1,6 +1,4 @@
-﻿using BackOffice.Core.Models.UserPreferences;
-
-namespace BackOffice.Client.Localization;
+﻿namespace BackOffice.Client.Localization;
 
 public static class SupportedCultures
 {

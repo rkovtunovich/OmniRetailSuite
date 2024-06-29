@@ -1,5 +1,4 @@
-﻿using BackOffice.Core.Models.UserPreferences;
-using Microsoft.AspNetCore.Components.Authorization;
+﻿using Microsoft.AspNetCore.Components.Authorization;
 
 namespace BackOffice.Client.Components.Layout;
 

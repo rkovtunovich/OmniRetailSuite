@@ -3,6 +3,8 @@
 global using Contracts.Dtos.ProductCatalog;
 global using Contracts.Dtos.Retail;
 
+global using Core.WebApps.UserPreferences;
+
 global using Infrastructure.Serialization.Abstraction;
 
 global using Microsoft.Extensions.Logging;
@@ -13,7 +15,6 @@ global using RetailAssistant.Application.Services.Implementation;
 global using RetailAssistant.Core.Models;
 global using RetailAssistant.Core.Models.ProductCatalog;
 global using RetailAssistant.Core.Models.Retail;
-global using RetailAssistant.Core.Models.UserPreferences;
 
 global using System.Collections.Generic;
 global using System.IO;

@@ -1,5 +1,4 @@
-﻿using BackOffice.Core.Models.UserPreferences;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace BackOffice.Application.Services.Implementation;
 

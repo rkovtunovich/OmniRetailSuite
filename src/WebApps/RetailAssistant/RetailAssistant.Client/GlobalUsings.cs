@@ -1,4 +1,6 @@
-﻿global using Microsoft.AspNetCore.Components;
+﻿global using Core.WebApps.UserPreferences;
+
+global using Microsoft.AspNetCore.Components;
 
 global using MudBlazor;
 

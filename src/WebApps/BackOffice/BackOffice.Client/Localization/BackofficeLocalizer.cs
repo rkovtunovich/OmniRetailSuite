@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Localization;
-
-namespace BackOffice.Client.Localization;
+﻿namespace BackOffice.Client.Localization;
 
 public class BackofficeLocalizer(IStringLocalizer<BackofficeLocalizer> localizer) : MudLocalizer
 {

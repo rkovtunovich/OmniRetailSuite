@@ -1,4 +1,4 @@
-﻿namespace BackOffice.Core.Models.UserPreferences;
+﻿namespace Core.WebApps.UserPreferences;
 
 public class Settings
 {

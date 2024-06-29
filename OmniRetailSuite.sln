@@ -134,9 +134,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Retail.Tests", "tests\Backe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Helpers", "Helpers", "{2E7A07C6-B2AB-4311-9619-7E3E01AE3D1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers.IOHelper", "src\Shared\Helpers\Helpers.IOHelper\Helpers.IOHelper.csproj", "{D924D71F-DFB3-43EB-9AD1-9C00A4AC61D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Helpers.IOHelper", "src\Shared\Helpers\Helpers.IOHelper\Helpers.IOHelper.csproj", "{D924D71F-DFB3-43EB-9AD1-9C00A4AC61D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers.DateTimeHelper", "src\Shared\Helpers\Helpers.DateTimeHelper\Helpers.DateTimeHelper.csproj", "{C41AF73B-09FC-4342-A21B-55C62276FDDA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Helpers.DateTimeHelper", "src\Shared\Helpers\Helpers.DateTimeHelper\Helpers.DateTimeHelper.csproj", "{C41AF73B-09FC-4342-A21B-55C62276FDDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.WebApps", "src\Shared\Core\Core.WebApps\Core.WebApps.csproj", "{770ED480-6A83-4146-940E-6BABDB02025C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -396,6 +398,12 @@ Global
 		{C41AF73B-09FC-4342-A21B-55C62276FDDA}.NoVariablesDefault|Any CPU.Build.0 = Debug|Any CPU
 		{C41AF73B-09FC-4342-A21B-55C62276FDDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C41AF73B-09FC-4342-A21B-55C62276FDDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{770ED480-6A83-4146-940E-6BABDB02025C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{770ED480-6A83-4146-940E-6BABDB02025C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{770ED480-6A83-4146-940E-6BABDB02025C}.NoVariablesDefault|Any CPU.ActiveCfg = Debug|Any CPU
+		{770ED480-6A83-4146-940E-6BABDB02025C}.NoVariablesDefault|Any CPU.Build.0 = Debug|Any CPU
+		{770ED480-6A83-4146-940E-6BABDB02025C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{770ED480-6A83-4146-940E-6BABDB02025C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -457,6 +465,7 @@ Global
 		{2E7A07C6-B2AB-4311-9619-7E3E01AE3D1C} = {5B8B3789-2B98-494A-A4A0-27FC4CDEB850}
 		{D924D71F-DFB3-43EB-9AD1-9C00A4AC61D3} = {2E7A07C6-B2AB-4311-9619-7E3E01AE3D1C}
 		{C41AF73B-09FC-4342-A21B-55C62276FDDA} = {2E7A07C6-B2AB-4311-9619-7E3E01AE3D1C}
+		{770ED480-6A83-4146-940E-6BABDB02025C} = {1D640250-392E-4396-93EE-D985DAFBEF7B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {49813262-5DA3-4D61-ABD3-493C74CE8C2B}

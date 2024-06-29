@@ -1,4 +1,4 @@
-﻿namespace BackOffice.Core.Models.UserPreferences;
+﻿namespace Core.WebApps.UserPreferences;
 
 public class UserPreference
 {
@@ -7,6 +7,4 @@ public class UserPreference
     public string UserId { get; set; } = null!;
 
     public Settings Settings { get; set; } = null!;
-
-    public DateTimeOffset UpdatedAt { get; set; }
 }

@@ -1,4 +1,9 @@
-﻿async function checkForServiceWorkerUpdate() {
+﻿ window.blazorCulture = {
+    get: () => window.localStorage['BlazorCulture'],
+    set: (value) => window.localStorage['BlazorCulture'] = value
+  };
+
+async function checkForServiceWorkerUpdate() {
     if ('serviceWorker' in navigator) {
         try {
             const registration = await navigator.serviceWorker.ready;

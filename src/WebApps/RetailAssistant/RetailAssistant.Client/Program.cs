@@ -1,4 +1,5 @@
-﻿using Infrastructure.Serialization.JsonText.Configuration;
+﻿using System.Globalization;
+using Infrastructure.Serialization.JsonText.Configuration;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.JSInterop;
@@ -43,6 +44,17 @@ try
     var jsRuntime = app.Services.GetRequiredService<IJSRuntime>();
     // This is a workaround for the issue with the service worker not updating the cache after the first load
     await jsRuntime.InvokeVoidAsync("checkForServiceWorkerUpdate");
+
+    const string defaultCulture = "en";
+
+    var result = await jsRuntime.InvokeAsync<string>("blazorCulture.get");
+    var culture = CultureInfo.GetCultureInfo(result ?? defaultCulture);
+
+    if (result is null)  
+        await jsRuntime.InvokeVoidAsync("blazorCulture.set", defaultCulture);
+    
+    CultureInfo.DefaultThreadCurrentCulture = culture;
+    CultureInfo.DefaultThreadCurrentUICulture = culture;
 }
 catch (Exception ex)
 {

@@ -1,6 +1,4 @@
-﻿using BackOffice.Core.Models.UserPreferences;
-
-namespace BackOffice.Application.Services.Abstraction;
+﻿namespace BackOffice.Application.Services.Abstraction;
 
 public interface IUserPreferenceService
 {

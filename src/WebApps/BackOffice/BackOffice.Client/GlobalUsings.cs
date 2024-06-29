@@ -10,6 +10,8 @@ global using BackOffice.Client.Shared;
 global using BackOffice.Core.Models;
 global using BackOffice.Core.Models.Retail;
 
+global using Core.WebApps.UserPreferences;
+
 global using Microsoft.AspNetCore.Components;
 global using Microsoft.AspNetCore.Components.Web;
 global using Microsoft.Extensions.Localization;

@@ -1,7 +1,6 @@
 ﻿global using RetailAssistant.Core.Models;
 global using RetailAssistant.Core.Models.ProductCatalog;
 global using RetailAssistant.Core.Models.Retail;
-global using RetailAssistant.Core.Models.UserPreferences;
 
 global using System.Collections.Generic;
 global using System.IO;
