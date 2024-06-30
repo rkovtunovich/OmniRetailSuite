@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Localization;
+using Microsoft.JSInterop;
 
 namespace RetailAssistant.Client.Components.Layout;
 
@@ -10,6 +11,8 @@ public partial class AppSettingsDialog
     [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; } = default!;
 
     [Inject] private NavigationManager _navigationManager { get; set; } = default!;
+
+    [Inject] private IJSRuntime _jsRuntime { get; set; } = default!;
 
     [Inject] private IStringLocalizer<AppSettingsDialog> _localizer { get; set; } = default!;
 
@@ -61,7 +64,11 @@ public partial class AppSettingsDialog
         AppSettingsDialogInstance.Close(DialogResult.Ok(_settings));
 
         if (_isLanguageChanged)
-            _navigationManager.NavigateTo($"/culture/{_settings.Language.ToString().ToLower()}", forceLoad: true);
+        {
+            var cultureString = _settings.Language.ToString().ToLower();
+            await _jsRuntime.InvokeVoidAsync("blazorCulture.set", cultureString);
+            _navigationManager.NavigateTo(_navigationManager.Uri, forceLoad: true);
+        }           
     }
 
     private void CloseSettings()

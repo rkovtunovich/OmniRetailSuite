@@ -7,37 +7,26 @@ using System.Net.Http.Json;
 
 namespace RetailAssistant.Application.Services.Implementation;
 
-public class HttpService<TResource> : IHttpService<TResource> where TResource : HttpClientSettings, new()
+public class HttpService<TResource>(IHttpClientFactory clientFactory,
+                                    IDataSerializer dataSerializer,
+                                    ILogger<HttpService<TResource>> logger,
+                                    IAccessTokenProvider accessTokenProvider,
+                                    IOptions<TResource> options) : IHttpService<TResource> where TResource : HttpClientSettings, new()
 {
-    private readonly IHttpClientFactory _clientFactory;
-    private readonly IDataSerializer _dataSerializer;
-    private readonly ILogger<HttpService<TResource>> _logger;
-    private readonly IOptions<TResource> _options;
-    private readonly IAccessTokenProvider _accessTokenProvider;
-
-    public HttpService(IHttpClientFactory clientFactory, IDataSerializer dataSerializer, ILogger<HttpService<TResource>> logger, IAccessTokenProvider accessTokenProvider, IOptions<TResource> options)
-    {
-        _clientFactory = clientFactory;
-        _logger = logger;
-        _dataSerializer = dataSerializer;
-        _accessTokenProvider = accessTokenProvider;
-        _options = options;
-    }
-
     public async Task<T?> GetAsync<T>(string uri)
     {
         try
         {
             var client = await GetClientAsync();
             var responseString = await client.GetStringAsync(uri) ?? throw new Exception($"Error getting request {typeof(TResource).Name}) uri {uri}");
-            var value = _dataSerializer.Deserialize<T>(responseString);
+            var value = dataSerializer.Deserialize<T>(responseString);
 
             return value;
 
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            logger.LogError(ex, ex.Message);
             throw;
         }
     }
@@ -57,7 +46,7 @@ public class HttpService<TResource> : IHttpService<TResource> where TResource : 
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            logger.LogError(ex, ex.Message);
             throw;
         }
     }
@@ -75,7 +64,7 @@ public class HttpService<TResource> : IHttpService<TResource> where TResource : 
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            logger.LogError(ex, ex.Message);
             throw;
         }
     }
@@ -85,7 +74,10 @@ public class HttpService<TResource> : IHttpService<TResource> where TResource : 
         try
         {
             var client = await GetClientAsync();
-            var responseMessage = await client.PutAsJsonAsync(uri, data);
+            var serializedData = dataSerializer.Serialize(data);
+            var content = new StringContent(serializedData, Encoding.UTF8, "application/json");
+
+            var responseMessage = await client.PutAsync(uri, content);
 
             if (!responseMessage.IsSuccessStatusCode)
                 throw new Exception($"Error put request {typeof(TResource).Name}) uri {uri}. {responseMessage.Content}");
@@ -93,7 +85,7 @@ public class HttpService<TResource> : IHttpService<TResource> where TResource : 
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            logger.LogError(ex, ex.Message);
             throw;
         }
     }
@@ -111,16 +103,16 @@ public class HttpService<TResource> : IHttpService<TResource> where TResource : 
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            logger.LogError(ex, ex.Message);
             throw;
         }
     }
 
     private async Task<HttpClient> GetClientAsync()
     {
-        var client = _clientFactory.CreateClient(_options.Value.Name);
+        var client = clientFactory.CreateClient(options.Value.Name);
 
-        var tokenResponse = await _accessTokenProvider.RequestAccessToken();
+        var tokenResponse = await accessTokenProvider.RequestAccessToken();
 
         if (tokenResponse is null || tokenResponse.Status is not AccessTokenResultStatus.Success)
             throw new Exception($"Unable to get a token");
