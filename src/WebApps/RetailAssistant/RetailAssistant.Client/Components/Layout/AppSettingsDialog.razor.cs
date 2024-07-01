@@ -8,6 +8,12 @@ public partial class AppSettingsDialog
 {
     [Inject] private IUserPreferenceService _userPreferenceService { get; set; } = default!;
 
+    [Inject]
+    private ILocalConfigService LocalConfigService { get; set; } = null!;
+
+    [Inject]
+    private IRetailService<Store> _retailService { get; set; } = null!;
+
     [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; } = default!;
 
     [Inject] private NavigationManager _navigationManager { get; set; } = default!;
@@ -22,6 +28,10 @@ public partial class AppSettingsDialog
 
     private Settings _settings = new();
 
+    private RetailAssistantAppConfig _appConfig = new();
+
+    private List<Store> _stores = [];
+
     private List<Language> _languages = [Language.EN, Language.UK];
 
     private bool _isLanguageChanged;
@@ -31,11 +41,14 @@ public partial class AppSettingsDialog
     protected override async Task OnInitializedAsync()
     {
         var userId = await _authenticationStateProvider.GetUserId();
-        if (userId is null)
-            return;
+        if (userId is not null)
+        {
+            _settings = await _userPreferenceService.GetPreferencesAsync(userId) ?? new();
+            _isDarkMode = _settings.Theme == UITheme.Dark;
+        }
 
-        _settings = await _userPreferenceService.GetPreferencesAsync(userId) ?? new();
-        _isDarkMode = _settings.Theme == UITheme.Dark;
+        _appConfig = await LocalConfigService.GetConfigAsync();
+        _stores = await _retailService.GetAllAsync();
     }
 
     private void ChangeTheme()
@@ -60,6 +73,7 @@ public partial class AppSettingsDialog
             return;
 
         await _userPreferenceService.UpdatePreferencesAsync(userId, _settings);
+        await LocalConfigService.SaveConfigAsync(_appConfig);
 
         AppSettingsDialogInstance.Close(DialogResult.Ok(_settings));
 

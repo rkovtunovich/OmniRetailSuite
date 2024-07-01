@@ -2,30 +2,61 @@
 
     <DialogContent>
 
-        <MudGrid>
+        <MudTabs Outlined="true" Position="@Position.Left" Rounded="true" Border="true"
 
-            <MudItem xs="12" md="6">
+            ApplyEffectsToContainer="true" Class="mt-8" PanelClass="pa-6">
 
-                <MudSwitch Color="Color.Primary" 
-                           Class="ma-4" 
-                           T="bool"
-                           Label="@_localizer["Theme"]"
-                           Value="_settings.IsDarkMode"
-                           ValueChanged="@(() => ChangeTheme())"  />
-            </MudItem>
+            <MudTabPanel Text="@_localizer["UserPreferences"]">
+                
+                 <MudGrid>
 
-            <MudItem xs="12" md="6">
-                <MudSelect Label="@_localizer["Language"]" Value="_settings.Language" ValueChanged="@((Language l) => ChangeLanguage(l))">
+                    <MudItem xs="12" md="6">
 
-                    @foreach (var language in _languages)
-                    {
-                        <MudSelectItem Value="@language">@language</MudSelectItem>
-                    }
+                        <MudSwitch Color="Color.Primary" 
+                                   Class="ma-4" 
+                                   T="bool"
+                                   Label="@_localizer["Theme"]"
+                                   Value="_settings.IsDarkMode"
+                                   ValueChanged="@(() => ChangeTheme())"  />
+                    </MudItem>
 
-                </MudSelect>
-            </MudItem>
+                    <MudItem xs="12" md="6">
+                        <MudSelect Label="@_localizer["Language"]" Value="_settings.Language" ValueChanged="@((Language l) => ChangeLanguage(l))">
 
-        </MudGrid>
+                            @foreach (var language in _languages)
+                            {
+                                <MudSelectItem Value="@language">@language</MudSelectItem>
+                            }
+
+                        </MudSelect>
+                    </MudItem>
+
+                </MudGrid>
+
+            </MudTabPanel>
+
+            <MudTabPanel Text="@_localizer["AppSettings"]">
+
+                <MudItem Style="min-width:50%">
+                 
+                    <MudSelect T="Store" 
+                               @bind-Value=_appConfig.Store 
+                               ToStringFunc="@( x => x.ToString())" 
+                               Label="@_localizer["Store"]"
+                               Clearable 
+                               Variant="@MudBlazor.Variant.Filled">
+
+                                @foreach (var item in _stores)
+                                {
+                                    <MudSelectItem Value="@item"></MudSelectItem>
+                                }
+
+                    </MudSelect>
+          
+                </MudItem>
+            </MudTabPanel>
+
+        </MudTabs>
 
     </DialogContent>
 

@@ -3,7 +3,7 @@
 <MudNavMenu>
 
     <MudNavLink href="" Match="NavLinkMatch.All">
-        <span class="bi bi-house-door-fill" aria-hidden="true"></span> Home
+        <span class="bi bi-house-door-fill" aria-hidden="true"></span> @_localizer["Home"]
     </MudNavLink>
 
     <AuthorizeView>
@@ -11,11 +11,7 @@
         <Authorized>
 
             <MudNavLink href="cashiers-workplace">
-                <iconify-icon icon="streamline:money-cashier-shop-shopping-pay-payment-cashier-store-cash-register-machine" width="21" height="21"></iconify-icon> Cashier's workplace
-            </MudNavLink>
-
-            <MudNavLink Href="app-settings">
-                <iconify-icon icon="material-symbols:settings-outline" width="21" height="21"></iconify-icon> Settings
+                <iconify-icon icon="streamline:money-cashier-shop-shopping-pay-payment-cashier-store-cash-register-machine" width="21" height="21"></iconify-icon> @_localizer["CashiersWorkplace"]
             </MudNavLink>
 
         </Authorized>

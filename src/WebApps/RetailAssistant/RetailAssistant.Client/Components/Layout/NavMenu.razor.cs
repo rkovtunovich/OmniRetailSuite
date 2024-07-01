@@ -1,13 +1,8 @@
-﻿namespace RetailAssistant.Client.Components.Layout;
+﻿using Microsoft.Extensions.Localization;
+
+namespace RetailAssistant.Client.Components.Layout;
 
 public partial class NavMenu
 {
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
+    [Inject] private IStringLocalizer<NavMenu> _localizer { get; set; } = default!;
 }

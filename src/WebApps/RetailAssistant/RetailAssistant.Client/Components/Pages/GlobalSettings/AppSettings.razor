@@ -13,12 +13,19 @@
 
                     <MudCardContent>
 
-                        <MudSelect T="Store" @bind-Value=_appConfig.Store ToStringFunc="@( x => x.ToString())" Label="Store" Clearable Variant="@MudBlazor.Variant.Filled">
+                        <MudSelect T="Store" 
+                                   @bind-Value=_appConfig.Store 
+                                   ToStringFunc="@( x => x.ToString())" 
+                                   Label="Store" 
+                                   Clearable 
+                                   Variant="@MudBlazor.Variant.Filled">
+                           
                             @foreach (var item in _stores)
                             {
                                 <MudSelectItem Value="@item"></MudSelectItem>
                             }
                         </MudSelect>
+
                     </MudCardContent>
 
                 </MudCard>

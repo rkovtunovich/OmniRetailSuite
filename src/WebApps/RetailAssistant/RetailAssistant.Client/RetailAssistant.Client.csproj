@@ -41,4 +41,10 @@
     <None Include="wwwroot\js\retail-assistant.js" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Components\Layout\NavMenu.uk.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>
