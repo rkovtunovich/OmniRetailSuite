@@ -3,21 +3,20 @@
     <DialogContent>
 
         <MudTabs Outlined="true" Position="@Position.Left" Rounded="true" Border="true"
-
-            ApplyEffectsToContainer="true" Class="mt-8" PanelClass="pa-6">
+                 ApplyEffectsToContainer="true" Class="mt-8" PanelClass="pa-6">
 
             <MudTabPanel Text="@_localizer["UserPreferences"]">
-                
-                 <MudGrid>
+
+                <MudGrid>
 
                     <MudItem xs="12" md="6">
 
-                        <MudSwitch Color="Color.Primary" 
-                                   Class="ma-4" 
+                        <MudSwitch Color="Color.Primary"
+                                   Class="ma-4"
                                    T="bool"
                                    Label="@_localizer["Theme"]"
                                    Value="_settings.IsDarkMode"
-                                   ValueChanged="@(() => ChangeTheme())"  />
+                                   ValueChanged="@(() => ChangeTheme())" />
                     </MudItem>
 
                     <MudItem xs="12" md="6">
@@ -38,21 +37,21 @@
             <MudTabPanel Text="@_localizer["AppSettings"]">
 
                 <MudItem Style="min-width:50%">
-                 
-                    <MudSelect T="Store" 
-                               @bind-Value=_appConfig.Store 
-                               ToStringFunc="@( x => x.ToString())" 
+
+                    <MudSelect T="Store"
+                               @bind-Value=_appConfig.Store
+                               ToStringFunc="@( x => x.ToString())"
                                Label="@_localizer["Store"]"
-                               Clearable 
+                               Clearable
                                Variant="@MudBlazor.Variant.Filled">
 
-                                @foreach (var item in _stores)
-                                {
-                                    <MudSelectItem Value="@item"></MudSelectItem>
-                                }
+                        @foreach (var item in _stores)
+                        {
+                            <MudSelectItem Value="@item"></MudSelectItem>
+                        }
 
                     </MudSelect>
-          
+
                 </MudItem>
             </MudTabPanel>
 
