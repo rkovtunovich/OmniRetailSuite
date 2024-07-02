@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Localization;
 
 namespace RetailAssistant.Client.Components.Pages.CashiersWorkplace;
 
 public partial class ReceiptPayment
 {
+    [Inject] private IStringLocalizer<ReceiptPayment> _localizer { get; set; } = default!;
+
     [Parameter]
     public decimal TotalPrice { get; set; }
 

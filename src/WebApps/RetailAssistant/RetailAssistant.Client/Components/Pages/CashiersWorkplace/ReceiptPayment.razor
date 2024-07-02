@@ -5,14 +5,14 @@
 
         <MudNumericField @bind-Value="TotalPrice"
                          T="decimal"
-                         Label="Total price"
+                         Label="@_localizer["TotalPrice"]"
                          ReadOnly
                          Class="cashiers-workplace-total-price-field"
                          Variant="Variant.Filled" />
 
         <MudNumericField @bind-Value="_paymentAmount"
                          T="decimal"
-                         Label="Payment amount"
+                         Label="@_localizer["PaymentAmount"]"
                          Class="cashiers-workplace-payment-amount-field"
                          TextChanged="@(e=>PaymentAmountChanged(e))"
                          Clearable
@@ -20,24 +20,20 @@
 
         <MudNumericField @bind-Value="_changeAmount"
                          T="decimal"
-                         Label="Change amount"
+                         Label="@_localizer["ChangeAmount"]"
                          ReadOnly
                          Class="cashiers-workplace-change-amount-field"
                          Variant="Variant.Filled" />
 
         <MudStack Row>
 
-            <MudTooltip Text="Pay" RootStyle="width:50%">
-                <MudButton Color="Color.Primary" @onclick="PayClick" Style="width:100%" id="receipt-payment-pay-button">
-                    Pay <iconify-icon icon="material-symbols:payments-outline-sharp" width="24" height="24"></iconify-icon>
-                </MudButton>
-            </MudTooltip>
+            <MudButton Color="Color.Primary" @onclick="PayClick" Style="width:100%" id="receipt-payment-pay-button">
+                @_localizer["Pay"] <iconify-icon icon="material-symbols:payments-outline-sharp" width="24" height="24"></iconify-icon>
+            </MudButton>
 
-            <MudTooltip Text="Cancel" RootStyle="width:50%">
-                <MudButton Color="Color.Secondary" @onclick="CancelClick" Style="width:100%">
-                    Cancel <iconify-icon icon="material-symbols:cancel-outline" width="24" height="24"></iconify-icon>
-                </MudButton>
-            </MudTooltip>
+            <MudButton Color="Color.Secondary" @onclick="CancelClick" Style="width:100%">
+                @_localizer["Cancel"] <iconify-icon icon="material-symbols:cancel-outline" width="24" height="24"></iconify-icon>
+            </MudButton>
 
         </MudStack>
 

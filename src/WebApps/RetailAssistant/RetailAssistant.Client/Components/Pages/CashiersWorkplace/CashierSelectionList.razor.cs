@@ -1,8 +1,12 @@
-﻿namespace RetailAssistant.Client.Components.Pages.CashiersWorkplace;
+﻿using Microsoft.Extensions.Localization;
+
+namespace RetailAssistant.Client.Components.Pages.CashiersWorkplace;
 
 public partial class CashierSelectionList : SelectionListBase<Cashier>
 {
     [Inject] IDialogService DialogService { get; set; } = null!;
+
+    [Inject] private IStringLocalizer<CashierSelectionList> _localizer { get; set; } = default!;
 
     [CascadingParameter] MudDialogInstance? MudDialog { get; set; }
 

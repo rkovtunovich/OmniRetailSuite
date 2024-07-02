@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
 using MudBlazor.Services;
 using RetailAssistant.Core.Models;
 using RetailAssistant.Core.Models.ProductCatalog;
@@ -30,6 +31,8 @@ public class CashiersMainShould : TestContext
         Services.AddSingleton(_receiptService);
         Services.AddSingleton(_localConfigService);
         Services.AddSingleton(_guidGenerator);
+        Services.AddSingleton(Substitute.For<IStringLocalizer<CashiersMain>>());
+        Services.AddSingleton(Substitute.For<IStringLocalizer<ReceiptPayment>>());
     }
 
     [Fact]

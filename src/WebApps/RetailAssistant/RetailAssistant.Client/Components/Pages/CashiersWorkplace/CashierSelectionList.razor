@@ -16,20 +16,26 @@
     <ToolBarContent>
 
         <MudSpacer />
-        <MudTextField @bind-Value="@QuickFilterSearchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
-                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+
+        <MudTextField @bind-Value="@QuickFilterSearchString" 
+                      Placeholder="@_localizer["Search"]" 
+                      Adornment="Adornment.Start" 
+                      Immediate="true"
+                      AdornmentIcon="@Icons.Material.Filled.Search" 
+                      IconSize="Size.Medium" Class="mt-0" />
+
     </ToolBarContent>
 
     <Columns>
 
         <SelectColumn T="Cashier" />
-        <PropertyColumn Property="x => x.GetCode()" Title="Code" IsEditable="false" />
-        <PropertyColumn Property="x => x.Name" />
+        <PropertyColumn Property="x => x.GetCode()" Title="@_localizer["Code"]" IsEditable="false" />
+        <PropertyColumn Property="x => x.Name" Title="@_localizer["Name"]" />
 
     </Columns>
 
 </MudDataGrid>
 
-<MudButton Color="Color.Primary" OnClick="@(() => OnOkButtonClick())">OK</MudButton>
-<MudButton Color="Color.Secondary" OnClick="@(() => OnCancelButtonClick())">CANCEL</MudButton>
+<MudButton Color="Color.Primary" OnClick="@(() => OnOkButtonClick())">@_localizer["Ok"]</MudButton>
+<MudButton Color="Color.Secondary" OnClick="@(() => OnCancelButtonClick())">@_localizer["Cancel"]</MudButton>
 

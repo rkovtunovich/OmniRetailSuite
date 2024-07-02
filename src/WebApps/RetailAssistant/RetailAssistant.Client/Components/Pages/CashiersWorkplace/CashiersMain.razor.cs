@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Common.Services;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Localization;
 using RetailAssistant.Core.Models.ProductCatalog;
 using UI.Razor.Enums;
 using UI.Razor.Helpers;
@@ -22,6 +23,8 @@ public partial class CashiersMain
 
     [Inject] private IDialogService DialogService { get; set; } = null!;
 
+    [Inject] private IStringLocalizer<CashiersMain> _localizer { get; set; } = default!;
+
     #endregion
 
     [Parameter]
@@ -35,6 +38,7 @@ public partial class CashiersMain
 
     protected override void OnInitialized()
     {
+        _tableHeadings = SetTableHeadings();
         InitializeReceiptCommands();
     }
 
@@ -61,7 +65,7 @@ public partial class CashiersMain
     #region fields
 
     private List<CatalogProductItem> _productItems = [];
-    private string[] _tableHeadings = ["Code", "Name", "Price"];
+    private string[] _tableHeadings = [];
     private int _selectedRowNumber = -1;
     private MudTable<CatalogProductItem> _productItemsTable = null!;
     private bool _isTableLoading = false;
@@ -110,6 +114,11 @@ public partial class CashiersMain
         {
             return string.Empty;
         }
+    }
+
+    private string[] SetTableHeadings()
+    {
+        return [_localizer["Code"], _localizer["Name"], _localizer["Price"]];
     }
 
     #endregion
@@ -202,14 +211,14 @@ public partial class CashiersMain
                 Name = "Clear",
                 Icon = Icons.Material.Outlined.Clear,
                 Callback = EventCallback.Factory.Create<MouseEventArgs>(this, ClearReceipt),
-                Tooltip = "Clear"
+                Tooltip = _localizer["Clear"]
             },
             new ToolbarCommand
             {
                 Name = "Payment",
                 Icon = IconHelper.ShoppingCartCheckout,
                 Callback = EventCallback.Factory.Create<MouseEventArgs>(this, TakeReceiptPayment),
-                Tooltip = "Payment",
+                Tooltip = _localizer["Payment"],
                 CssClass = "cashiers-receipt-save-button"
             }
         ];
@@ -252,7 +261,7 @@ public partial class CashiersMain
 
         var dialogParameters = new DialogParameters { { "ChildContent", content } };
 
-        PaymentDialog = await DialogService.ShowAsync<ModalComponent>("Payment", dialogParameters, options);
+        PaymentDialog = await DialogService.ShowAsync<ModalComponent>(_localizer["Payment"], dialogParameters, options);
     }
 
     private async Task ReceiptPaymentMade(decimal paymentAmount)
@@ -321,7 +330,7 @@ public partial class CashiersMain
         };
         var dialogParameters = new DialogParameters { { "ChildContent", content } };
 
-        var dialog = DialogService.Show<ModalComponent>("Select cashier", dialogParameters, options);
+        var dialog = DialogService.Show<ModalComponent>(_localizer["CashierSelection"], dialogParameters, options);
     }
 
     private void CashierOnSelectionChanged(Cashier selectedCashier)
