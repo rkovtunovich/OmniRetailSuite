@@ -139,7 +139,7 @@
     <value>Найменування</value>
   </data>
   <data name="Parent" xml:space="preserve">
-    <value>Власник</value>
+    <value>Група</value>
   </data>
   <data name="Price" xml:space="preserve">
     <value>Ціна</value>

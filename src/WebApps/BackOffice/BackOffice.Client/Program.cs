@@ -91,11 +91,7 @@ app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseAntiforgery();
-
-var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(SupportedCultures.Default)
-    .AddSupportedCultures(SupportedCultures.All)
-    .AddSupportedUICultures(SupportedCultures.All);
-app.UseRequestLocalization(localizationOptions);
+app.UseLocalization();
 
 app.MapCultureChangingEndpoint();
 app.MapAuthenticationEndpoints();
