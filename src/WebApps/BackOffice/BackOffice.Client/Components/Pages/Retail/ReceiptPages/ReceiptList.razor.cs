@@ -38,11 +38,6 @@ public partial class ReceiptList : ListBase<Receipt>
         ];
     }
 
-    private void OpenClick(CellContext<Receipt> context)
-    {
-        OpenItem<ReceiptDetails>(context.Item?.Id);
-    }
-
     private async Task ReloadItems()
     {
         Items = await RetailService.GetAllAsync();

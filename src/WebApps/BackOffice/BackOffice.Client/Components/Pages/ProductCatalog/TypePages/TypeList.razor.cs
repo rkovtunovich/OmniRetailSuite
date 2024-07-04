@@ -8,8 +8,6 @@ public partial class TypeList : ListBase<ProductType>
 
     [Inject] private IStringLocalizer<TypeList> _localizer { get; set; } = default!;
 
-    private DataGridEditMode _editMode = DataGridEditMode.Form;
-    private DataGridEditTrigger _editTrigger = DataGridEditTrigger.Manual;
     private DialogOptions _dialogOptions = new() { DisableBackdropClick = true };
 
     #region Overrides
@@ -63,11 +61,6 @@ public partial class TypeList : ListBase<ProductType>
         TabsService.TryCreateTab<TypeDetails>(parameters);
     }
 
-    private void OpenTypeClick(CellContext<ProductType> context)
-    {
-        OpenItem(context.Item);
-    }
-
     private async Task ReloadCatalogTypes()
     {
         Items = await ProductTypeService.GetAllAsync();
@@ -75,22 +68,6 @@ public partial class TypeList : ListBase<ProductType>
         CallRequestRefresh();
     }
 
-    private void StartedEditingItem(ProductType item)
-    {
-        _editTrigger = DataGridEditTrigger.Manual;
-    }
-
-    private void CanceledEditingItem(ProductType item)
-    {
-        // Do nothing
-    }
-
-    private async Task CommittedItemChanges(ProductType type)
-    {
-        await ProductTypeService.UpdateAsync(type);
-
-        CallRequestRefresh();
-    }
 
     private void RowClick(DataGridRowClickEventArgs<ProductType> eventArg)
     {
@@ -99,8 +76,7 @@ public partial class TypeList : ListBase<ProductType>
         if (eventArg.MouseEventArgs.Detail is 1)
             return;
 
-        _editMode = DataGridEditMode.Form;
-        _editTrigger = DataGridEditTrigger.OnRowClick;
+        OpenItem(SelectedItem);
     }
 
     private async Task OnCatalogTypeChanged(ProductType changedType)

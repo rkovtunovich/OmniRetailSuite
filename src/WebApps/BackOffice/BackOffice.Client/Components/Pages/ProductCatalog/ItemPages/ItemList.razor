@@ -13,11 +13,6 @@
                      Items="@Items"
                      Filterable="true"
                      QuickFilter="@QuickFilter"
-                     EditMode="@(_editMode)"
-                     EditTrigger="@(_editTrigger)"
-                     StartedEditingItem="@StartedEditingItem"
-                     CanceledEditingItem="@CanceledEditingItem"
-                     CommittedItemChanges="@CommittedItemChanges"
                      ReadOnly="false"
                      RowClick="RowClick"
                      RowContextMenuClick="RowClickContextMenu"
@@ -56,6 +51,7 @@
             </ToolBarContent>
 
             <Columns>
+
                 <PropertyColumn Property="x => x.GetCode()" Title="@_localizer["Code"]" IsEditable="false" />
                 <PropertyColumn Property="x => x.Name" Title="@_localizer["Name"]" />
                 <PropertyColumn Property="x => x.Description" Title="@_localizer["Description"]" />
@@ -63,11 +59,7 @@
                 <PropertyColumn Property="x => x.ProductBrand" Title="@_localizer["Brand"]" IsEditable="false" />
                 <PropertyColumn Property="x => x.Price" Title="@_localizer["Price"]" />
                 <PropertyColumn Property="x => x.Barcode" Title="@_localizer["Barcode"]" />
-                <TemplateColumn CellClass="justify-end" Sortable="false" Filterable="false">
-                    <CellTemplate>
-                        <MudIconButton Size="@Size.Small" Icon="@IconHelper.Open" OnClick="@(() => OpenItemClick(context))" />
-                    </CellTemplate>
-                </TemplateColumn>
+
             </Columns>
 
         </MudDataGrid>

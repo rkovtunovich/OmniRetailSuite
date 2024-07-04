@@ -22,8 +22,6 @@ public partial class ItemList : ListBase<ProductItem>
 
     #region Product Items
 
-    private DataGridEditMode _editMode = DataGridEditMode.Form;
-    private DataGridEditTrigger _editTrigger = DataGridEditTrigger.Manual;
     private DialogOptions _dialogOptions = new() { DisableBackdropClick = true };
 
     #endregion
@@ -92,11 +90,6 @@ public partial class ItemList : ListBase<ProductItem>
         TabsService.TryCreateTab<ItemCreate>();
     }
 
-    private void OpenItemClick(CellContext<ProductItem> context)
-    {
-        OpenItem(context.Item);
-    }
-
     private void OpenItem(ProductItem? item)
     {
         if (item is null)
@@ -110,23 +103,6 @@ public partial class ItemList : ListBase<ProductItem>
         TabsService.TryCreateTab<ItemDetails>(parameters);
     }
 
-    private void StartedEditingItem(ProductItem item)
-    {
-        _editTrigger = DataGridEditTrigger.Manual;
-    }
-
-    private void CanceledEditingItem(ProductItem item)
-    {
-        // Do nothing
-    }
-
-    private async Task CommittedItemChanges(ProductItem item)
-    {
-        await ProductItemService.UpdateAsync(item);
-
-        CallRequestRefresh();
-    }
-
     private void RowClick(DataGridRowClickEventArgs<ProductItem> eventArg)
     {
         SelectedItem = eventArg.Item;
@@ -134,8 +110,7 @@ public partial class ItemList : ListBase<ProductItem>
         if (eventArg.MouseEventArgs.Detail is 1)
             return;
 
-        _editMode = DataGridEditMode.Form;
-        _editTrigger = DataGridEditTrigger.OnRowClick;
+        OpenItem(SelectedItem);
     }
 
     private async Task RowClickContextMenu(DataGridRowClickEventArgs<ProductItem> eventArg)

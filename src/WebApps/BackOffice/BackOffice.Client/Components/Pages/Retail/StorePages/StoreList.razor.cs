@@ -6,8 +6,6 @@ public partial class StoreList : ListBase<Store>
 
     [Inject] private IStringLocalizer<StoreList> _localizer { get; set; } = default!;
 
-    private DataGridEditMode _editMode = DataGridEditMode.Form;
-    private DataGridEditTrigger _editTrigger = DataGridEditTrigger.Manual;
     private DialogOptions _dialogOptions = new() { DisableBackdropClick = true };
 
     #region Overrides
@@ -61,31 +59,9 @@ public partial class StoreList : ListBase<Store>
         TabsService.TryCreateTab<StoreDetails>(parameters);
     }
 
-    private void OpenClick(CellContext<Store> context)
-    {
-        OpenItem(context.Item);
-    }
-
     private async Task ReloadItems()
     {
         Items = await RetailService.GetAllAsync();
-
-        CallRequestRefresh();
-    }
-
-    private void StartedEditingItem(Store item)
-    {
-        _editTrigger = DataGridEditTrigger.Manual;
-    }
-
-    private void CanceledEditingItem(Store item)
-    {
-        // Do nothing
-    }
-
-    private async Task CommittedItemChanges(Store cashier)
-    {
-        await RetailService.UpdateAsync(cashier);
 
         CallRequestRefresh();
     }
@@ -97,8 +73,7 @@ public partial class StoreList : ListBase<Store>
         if (eventArg.MouseEventArgs.Detail == 1)
             return;
 
-        _editMode = DataGridEditMode.Form;
-        _editTrigger = DataGridEditTrigger.OnRowClick;
+        OpenItem(SelectedItem);
     }
 
     private async Task OnChanged(Store changed)

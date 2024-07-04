@@ -6,8 +6,6 @@ public partial class CashierList : ListBase<Cashier>
 
     [Inject] private IStringLocalizer<CashierList> _localizer { get; set; } = default!;
 
-    private DataGridEditMode _editMode = DataGridEditMode.Form;
-    private DataGridEditTrigger _editTrigger = DataGridEditTrigger.Manual;
     private DialogOptions _dialogOptions = new() { DisableBackdropClick = true };
 
     #region Overrides
@@ -61,31 +59,9 @@ public partial class CashierList : ListBase<Cashier>
         TabsService.TryCreateTab<CashierDetails>(parameters);
     }
 
-    private void OpenClick(CellContext<Cashier> context)
-    {
-        OpenItem(context.Item); 
-    }
-
     private async Task ReloadItems()
     {
         Items = await RetailService.GetAllAsync();
-
-        CallRequestRefresh();
-    }
-
-    private void StartedEditingItem(Cashier item)
-    {
-        _editTrigger = DataGridEditTrigger.Manual;
-    }
-
-    private void CanceledEditingItem(Cashier item)
-    {
-        // Do nothing
-    }
-
-    private async Task CommittedItemChanges(Cashier cashier)
-    {
-        await RetailService.UpdateAsync(cashier);
 
         CallRequestRefresh();
     }
@@ -97,8 +73,7 @@ public partial class CashierList : ListBase<Cashier>
         if (eventArg.MouseEventArgs.Detail is 1)
             return;
 
-        _editMode = DataGridEditMode.Form;
-        _editTrigger = DataGridEditTrigger.OnRowClick;
+        OpenItem(SelectedItem);
     }
 
     private async Task OnChanged(Cashier changed)

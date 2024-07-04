@@ -8,8 +8,6 @@ public partial class BrandList : ListBase<ProductBrand>
 
     [Inject] private IStringLocalizer<BrandList> _localizer { get; set; } = default!;
 
-    private DataGridEditMode _editMode = DataGridEditMode.Form;
-    private DataGridEditTrigger _editTrigger = DataGridEditTrigger.Manual;
     private DialogOptions _dialogOptions = new() { DisableBackdropClick = true };
 
     #region Overrides
@@ -63,31 +61,9 @@ public partial class BrandList : ListBase<ProductBrand>
         TabsService.TryCreateTab<BrandDetails>(parameters);
     }
 
-    private void OpenBrandClick(CellContext<ProductBrand> context)
-    {
-        OpenItem(context.Item);
-    }
-
     private async Task ReloadCatalogTypes()
     {
         Items = await ProductBrandService.GetAllAsync();
-
-        CallRequestRefresh();
-    }
-
-    private void StartedEditingItem(ProductBrand item)
-    {
-        _editTrigger = DataGridEditTrigger.Manual;
-    }
-
-    private void CanceledEditingItem(ProductBrand item)
-    {
-        // Do nothing
-    }
-
-    private async Task CommittedItemChanges(ProductBrand type)
-    {
-        await ProductBrandService.UpdateAsync(type);
 
         CallRequestRefresh();
     }
@@ -99,8 +75,7 @@ public partial class BrandList : ListBase<ProductBrand>
         if (eventArg.MouseEventArgs.Detail is 1)
             return;
 
-        _editMode = DataGridEditMode.Form;
-        _editTrigger = DataGridEditTrigger.OnRowClick;
+        OpenItem(SelectedItem);
     }
 
     private async Task OnCatalogBrandChanged(ProductBrand changedBrand)

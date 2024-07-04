@@ -35,11 +35,6 @@
         <PropertyColumn Property="x => x.Store" Title="@_localizer["Store"]" />
         <PropertyColumn Property="x => x.Cashier" Title="@_localizer["Cashier"]" />
         <PropertyColumn Property="x => x.TotalPrice" Title="@_localizer["TotalPrice"]" />
-        <TemplateColumn CellClass="d-flex justify-end" Sortable="false" Filterable="false">
-            <CellTemplate>
-                <MudIconButton Size="@Size.Small" Icon="@IconHelper.Open" OnClick="@(() => OpenClick(context))" />
-            </CellTemplate>
-        </TemplateColumn>
     </Columns>
 
 </MudDataGrid>
