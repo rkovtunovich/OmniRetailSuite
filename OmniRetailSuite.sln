@@ -127,7 +127,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductCatalog.Tests", "tes
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{58E1251E-31CB-4AD7-ADCA-7035DA5164B2}"
 	ProjectSection(SolutionItems) = preProject
-		doc\High-Level Architecture Overview.drawio = doc\High-Level Architecture Overview.drawio
+		doc\Container-Level Architecture Overview.drawio = doc\Container-Level Architecture Overview.drawio
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Retail.Tests", "tests\BackendServices\Retail.Tests\Retail.Tests.csproj", "{B01ABF79-306C-40D9-9FA7-887E76D328A3}"
