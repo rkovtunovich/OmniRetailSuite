@@ -31,7 +31,7 @@ public partial class StoreList : ListBase<Store>
             new () {
                 Text = _localizer["Open"],
                 Icon = Icons.Material.Outlined.OpenInNew,
-                OnClick = EventCallback.Factory.Create(this, () => OpenItem(SelectedItem))
+                OnClick = EventCallback.Factory.Create(this, () => OpenItem<StoreDetails>(SelectedItem?.Id))
             },
             new() {
                 Text = _localizer["CreateByCopying"],
@@ -44,19 +44,6 @@ public partial class StoreList : ListBase<Store>
     private void CreateClick()
     {
         TabsService.TryCreateTab<StoreCreate>();
-    }
-
-    private void OpenItem(Store? item)
-    {
-        if (item is null)
-            return;
-
-        var parameters = new Dictionary<string, object>
-        {
-            { nameof(StoreDetails.Id), item.Id }
-        };
-
-        TabsService.TryCreateTab<StoreDetails>(parameters);
     }
 
     private async Task ReloadItems()
@@ -73,7 +60,7 @@ public partial class StoreList : ListBase<Store>
         if (eventArg.MouseEventArgs.Detail == 1)
             return;
 
-        OpenItem(SelectedItem);
+        OpenItem<StoreDetails>(SelectedItem.Id);
     }
 
     private async Task OnChanged(Store changed)

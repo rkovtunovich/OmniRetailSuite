@@ -10,7 +10,9 @@
              QuickFilter="@QuickFilter"
              ReadOnly="false"
              FixedHeader
+             RowClick="RowClick"
              RowContextMenuClick="RowClickContextMenu"
+             RowClassFunc="@((item, line) => SelectedRowClassFunc(item, line))"
              HeaderClass="data-grid-header"
              Style="height:100%; display:flex; flex-direction:column">
 

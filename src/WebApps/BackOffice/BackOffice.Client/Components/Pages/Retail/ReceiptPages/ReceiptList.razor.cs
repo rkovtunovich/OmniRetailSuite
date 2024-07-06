@@ -18,6 +18,16 @@ public partial class ReceiptList : ListBase<Receipt>
         await base.OnAfterRenderAsync(firstRender);
     }
 
+    private void RowClick(DataGridRowClickEventArgs<Receipt> eventArg)
+    {
+        SelectedItem = eventArg.Item;
+
+        if (eventArg.MouseEventArgs.Detail == 1)
+            return;
+
+        OpenItem<ReceiptDetails>(SelectedItem.Id);
+    }
+
     private async Task RowClickContextMenu(DataGridRowClickEventArgs<Receipt> eventArg)
     {
         SelectedItem = eventArg.Item;
