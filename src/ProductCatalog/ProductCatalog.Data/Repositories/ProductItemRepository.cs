@@ -1,4 +1,6 @@
-﻿namespace ProductCatalog.Data.Repositories;
+﻿using ProductCatalog.Data.Queries;
+
+namespace ProductCatalog.Data.Repositories;
 
 public class ProductItemRepository(ProductDbContext context, ILogger<ProductItemRepository> logger) : IItemRepository
 {
@@ -146,7 +148,7 @@ public class ProductItemRepository(ProductDbContext context, ILogger<ProductItem
         try
         {
             var itemsOnPage = await context.Items
-                .Where(ci => ci.ParentId == catalogParentId)
+                .Where(ci => context.GetParentHierarchy(catalogParentId).Contains(ci.Parent))
                 .ToListAsync();
 
             return itemsOnPage ?? [];
