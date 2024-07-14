@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="8.0.1" />
     <PackageReference Include="Steeltoe.Discovery.ClientCore" Version="3.2.7" />
     <PackageReference Include="Steeltoe.Discovery.Consul" Version="3.2.7" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.6.2" />

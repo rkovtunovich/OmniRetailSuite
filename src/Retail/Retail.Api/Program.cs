@@ -1,9 +1,11 @@
-﻿using Infrastructure.DataManagement.Postgres.Configuration;
+﻿using HealthChecks.UI.Client;
+using Infrastructure.DataManagement.Postgres.Configuration;
 using Infrastructure.DataManagement.Postgres.Extensions;
 using Infrastructure.Messaging.Kafka.Configuration;
 using Infrastructure.Messaging.Kafka.Configuration.Settings;
 using Infrastructure.SecretManagement.Vault.Configuration;
 using Infrastructure.Serialization.JsonText.Configuration;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Retail.Api.Configuration;
 using Retail.Application.Configuration;
 using Retail.Data;
@@ -50,6 +52,11 @@ if (app.Environment.IsDevelopment())
 await RetailDbSeeder.SeedRetailDb(app);
 
 app.UseRouting();
+
+app.UseHealthChecks("/_health", new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 app.MapControllers();
 
 app.Run();
