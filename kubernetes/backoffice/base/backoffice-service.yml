@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backoffice
+  namespace: backoffice
+spec:
+  selector:
+    app: backoffice
+  type: NodePort
+  ports:
+    - name: backoffice
+      port: 5010
+      targetPort: 5010
+    

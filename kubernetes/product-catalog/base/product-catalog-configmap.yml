@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: product-catalog-config
+  namespace: product-catalog
+data:
+  appsettings.json: |
+    {
+      "Kestrel": {
+        "Endpoints": {
+          "Http": {
+            "Url": "http://+:5098"
+          }
+        }
+      },
+      "Logging": {
+        "LogLevel": {
+          "Default": "Debug",
+          "Microsoft": "Warning",
+          "System": "Warning"
+        }
+      },
+      "spring": {
+        "application": {
+          "name": "product-catalog"
+        }
+      },
+      "consul": {
+        "host": "consul",
+        "port": 8500,
+         "discovery":{
+            "serviceName": "product-catalog",
+            "hostName": "product-catalog",
+            "port": 5098  
+        },
+      },
+      "Kafka": {
+        "BootstrapServers": "kafka:9092",
+        "Producers": [
+          {
+            "Name": "EventPublisher",
+            "Topic": "item_events"
+          }
+        ]
+      },
+      "vault": {
+        "address": "http://vault:8200",
+        "token": ""
+      },
+      "db": {
+        "host": "postgres",
+        "port": 5432,
+        "database": "product_catalog"
+      }
+    }

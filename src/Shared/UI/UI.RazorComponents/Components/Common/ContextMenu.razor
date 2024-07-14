@@ -1,0 +1,20 @@
+@inherits OrsComponentBase
+
+<MudMenu Id="@_contextMenuId"
+         @ref="_contextMenu"
+         Style="position: fixed; display: none;"
+         Dense
+         Disabled
+         IsOpenChanged="OnOpenChanged"
+         ActivationEvent="MouseEvent.MouseOver"
+         AnchorOrigin="Origin.BottomLeft"
+         TransformOrigin="Origin.TopLeft">
+
+    @foreach (var item in Items)
+    {
+        <MudMenuItem OnClick="@item.OnClick" Icon="@item.Icon">
+            @item.Text
+        </MudMenuItem>
+    }
+
+</MudMenu>

@@ -1,0 +1,137 @@
+version: '3.4'
+
+services:
+
+# ==============================================================================
+# Infrastructure services
+  kafka:
+    image: docker.io/bitnami/kafka:3.5:latest
+    ports:
+      - "9092:9092"
+    volumes:
+      - "kafka_data:/bitnami"
+    environment:
+      # KRaft settings
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
+      # Listeners
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop:latest
+    environment:
+      KAFKA_BROKERCONNECT: kafka:9092  # Connect to Kafka broker service
+      JVM_OPTS: "-Xms32M -Xmx64M"
+      SERVER_SERVLET_CONTEXTPATH: "/"  # Kafdrop web UI will be available at the root URL
+    ports:
+      - "9000:9000"  # Kafdrop web UI will be available at http://localhost:9000/
+
+  consul:
+    image: ${DOCKER_REGISTRY-}consul:latest
+    build:
+      context: consul
+      dockerfile: Dockerfile
+    ports:
+      - 8500:8500
+    command: agent -server -bind 0.0.0.0 -client 0.0.0.0 -bootstrap-expect 1 -config-file=/consul/config/config.json
+
+  vault:
+    image: ${DOCKER_REGISTRY-}vault:latest
+    build:
+      context: vault
+      dockerfile: Dockerfile
+    ports:
+      - 8200:8200
+    environment:
+      VAULT_ADDR: http://127.0.0.1:8200
+      VAULT_API_ADDR: http://127.0.0.1:8200
+      VAULT_UNSEAL_KEY1: ${VAULT_UNSEAL_KEY1}
+      VAULT_UNSEAL_KEY2: ${VAULT_UNSEAL_KEY2}
+      VAULT_UNSEAL_KEY3: ${VAULT_UNSEAL_KEY3}
+    cap_add:
+      - IPC_LOCK
+    depends_on:
+      - consul
+
+  postgres_db:
+    image: ${DOCKER_REGISTRY-}postgres:latest
+    build:
+      context: postgres
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "5434:5432"
+    environment:
+      VAULT_ADDR: ${VAULT_ADDR}
+      VAULT_TOKEN: ${VAULT_TOKEN}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    depends_on:
+      - vault
+# ==============================================================================
+# Application services
+  # ocelot:
+  #   image: ${DOCKER_REGISTRY-}ocelot:latest
+  #   build:
+  #     context: ${DOCKER_CONTEXT}
+  #     dockerfile: src/Gateways/WebAppsGateway/Dockerfile
+  #   ports:
+  #   - "7200:7200"
+
+  # identity:
+  #   image: ${DOCKER_REGISTRY-}identity:latest
+  #   build:
+  #     context: ${DOCKER_CONTEXT}
+  #     dockerfile: src/Identity/Identity.API/Dockerfile
+  #   ports:
+  #     - "5401:5401"
+  #   environment:
+  #     Backoffice: "${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5301"
+  #     CONSUL_HTTP_ADDR: "consul:8500"
+  #     db__host: "postgres_db"
+  #     db__port: "5432"
+  #     db__database: "identity"
+  #     vault__address: "http://vault:8200"
+  #     consul__host: "http://consul:8500"
+  #     consul__port: "8500"
+  #   depends_on:
+  #     - "postgres_db"  
+
+  product-catalog:
+    image: ${DOCKER_REGISTRY-}product-catalog:latest
+    build:
+      context: ${DOCKER_CONTEXT}
+      dockerfile: src/ProductCatalog/Catalog.Api/Dockerfile
+    ports:
+      - "5099:5099"
+    environment:
+      CONSUL_HTTP_ADDR: "consul:8500"
+      db__host: "postgres_db"
+      db__port: "5432"
+      db__database: "identity"
+      vault__address: "http://vault:8200"
+      consul__host: "http://consul:8500"
+      consul__port: "8500"
+    depends_on:
+      - "postgres_db"  
+ 
+
+# ==============================================================================
+# Volumes
+volumes:
+  kafka_data:
+    driver: local
+  db-data:
+
+# ==============================================================================
+# Networks
+networks:
+  consul:
+    driver: bridge   

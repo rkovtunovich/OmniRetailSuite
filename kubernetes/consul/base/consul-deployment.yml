@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consul
+  namespace: consul
+  labels:
+    app: consul
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consul
+  template:
+    metadata:
+      labels:
+        app: consul
+    spec:
+      imagePullSecrets:
+      - name: gitlab-registry
+      containers:
+      - name: consul
+        image: registry.omni-rs.com/r13/omniretailsuite/consul:latest
+        args:
+        - "agent"
+        - "-server"
+        - "-bind=0.0.0.0"
+        - "-client=0.0.0.0"
+        - "-bootstrap-expect=1"
+        - "-config-file=/consul/config/config.json"
+        ports:
+        - containerPort: 8500
+        - containerPort: 53
+        volumeMounts:
+        - name: consul-config
+          mountPath: /consul/config
+        - name: consul-data
+          mountPath: /consul/data
+      volumes:
+      - name: consul-config
+        configMap:
+          name: consul-config
+      - name: consul-data
+        persistentVolumeClaim:
+          claimName: consul-data
+

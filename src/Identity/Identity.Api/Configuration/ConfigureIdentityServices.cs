@@ -16,7 +16,7 @@ public static class ConfigureIdentityServices
 
         services.AddIdentityServer(options =>
         {
-            options.IssuerUri = configuration["baseUrls:webBase"];
+            options.IssuerUri = configuration["IssuerUri"];
             options.Authentication.CookieLifetime = TimeSpan.FromHours(2);
             options.Events.RaiseErrorEvents = true;
             options.Events.RaiseInformationEvents = true;
@@ -36,7 +36,7 @@ public static class ConfigureIdentityServices
         {
             options.AddPolicy("default", policy =>
             {
-                policy.WithOrigins(configuration["BlazorWasmClient"] ?? throw new ArgumentNullException("BlazorWasmClient"))
+                policy.WithOrigins(configuration["RetailAssistant"] ?? throw new ArgumentNullException("RetailAssistant"))
                       .AllowAnyHeader()
                       .AllowAnyMethod();
             });
@@ -47,47 +47,44 @@ public static class ConfigureIdentityServices
 
     private static List<IdentityResource> GetIdentityResources()
     {
-        return new List<IdentityResource>
-        {
+        return
+        [
             new IdentityResources.OpenId(),
             new IdentityResources.Profile()
-        };
+        ];
     }
 
     private static List<ApiResource> GetApiResources()
     {
-        return new List<ApiResource>
-        {
-             new("api", "Api: catalog, basket"),
+        return
+        [
+             new("api", "Api: catalog, retail"),
              new("backoffice", "BackOffice"),
              new("retail.client.wasm", "Retail client wasm"),
-             new("web", "Web eShop"),
              new(IdentityServerConstants.LocalApi.ScopeName, "Identity server API"),
              new("webappsgateway", "WEB Apps API Gateway")
                     {
                         ApiSecrets = { new Secret("webappsgateway-secret".Sha256()) },
                         Scopes = { "webappsgateway" }                       
                     }
-        };
+        ];
     }
 
     private static List<ApiScope> GetApiScopes()
     {
-        return new List<ApiScope>
-        {
-                new("api", "Api: catalog, basket"),
+        return
+        [
+                new("api", "Api: catalog, retail"),
                 new("backoffice", "BackOffice"),
-                new("retail.client.wasm", "Retail client wasm"),
-                new("web", "Web eShop"),
                 new(IdentityServerConstants.LocalApi.ScopeName, "Identity server api"),
                 new("webappsgateway", "WEB Apps API Gateway")
-        };
+        ];
     }
 
     private static List<Client> GetClients(IConfiguration configuration)
     {
-        return new List<Client>
-        {
+        return
+        [
                 new() {
                     ClientId = "blazorOpenId",
                     ClientName = "Blazor Admin OpenId Client",
@@ -102,13 +99,13 @@ public static class ConfigureIdentityServices
                     //RequirePkce = true,
                     //PostLogoutRedirectUris = { $"http://blazoradmin/Account/Redirecting" },
                     //AllowedCorsOrigins = { "http://eshopxamarin" },
-                    AllowedScopes = new List<string>
-                    {
+                    AllowedScopes =
+                    [
                         //IdentityServerConstants.StandardScopes.OpenId,
                         //IdentityServerConstants.StandardScopes.Profile,
                         "webappsgateway",
                          IdentityServerConstants.LocalApi.ScopeName
-                    },
+                    ],
                     //Allow requesting refresh tokens for long lived API access
                     //AllowOfflineAccess = true,
                     //AllowAccessTokensViaBrowser = true
@@ -116,11 +113,11 @@ public static class ConfigureIdentityServices
                 new() {
                     ClientId = "blazorInteractive",
                     ClientName = "Blazor admin interactive client",
-                    ClientSecrets = new List<Secret>
-                    {
+                    ClientSecrets =
+                    [
                         new("blazorSecret".Sha256())
-                    },
-                    ClientUri = $"{configuration["BlazorAdminClient"]}/", // public uri of the client
+                    ],
+                    ClientUri = $"{configuration["Backoffice"]}/", // public uri of the client
                     AllowedGrantTypes = GrantTypes.Code,
                     //AllowAccessTokensViaBrowser = false,
                     //RequireConsent = false,
@@ -129,22 +126,22 @@ public static class ConfigureIdentityServices
                     AllowPlainTextPkce = true,
                     AllowOfflineAccess = true,
                     //AlwaysIncludeUserClaimsInIdToken = true,
-                    RedirectUris = new List<string>
-                    {
-                        $"{configuration["BlazorAdminClient"]}/signin-oidc"
-                    },
-                    FrontChannelLogoutUri = $"{configuration["BlazorAdminClient"]}/signout-oidc",
-                    PostLogoutRedirectUris = new List<string>
-                    {
-                        $"{configuration["BlazorAdminClient"]}/signout-callback-oidc",
-                    },
-                    AllowedScopes = new List<string>
-                    {
+                    RedirectUris =
+                    [
+                        $"{configuration["Backoffice"]}/signin-oidc"
+                    ],
+                    FrontChannelLogoutUri = $"{configuration["Backoffice"]}/signout-oidc",
+                    PostLogoutRedirectUris =
+                    [
+                        $"{configuration["Backoffice"]}/signout-callback-oidc",
+                    ],
+                    AllowedScopes =
+                    [
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,                     
                         IdentityServerConstants.LocalApi.ScopeName,
                         "webappsgateway"
-                    },
+                    ],
                     AccessTokenLifetime = 60 * 60 * 2, // 2 hours
                     IdentityTokenLifetime= 60 * 60 * 2 // 2 hours
                 },
@@ -152,68 +149,37 @@ public static class ConfigureIdentityServices
                 {
                     ClientId = "blazorWasm",
                     ClientName = "Blazor wasm client",
-                    ClientUri = $"{configuration["BlazorWasmClient"]}/", // public uri of the client
+                    ClientUri = $"{configuration["RetailAssistant"]}/", // public uri of the client
                     AllowedGrantTypes = GrantTypes.Code,
                     RequireClientSecret = false,
                     //AllowAccessTokensViaBrowser = false,
                     //RequireConsent = false,
                     //RequireConsent = true,
-                    //RequirePkce = false,
+                    RequirePkce = true,
                     AllowPlainTextPkce = true,
                     AllowOfflineAccess = true,
-                    AllowedCorsOrigins = { configuration["BlazorWasmClient"] },
+                    AllowedCorsOrigins = { configuration["RetailAssistant"] },
                     //AlwaysIncludeUserClaimsInIdToken = true,
-                    RedirectUris = new List<string>
-                    {
-                        $"{configuration["BlazorWasmClient"]}/authentication/login-callback"
-                    },
-                    FrontChannelLogoutUri = $"{configuration["BlazorWasmClient"]}/authentication/logout-callback",
-                    PostLogoutRedirectUris = new List<string>
-                    {
-                        $"{configuration["BlazorWasmClient"]}/authentication/logout-callback",
-                    },
-                    AllowedScopes = new List<string>
-                    {
+                    RedirectUris =
+                    [
+                        $"{configuration["RetailAssistant"]}/authentication/login-callback"
+                    ],
+                    FrontChannelLogoutUri = $"{configuration["RetailAssistant"]}/authentication/logout-callback",
+                    PostLogoutRedirectUris =
+                    [
+                        $"{configuration["RetailAssistant"]}/authentication/logout-callback",
+                    ],
+                    AllowedScopes =
+                    [
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         "api",
-                        IdentityServerConstants.LocalApi.ScopeName
-                    },
-                    AccessTokenLifetime = 60 * 60 * 2, // 2 hours
-                    IdentityTokenLifetime= 60 * 60 * 2 // 2 hours
-                },
-                new() {
-                    ClientId = "web",
-                    ClientName = "Web eShop Client",
-                    ClientSecrets = new List<Secret>
-                    {
-
-                        new("secret".Sha256())
-                    },
-                    ClientUri = $"{"http://eshopwebmvc"}",                             // public uri of the client
-                    AllowedGrantTypes = GrantTypes.Code,
-                    AllowAccessTokensViaBrowser = false,
-                    RequireConsent = false,
-                    AllowOfflineAccess = true,
-                    AlwaysIncludeUserClaimsInIdToken = true,
-                    RequirePkce = false,
-                    RedirectUris = new List<string>
-                    {
-                        $"http://eshopwebmvc/signin-oidc"
-                    },
-                    PostLogoutRedirectUris = new List<string>
-                    {
-                        $"http://eshopwebmvc/signout-callback-oidc"
-                    },
-                    AllowedScopes = new List<string>
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        "api"
-                    },
+                        IdentityServerConstants.LocalApi.ScopeName,
+                        "webappsgateway"
+                    ],
                     AccessTokenLifetime = 60 * 60 * 2, // 2 hours
                     IdentityTokenLifetime= 60 * 60 * 2 // 2 hours
                 }
-        };
+        ];
     }
 }

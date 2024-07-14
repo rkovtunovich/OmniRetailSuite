@@ -1,22 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace Retail.Core.Entities.ReceiptAggregate;
 
-namespace Retail.Core.Entities.ReceiptAggregate;
-
-public class Receipt: BaseEntity
+public class Receipt: EntityBase, ICodedEntity
 {
-    [Required]
-    [MaxLength(50)]
-    public string Number { get; set; } = null!;
+    public int CodeNumber { get; set; }
+
+    public string? CodePrefix { get; set; }
 
     public DateTimeOffset Date { get; set; }
 
-    [Required]
-    public int CashierId { get; set; }
-    
+    public Guid StoreId { get; set; }
+
+    public Store Store { get; set; } = null!;
+
+    public Guid CashierId { get; set; }
+
     public Cashier Cashier { get; set; } = null!;
 
-    [Required]
     public decimal TotalPrice { get; set; }
 
-    public List<ReceiptItem> ReceiptItems { get; set; } = [];
+    public List<ReceiptItem>? ReceiptItems { get; set; }
 }

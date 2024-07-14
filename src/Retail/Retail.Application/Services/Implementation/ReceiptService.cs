@@ -1,88 +1,79 @@
-﻿using Retail.Core.Repositories;
+﻿using Retail.Core.Entities.ReceiptAggregate;
+using Retail.Core.Repositories;
 
 namespace Retail.Application.Services.Implementation;
 
-public class ReceiptService : IReceiptService
+public class ReceiptService(IReceiptRepository receiptRepository, IMapper mapper, ILogger<ReceiptService> logger) : IReceiptService
 {
-    private readonly IReceiptRepository _receiptRepository;
-    private readonly ILogger<ReceiptService> _logger;
-
-    public ReceiptService(IReceiptRepository receiptRepository, ILogger<ReceiptService> logger)
-    {
-        _receiptRepository = receiptRepository;
-        _logger = logger;
-    }
-
-    public async Task<ReceiptDto?> GetReceiptAsync(int id)
-    {
-        try
-        {
-            var receipt = await _receiptRepository.GetReceiptAsync(id);
-
-            return receipt is null ? null : ReceiptDto.FromReceipt(receipt);
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, $"Error while getting receipt: id {id}");
-            throw;
-        }
-    }
-
     public async Task<List<ReceiptDto>> GetReceiptsAsync()
     {
         try
         {
-            var receipts = await _receiptRepository.GetReceiptsAsync();
-            return receipts.Select(receipt => ReceiptDto.FromReceipt(receipt)).ToList();
+            var receipts = await receiptRepository.GetReceiptsAsync();
+            return mapper.Map<List<ReceiptDto>>(receipts);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Error while getting receipts");
+            logger.LogError(e, "Error while getting receipts");
+            throw;
+        }
+    }
+
+    public async Task<ReceiptDto?> GetReceiptAsync(Guid id)
+    {
+        try
+        {
+            var receipt = await receiptRepository.GetReceiptAsync(id);
+
+            return mapper.Map<ReceiptDto>(receipt);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, $"Error while getting receipt: id {id}");
             throw;
         }
     }
 
     public async Task<ReceiptDto> CreateReceiptAsync(ReceiptDto receiptDto)
     {
-        var receipt = receiptDto.ToReceipt();
-        receipt.CreatedAt = DateTime.UtcNow;
-        await _receiptRepository.AddReceiptAsync(receipt);
-        return ReceiptDto.FromReceipt(receipt);
+        var receipt = mapper.Map<Receipt>(receiptDto);
+        await receiptRepository.AddReceiptAsync(receipt);
+        return mapper.Map<ReceiptDto>(receipt);
     }
 
     public async Task<ReceiptDto> UpdateReceiptAsync(ReceiptDto receiptDto)
     {
         try
         {
-            var receipt = await _receiptRepository.GetReceiptAsync(receiptDto.Id) ?? throw new Exception($"Receipt with id {receiptDto.Id} not found");
+            var receipt = await receiptRepository.GetReceiptAsync(receiptDto.Id) ?? throw new Exception($"Receipt with id {receiptDto.Id} not found");
             receipt.Date = receiptDto.Date;
-            receipt.Number = receiptDto.Number;
+            receipt.CodeNumber = receiptDto.CodeNumber;
+            receipt.CodePrefix = receiptDto.CodePrefix;
             receipt.CashierId = receiptDto.Cashier.Id;
-            receipt.Cashier = receiptDto.Cashier.ToCashier();
+            receipt.StoreId = receiptDto.Store.Id;
             receipt.TotalPrice = receiptDto.TotalPrice;
-            receipt.ReceiptItems = receiptDto.ReceiptItems.Select(x => x.ToReceiptItem()).ToList();
-            receipt.UpdatedAt = DateTime.UtcNow;
+            receipt.ReceiptItems = mapper.Map<List<ReceiptItem>>(receiptDto.ReceiptItems);
 
-            await _receiptRepository.UpdateReceiptAsync(receipt);
+            await receiptRepository.UpdateReceiptAsync(receipt);
 
-            return ReceiptDto.FromReceipt(receipt);
+            return mapper.Map<ReceiptDto>(receipt);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Error while updating receipt: id {receiptDto.Id}");
+            logger.LogError(e, $"Error while updating receipt: id {receiptDto.Id}");
             throw;
         }
     }
 
-    public async Task DeleteReceiptAsync(int id, bool isSoftDeleting)
+    public async Task DeleteReceiptAsync(Guid id, bool isSoftDeleting)
     {
         try
         {
-            await _receiptRepository.DeleteReceiptAsync(id, isSoftDeleting);
+            await receiptRepository.DeleteReceiptAsync(id, isSoftDeleting);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Error while deleting receipt: id {id}");
+            logger.LogError(e, $"Error while deleting receipt: id {id}");
             throw;
         }
     }

@@ -1,0 +1,51 @@
+﻿@page "/cashier"
+@* @attribute [Authorize(Roles = BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS)] *@
+@attribute [Authorize]
+@inherits ListBase<Cashier>
+
+@namespace BackOffice.Client.Components.Pages.Retail.CashierPages
+@using BackOffice.Core.Models.Retail
+
+<PageTitle>Manage Cashier</PageTitle>
+
+<MudDataGrid T="Cashier" 
+             Items="@Items" 
+             Filterable="true" 
+             QuickFilter="@QuickFilter" 
+             ReadOnly="false" 
+             RowClick="RowClick"
+             RowContextMenuClick="RowClickContextMenu"
+             RowClass="cursor-pointer"
+             RowClassFunc="@((item, line) => SelectedRowClassFunc(item, line))"
+             EditDialogOptions="_dialogOptions"
+             FixedHeader
+             Dense
+             Hover
+             HeaderClass="data-grid-header"
+             Style="height:100%; display:flex; flex-direction:column">
+
+    <ToolBarContent>
+
+        <MudButton OnClick="@CreateClick" Color="@Color.Success" Class="add-item-btn">@_localizer["Add"]</MudButton>
+        
+        <MudSpacer />
+
+        <MudTextField @bind-Value="@QuickFilterSearchString"
+                      Placeholder="@_localizer["Search"]"
+                      Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search"
+                      Immediate
+                      Clearable
+                      IconSize="Size.Medium"
+                      Class="ors-list-search-field" />
+
+    </ToolBarContent>
+
+    <Columns>
+        <PropertyColumn Property="x => x.GetCode()" Title="@_localizer["Code"]" IsEditable="false" />
+        <PropertyColumn Property="x => x.Name" Title="@_localizer["Name"]" />
+    </Columns>
+
+</MudDataGrid>
+
+<ContextMenu @ref="ContextMenu" Items="ContextMenuItems" />

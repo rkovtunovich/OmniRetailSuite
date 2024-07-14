@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Identity\Identity.Model\IdentityModel.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Infrastructure\Infrastructure.Common\Infrastructure.Common.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Infrastructure\Infrastructure.Http\Infrastructure.Http.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Infrastructure\Infrastructure.Serialization.Abstraction\Infrastructure.Serialization.Abstraction.csproj" />
+    <ProjectReference Include="..\BackOffice.Core\BackOffice.Core.csproj" />
+  </ItemGroup>
+
+</Project>

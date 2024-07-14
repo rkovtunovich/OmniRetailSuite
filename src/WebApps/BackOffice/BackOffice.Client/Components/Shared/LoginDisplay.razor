@@ -1,0 +1,12 @@
+﻿<AuthorizeView>
+
+    <NotAuthorized>
+        <MudNavLink Href="/login" Icon="@Icons.Material.Filled.Login">@_localizer["Login"]</MudNavLink>
+    </NotAuthorized>
+
+    <Authorized>
+        <MudText> @(ShowUserName(context))</MudText>
+        <MudNavLink Href="/logout" Icon="@Icons.Material.Filled.Logout">@_localizer["Logout"]</MudNavLink>
+    </Authorized>
+
+</AuthorizeView>

@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: retail-assistant-ingress
+  namespace: retail-assistant
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"   
+spec:
+  rules:
+  - host: retail-assistant.omni-rs.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: retail-assistant
+            port:
+              number: 7022
+  tls:
+  - hosts:
+    - retail-assistant.omni-rs.com
+    secretName: omni-rs-com-tls-sub 

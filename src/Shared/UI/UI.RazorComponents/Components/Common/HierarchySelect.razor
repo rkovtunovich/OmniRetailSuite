@@ -1,0 +1,21 @@
+@inherits OrsComponentBase
+
+<MudSelect T="HierarchySelectModel"
+           Label=@Label
+           ToStringFunc="@_converterItem"
+           Clearable
+           Value="_selectedItem"
+           ValueChanged="@ChangeItem"
+           Variant="@MudBlazor.Variant.Filled">
+
+    @foreach (var item in _flattenedItems)
+    {
+        // If the item is the current item, don't show it in the dropdown
+        if (item.Id != OwnerId)
+        {
+            <MudSelectItem Value="@item" OnClick="@(() => ChangeItem(item))"></MudSelectItem>
+        }
+    }
+
+</MudSelect>
+

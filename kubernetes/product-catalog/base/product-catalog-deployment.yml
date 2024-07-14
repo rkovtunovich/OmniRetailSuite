@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-catalog
+  namespace: product-catalog
+  labels:
+    app: product-catalog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product-catalog
+  template:
+    metadata:
+      labels:
+        app: product-catalog
+    spec:
+      imagePullSecrets:
+      - name: gitlab-registry
+      containers:
+      - name: product-catalog
+        image: registry.omni-rs.com/r13/omniretailsuite/product-catalog:latest
+        ports:
+        - containerPort: 5099
+        env:
+        - name: CONSUL_HTTP_ADDR
+          value: "consul:8500"
+        volumeMounts:
+        - name: product-catalog-config
+          mountPath: /appsettings.json
+          subPath: appsettings.json
+      volumes:
+      - name: product-catalog-config
+        configMap:
+          name: product-catalog-config

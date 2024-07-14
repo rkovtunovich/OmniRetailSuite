@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: retail-assistant-config
+  namespace: retail-assistant
+data:
+  # appsettings.json: |
+  #   {
+  #     "Logging": {
+  #       "LogLevel": {
+  #         "Default": "Trace",
+  #         "Microsoft.AspNetCore": "Trace"
+  #       }
+  #     },
+  #     "WebGateway": "https://ocelot.omni-rs.com",
+  #     "IdentityServerSettings": {
+  #       "DiscoveryUrl": "https://identity.omni-rs.com",
+  #       "Authority": "https://identity.omni-rs.com",
+  #       "ClientName": "blazorWasm",
+  #     },
+  #     "HttpClients": {
+  #       "IdentityClient": {
+  #         "Name": "IdentityClient",
+  #         "ApiScope": "IdentityServerApi",
+  #         "BasePath": "api/v1/"
+  #        },
+  #       "ProductCatalogClient": {
+  #         "Name": "ProductCatalogClient",
+  #         "ApiScope": "webappsgateway",
+  #         "BasePath": "api/v1/productcatalog/"
+  #     },
+  #       "RetailClient": {
+  #         "Name": "RetailClient",
+  #         "ApiScope": "webappsgateway",
+  #         "BasePath": "api/v1/retail/"
+  #       }
+  #     }
+  #   }
+  nginx.conf: |
+    events { }
+       http {
+          include mime.types;
+          types {
+             application/wasm wasm;
+           }
+         server {
+            listen 7022 ssl;
+            ssl_certificate /etc/nginx/certs/tls.crt;
+            ssl_certificate_key /etc/nginx/certs/tls.key;
+            index index.html;
+            location / {
+               root /usr/share/nginx/html/wwwroot;
+               try_files $uri $uri/ /index.html =404;
+            }
+         }
+    }

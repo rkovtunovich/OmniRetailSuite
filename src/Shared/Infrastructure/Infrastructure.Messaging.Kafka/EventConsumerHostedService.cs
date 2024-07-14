@@ -8,6 +8,8 @@ public class EventConsumerHostedService : IHostedService
 {
     private readonly IEventConsumer _eventConsumer;
     private readonly ILogger<EventConsumerHostedService> _logger;
+    private Task? _consumingTask;
+    private CancellationTokenSource _cts = null!;
 
     public EventConsumerHostedService(string consumerName, IEventConsumer eventConsumer, ILogger<EventConsumerHostedService> logger)
     {
@@ -21,9 +23,11 @@ public class EventConsumerHostedService : IHostedService
     {
         _logger.LogInformation("Starting Kafka consumer");
 
+        _cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+
         try
         {
-            _eventConsumer.StartConsuming(cancellationToken);
+            _consumingTask = Task.Run(() => _eventConsumer.StartConsuming(_cts.Token), cancellationToken);
 
             _logger.LogInformation("Kafka consumer started");
         }
@@ -36,22 +40,29 @@ public class EventConsumerHostedService : IHostedService
         return Task.CompletedTask;
     }
 
-    public Task StopAsync(CancellationToken cancellationToken)
+    public async Task StopAsync(CancellationToken cancellationToken)
     {
         _logger.LogInformation("Stopping Kafka consumer");
 
+        if (_consumingTask is null)      
+            return;
+        
         try
         {
-            _eventConsumer.Dispose();
+            _cts.Cancel();
 
+            // Wait for the consuming task to complete
+            await Task.WhenAny(_consumingTask, Task.Delay(Timeout.Infinite, cancellationToken));
+           
             _logger.LogInformation("Kafka consumer stopped");
         }
         catch (Exception e)
         {
             _logger.LogError(e, "Error while stopping Kafka consumer");
+            _eventConsumer.Dispose();
             throw;
         }
 
-        return Task.CompletedTask;
+        return;
     }
 }

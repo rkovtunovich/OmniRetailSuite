@@ -1,28 +1,20 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace Retail.Core.Entities.ReceiptAggregate;
 
-namespace Retail.Core.Entities.ReceiptAggregate;
-
-public class ReceiptItem: BaseEntity
+public class ReceiptItem: EntityBase
 {
-    [Required]
-    public int ReceiptId { get; set; }
+    public Guid ReceiptId { get; set; }
 
     public Receipt Receipt { get; set; } = null!;
 
-    [Required]
-    public int Number { get; set; }
+    public int LineNumber { get; set; }
 
-    [Required]
-    public int CatalogItemId { get; set; }
+    public Guid ProductItemId { get; set; }
 
-    public CatalogItem CatalogItem { get; set; } = null!;
+    public ProductItem ProductItem { get; set; } = null!;
 
-    [Required]
     public double Quantity { get; set; }
 
-    [Required]
     public decimal UnitPrice { get; set; }
 
-    [Required]
     public decimal TotalPrice { get; set; }
 }

@@ -1,0 +1,124 @@
+﻿@page "/cashiers-workplace"
+@using RetailAssistant.Core.Models.ProductCatalog
+@inherits OrsComponentBase
+
+<MudPaper Height="100%" Class="d-flex">
+
+    <MudSplitter Style=" min-width:100%; height:100%;" @bind-Dimension="@_splitterPercentage" Class="p-0 m-0">
+
+        <StartContent>
+
+            <MudContainer Class="p-0 m-0 cashiers-workplace-receipt-container">
+
+                <ToolBar Commands="@_receiptCommands" />
+
+                <MudTable Items="_receipt.ReceiptItems"
+                          Hover="true"
+                          Style="max-width: 99%; height: 90%"
+                          Breakpoint="Breakpoint.Sm"
+                          Class="cashiers-workplace-receipt-table"
+                          RowClass="cashiers-workplace-receipt-table-row"
+                          LoadingProgressColor="Color.Info">
+
+                    <HeaderContent>
+                        <MudTh>@_localizer["Nr"]</MudTh>
+                        <MudTh>@_localizer["Item"]</MudTh>
+                        <MudTh>@_localizer["Quantity"]</MudTh>
+                        <MudTh>@_localizer["Price"]</MudTh>
+                        <MudTh>@_localizer["Sum"]</MudTh>
+                    </HeaderContent>
+
+                    <RowTemplate>
+                        <MudTd DataLabel="@_localizer["Nr"]">@context.LineNumber</MudTd>
+                        <MudTd DataLabel="@_localizer["Item"]">@context.ProductItem.Name</MudTd>
+                        <MudTd DataLabel="@_localizer["Quantity"]">@context.Quantity</MudTd>
+                        <MudTd DataLabel="@_localizer["Price"]">@context.UnitPrice</MudTd>
+                        <MudTd DataLabel="@_localizer["Sum"]">@context.TotalPrice</MudTd>
+                    </RowTemplate>
+
+                    <FooterContent>
+
+                        <MudTd Style="text-align:right" colspan="5">@_localizer["Total"]: @_receipt.TotalPrice</MudTd>
+
+                    </FooterContent>
+
+                </MudTable>
+
+            </MudContainer>
+
+        </StartContent>
+
+        <EndContent>
+
+            <MudContainer Class="cashiers-workplace-keyboard-container m-0 p-0">
+
+                <MudTreeView T="ProductParent"
+                             Items="@_itemParents"
+                             Hover="true"
+                             Dense
+                             Class="cashiers-workplace-catalog-parent-tree">
+
+                    <ItemTemplate Context="item">
+
+                        <MudTreeViewItem Items="@item.Children"
+                                         Icon="@Icons.Material.Outlined.Folder"
+                                         Value="item"
+                                         OnClick="@(e => OnParentItemClick(item, e))"
+                                         Class="@($"{GetItemClass(item)} ors-no-select")">
+
+                            <BodyContent>
+                                <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                                    <MudText Class="ors-tree-item-parent-code" Style="flex-basis: 20%; margin-right: 16px;">@item.GetCode()</MudText>
+                                    <MudText Class="ors-tree-item-parent-name" Style="flex-grow: 1;">@item.Name</MudText>
+                                </div>
+                            </BodyContent>
+
+                        </MudTreeViewItem>
+
+                    </ItemTemplate>
+
+                </MudTreeView>
+
+                <MudTable T="CatalogProductItem" Items="@_productItems"
+                          Hover="true"
+                          Dense="true"
+                          Breakpoint="Breakpoint.Sm"
+                          Loading="@_isTableLoading"
+                          LoadingProgressColor="Color.Default"
+                          Class="cashiers-workplace-product-items-table"
+                          RowClass="cursor-pointer"
+                          OnRowClick="RowClickEvent"
+                          RowClassFunc="@SelectedRowClassFunc"
+                          @ref="_productItemsTable">
+
+                    <ColGroup>
+                        <col style="width: 15%;" />
+                        <col />
+                        <col style="width: 15%;" />
+                    </ColGroup>
+
+                    <HeaderContent>
+                        @foreach (var heading in _tableHeadings)
+                        {
+                            <MudTh>@heading</MudTh>
+                        }
+                    </HeaderContent>
+
+                    <RowTemplate>
+                        <MudTd DataLabel="@_localizer["Code"]">@context.GetCode()</MudTd>
+                        <MudTd DataLabel="@_localizer["Name"]">@context.Name</MudTd>
+                        <MudTd DataLabel="@_localizer["Price"]" Style="text-align:left">@context.Price</MudTd>
+                    </RowTemplate>
+
+                </MudTable>
+
+            </MudContainer>
+
+        </EndContent>
+
+    </MudSplitter>
+
+
+</MudPaper>
+
+

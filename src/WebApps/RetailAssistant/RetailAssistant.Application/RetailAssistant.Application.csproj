@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Identity\Identity.Model\IdentityModel.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Contracts\Contracts.Dtos\Contracts.Dtos.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Infrastructure\Infrastructure.Common\Infrastructure.Common.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Infrastructure\Infrastructure.Http\Infrastructure.Http.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Infrastructure\Infrastructure.Serialization.Abstraction\Infrastructure.Serialization.Abstraction.csproj" />
+    <ProjectReference Include="..\RetailAssistant.Core\RetailAssistant.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="8.0.7" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+  </ItemGroup>
+
+</Project>

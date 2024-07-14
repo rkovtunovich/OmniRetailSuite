@@ -1,0 +1,41 @@
+﻿@namespace RetailAssistant.Client.Components.Pages.CashiersWorkplace
+@inherits SelectionListBase<Cashier>
+
+<MudDataGrid T="Cashier" 
+             Items="@Items" 
+             Filterable="true" 
+             QuickFilter="@QuickFilter"
+             ReadOnly="true"
+             FixedHeader="true" 
+             HeaderClass="data-grid-header"
+             FooterClass="ors-selection-list-footer"
+             Style="height:100%; display:flex; flex-direction:column"
+             SelectedItem="@SelectedItem"
+             SelectedItemChanged="SelectedItemChanged">
+
+    <ToolBarContent>
+
+        <MudSpacer />
+
+        <MudTextField @bind-Value="@QuickFilterSearchString" 
+                      Placeholder="@_localizer["Search"]" 
+                      Adornment="Adornment.Start" 
+                      Immediate="true"
+                      AdornmentIcon="@Icons.Material.Filled.Search" 
+                      IconSize="Size.Medium" Class="mt-0" />
+
+    </ToolBarContent>
+
+    <Columns>
+
+        <SelectColumn T="Cashier" />
+        <PropertyColumn Property="x => x.GetCode()" Title="@_localizer["Code"]" IsEditable="false" />
+        <PropertyColumn Property="x => x.Name" Title="@_localizer["Name"]" />
+
+    </Columns>
+
+</MudDataGrid>
+
+<MudButton Color="Color.Primary" OnClick="@(() => OnOkButtonClick())">@_localizer["Ok"]</MudButton>
+<MudButton Color="Color.Secondary" OnClick="@(() => OnCancelButtonClick())">@_localizer["Cancel"]</MudButton>
+

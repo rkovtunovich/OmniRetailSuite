@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\Contracts\Contracts.Dtos\Contracts.Dtos.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Core\Core.Abstraction\Core.Abstraction.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Core\Core.WebApps\Core.WebApps.csproj" />
+  </ItemGroup>
+
+</Project>

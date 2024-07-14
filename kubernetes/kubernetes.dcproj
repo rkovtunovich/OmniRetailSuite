@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk" DefaultTargets="Build">
+  <PropertyGroup Label="Globals">
+    <ProjectVersion>2.1</ProjectVersion>
+    <ProjectGuid>6a8e308c-2ea5-4d5f-8768-923370363c9f</ProjectGuid>
+    <DockerLaunchBrowser>True</DockerLaunchBrowser>
+    <DockerServiceUrl>{Scheme}://host.docker.internal:{ServicePort}</DockerServiceUrl>
+    <DockerServiceName>omnis</DockerServiceName>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="backoffice\base\backoffice-configmap.yml" />
+    <None Include="backoffice\base\backoffice-deployment.yml" />
+    <None Include="backoffice\base\backoffice-ingress.yml" />
+    <None Include="backoffice\base\backoffice-service.yml" />
+    <None Include="backoffice\base\kustomization.yml" />
+    <None Include="backoffice\production\kustomization.yml" />
+    <None Include="common\prod-namespace.yml" />
+    <None Include="consul\base\kustomization.yml" />
+    <None Include="consul\production\kustomization.yml" />
+    <None Include="identity\base\identity-configmap.yml" />
+    <None Include="identity\base\identity-deployment.yml" />
+    <None Include="identity\base\identity-ingress.yml" />
+    <None Include="identity\base\identity-service.yml" />
+    <None Include="identity\base\kustomization.yml" />
+    <None Include="identity\production\kustomization.yml" />
+    <None Include="kafdrop\base\kustomization.yml" />
+    <None Include="kafdrop\production\kustomization.yml" />
+    <None Include="kafka\base\kafka-ingress.yml" />
+    <None Include="kafka\base\kustomization.yml" />
+    <None Include="kafka\base\kafka-network-policy.yml" />
+    <None Include="kafka\production\kustomization.yml" />
+    <None Include="nginx\nginx-configmap.yml" />
+    <None Include="ocelot\base\kustomization.yml" />
+    <None Include="ocelot\base\ocelot-service.yml" />
+    <None Include="ocelot\base\ocelot-configmap.yml" />
+    <None Include="ocelot\base\ocelot-deployment.yml" />
+    <None Include="consul\base\consul-configmap.yml" />
+    <None Include="consul\base\consul-deployment.yml" />
+    <None Include="consul\base\consul-ingress.yml" />
+    <None Include="consul\base\consul-persistent-volume-claim.yml" />
+    <None Include="consul\base\consul-service.yml" />
+    <None Include="consul\base\consul-network-policy.yml" />
+    <None Include="kubernetes-dashboard\dashboard-deployment.yaml" />
+    <None Include="gitlab\gitlab-deployment.yml" />
+    <None Include="gitlab\gitlab-namespace.yml" />
+    <None Include="gitlab\gitlab-persistent-volume-claim.yml" />
+    <None Include="gitlab\gitlab-service.yml" />
+    <None Include="kafdrop\base\kafdrop-ingress.yml" />
+    <None Include="kafdrop\base\kafdrop-deployment.yml" />
+    <None Include="kafdrop\base\kafdrop-service.yml" />
+    <None Include="kafka\base\kafka-deployment.yml" />
+    <None Include="kafka\base\kafka-persistent-volume-claim.yml" />
+    <None Include="kafka\base\kafka-service.yml" />
+    <None Include="gitlab\registry-ingress.yml" />
+    <None Include="gitlab\gitlab-ingress.yml" />
+    <None Include="ocelot\base\ocelot-ingress.yml" />
+    <None Include="ocelot\production\kustomization.yml" />
+    <None Include="postgres\base\kustomization.yml" />
+    <None Include="postgres\base\postgres-persistent-volume-claim.yml" />
+    <None Include="postgres\base\postgres-deployment.yml" />
+    <None Include="postgres\base\postgres-service.yml" />
+    <None Include="postgres\base\postgres-ingress.yml" />
+    <None Include="postgres\base\postgres-network-policy.yml" />
+    <None Include="postgres\production\kustomization.yml" />
+    <None Include="retail-assistant\base\retail-assistant-configmap.yml" />
+    <None Include="retail-assistant\base\retail-assistant-deployment.yml" />
+    <None Include="retail-assistant\base\retail-assistant-ingress.yml" />
+    <None Include="retail-assistant\base\retail-assistant-service.yml" />
+    <None Include="retail-assistant\base\kustomization.yml" />
+    <None Include="retail-assistant\production\kustomization.yml" />
+    <None Include="retail\base\kustomization.yml" />
+    <None Include="retail\base\retail-configmap.yml" />
+    <None Include="retail\base\retail-deployment.yml" />
+    <None Include="retail\base\retail-ingress.yml" />
+    <None Include="retail\base\retail-service.yml" />
+    <None Include="retail\production\kustomization.yml" />
+    <None Include="product-catalog\base\product-catalog-configmap.yml" />
+    <None Include="product-catalog\base\product-catalog-deployment.yml" />
+    <None Include="product-catalog\base\product-catalog-ingress.yml" />
+    <None Include="product-catalog\base\product-catalog-service.yml" />
+    <None Include="product-catalog\base\kustomization.yml" />
+    <None Include="product-catalog\production\kustomization.yml" />
+    <None Include="vault\base\kustomization.yml" />
+    <None Include="vault\base\vault-configmap.yml" />
+    <None Include="vault\base\vault-ingress.yml" />
+    <None Include="vault\base\vault-deployment.yml" />
+    <None Include="vault\base\vault-network-policy.yml" />
+    <None Include="vault\base\vault-service.yml" />
+    <None Include="vault\dynamic-role-creation.txt" />
+    <None Include="vault\production\kustomization.yml" />
+  </ItemGroup>
+</Project>

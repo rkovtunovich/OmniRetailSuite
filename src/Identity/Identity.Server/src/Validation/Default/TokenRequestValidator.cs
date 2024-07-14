@@ -113,14 +113,14 @@ internal class TokenRequestValidator : ITokenRequestValidator
             Options = _options
         };
 
-        if (clientValidationResult == null) throw new ArgumentNullException(nameof(clientValidationResult));
+        ArgumentNullException.ThrowIfNull(clientValidationResult);
 
         _validatedRequest.SetClient(clientValidationResult.Client, clientValidationResult.Secret, clientValidationResult.Confirmation);
 
         /////////////////////////////////////////////
         // check client protocol type
         /////////////////////////////////////////////
-        if (_validatedRequest.Client.ProtocolType != IdentityServerConstants.ProtocolTypes.OpenIdConnect)
+        if (_validatedRequest.Client.ProtocolType is not IdentityServerConstants.ProtocolTypes.OpenIdConnect)
         {
             LogError("Invalid protocol type for client",
                 new
@@ -151,21 +151,15 @@ internal class TokenRequestValidator : ITokenRequestValidator
 
         _validatedRequest.GrantType = grantType;
 
-        switch (grantType)
+        return grantType switch
         {
-            case OidcConstants.GrantTypes.AuthorizationCode:
-                return await RunValidationAsync(ValidateAuthorizationCodeRequestAsync, parameters);
-            case OidcConstants.GrantTypes.ClientCredentials:
-                return await RunValidationAsync(ValidateClientCredentialsRequestAsync, parameters);
-            case OidcConstants.GrantTypes.Password:
-                return await RunValidationAsync(ValidateResourceOwnerCredentialRequestAsync, parameters);
-            case OidcConstants.GrantTypes.RefreshToken:
-                return await RunValidationAsync(ValidateRefreshTokenRequestAsync, parameters);
-            case OidcConstants.GrantTypes.DeviceCode:
-                return await RunValidationAsync(ValidateDeviceCodeRequestAsync, parameters);
-            default:
-                return await RunValidationAsync(ValidateExtensionGrantRequestAsync, parameters);
-        }
+            OidcConstants.GrantTypes.AuthorizationCode => await RunValidationAsync(ValidateAuthorizationCodeRequestAsync, parameters),
+            OidcConstants.GrantTypes.ClientCredentials => await RunValidationAsync(ValidateClientCredentialsRequestAsync, parameters),
+            OidcConstants.GrantTypes.Password => await RunValidationAsync(ValidateResourceOwnerCredentialRequestAsync, parameters),
+            OidcConstants.GrantTypes.RefreshToken => await RunValidationAsync(ValidateRefreshTokenRequestAsync, parameters),
+            OidcConstants.GrantTypes.DeviceCode => await RunValidationAsync(ValidateDeviceCodeRequestAsync, parameters),
+            _ => await RunValidationAsync(ValidateExtensionGrantRequestAsync, parameters),
+        };
     }
 
     private async Task<TokenRequestValidationResult> RunValidationAsync(Func<NameValueCollection, Task<TokenRequestValidationResult>> validationFunc, NameValueCollection parameters)
@@ -173,10 +167,8 @@ internal class TokenRequestValidator : ITokenRequestValidator
         // run standard validation
         var result = await validationFunc(parameters);
         if (result.IsError)
-        {
             return result;
-        }
-
+        
         // run custom validation
         _logger.LogTrace("Calling into custom request validator: {type}", _customRequestValidator.GetType().FullName);
 
@@ -185,19 +177,16 @@ internal class TokenRequestValidator : ITokenRequestValidator
 
         if (customValidationContext.Result.IsError)
         {
-            if (customValidationContext.Result.Error.IsPresent())
-            {
-                LogError("Custom token request validator", new { error = customValidationContext.Result.Error });
-            }
-            else
-            {
+            if (customValidationContext.Result.Error.IsPresent())           
+                LogError("Custom token request validator", new { error = customValidationContext.Result.Error });           
+            else            
                 LogError("Custom token request validator error");
-            }
-
+            
             return customValidationContext.Result;
         }
 
         LogSuccess();
+
         return customValidationContext.Result;
     }
 
@@ -289,7 +278,7 @@ internal class TokenRequestValidator : ITokenRequestValidator
             return Invalid(OidcConstants.TokenErrors.UnauthorizedClient);
         }
 
-        if (redirectUri.Equals(_validatedRequest.AuthorizationCode.RedirectUri, StringComparison.Ordinal) == false)
+        if (redirectUri.Equals(_validatedRequest.AuthorizationCode.RedirectUri, StringComparison.Ordinal) is false)
         {
             LogError("Invalid redirect_uri", new { redirectUri, expectedRedirectUri = _validatedRequest.AuthorizationCode.RedirectUri });
             return Invalid(OidcConstants.TokenErrors.InvalidGrant);
@@ -298,8 +287,7 @@ internal class TokenRequestValidator : ITokenRequestValidator
         /////////////////////////////////////////////
         // validate scopes are present
         /////////////////////////////////////////////
-        if (_validatedRequest.AuthorizationCode.RequestedScopes == null ||
-            !_validatedRequest.AuthorizationCode.RequestedScopes.Any())
+        if (_validatedRequest.AuthorizationCode.RequestedScopes is null || !_validatedRequest.AuthorizationCode.RequestedScopes.Any())
         {
             LogError("Authorization code has no associated scopes");
             return Invalid(OidcConstants.TokenErrors.InvalidRequest);
@@ -364,11 +352,9 @@ internal class TokenRequestValidator : ITokenRequestValidator
         // check if client is allowed to request scopes
         /////////////////////////////////////////////
         if (!await ValidateRequestedScopesAsync(parameters, ignoreImplicitIdentityScopes: true, ignoreImplicitOfflineAccess: true))
-        {
             return Invalid(OidcConstants.TokenErrors.InvalidScope);
-        }
-
-        if (_validatedRequest.ValidatedResources.Resources.IdentityResources.Any())
+        
+        if (_validatedRequest.ValidatedResources.Resources.IdentityResources.Count > 0)
         {
             LogError("Client cannot request OpenID scopes in client credentials flow", new { clientId = _validatedRequest.Client.ClientId });
             return Invalid(OidcConstants.TokenErrors.InvalidScope);
@@ -417,11 +403,9 @@ internal class TokenRequestValidator : ITokenRequestValidator
             return Invalid(OidcConstants.TokenErrors.InvalidGrant);
         }
 
-        if (password.IsMissing())
-        {
+        if (password.IsMissing())      
             password = "";
-        }
-
+        
         if (userName.Length > _options.InputLengthRestrictions.UserName ||
             password.Length > _options.InputLengthRestrictions.Password)
         {
@@ -778,11 +762,9 @@ internal class TokenRequestValidator : ITokenRequestValidator
 
     private bool ValidateCodeVerifierAgainstCodeChallenge(string codeVerifier, string codeChallenge, string codeChallengeMethod)
     {
-        if (codeChallengeMethod == OidcConstants.CodeChallengeMethods.Plain)
-        {
+        if (codeChallengeMethod == OidcConstants.CodeChallengeMethods.Plain)       
             return TimeConstantComparer.IsEqual(codeVerifier.Sha256(), codeChallenge);
-        }
-
+        
         var codeVerifierBytes = Encoding.ASCII.GetBytes(codeVerifier);
         var hashedBytes = codeVerifierBytes.Sha256();
         var transformedCodeVerifier = Base64Url.Encode(hashedBytes);
@@ -823,15 +805,10 @@ internal class TokenRequestValidator : ITokenRequestValidator
         {
             try
             {
-                if (values == null)
-                {
-                    _logger.Log(logLevel, message + ", {@details}", details);
-                }
-                else
-                {
-                    _logger.Log(logLevel, message + "{@values}, details: {@details}", values, details);
-                }
-
+                if (values is null)                
+                    _logger.Log(logLevel, message + ", {@details}", details);               
+                else               
+                    _logger.Log(logLevel, message + "{@values}, details: {@details}", values, details);                
             }
             catch (Exception ex)
             {

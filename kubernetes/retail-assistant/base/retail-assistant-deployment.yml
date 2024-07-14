@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: retail-assistant
+  namespace: retail-assistant
+  labels:
+    app: retail-assistant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: retail-assistant
+  template:
+    metadata:
+      labels:
+        app: retail-assistant
+    spec:
+      imagePullSecrets:
+      - name: gitlab-registry
+      containers:
+      - name: retail-assistant
+        image: registry.omni-rs.com/r13/omniretailsuite/retail-assistant:latest
+        ports:
+        - containerPort: 7022
+        env:
+        - name: Kestrel__Endpoints__Https__Certificate__Password
+          valueFrom:
+            secretKeyRef:
+              name: omni-rs-com-pfx
+              key: pass
+        - name: CONSUL_HTTP_ADDR
+          value: "consul:8500"
+        volumeMounts:
+        - name: nginx-tls
+          mountPath: /etc/nginx/certs
+        # - name: retail-assistant-config
+        #   mountPath: /usr/share/nginx/html/wwwroot/appsettings.json
+        #   subPath: appsettings.json
+        - name: retail-assistant-config
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+      volumes:
+      - name: nginx-tls
+        secret:
+          secretName: omni-rs-com-tls-sub
+      - name: retail-assistant-config
+        configMap:
+          name: retail-assistant-config 
+          items:
+          # - key: appsettings.json
+          #   path: appsettings.json
+          - key: nginx.conf
+            path: nginx.conf
+

@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: identity-config
+  namespace: identity
+data:
+  appsettings.json: |
+    {
+      "Kestrel": {
+        "Endpoints": {
+          "Https": {
+            "Url": "https://+:5401",
+            "Certificate": {
+              "Path": "/app/pfx/cert"
+            }
+          }
+        }
+      },
+      "Logging": {
+        "LogLevel": {
+          "Default": "Debug",
+          "Microsoft.AspNetCore": "Debug"
+        }
+      },
+      "baseUrls": {
+        "webBase": "https://identity.omni-rs.com:5401/"
+      },
+      "Backoffice": "https://backoffice.omni-rs.com",
+      "RetailAssistant": "https://retail-assistant.omni-rs.com",
+      "IssuerUri": "https://identity.omni-rs.com",
+      "spring": {
+        "application": {
+          "name": "identity"
+        }
+      },
+      "consul": {
+        "host": "consul",
+        "port": 8500
+      },
+      "vault": {
+        "address": "http://vault:8200",
+      },
+      "db": {
+        "host": "postgres",
+        "port": 5432,
+        "database": "identity"
+      }
+    }

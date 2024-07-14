@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backoffice
+  namespace: backoffice
+  labels:
+    app: backoffice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backoffice
+  template:
+    metadata:
+      labels:
+        app: backoffice
+    spec:
+      imagePullSecrets:
+      - name: gitlab-registry
+      containers:
+      - name: backoffice
+        image: registry.omni-rs.com/r13/omniretailsuite/backoffice:latest
+        ports:
+        - containerPort: 5010
+        env:
+        - name: Kestrel__Endpoints__Https__Certificate__Password
+          valueFrom:
+            secretKeyRef:
+              name: omni-rs-com-pfx
+              key: pass
+        - name: CONSUL_HTTP_ADDR
+          value: "consul:8500"
+        volumeMounts:
+        - name: backoffice-pfx
+          mountPath: /app/pfx
+        - name: backoffice-config
+          mountPath: /appsettings.json
+          subPath: appsettings.json
+      volumes:
+      - name: backoffice-pfx 
+        secret:
+          secretName: omni-rs-com-pfx
+      - name: backoffice-config
+        configMap:
+          name: backoffice-config  
+

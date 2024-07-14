@@ -1,0 +1,27 @@
+﻿@inherits TabularPartBase<ReceiptItem>
+
+<MudContainer MaxWidth="MaxWidth.False" Class="p-0">
+
+    <ToolBar Commands="@Commands" />
+
+    <MudTable Items="Items" Context="rowContext">
+
+        <HeaderContent>
+            <MudTh>N</MudTh>
+            <MudTh>@_localizer["Item"]</MudTh>
+            <MudTh>@_localizer["Quantity"]</MudTh>
+            <MudTh>@_localizer["UnitPrice"]</MudTh>
+            <MudTh>@_localizer["TotalPrice"]</MudTh>
+        </HeaderContent>
+
+        <RowTemplate>
+            <MudTd>@rowContext.LineNumber</MudTd>
+            <MudTd>@rowContext.ProductItem</MudTd>
+            <MudTd>@rowContext.Quantity</MudTd>
+            <MudTd>@rowContext.UnitPrice</MudTd>
+            <MudTd>@rowContext.TotalPrice</MudTd>
+        </RowTemplate>
+
+    </MudTable>
+
+</MudContainer>

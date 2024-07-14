@@ -30,7 +30,7 @@ public class TopicManager(IOptions<KafkaSettings> settings, ILogger<TopicManager
             _logger.LogInformation($"Creating topic {topic}");
             try
             {
-                await adminClient.CreateTopicsAsync(new TopicSpecification[] { new() { Name = topic, ReplicationFactor = 1, NumPartitions = 1 } });
+                await adminClient.CreateTopicsAsync([new() { Name = topic, ReplicationFactor = 1, NumPartitions = 1 }]);
             }
             catch (CreateTopicsException e)
             {

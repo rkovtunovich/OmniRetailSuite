@@ -9,7 +9,6 @@
       "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}",
       "serviceActions": {
         "catalogapi": "StartDebugging",
-        "eshopwebmvc": "StartDebugging",
         "identityapi": "StartDebugging",
         "backoffice": "StartDebugging",
         "postgres_db": "StartWithoutDebugging"
@@ -25,7 +24,6 @@
       "serviceActions": {
         "backoffice": "StartDebugging",
         "catalogapi": "StartDebugging",
-        "eshopwebmvc": "StartDebugging",
         "identityapi": "StartDebugging",
         "postgres_db": "StartWithoutDebugging"
       }

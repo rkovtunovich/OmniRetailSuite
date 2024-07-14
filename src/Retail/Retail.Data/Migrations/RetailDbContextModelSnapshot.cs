@@ -8,7 +8,7 @@ using Retail.Data;
 
 #nullable disable
 
-namespace Retail.Api.Migrations
+namespace Retail.Data.Migrations
 {
     [DbContext(typeof(RetailDbContext))]
     partial class RetailDbContextModelSnapshot : ModelSnapshot
@@ -17,27 +17,87 @@ namespace Retail.Api.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.13")
+                .HasAnnotation("ProductVersion", "8.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.HasSequence("catalog_item_hilo")
-                .IncrementsBy(10);
+            modelBuilder.HasSequence<int>("cashier_codes");
 
-            modelBuilder.HasSequence("receipt_item_hilo")
-                .IncrementsBy(10);
+            modelBuilder.HasSequence<int>("receipt_codes");
 
-            modelBuilder.Entity("Retail.Core.Entities.ReceiptAggregate.Cashier", b =>
+            modelBuilder.HasSequence<int>("store_codes");
+
+            modelBuilder.Entity("CashierStore", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("CashiersId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("cashiers_id");
+
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("store_id");
+
+                    b.HasKey("CashiersId", "StoreId")
+                        .HasName("pk_cashier_store");
+
+                    b.HasIndex("StoreId")
+                        .HasDatabaseName("ix_cashier_store_store_id");
+
+                    b.ToTable("cashier_store", (string)null);
+                });
+
+            modelBuilder.Entity("Retail.Core.Entities.AppClientSettings", b =>
+                {
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
 
-                    b.Property<DateTimeOffset>("CreatedAt")
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
+
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("store_id");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id")
+                        .HasName("pk_app_client_settings");
+
+                    b.HasIndex("StoreId")
+                        .HasDatabaseName("ix_app_client_settings_store_id");
+
+                    b.ToTable("app_client_settings", (string)null);
+                });
+
+            modelBuilder.Entity("Retail.Core.Entities.Cashier", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<int>("CodeNumber")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("code_number")
+                        .HasDefaultValueSql("nextval('\"cashier_codes\"')");
+
+                    b.Property<string>("CodePrefix")
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)")
+                        .HasColumnName("code_prefix");
+
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
@@ -51,26 +111,36 @@ namespace Retail.Api.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnName("name");
 
-                    b.Property<DateTimeOffset?>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
                     b.HasKey("Id")
                         .HasName("pk_cashiers");
 
+                    b.HasIndex("CodePrefix", "CodeNumber")
+                        .IsUnique()
+                        .HasDatabaseName("ix_cashiers_code_prefix_code_number");
+
                     b.ToTable("cashiers", (string)null);
                 });
 
-            modelBuilder.Entity("Retail.Core.Entities.ReceiptAggregate.CatalogItem", b =>
+            modelBuilder.Entity("Retail.Core.Entities.ReceiptAggregate.ProductItem", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseHiLo(b.Property<int>("Id"), "catalog_item_hilo");
+                    b.Property<int>("CodeNumber")
+                        .HasColumnType("integer")
+                        .HasColumnName("code_number");
 
-                    b.Property<DateTimeOffset>("CreatedAt")
+                    b.Property<string>("CodePrefix")
+                        .HasColumnType("text")
+                        .HasColumnName("code_prefix");
+
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
@@ -84,34 +154,43 @@ namespace Retail.Api.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnName("name");
 
-                    b.Property<DateTimeOffset?>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
                     b.HasKey("Id")
-                        .HasName("pk_catalog_items");
+                        .HasName("pk_product_items");
 
-                    b.ToTable("catalog_items", (string)null);
+                    b.ToTable("product_items", (string)null);
                 });
 
             modelBuilder.Entity("Retail.Core.Entities.ReceiptAggregate.Receipt", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CashierId")
-                        .HasColumnType("integer")
+                    b.Property<Guid>("CashierId")
+                        .HasColumnType("uuid")
                         .HasColumnName("cashier_id");
 
-                    b.Property<DateTimeOffset>("CreatedAt")
+                    b.Property<int>("CodeNumber")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("code_number")
+                        .HasDefaultValueSql("nextval('\"receipt_codes\"')");
+
+                    b.Property<string>("CodePrefix")
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)")
+                        .HasColumnName("code_prefix");
+
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<DateTimeOffset>("Date")
+                    b.Property<DateTime>("Date")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("date");
 
@@ -119,17 +198,15 @@ namespace Retail.Api.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_deleted");
 
-                    b.Property<string>("Number")
-                        .IsRequired()
-                        .HasMaxLength(9)
-                        .HasColumnType("character varying(9)")
-                        .HasColumnName("number");
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("store_id");
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)")
                         .HasColumnName("total_price");
 
-                    b.Property<DateTimeOffset?>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
@@ -139,23 +216,24 @@ namespace Retail.Api.Migrations
                     b.HasIndex("CashierId")
                         .HasDatabaseName("ix_receipts_cashier_id");
 
+                    b.HasIndex("StoreId")
+                        .HasDatabaseName("ix_receipts_store_id");
+
+                    b.HasIndex("CodePrefix", "CodeNumber")
+                        .IsUnique()
+                        .HasDatabaseName("ix_receipts_code_prefix_code_number");
+
                     b.ToTable("receipts", (string)null);
                 });
 
             modelBuilder.Entity("Retail.Core.Entities.ReceiptAggregate.ReceiptItem", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseHiLo(b.Property<int>("Id"), "receipt_item_hilo");
-
-                    b.Property<int>("CatalogItemId")
-                        .HasColumnType("integer")
-                        .HasColumnName("catalog_item_id");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
@@ -163,16 +241,20 @@ namespace Retail.Api.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_deleted");
 
-                    b.Property<int>("Number")
+                    b.Property<int>("LineNumber")
                         .HasColumnType("integer")
-                        .HasColumnName("number");
+                        .HasColumnName("line_number");
+
+                    b.Property<Guid>("ProductItemId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("product_item_id");
 
                     b.Property<double>("Quantity")
                         .HasColumnType("numeric(18,3)")
                         .HasColumnName("quantity");
 
-                    b.Property<int>("ReceiptId")
-                        .HasColumnType("integer")
+                    b.Property<Guid>("ReceiptId")
+                        .HasColumnType("uuid")
                         .HasColumnName("receipt_id");
 
                     b.Property<decimal>("TotalPrice")
@@ -183,15 +265,15 @@ namespace Retail.Api.Migrations
                         .HasColumnType("decimal(18,2)")
                         .HasColumnName("unit_price");
 
-                    b.Property<DateTimeOffset?>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
                     b.HasKey("Id")
                         .HasName("pk_receipt_items");
 
-                    b.HasIndex("CatalogItemId")
-                        .HasDatabaseName("ix_receipt_items_catalog_item_id");
+                    b.HasIndex("ProductItemId")
+                        .HasDatabaseName("ix_receipt_items_product_item_id");
 
                     b.HasIndex("ReceiptId")
                         .HasDatabaseName("ix_receipt_items_receipt_id");
@@ -199,26 +281,116 @@ namespace Retail.Api.Migrations
                     b.ToTable("receipt_items", (string)null);
                 });
 
+            modelBuilder.Entity("Retail.Core.Entities.Store", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("address");
+
+                    b.Property<int>("CodeNumber")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("code_number")
+                        .HasDefaultValueSql("nextval('\"store_codes\"')");
+
+                    b.Property<string>("CodePrefix")
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)")
+                        .HasColumnName("code_prefix");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id")
+                        .HasName("pk_stores");
+
+                    b.HasIndex("CodePrefix", "CodeNumber")
+                        .IsUnique()
+                        .HasDatabaseName("ix_stores_code_prefix_code_number");
+
+                    b.ToTable("stores", (string)null);
+                });
+
+            modelBuilder.Entity("CashierStore", b =>
+                {
+                    b.HasOne("Retail.Core.Entities.Cashier", null)
+                        .WithMany()
+                        .HasForeignKey("CashiersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_cashier_store_cashiers_cashiers_id");
+
+                    b.HasOne("Retail.Core.Entities.Store", null)
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_cashier_store_stores_store_id");
+                });
+
+            modelBuilder.Entity("Retail.Core.Entities.AppClientSettings", b =>
+                {
+                    b.HasOne("Retail.Core.Entities.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_app_client_settings_stores_store_id");
+
+                    b.Navigation("Store");
+                });
+
             modelBuilder.Entity("Retail.Core.Entities.ReceiptAggregate.Receipt", b =>
                 {
-                    b.HasOne("Retail.Core.Entities.ReceiptAggregate.Cashier", "Cashier")
+                    b.HasOne("Retail.Core.Entities.Cashier", "Cashier")
                         .WithMany()
                         .HasForeignKey("CashierId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_receipts_cashiers_cashier_id");
 
+                    b.HasOne("Retail.Core.Entities.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_receipts_stores_store_id");
+
                     b.Navigation("Cashier");
+
+                    b.Navigation("Store");
                 });
 
             modelBuilder.Entity("Retail.Core.Entities.ReceiptAggregate.ReceiptItem", b =>
                 {
-                    b.HasOne("Retail.Core.Entities.ReceiptAggregate.CatalogItem", "CatalogItem")
+                    b.HasOne("Retail.Core.Entities.ReceiptAggregate.ProductItem", "ProductItem")
                         .WithMany()
-                        .HasForeignKey("CatalogItemId")
+                        .HasForeignKey("ProductItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_receipt_items_catalog_items_catalog_item_id");
+                        .HasConstraintName("fk_receipt_items_product_items_product_item_id");
 
                     b.HasOne("Retail.Core.Entities.ReceiptAggregate.Receipt", "Receipt")
                         .WithMany("ReceiptItems")
@@ -227,7 +399,7 @@ namespace Retail.Api.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_receipt_items_receipts_receipt_id");
 
-                    b.Navigation("CatalogItem");
+                    b.Navigation("ProductItem");
 
                     b.Navigation("Receipt");
                 });

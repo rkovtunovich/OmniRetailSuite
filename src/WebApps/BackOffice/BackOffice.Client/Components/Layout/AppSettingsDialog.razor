@@ -1,0 +1,38 @@
+﻿<MudDialog>
+
+    <DialogContent>
+
+        <MudGrid>
+
+            <MudItem xs="12" md="6">
+
+                <MudSwitch Color="Color.Primary" 
+                           Class="ma-4" 
+                           T="bool"
+                           Label="@_localizer["Theme"]"
+                           Value="_settings.IsDarkMode"
+                           ValueChanged="@(() => ChangeTheme())"  />
+            </MudItem>
+
+            <MudItem xs="12" md="6">
+                <MudSelect Label="@_localizer["Language"]" Value="_settings.Language" ValueChanged="@((Language l) => ChangeLanguage(l))">
+
+                    @foreach (var language in _languages)
+                    {
+                        <MudSelectItem Value="@language">@language</MudSelectItem>
+                    }
+
+                </MudSelect>
+            </MudItem>
+
+        </MudGrid>
+
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton OnClick="SaveSettings" Color="Color.Primary">@_localizer["Save"]</MudButton>
+        <MudButton OnClick="CloseSettings" Color="Color.Secondary">@_localizer["Cancel"]</MudButton>
+    </DialogActions>
+
+</MudDialog>
+

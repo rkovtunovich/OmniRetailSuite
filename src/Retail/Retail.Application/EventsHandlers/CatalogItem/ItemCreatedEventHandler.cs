@@ -5,10 +5,10 @@ namespace Retail.Application.EventsHandlers.CatalogItem;
 
 public class ItemCreatedEventHandler: IEventHandler<ItemCreatedEvent>
 {
-    private readonly ICatalogItemService _catalogItemService;
+    private readonly IProductItemService _catalogItemService;
     private readonly ILogger<ItemCreatedEventHandler> _logger;
 
-    public ItemCreatedEventHandler(ICatalogItemService catalogItemService, ILogger<ItemCreatedEventHandler> logger)
+    public ItemCreatedEventHandler(IProductItemService catalogItemService, ILogger<ItemCreatedEventHandler> logger)
     {
         _catalogItemService = catalogItemService;
         _logger = logger;
@@ -20,13 +20,15 @@ public class ItemCreatedEventHandler: IEventHandler<ItemCreatedEvent>
 
         try
         {
-            var catalogItemDto = new CatalogItemDto
+            var catalogItemDto = new RetailProductItemDto
             {
                 Id = @event.Id,
-                Name = @event.Name
+                Name = @event.Name,
+                CodeNumber = @event.CodeNumber,
+                CodePrefix = @event.CodePrefix
             };
 
-            _catalogItemService.CreateCatalogItemAsync(catalogItemDto);
+            _catalogItemService.CreateProductItemAsync(catalogItemDto);
         }
         catch (Exception e)
         {

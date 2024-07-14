@@ -1,14 +1,36 @@
 ﻿using Consul;
-using IdentityServer4.AccessTokenValidation;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.HttpOverrides;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Provider.Consul;
-using WebAppsGateway.Middleware;
+using WebAppsGateway.Configuration;
+using WebAppsGateway.DelegatingHandlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.ConfigureKestrel((context, options) =>
+{
+    options.Configure(context.Configuration.GetSection("Kestrel"));
+});
+
 builder.Configuration.AddJsonFile("ocelot.json");
-builder.Services.AddOcelot().AddConsul();
+builder.Services.AddHealthChecks();
+builder.Services.AddOcelot()
+    .AddConsul()
+    .AddDelegatingHandler<GatewayHeadersDelegationHandler>();
+
+builder.Services.Configure<GatewaySettings>(builder.Configuration.GetRequiredSection(nameof(GatewaySettings)));
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("default", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 // Extract Consul Settings
 var consulHost = builder.Configuration["GlobalConfiguration:ServiceDiscoveryProvider:Host"];
@@ -20,24 +42,29 @@ builder.Services.AddSingleton<IConsulClient, ConsulClient>(p => new ConsulClient
    consulConfig.Address = new Uri($"http://{consulHost}:{consulPort}");
 }));
 
-builder.Services.AddAuthentication("IdentityServer")
-       .AddIdentityServerAuthentication("IdentityServer", options =>
-       {
-           options.Authority = null; // Set in middleware
-           options.RequireHttpsMetadata = false; // Set to true in production
-           options.ApiName = "webappsgateway";
-           options.ApiSecret = "webappsgateway-secret";
-           options.SupportedTokens = SupportedTokens.Both;
-       });
+builder.Services.AddIdentityServer(builder.Configuration);
 
 var app = builder.Build();
 
-app.UseDeveloperExceptionPage();
+if (app.Environment.IsDevelopment())
+    app.UseDeveloperExceptionPage();
+
+app.UseCors("default");
+
 app.UseHttpsRedirection();
-app.UseMiddleware<UpdateIdentityServerAuthorityMiddleware>();
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost
+});
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseHealthChecks("/_health" ,new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 await app.UseOcelot();
 

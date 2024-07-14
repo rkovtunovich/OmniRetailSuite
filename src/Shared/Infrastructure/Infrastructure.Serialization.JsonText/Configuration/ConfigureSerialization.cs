@@ -14,7 +14,12 @@ public static class ConfigureSerialization
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             PropertyNameCaseInsensitive = true,
-            Converters = { new JsonStringEnumConverter() }
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+            
+            Converters = 
+            {
+                new JsonStringEnumConverter()
+            }
         };
         
         services.AddSingleton(Options.Create(options));

@@ -51,7 +51,7 @@ internal class DiscoveryEndpoint : IEndpointHandler
         }
 
         var baseUrl = context.GetIdentityServerBaseUrl().EnsureTrailingSlash();
-        var issuerUri = context.GetIdentityServerIssuerUri();
+        var issuerUri = _options.IssuerUri; //context.GetIdentityServerIssuerUri();
 
         // generate response
         _logger.LogTrace("Calling into discovery response generator: {type}", _responseGenerator.GetType().FullName);

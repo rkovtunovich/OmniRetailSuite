@@ -1,0 +1,10 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: to-consul
+  namespace: consul
+spec:
+  podSelector: {}
+  ingress:
+  - from:
+    - namespaceSelector: {}

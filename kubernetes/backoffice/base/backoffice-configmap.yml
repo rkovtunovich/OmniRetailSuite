@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backoffice-config
+  namespace: backoffice
+data:
+  appsettings.json: |
+    {
+      "Kestrel": {
+        "Endpoints": {
+          "Https": {
+            "Url": "https://+:5010",
+            "Certificate": {
+              "Path": "/app/pfx/cert"
+            }
+          }
+        }
+      },
+      "Logging": {
+        "LogLevel": {
+          "Default": "Trace",
+          "Microsoft.AspNetCore": "Trace"
+        }
+      },
+      "WebGateway": "https://ocelot.omni-rs.com",
+      "IdentityServerSettings": {
+        "DiscoveryUrl": "https://identity.omni-rs.com",
+        "Authority": "https://identity.omni-rs.com",
+        "ClientName": "blazorOpenId",
+        "ClientSecret": "blazorSecret", // TODO: Change this to a secure value
+      },
+      "InteractiveServiceSettings": {
+        "ClientId": "blazorInteractive",
+        "ClientSecret": "blazorSecret" // TODO: Change this to a secure value
+      },
+      "HttpClients": {
+        "IdentityClient": {
+          "Name": "IdentityClient",
+          "ApiScope": "IdentityServerApi",
+          "BasePath": "api/v1/"
+         },
+        "ProductCatalogClient": {
+          "Name": "ProductCatalogClient",
+          "ApiScope": "webappsgateway",
+          "BasePath": "api/v1/productcatalog/"
+      },
+        "RetailClient": {
+          "Name": "RetailClient",
+          "ApiScope": "webappsgateway",
+          "BasePath": "api/v1/retail/"
+        }
+      }
+    }

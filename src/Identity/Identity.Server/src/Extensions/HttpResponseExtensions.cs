@@ -9,8 +9,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-#pragma warning disable 1591
-
 namespace IdentityServer4.Extensions;
 
 public static class HttpResponseExtensions
@@ -31,44 +29,35 @@ public static class HttpResponseExtensions
 
     public static void SetCache(this HttpResponse response, int maxAge, params string[] varyBy)
     {
-        if (maxAge == 0)
+        if (maxAge is 0)
         {
             SetNoCache(response);
         }
         else if (maxAge > 0)
         {
-            if (!response.Headers.ContainsKey("Cache-Control"))
-            {
+            if (!response.Headers.ContainsKey("Cache-Control"))           
                 response.Headers.Append("Cache-Control", $"max-age={maxAge}");
-            }
-
-            if (varyBy?.Any() == true)
+            
+            if (varyBy?.Length > 0)
             {
                 var vary = varyBy.Aggregate((x, y) => x + "," + y);
-                if (response.Headers.ContainsKey("Vary"))
-                {
-                    vary = response.Headers["Vary"].ToString() + "," + vary;
-                }
-                response.Headers["Vary"] = vary;
+                if (response.Headers.TryGetValue("Vary", out var value))               
+                    vary = value.ToString() + "," + vary;
+                
+                response.Headers.Vary = vary;
             }
         }
     }
 
     public static void SetNoCache(this HttpResponse response)
     {
-        if (!response.Headers.ContainsKey("Cache-Control"))
-        {
-            response.Headers.Append("Cache-Control", "no-store, no-cache, max-age=0");
-        }
-        else
-        {
-            response.Headers["Cache-Control"] = "no-store, no-cache, max-age=0";
-        }
-
-        if (!response.Headers.ContainsKey("Pragma"))
-        {
-            response.Headers.Append("Pragma", "no-cache");
-        }
+        if (!response.Headers.ContainsKey("Cache-Control"))       
+            response.Headers.Append("Cache-Control", "no-store, no-cache, max-age=0");     
+        else       
+            response.Headers.CacheControl = "no-store, no-cache, max-age=0";
+        
+        if (!response.Headers.ContainsKey("Pragma"))        
+            response.Headers.Append("Pragma", "no-cache");       
     }
 
     public static async Task WriteHtmlAsync(this HttpResponse response, string html)
@@ -85,6 +74,7 @@ public static class HttpResponseExtensions
             if (url.StartsWith("~/")) url = url.Substring(1);
             url = response.HttpContext.GetIdentityServerBaseUrl().EnsureTrailingSlash() + url.RemoveLeadingSlash();
         }
+
         response.Redirect(url);
     }
 
@@ -101,23 +91,18 @@ public static class HttpResponseExtensions
         var csp1part = options.Level == CspLevel.One ? "'unsafe-inline' " : string.Empty;
         var cspHeader = $"default-src 'none'; style-src {csp1part}'{hash}'";
 
-        if (!string.IsNullOrEmpty(frameSources))
-        {
+        if (!string.IsNullOrEmpty(frameSources))       
             cspHeader += $"; frame-src {frameSources}";
-        }
-
+        
         AddCspHeaders(response.Headers, options, cspHeader);
     }
 
     public static void AddCspHeaders(IHeaderDictionary headers, CspOptions options, string cspHeader)
     {
         if (!headers.ContainsKey("Content-Security-Policy"))
-        {
             headers.Append("Content-Security-Policy", cspHeader);
-        }
-        if (options.AddDeprecatedHeader && !headers.ContainsKey("X-Content-Security-Policy"))
-        {
-            headers.Append("X-Content-Security-Policy", cspHeader);
-        }
+
+        if (options.AddDeprecatedHeader && !headers.ContainsKey("X-Content-Security-Policy"))      
+            headers.Append("X-Content-Security-Policy", cspHeader);        
     }
 }

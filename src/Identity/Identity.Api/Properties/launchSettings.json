@@ -3,12 +3,10 @@
     "Identity.Api": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": ".well-known/openid-configuration",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:5401"
+      "dotnetRunMessages": true
     },
     "Docker": {
       "commandName": "Docker",

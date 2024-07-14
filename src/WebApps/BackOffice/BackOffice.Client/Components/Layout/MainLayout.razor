@@ -1,0 +1,60 @@
+﻿@inject AuthenticationStateProvider AuthStateProvider
+
+@inherits OrsLayoutComponentBase
+<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_theme" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout Style="height:100%">
+
+    <MudAppBar Elevation="1" Dense=true>
+
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudSpacer />
+        <LoginDisplay />
+        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" OnClick="OpenAppSettings" />
+
+    </MudAppBar>
+
+    <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h5" Class="mt-1">Backoffice</MudText>
+        </MudDrawerHeader>
+        <NavMenu />
+    </MudDrawer>
+
+    <AuthorizeView Context="authContext">
+
+        <Authorized>
+
+            <MudMainContent Style="max-width:100% - var(--mud-drawer-width-left); height:100%; padding-top:48px">
+
+                <MudTabs @bind-ActivePanelIndex="_tabsService.TabIndex" Border="true" Outlined="true" PanelClass="px-1 py-1" ApplyEffectsToContainer="false" KeepPanelsAlive="true"
+                         Position=@Position.Bottom @ref="_tabsService.Tabs" Style="height:100%;">
+
+                    <ChildContent>
+                        @foreach (var item in _tabsService.TabDescriptions)
+                        {
+                            <MudTabPanel Text="@item.Name" Tag="@item.Id" ID="@item.Id" Style="height:100%; max-height:100%;">@item.Content</MudTabPanel>
+                        }
+                    </ChildContent>
+
+                    <TabPanelHeader Context="tabContext">
+                        <MudTooltip Text="close">
+                            <MudIconButton Class="ml-2 pa-1" Color="Color.Error" Icon="@Icons.Material.Filled.Remove" OnClick="(_) => _tabsService.RemoveTab(tabContext)" />
+                        </MudTooltip>
+                    </TabPanelHeader>
+
+                </MudTabs>
+
+            </MudMainContent>
+
+        </Authorized>
+
+        <NotAuthorized>
+            <MudText>You are not authorized. Please, log in to the system. </MudText>
+        </NotAuthorized>
+
+    </AuthorizeView>
+
+</MudLayout>

@@ -1,0 +1,99 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ocelot-config
+  namespace: ocelot
+data:
+  ocelot.json: |
+    {
+      "Routes": [
+        {
+          "ServiceName": "identityapi",
+          "UpstreamPathTemplate": "/api/v1/identity/{everything}",
+          "DownstreamPathTemplate": "/api/v1/{everything}"
+        },
+        {
+          "ServiceName": "identityapi",
+          "UpstreamPathTemplate": "/.well-known/{everything}",
+          "DownstreamPathTemplate": "/.well-known/{everything}",
+          "DelegatingHandlers": [
+            "GatewayHeadersDelegationHandler"
+          ]
+        },
+        {
+          "ServiceName": "identityapi",
+          "UpstreamPathTemplate": "/account/{everything}",
+          "DownstreamPathTemplate": "/account/{everything}",
+          "DelegatingHandlers": [
+            "GatewayHeadersDelegationHandler"
+          ]
+        },
+        {
+          "ServiceName": "identityapi",
+          "UpstreamPathTemplate": "/connect/{everything}",
+          "DownstreamPathTemplate": "/connect/{everything}"
+        },
+        {
+          "ServiceName": "product-catalog",
+          "DownstreamScheme": "http",
+          "UpstreamPathTemplate": "/api/v1/productcatalog/{everything}",
+          "DownstreamPathTemplate": "/api/v1/{everything}",
+          "AuthenticationOptions": {
+            "AuthenticationProviderKey": "IdentityServer",
+            "AllowedScopes": [ "webappsgateway" ]
+          }
+        },
+        {
+          "ServiceName": "retail",
+          "DownstreamScheme": "http",
+          "UpstreamPathTemplate": "/api/v1/retail/{everything}",
+          "DownstreamPathTemplate": "/api/v1/{everything}",
+          "AuthenticationOptions": {
+            "AuthenticationProviderKey": "IdentityServer",
+            "AllowedScopes": [ "webappsgateway" ]
+          }
+        }
+      ],
+      "GlobalConfiguration": {
+        "ServiceDiscoveryProvider": {
+          "Scheme": "http",
+          "Host": "consul",
+          "Port": 8500,
+          "Type": "Consul"
+        },
+        "RateLimitOptions": {
+            "ClientWhitelist": [],
+            "EnableRateLimiting": true,
+            "Period": "1s",
+            "PeriodTimespan": 1,
+            "Limit": 10
+        }
+      }
+    }
+  appsettings.json : |
+    {
+      "Kestrel": {
+        "Endpoints": {
+          "Https": {
+            "Url": "https://+:7200",
+            "Certificate": {
+              "Path": "/app/pfx/cert"
+            }
+          }
+        }
+      },
+      "Logging": {
+        "LogLevel": {
+          "Default": "Information",
+          "Microsoft.AspNetCore": "Warning"
+        }
+      },
+      "AllowedHosts": "*",
+      "GatewaySettings": {
+        "Url": "https://ocelot.omni-rs.com",
+        "UseAsIssuer": false
+      },
+       "IdentitySettings": {
+          "Authority": "https://identity.omni-rs.com"
+      }
+    }    

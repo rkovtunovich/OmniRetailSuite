@@ -1,28 +1,37 @@
 ﻿using Identity.Api.Configuration;
-using Identity.Api.Infrastructure.Repositories;
-using Identity.Api.Services.Abstractions;
-using Identity.Api.Services.Implementations;
+using Identity.Api.Infrastructure.Data;
+using Identity.Api.Infrastructure.Data.Config;
+using Infrastructure.DataManagement.Postgres.Extensions;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Logging;
 using Steeltoe.Discovery.Client;
+using Winton.Extensions.Configuration.Consul;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddConsul($"configuration/identity/{builder.Environment.EnvironmentName.ToLower()}");
 
-// TO DO 
-// only for dev
-IdentityModelEventSource.ShowPII = true;
+builder.WebHost.ConfigureKestrel((context, options) =>
+{
+    options.Configure(context.Configuration.GetSection("Kestrel")); 
+});
+
+if (builder.Environment.IsDevelopment())
+    IdentityModelEventSource.ShowPII = true;
 
 builder.Services.AddHttpLogging(options =>
 {
     options.LoggingFields = HttpLoggingFields.RequestPropertiesAndHeaders;
 });
 
-builder.Services.AddControllersWithViews();
-builder.Services.AddIdentityDbContext(builder.Configuration);
+builder.Services.AddSecretManagement(builder.Configuration);
+builder.Services.AddDataManagement(builder.Configuration);
+await builder.Services.PrepareDatabase();
+await builder.Services.AddIdentityDbContext();
 builder.Services.AddIdentityServices(builder.Configuration);
 builder.Services.AddDiscoveryClient(builder.Configuration);
 builder.Services.AddUserPreferences();
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 

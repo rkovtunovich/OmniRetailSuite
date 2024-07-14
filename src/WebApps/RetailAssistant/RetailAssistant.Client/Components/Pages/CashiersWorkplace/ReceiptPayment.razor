@@ -1,0 +1,43 @@
+﻿
+<MudCard>
+
+    <MudStack>
+
+        <MudNumericField @bind-Value="TotalPrice"
+                         T="decimal"
+                         Label="@_localizer["TotalPrice"]"
+                         ReadOnly
+                         Class="cashiers-workplace-total-price-field"
+                         Variant="Variant.Filled" />
+
+        <MudNumericField @bind-Value="_paymentAmount"
+                         T="decimal"
+                         Label="@_localizer["PaymentAmount"]"
+                         Class="cashiers-workplace-payment-amount-field"
+                         TextChanged="@(e=>PaymentAmountChanged(e))"
+                         Clearable
+                         Variant="Variant.Filled" />
+
+        <MudNumericField @bind-Value="_changeAmount"
+                         T="decimal"
+                         Label="@_localizer["ChangeAmount"]"
+                         ReadOnly
+                         Class="cashiers-workplace-change-amount-field"
+                         Variant="Variant.Filled" />
+
+        <MudStack Row>
+
+            <MudButton Color="Color.Primary" @onclick="PayClick" Style="width:100%" id="receipt-payment-pay-button">
+                @_localizer["Pay"] <iconify-icon icon="material-symbols:payments-outline-sharp" width="24" height="24"></iconify-icon>
+            </MudButton>
+
+            <MudButton Color="Color.Secondary" @onclick="CancelClick" Style="width:100%">
+                @_localizer["Cancel"] <iconify-icon icon="material-symbols:cancel-outline" width="24" height="24"></iconify-icon>
+            </MudButton>
+
+        </MudStack>
+
+    </MudStack>
+
+
+</MudCard>

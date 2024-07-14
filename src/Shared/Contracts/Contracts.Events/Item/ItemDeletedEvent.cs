@@ -2,7 +2,7 @@
 
 public record ItemDeletedEvent : IEvent
 {
-    public ItemDeletedEvent(int id)
+    public ItemDeletedEvent(Guid id)
     {
         Id = id;
     }
@@ -13,5 +13,5 @@ public record ItemDeletedEvent : IEvent
 
     public string EventType { get; init; } = nameof(ItemDeletedEvent);
 
-    public int Id { get; init; }
+    public Guid Id { get; init; }
 }

@@ -1,17 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Retail.Application.Services.Abstraction;
-using Retail.Core.DTOs;
-using Retail.Core.Entities.ReceiptAggregate;
+﻿using Contracts.Dtos.Retail;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Retail.Api.Controllers;
 
+[ApiController]
+[Route("api/v1/{resource}")]
 public class CashierController(ICashierService cashierService, ILogger<CashierController> logger) : ControllerBase
 {
     private readonly ICashierService _cashierService = cashierService;
     private readonly ILogger<CashierController> _logger = logger;
 
     [HttpGet]
-    [Route("cashiers")]
     [ProducesResponseType(typeof(List<CashierDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<List<CashierDto>>> GetCashiersAsync()
@@ -31,10 +30,10 @@ public class CashierController(ICashierService cashierService, ILogger<CashierCo
     }
 
     [HttpGet]
-    [Route("cashiers/{id:int}")]
+    [Route("{id:Guid}")]
     [ProducesResponseType(typeof(CashierDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<CashierDto>> GetCashierAsync(int id)
+    public async Task<ActionResult<CashierDto>> GetCashierAsync(Guid id)
     {
         try
         {
@@ -54,7 +53,6 @@ public class CashierController(ICashierService cashierService, ILogger<CashierCo
     }
 
     [HttpPost]
-    [Route("cashiers")]
     [ProducesResponseType(typeof(Cashier), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<CashierDto>> CreateCashierAsync(CashierDto cashierDto)
@@ -63,7 +61,7 @@ public class CashierController(ICashierService cashierService, ILogger<CashierCo
         {
             var createdCashier = await _cashierService.CreateCashierAsync(cashierDto);
 
-            return CreatedAtAction(nameof(GetCashierAsync), new { id = createdCashier.Id }, createdCashier);
+            return Created();
         }
         catch (Exception e)
         {
@@ -74,7 +72,6 @@ public class CashierController(ICashierService cashierService, ILogger<CashierCo
     }
 
     [HttpPut]
-    [Route("cashiers")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<CashierDto>> UpdateCashierAsync(CashierDto cashierDto)
@@ -88,6 +85,26 @@ public class CashierController(ICashierService cashierService, ILogger<CashierCo
         catch (Exception e)
         {
             _logger.LogError(e, "Error while updating cashier");
+
+            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+        }
+    }
+
+    [HttpDelete]
+    [Route("{id:Guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<CashierDto>> DeleteCashierAsync(Guid id, bool useSoftDeleting)
+    {
+        try
+        {
+            await _cashierService.DeleteCashierAsync(id, useSoftDeleting);
+
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error while deleting cashier");
 
             return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
         }

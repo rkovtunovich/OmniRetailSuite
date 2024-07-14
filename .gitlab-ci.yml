@@ -1,0 +1,53 @@
+stages:
+  - build
+  - test
+  - deploy
+  
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+
+before_script:
+  - docker info
+
+build_backoffice:
+    stage: build
+    script:
+       - docker build -t registry.omni-rs.com/r13/omniretailsuite/backoffice:latest -f src/WebApps/Backoffice/Backoffice.Client/Dockerfile .  
+    rules:
+       - if: $CI_COMMIT_BRANCH == "develop"
+         when: always
+       - if: $CI_COMMIT_BRANCH == "master"
+         when: always
+       - changes: 
+           - src/WebApps/Backoffice/Backoffice.Client/**/*.*
+           - src/Shared/**  
+         when: always
+
+test_backoffice:
+    stage: test
+    script:
+       - docker run --rm registry.omni-rs.com/r13/omniretailsuite/backoffice:latest dotnet test src/WebApps/Backoffice/Backoffice.Client/Backoffice.Client.Tests/Backoffice.Client.Tests.csproj
+    rules:
+       - if: $CI_COMMIT_BRANCH == "develop"
+         when: always
+       - if: $CI_COMMIT_BRANCH == "master"
+         when: always
+       - changes: 
+           - src/WebApps/Backoffice/Backoffice.Client/**/*.*
+           - src/Shared/**  
+         when: always
+         
+deploy_backoffice:
+    stage: deploy
+    script:
+       - docker push registry.omni-rs.com/r13/omniretailsuite/backoffice:latest
+    rules:
+       - if: $CI_COMMIT_BRANCH == "develop"
+         when: always
+       - if: $CI_COMMIT_BRANCH == "master"
+         when: always
+       - changes: 
+           - src/WebApps/Backoffice/Backoffice.Client/**/*.*
+           - src/Shared/**  
+         when: always    

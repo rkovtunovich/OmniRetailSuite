@@ -1,4 +1,8 @@
-﻿global using System.Collections.Generic;
+﻿global using Retail.Core.Entities;
+
+global using Core.Abstraction;
+
+global using System.Collections.Generic;
 global using System.IO;
 global using System.Linq;
 global using System.Linq.Expressions;

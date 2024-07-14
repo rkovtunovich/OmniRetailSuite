@@ -15,21 +15,15 @@ namespace IdentityServer4.Hosting;
 /// <summary>
 /// IdentityServer middleware
 /// </summary>
-public class IdentityServerMiddleware
+/// <remarks>
+/// Initializes a new instance of the <see cref="IdentityServerMiddleware"/> class.
+/// </remarks>
+/// <param name="next">The next.</param>
+/// <param name="logger">The logger.</param>
+public class IdentityServerMiddleware(RequestDelegate next, ILogger<IdentityServerMiddleware> logger)
 {
-    private readonly RequestDelegate _next;
-    private readonly ILogger _logger;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="IdentityServerMiddleware"/> class.
-    /// </summary>
-    /// <param name="next">The next.</param>
-    /// <param name="logger">The logger.</param>
-    public IdentityServerMiddleware(RequestDelegate next, ILogger<IdentityServerMiddleware> logger)
-    {
-        _next = next;
-        _logger = logger;
-    }
+    private readonly RequestDelegate _next = next;
+    private readonly ILogger _logger = logger;
 
     /// <summary>
     /// Invokes the middleware.
@@ -57,23 +51,21 @@ public class IdentityServerMiddleware
 
                 // back channel logout
                 var logoutContext = await session.GetLogoutNotificationContext();
-                if (logoutContext != null)
-                {
-                    await backChannelLogoutService.SendLogoutNotificationsAsync(logoutContext);
-                }
+                if (logoutContext is not null)               
+                    await backChannelLogoutService.SendLogoutNotificationsAsync(logoutContext);              
             }
         });
 
         try
         {
             var endpoint = router.Find(context);
-            if (endpoint != null)
+            if (endpoint is not null)
             {
-                _logger.LogInformation("Invoking IdentityServer endpoint: {endpointType} for {url}", endpoint.GetType().FullName, context.Request.Path.ToString());
+                _logger.LogInformation($"Invoking IS4 endpoint: {endpoint.GetType().FullName} for {context.Request.Path}. Remote host: {context.Connection.RemoteIpAddress}:{context.Connection.RemotePort}");
 
                 var result = await endpoint.ProcessAsync(context);
 
-                if (result != null)
+                if (result is not null)
                 {
                     _logger.LogTrace("Invoking result: {type}", result.GetType().FullName);
                     await result.ExecuteAsync(context);

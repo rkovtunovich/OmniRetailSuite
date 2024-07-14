@@ -1,0 +1,39 @@
+-- Create the new role
+CREATE ROLE "{{name}}" WITH LOGIN PASSWORD '{{password}}' VALID UNTIL '{{expiration}}';
+
+-- Grant privileges to the new role
+GRANT ALL PRIVILEGES ON DATABASE [db_name] TO "{{name}}";
+GRANT ALL ON SCHEMA public TO "{{name}}";
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO "{{name}}";
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO "{{name}}";
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO "{{name}}";
+
+-- Reassign ownership and revoke privileges from old roles, then drop them
+DO $$
+DECLARE
+  old_role RECORD;
+  role_name_parts TEXT[];
+  role_timestamp BIGINT;
+  thirty_days_ago BIGINT := extract(epoch from now() - interval '30 days');
+BEGIN
+  FOR old_role IN SELECT rolname FROM pg_roles WHERE rolname LIKE 'v-token-[vault-role-name-limited]%' AND rolname != '{{name}}' LOOP
+    -- Extract the timestamp from the role name
+    role_name_parts := regexp_split_to_array(old_role.rolname, '-');
+    role_timestamp := role_name_parts[array_length(role_name_parts, 1)]::BIGINT;
+
+    -- Check if the role is older than 30 days
+    IF role_timestamp < thirty_days_ago THEN
+      -- Reassign ownership
+      EXECUTE 'REASSIGN OWNED BY ' || quote_ident(old_role.rolname) || ' TO ' || quote_ident('{{name}}') || ';';
+
+      -- Revoke privileges on database and schema
+      EXECUTE 'REVOKE ALL PRIVILEGES ON DATABASE [db_name] FROM ' || quote_ident(old_role.rolname) || ';';
+      EXECUTE 'REVOKE ALL PRIVILEGES ON SCHEMA public FROM ' || quote_ident(old_role.rolname) || ';';
+      EXECUTE 'REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public FROM ' || quote_ident(old_role.rolname) || ';';
+      EXECUTE 'REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM ' || quote_ident(old_role.rolname) || ';';
+
+      -- Attempt to drop the role
+      EXECUTE 'DROP ROLE IF EXISTS ' || quote_ident(old_role.rolname) || ';';
+    END IF;
+  END LOOP;
+END $$;

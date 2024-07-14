@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitlab
+  namespace: gitlab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gitlab
+  template:
+    metadata:
+      labels:
+        app: gitlab
+    spec:
+      containers:
+      - name: gitlab
+        image: gitlab/gitlab-ce:latest
+        ports:
+        - containerPort: 80
+        - containerPort: 443
+        - containerPort: 22
+        - containerPort: 5000
+        volumeMounts:
+        - name: gitlab-data
+          mountPath: /var/opt/gitlab
+        - name: gitlab-tls
+          mountPath: /etc/gitlab/ssl
+        env:
+        - name: GITLAB_OMNIBUS_CONFIG
+          value: |
+            external_url 'https://gitlab.omni-rs.com'
+            registry_external_url 'https://registry.omni-rs.com'
+            gitlab_rails['registry_enabled'] = true
+            letsencrypt['enable'] = false
+            nginx['ssl_certificate'] = "/etc/gitlab/ssl/tls.crt"
+            nginx['ssl_certificate_key'] = "/etc/gitlab/ssl/tls.key"
+            nginx['client_max_body_size'] = '500m'
+            registry_nginx['ssl_certificate'] = "/etc/gitlab/ssl/tls.crt"
+            registry_nginx['ssl_certificate_key'] = "/etc/gitlab/ssl/tls.key"
+            registry_nginx['listen_https'] = false
+            registry_nginx['listen_port'] = 5050
+            registry_nginx['client_max_body_size'] = '500m'
+      volumes:
+      - name: gitlab-data
+        persistentVolumeClaim:
+          claimName: gitlab-data
+      - name: gitlab-tls
+        secret:
+          secretName: omni-rs-com-tls-sub

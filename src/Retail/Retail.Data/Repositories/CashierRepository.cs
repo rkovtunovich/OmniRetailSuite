@@ -1,90 +1,93 @@
 ﻿namespace Retail.Data.Repositories;
 
-public class CashierRepository(RetailDbContext context, ILogger<ReceiptRepository> logger) : ICashierRepository
+public class CashierRepository(RetailDbContext context, ILogger<CashierRepository> logger) : IRetailRepository<Cashier>
 {
     private readonly RetailDbContext _context = context;
-    private readonly ILogger<ReceiptRepository> _logger = logger;
+    private readonly ILogger<CashierRepository> _logger = logger;
 
-    public async Task<List<Cashier>> GetCashiersAsync()
+    public async Task<IEnumerable<Cashier>> GetEntitiesAsync()
     {
         try
         {
             return await _context.Cashiers
                 .ToListAsync();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            _logger.LogError("Error while getting cashiers");
+            _logger.LogError(e, "Error while getting entities");
             throw;
         }
     }
 
-    public async Task<Cashier?> GetCashierAsync(int cashierId)
+    public async Task<Cashier?> GetEntityAsync(Guid id)
     {
         try
         {
             return await _context.Cashiers
-                .FirstOrDefaultAsync(c => c.Id == cashierId);
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            _logger.LogError("Error while getting cashier with id {Id}", cashierId);
+            _logger.LogError(e, "Error while getting entity with id {Id}", id);
             throw;
         }
     }
 
-    public async Task<Cashier> AddCashierAsync(Cashier cashier)
+    public async Task<Cashier> AddEntityAsync(Cashier entity)
     {
         try
         {
-            _context.Cashiers.Add(cashier);
+            _context.Cashiers.Add(entity);
 
             await _context.SaveChangesAsync();
 
-            return cashier;
+            return entity;
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            _logger.LogError("Error while adding cashier with id {Id}", cashier.Id);
+            _logger.LogError(e, $"Error while adding {entity.GetType().Name}  with id {entity.Id}");
             throw;
         }
     }
 
-    public async Task UpdateCashierAsync(Cashier cashier)
+    public async Task<Cashier> UpdateEntityAsync(Cashier entity)
     {
         try
         {
-            _context.Cashiers.Update(cashier);
+            _context.Cashiers.Update(entity);
 
             await _context.SaveChangesAsync();
+
+            return entity;
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            _logger.LogError("Error while updating cashier with id {Id}", cashier.Id);
+            _logger.LogError(e, $"Error while updating {entity.GetType().Name} with id {entity.Id}");
             throw;
         }
     }
 
-    public async Task DeleteCashierAsync(int cashierId, bool useSoftDeleting)
+    public async Task DeleteEntityAsync(Guid id, bool isSoftDeleting)
     {
         try
         {
-            var cashier = await _context.Cashiers.FirstOrDefaultAsync(c => c.Id == cashierId) ?? throw new Exception($"Cashier with id {cashierId} not found");
+            var entity = await _context.Cashiers.FirstOrDefaultAsync(c => c.Id == id) ?? throw new Exception($"Entity with id {id} not found");
 
-            if (useSoftDeleting)
+            if (isSoftDeleting)
             {
-                cashier.IsDeleted = true;
-
-                _context.Cashiers.Update(cashier);
+                entity.IsDeleted = true;
+                _context.Cashiers.Update(entity);
             }
             else
             {
-                _context.Cashiers.Remove(cashier);
+                _context.Cashiers.Remove(entity);
             }
+
+            await _context.SaveChangesAsync();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            _logger.LogError("Error while deleting cashier with id {Id}", cashierId);
+            _logger.LogError(e, "Error while deleting entity with id {Id}", id);
             throw;
         }
     }

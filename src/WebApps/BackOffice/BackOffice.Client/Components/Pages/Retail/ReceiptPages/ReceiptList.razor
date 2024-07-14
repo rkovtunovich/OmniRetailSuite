@@ -1,0 +1,44 @@
+﻿@attribute [Authorize]
+@inherits ListBase<Receipt>
+
+@namespace BackOffice.Client.Components.Pages.Retail.ReceiptPages
+@using BackOffice.Core.Models.Retail
+
+<MudDataGrid T="Receipt"
+             Items="@Items"
+             Filterable="true"
+             QuickFilter="@QuickFilter"
+             ReadOnly="false"
+             FixedHeader
+             RowClick="RowClick"
+             RowContextMenuClick="RowClickContextMenu"
+             RowClassFunc="@((item, line) => SelectedRowClassFunc(item, line))"
+             HeaderClass="data-grid-header"
+             Style="height:100%; display:flex; flex-direction:column">
+
+    <ToolBarContent>
+
+        <MudSpacer />
+
+        <MudTextField @bind-Value="@QuickFilterSearchString"
+                      Placeholder="@_localizer["Search"]"
+                      Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search"
+                      Immediate
+                      Clearable
+                      IconSize="Size.Medium"
+                      Class="ors-list-search-field" />
+
+    </ToolBarContent>
+
+    <Columns>
+        <PropertyColumn Property="x => x.GetCode()" Title="@_localizer["Number"]" IsEditable="false" />
+        <PropertyColumn Property="x => Converter.UtcToLocalDateTime(x.Date)" Title="@_localizer["Date"]" />
+        <PropertyColumn Property="x => x.Store" Title="@_localizer["Store"]" />
+        <PropertyColumn Property="x => x.Cashier" Title="@_localizer["Cashier"]" />
+        <PropertyColumn Property="x => x.TotalPrice" Title="@_localizer["TotalPrice"]" />
+    </Columns>
+
+</MudDataGrid>
+
+<ContextMenu @ref="ContextMenu" Items="ContextMenuItems" />

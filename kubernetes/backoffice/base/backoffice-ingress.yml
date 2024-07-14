@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: backoffice-ingress
+  namespace: backoffice
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"   
+    # nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.50.0/24, 37.225.0.46"
+spec:
+  rules:
+  - host: backoffice.omni-rs.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: backoffice
+            port:
+              number: 5010
+  tls:
+  - hosts:
+    - backoffice.omni-rs.com
+    secretName: omni-rs-com-tls-sub 

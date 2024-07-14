@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: identity
+  namespace: identity
+spec:
+  selector:
+    app: identity
+  type: NodePort
+  ports:
+    - name: identity
+      port: 5401
+      targetPort: 5401
+    

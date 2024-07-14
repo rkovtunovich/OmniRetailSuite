@@ -1,0 +1,33 @@
+﻿@inherits CreationFormBase<ProductBrand>
+
+@namespace BackOffice.Client.Components.Pages.ProductCatalog.BrandPages
+
+<Form Commands="@ToolbarCommands">
+    <FormContent>
+
+        <EditForm EditContext="@EditContext" OnValidSubmit="@CreateClick">
+
+            <DataAnnotationsValidator />
+
+            <MudGrid>
+                <MudItem Style="min-width:50%">
+                    <MudCard>
+
+                        <MudCardContent>
+
+                            <MudTextField Label="@_localizer["Name"]"
+                                          Class="mt-3" 
+                                          @bind-Value="Model.Name" 
+                                          For="@(() => Model.Name)" 
+                                          Variant="@MudBlazor.Variant.Filled" />
+
+                        </MudCardContent>
+
+                    </MudCard>
+                </MudItem>
+            </MudGrid>
+
+        </EditForm>
+
+    </FormContent>
+</Form>

@@ -1,34 +1,56 @@
 {
   "Routes": [
     {
+      "ServiceName": "identityapi",
+      "UpstreamPathTemplate": "/api/v1/identity/{everything}",
+      "DownstreamPathTemplate": "/api/v1/{everything}"
+    },
+    {
+      "ServiceName": "identityapi",
+      "UpstreamPathTemplate": "/.well-known/{everything}",
+      "DownstreamPathTemplate": "/.well-known/{everything}",
+      "DelegatingHandlers": [
+        "GatewayHeadersDelegationHandler"
+      ]
+    },
+    {
+      "ServiceName": "identityapi",
+      "UpstreamPathTemplate": "/account/{everything}",
+      "DownstreamPathTemplate": "/account/{everything}",
+      "DelegatingHandlers": [
+        "GatewayHeadersDelegationHandler"
+      ]
+    },
+    {
+      "ServiceName": "identityapi",
+      "UpstreamPathTemplate": "/connect/{everything}",
+      "DownstreamPathTemplate": "/connect/{everything}"
+    },
+    {
       "ServiceName": "catalogapi",
-      "DownstreamPathTemplate": "/api/v1/catalog/{everything}",
-      "UpstreamPathTemplate": "/api/v1/catalog/{everything}",
+      "DownstreamScheme": "http",
+      "UpstreamPathTemplate": "/api/v1/productcatalog/{everything}",
+      "DownstreamPathTemplate": "/api/v1/{everything}",
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "IdentityServer",
         "AllowedScopes": [ "webappsgateway" ]
       }
     },
     {
-      "ServiceName": "identityapi",
-      "DownstreamPathTemplate": "/api/v1/{everything}",
-      "UpstreamPathTemplate": "/api/v1/identity/{everything}"
-    },
-    {
-      "ServiceName": "identityapi",
-      "DownstreamPathTemplate": "/.well-known/openid-configuration",
-      "UpstreamPathTemplate": "/.well-known/openid-configuration"
-    },
-    {
       "ServiceName": "retailapi",
-      "DownstreamPathTemplate": "/api/{everything}",
-      "UpstreamPathTemplate": "/retail/api/{everything}"
+      "DownstreamScheme": "http",
+      "UpstreamPathTemplate": "/api/v1/retail/{everything}",
+      "DownstreamPathTemplate": "/api/v1/{everything}",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "IdentityServer",
+        "AllowedScopes": [ "webappsgateway" ]
+      }
     }
   ],
   "GlobalConfiguration": {
     "ServiceDiscoveryProvider": {
-      "Host": "localhost",
-      "Port": 8500,
+      "Host": "consul.omni-rs.com",
+      "Port": 443,
       "Type": "Consul"
     }
   }

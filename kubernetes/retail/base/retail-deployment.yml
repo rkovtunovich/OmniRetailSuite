@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: retail
+  namespace: retail
+  labels:
+    app: retail
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: retail
+  template:
+    metadata:
+      labels:
+        app: retail
+    spec:
+      imagePullSecrets:
+      - name: gitlab-registry
+      containers:
+      - name: retail
+        image: registry.omni-rs.com/r13/omniretailsuite/retail:latest
+        ports:
+        - containerPort: 5016
+        env:
+        - name: CONSUL_HTTP_ADDR
+          value: "consul:8500"
+        volumeMounts:
+        - name: retail-config
+          mountPath: /appsettings.json
+          subPath: appsettings.json
+      volumes:
+      - name: retail-config
+        configMap:
+          name: retail-config

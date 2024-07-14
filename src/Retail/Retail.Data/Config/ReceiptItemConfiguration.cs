@@ -7,12 +7,15 @@ public class ReceiptItemConfiguration : IEntityTypeConfiguration<ReceiptItem>
     public void Configure(EntityTypeBuilder<ReceiptItem> builder)
     {
         builder.Property(x => x.Id)
-           .UseHiLo("receipt_item_hilo")
            .IsRequired();
 
-        builder.HasOne(x => x.CatalogItem)
+        builder.Property(x => x.ReceiptId)
+            .IsRequired();
+
+        builder.HasOne(x => x.ProductItem)
             .WithMany()
-            .HasForeignKey(x => x.CatalogItemId);
+            .HasForeignKey(x => x.ProductItemId)
+            .IsRequired();
 
         builder.Property(x => x.Quantity)
             .IsRequired(true)
@@ -25,5 +28,10 @@ public class ReceiptItemConfiguration : IEntityTypeConfiguration<ReceiptItem>
         builder.Property(x => x.TotalPrice)
             .IsRequired(true)
             .HasColumnType("decimal(18,2)");
+
+        builder.Property(x => x.LineNumber)
+            .IsRequired(true);
+
+        builder.HasQueryFilter(p => !p.IsDeleted);
     }
 }
