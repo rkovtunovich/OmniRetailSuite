@@ -10,4 +10,4 @@ global using System.Threading;
 global using System.Threading.Tasks;
 global using System;
 
-global using WebAppsGateway.Models;
+global using WebAppsGateway.Services.Abstraction;

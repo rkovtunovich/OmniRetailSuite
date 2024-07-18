@@ -1,14 +1,15 @@
 ﻿using Consul;
-using HealthChecks.UI.Client;
+using Infrastructure.Serialization.JsonText.Configuration;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.HttpOverrides;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Provider.Consul;
 using WebAppsGateway.Configuration;
-using WebAppsGateway.DelegatingHandlers;
+using WebAppsGateway.Services.Implementation;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddJsonFile("appsettings.untracked.json", optional: true, reloadOnChange: true);
 
 builder.WebHost.ConfigureKestrel((context, options) =>
 {
@@ -16,12 +17,10 @@ builder.WebHost.ConfigureKestrel((context, options) =>
 });
 
 builder.Configuration.AddJsonFile("ocelot.json");
-builder.Services.AddHealthChecks();
+builder.Services.AddAppHealthChecks();
 builder.Services.AddOcelot()
-    .AddConsul()
-    .AddDelegatingHandler<GatewayHeadersDelegationHandler>();
+    .AddConsul();
 
-builder.Services.Configure<GatewaySettings>(builder.Configuration.GetRequiredSection(nameof(GatewaySettings)));
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("default", policy =>
@@ -43,6 +42,7 @@ builder.Services.AddSingleton<IConsulClient, ConsulClient>(p => new ConsulClient
 }));
 
 builder.Services.AddIdentityServer(builder.Configuration);
+builder.Services.AddJsonTextSerialization();
 
 var app = builder.Build();
 
@@ -63,7 +63,7 @@ app.UseAuthorization();
 
 app.UseHealthChecks("/_health" ,new HealthCheckOptions
 {
-    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    ResponseWriter = HealthCheckResponseWriter.WriteResponse
 });
 
 await app.UseOcelot();
