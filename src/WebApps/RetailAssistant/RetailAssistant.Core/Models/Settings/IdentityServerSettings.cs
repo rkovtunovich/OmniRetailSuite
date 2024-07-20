@@ -1,4 +1,4 @@
-﻿namespace RetailAssistant.Core.Models;
+﻿namespace RetailAssistant.Core.Models.Settings;
 
 public class IdentityServerSettings
 {

@@ -1,6 +1,7 @@
 ﻿using Infrastructure.Http;
 using Infrastructure.Http.Clients;
 using Infrastructure.Http.Uri;
+using RetailAssistant.Core.Models.Settings;
 
 namespace RetailAssistant.Client.Configuration;
 
@@ -9,6 +10,7 @@ public static class ConfigureWebInfrastructureServices
     public static IServiceCollection AddRetailAssistantWebServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<IdentityServerSettings>(configuration.GetSection(IdentityServerSettings.Key));
+        services.Configure<GatewaySettings>(configuration.GetSection(GatewaySettings.Key));
 
         var identityClientSettings = configuration.GetSection(IdentityClientSettings.Key);
         services.Configure<IdentityClientSettings>(identityClientSettings);
@@ -23,7 +25,9 @@ public static class ConfigureWebInfrastructureServices
             client.BaseAddress = new Uri(authority); 
         });
 
-        var gatewayUrl = configuration[Constants.HTTP_WEB_GATEWAY] ?? throw new Exception("Gateway isn't settled in configuration");
+        var gatewaySettings = configuration.GetSection(GatewaySettings.Key);
+        var gatewayUrl = gatewaySettings.GetValue<string>(nameof(GatewaySettings.BaseUrl)) 
+            ?? throw new Exception("Gateway BaseUrl isn't settled in configuration");
 
         var productCatalogClientSettings = configuration.GetSection(ProductCatalogClientSettings.Key);
         services.Configure<ProductCatalogClientSettings>(productCatalogClientSettings);
@@ -44,6 +48,7 @@ public static class ConfigureWebInfrastructureServices
             client.BaseAddress = new Uri(gatewayUrl);
         });
 
+        services.AddSingleton<IApplicationStateService, ApplicationStateService>();
         services.AddScoped(typeof(IHttpService<>), typeof(HttpService<>));
 
         services.AddSingleton<IdentityUriResolver>();

@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
@@ -19,6 +18,8 @@ public partial class MainLayout
     [Inject] private IDialogService _dialogService { get; set; } = default!;
 
     [Inject] private IStringLocalizer<MainLayout> _localizer { get; set; } = default!;
+
+    [Inject] private IApplicationStateService _applicationStateService { get; set; } = default!;
 
     private MudTheme _theme = new();
     private bool _isDarkMode;

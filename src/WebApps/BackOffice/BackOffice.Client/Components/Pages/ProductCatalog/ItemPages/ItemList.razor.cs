@@ -193,10 +193,13 @@ public partial class ItemList : ListBase<ProductItem>
 
     private void OpenItemParentClick(MudTreeViewItem<ProductParent> viewItem)
     {
-        if (viewItem.Value.Name == FilterSpecialCase.Empty.ToString())
+        if (viewItem.Value?.Name == FilterSpecialCase.Empty.ToString())
             return;
 
-        if (viewItem.Value.Name == FilterSpecialCase.All.ToString())
+        if (viewItem.Value?.Name == FilterSpecialCase.All.ToString())
+            return;
+
+        if (viewItem.Value is null)
             return;
 
         var parameters = new Dictionary<string, object>

@@ -307,7 +307,6 @@ public partial class CashiersMain
 
     #region Cashier
 
-
     private async Task ShowCashierChangeDialog()
     {
         var localSettings = await LocalConfigService.GetConfigAsync();
