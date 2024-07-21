@@ -1,32 +1,25 @@
-﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+﻿using HealthChecks.UI.Core;
+using Infrastructure.Serialization.Abstraction;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace WebAppsGateway.Services.Implementation;
 
 public class HealthCheckResponseWriter
 {
+    private static IDataSerializer? _serializer = null;
+
     public static async Task WriteResponse(HttpContext context, HealthReport report)
     {
+        if (_serializer is null)
+        {
+            var services = context.RequestServices;
+            _serializer = services.GetRequiredService<IDataSerializer>();
+        }
+
         context.Response.ContentType = "application/json";
 
-        var result = new
-        {
-            status = report.Status.ToString(),
-            totalDuration = report.TotalDuration,
-            entries = report.Entries.Select(e => new
-            {
-                key = e.Key,
-                value = new
-                {
-                    status = e.Value.Status.ToString(),
-                    description = e.Value.Description,
-                    duration = e.Value.Duration,
-                    exception = e.Value.Exception?.Message,
-                    data = e.Value.Data
-                }
-            })
-        };
-
-        var json = JsonSerializer.Serialize(result);
+        var result = UIHealthReport.CreateFrom(report);
+        var json = _serializer.Serialize(result);
 
         await context.Response.WriteAsync(json);
     }

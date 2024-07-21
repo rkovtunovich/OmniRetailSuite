@@ -69,3 +69,5 @@ app.UseHealthChecks("/_health" ,new HealthCheckOptions
 await app.UseOcelot();
 
 app.Run();
+
+public partial class Program { }
