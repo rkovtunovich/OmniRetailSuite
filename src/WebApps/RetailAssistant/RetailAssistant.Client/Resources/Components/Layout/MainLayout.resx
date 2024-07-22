@@ -118,12 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Settings" xml:space="preserve">
-    <value>Settings</value>
+    <value />
   </data>
   <data name="Online" xml:space="preserve">
-    <value>Online</value>
+    <value />
   </data>
   <data name="Offline" xml:space="preserve">
-    <value>Offline</value>
+    <value />
   </data>
 </root>

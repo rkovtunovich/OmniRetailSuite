@@ -5,7 +5,7 @@ using Microsoft.JSInterop;
 
 namespace RetailAssistant.Client.Components.Layout;
 
-public partial class MainLayout
+public partial class MainLayout : IDisposable
 {
     [Inject] private IUserPreferenceService _userPreferenceService { get; set; } = default!;
 
@@ -25,10 +25,16 @@ public partial class MainLayout
     private bool _isDarkMode;
     private bool _isPreferencesSet;
     bool _drawerOpen = true;
+    private Color _appStateBadgeColor = Color.Error;
 
     private void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
+    }
+
+    protected override void OnInitialized()
+    {
+        _applicationStateService.OnStateChange += OnStateChange;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -94,4 +100,20 @@ public partial class MainLayout
     }
 
     #endregion
+
+    private void OnStateChange()
+    {
+        _appStateBadgeColor = _applicationStateService.IsOnline ? Color.Success : Color.Error;
+        StateHasChanged();
+    }
+
+    private string GetStateBadgeText()
+    {
+        return _applicationStateService.IsOnline ? _localizer["Online"] : _localizer["Offline"];
+    }
+
+    public void Dispose()
+    {
+        _applicationStateService.OnStateChange -= OnStateChange;
+    }
 }
