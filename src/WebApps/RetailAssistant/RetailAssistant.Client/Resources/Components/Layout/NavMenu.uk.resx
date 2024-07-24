@@ -121,6 +121,12 @@
     <value>РМК</value>
   </data>
   <data name="Home" xml:space="preserve">
-    <value>Домашня сторінка</value>
+    <value>Головна сторінка</value>
+  </data>
+  <data name="StoreSelected" xml:space="preserve">
+    <value>Поточний магазин - </value>
+  </data>
+  <data name="StoreNotSelected" xml:space="preserve">
+    <value>Поточний магазин не вказаний. Будь-ласка виберіть магазин в налаштуваннях. </value>
   </data>
 </root>

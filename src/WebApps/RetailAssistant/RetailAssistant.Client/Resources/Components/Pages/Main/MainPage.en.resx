@@ -117,16 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CashiersWorkplace" xml:space="preserve">
-    <value>Cashier's workplace</value>
+  <data name="Welcome" xml:space="preserve">
+    <value>Welcome to Retail Assistant app.</value>
   </data>
-  <data name="Home" xml:space="preserve">
-    <value>Main</value>
-  </data>
-  <data name="StoreSelected" xml:space="preserve">
-    <value>Current store is</value>
+  <data name="NotAuthorized" xml:space="preserve">
+    <value>Please log in to access the app.</value>
   </data>
   <data name="StoreNotSelected" xml:space="preserve">
-    <value>Store is not selected. Please, select a store in the settings. </value>
+    <value>Not specified the current store. Please, select a store in the settings.</value>
+  </data>
+  <data name="StoreSelected" xml:space="preserve">
+    <value>The current store is </value>
   </data>
 </root>

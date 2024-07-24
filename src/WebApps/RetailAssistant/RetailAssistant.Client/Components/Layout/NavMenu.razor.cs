@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Localization;
-
-namespace RetailAssistant.Client.Components.Layout;
+﻿namespace RetailAssistant.Client.Components.Layout;
 
 public partial class NavMenu
 {

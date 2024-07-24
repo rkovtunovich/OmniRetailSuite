@@ -1,0 +1,27 @@
+﻿@page "/"
+
+<PageTitle>Main</PageTitle>
+
+<h6>@_localizer["Welcome"]</h6>
+
+<AuthorizeView>
+
+    <NotAuthorized>
+        <p>@_localizer["NotAuthorized"]</p>
+    </NotAuthorized>
+
+    <Authorized>
+        
+        @if (_isStoreSelected)
+        {
+            <p>@_localizer["StoreSelected"] @_currentStore</p>
+        }
+        else
+        {
+            <p>@_localizer["StoreNotSelected"]</p>
+        }
+
+    </Authorized>
+
+</AuthorizeView>
+
