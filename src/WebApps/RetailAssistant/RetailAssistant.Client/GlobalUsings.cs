@@ -9,7 +9,7 @@ global using RetailAssistant.Application.Services.Abstraction;
 global using RetailAssistant.Application.Services.Implementation;
 
 global using RetailAssistant.Client.Components;
-global using RetailAssistant.Client.Extensions;
+global using RetailAssistant.Client.Authentication;
 
 global using RetailAssistant.Core.Models;
 global using RetailAssistant.Core.Models.Retail;

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 
-namespace RetailAssistant.Client.Extensions;
+namespace RetailAssistant.Client.Authentication;
 
 public static class AuthenticationStateProviderExtension
 {
@@ -9,6 +9,6 @@ public static class AuthenticationStateProviderExtension
         var state = await authenticationStateProvider.GetAuthenticationStateAsync();
         var user = state.User;
 
-        return user.FindFirst(c => c.Type == "sub")?.Value; 
+        return user.FindFirst(c => c.Type == "sub")?.Value;
     }
 }

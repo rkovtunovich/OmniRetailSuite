@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
+using RetailAssistant.Client.Authentication;
 
 namespace RetailAssistant.Client.Components.Layout;
 
