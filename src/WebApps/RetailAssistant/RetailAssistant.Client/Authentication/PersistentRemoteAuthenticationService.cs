@@ -10,8 +10,14 @@ public class PersistentRemoteAuthenticationService<TRemoteAuthenticationState, T
     where TRemoteAuthenticationState : RemoteAuthenticationState
     where TAccount : RemoteUserAccount
 {
+    public const string AuthUserKey = "authUser";
+    public const string AuthOptionsKey = "authOptions";
+    public const string AuthTokenKey = "authToken";
+
     private readonly IJSRuntime _jsRuntime;
     private readonly ILogger<PersistentRemoteAuthenticationService<TRemoteAuthenticationState, TAccount>> _logger;
+
+    private bool _isTokenPersisted = false;
 
     public PersistentRemoteAuthenticationService(
         IJSRuntime jsRuntime,
@@ -41,9 +47,9 @@ public class PersistentRemoteAuthenticationService<TRemoteAuthenticationState, T
         return user;
     }
 
-    public async ValueTask<ClaimsPrincipal> GetPersistedUserAsync()
+    private async ValueTask<ClaimsPrincipal> GetPersistedUserAsync()
     {
-        var serializedUser = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", PersistentStateAccountClaimsPrincipalFactory.AuthUserKey);
+        var serializedUser = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", AuthUserKey);
 
         if (string.IsNullOrEmpty(serializedUser))
             return new ClaimsPrincipal();
@@ -51,7 +57,7 @@ public class PersistentRemoteAuthenticationService<TRemoteAuthenticationState, T
         if (JsonSerializer.Deserialize<RemoteUserAccount>(serializedUser) is not TAccount userAccount)
             return new ClaimsPrincipal();
 
-        var serializedOptions = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", PersistentStateAccountClaimsPrincipalFactory.AuthOptionsKey);
+        var serializedOptions = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", AuthOptionsKey);
         var options = JsonSerializer.Deserialize<RemoteAuthenticationUserOptions>(serializedOptions);
         if (options is null)
             return new ClaimsPrincipal();
@@ -63,9 +69,60 @@ public class PersistentRemoteAuthenticationService<TRemoteAuthenticationState, T
     public override async Task<RemoteAuthenticationResult<TRemoteAuthenticationState>> SignOutAsync(RemoteAuthenticationContext<TRemoteAuthenticationState> context)
     {
         // Remove the user state from local storage
-        await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", PersistentStateAccountClaimsPrincipalFactory.AuthUserKey);
-        await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", PersistentStateAccountClaimsPrincipalFactory.AuthOptionsKey);
+        await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", AuthUserKey);
+        await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", AuthOptionsKey);
 
         return await base.SignOutAsync(context);
+    }
+
+    public override async Task<RemoteAuthenticationResult<TRemoteAuthenticationState>> CompleteSignInAsync(RemoteAuthenticationContext<TRemoteAuthenticationState> context)
+    {
+        var result = await base.CompleteSignInAsync(context);
+
+        // Store the user state in local storage
+
+        _logger.LogInformation($"Sign in result: {result}");
+        _logger.LogInformation("Saving user state to local storage");
+
+        var user = await JsRuntime.InvokeAsync<TAccount>("AuthenticationService.getUser");
+        var serializedUser = JsonSerializer.Serialize(user);
+        await _jsRuntime.InvokeVoidAsync("localStorage.setItem", AuthUserKey, serializedUser);
+
+        var serializedOptions = JsonSerializer.Serialize(Options.UserOptions);
+        await _jsRuntime.InvokeVoidAsync("localStorage.setItem", AuthOptionsKey, serializedOptions);
+
+        return result;
+    }
+
+    public override async ValueTask<AccessTokenResult> RequestAccessToken()
+    {
+        var tokenResult = await base.RequestAccessToken();
+
+        if (tokenResult.Status == AccessTokenResultStatus.Success && !_isTokenPersisted)
+        {
+            if (!tokenResult.TryGetToken(out var token))
+                return tokenResult;
+
+            var serializedToken = JsonSerializer.Serialize(token);
+            await _jsRuntime.InvokeVoidAsync("localStorage.setItem", AuthTokenKey, serializedToken);
+
+            _isTokenPersisted = true;
+        }
+        // if status is not success, try retrieving the token from local storage
+        else if (tokenResult.Status != AccessTokenResultStatus.Success)
+        {
+            var serializedToken = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", AuthTokenKey);
+            if (string.IsNullOrEmpty(serializedToken))
+                return tokenResult;
+
+            var token = JsonSerializer.Deserialize<AccessToken>(serializedToken);
+
+            if (token is null)
+                return tokenResult;
+
+            tokenResult = new AccessTokenResult(AccessTokenResultStatus.Success, token, null, null);
+        }
+
+        return tokenResult;
     }
 }
