@@ -5,21 +5,20 @@ using Microsoft.JSInterop;
 
 namespace RetailAssistant.Client.Authentication;
 
-public class PersistentRemoteAuthenticationService<TRemoteAuthenticationState, TAccount, TProviderOptions> :
-    RemoteAuthenticationService<TRemoteAuthenticationState, TAccount, TProviderOptions>
+public class PersistentRemoteAuthenticationService<TRemoteAuthenticationState, TAccount> :
+    RemoteAuthenticationService<TRemoteAuthenticationState, TAccount, OidcProviderOptions>
     where TRemoteAuthenticationState : RemoteAuthenticationState
     where TAccount : RemoteUserAccount
-    where TProviderOptions : new()
 {
     private readonly IJSRuntime _jsRuntime;
-    private readonly ILogger<PersistentRemoteAuthenticationService<TRemoteAuthenticationState, TAccount, TProviderOptions>> _logger;
+    private readonly ILogger<PersistentRemoteAuthenticationService<TRemoteAuthenticationState, TAccount>> _logger;
 
     public PersistentRemoteAuthenticationService(
         IJSRuntime jsRuntime,
-        IOptionsSnapshot<RemoteAuthenticationOptions<TProviderOptions>> options,
+        IOptionsSnapshot<RemoteAuthenticationOptions<OidcProviderOptions>> options,
         NavigationManager navigation,
         AccountClaimsPrincipalFactory<TAccount> accountClaimsPrincipalFactory,
-        ILogger<PersistentRemoteAuthenticationService<TRemoteAuthenticationState, TAccount, TProviderOptions>> logger)
+        ILogger<PersistentRemoteAuthenticationService<TRemoteAuthenticationState, TAccount>> logger)
         : base(jsRuntime, options, navigation, accountClaimsPrincipalFactory, logger)
     {
         _jsRuntime = jsRuntime;
@@ -29,16 +28,16 @@ public class PersistentRemoteAuthenticationService<TRemoteAuthenticationState, T
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
         var user = await GetPersistedUserAsync();
-        if(user is null)
+        if (user is null)
             return await base.GetAuthenticationStateAsync();
-             
+
         return new AuthenticationState(user);
     }
 
     protected override async ValueTask<ClaimsPrincipal> GetAuthenticatedUser()
     {
         var user = await base.GetAuthenticatedUser();
-        
+
         return user;
     }
 
@@ -59,5 +58,14 @@ public class PersistentRemoteAuthenticationService<TRemoteAuthenticationState, T
 
         var user = await AccountClaimsPrincipalFactory.CreateUserAsync(userAccount, options);
         return user ?? new ClaimsPrincipal();
+    }
+
+    public override async Task<RemoteAuthenticationResult<TRemoteAuthenticationState>> SignOutAsync(RemoteAuthenticationContext<TRemoteAuthenticationState> context)
+    {
+        // Remove the user state from local storage
+        await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", PersistentStateAccountClaimsPrincipalFactory.AuthUserKey);
+        await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", PersistentStateAccountClaimsPrincipalFactory.AuthOptionsKey);
+
+        return await base.SignOutAsync(context);
     }
 }

@@ -142,7 +142,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.WebApps", "src\Shared\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration", "{64D07E59-BB24-4001-A57B-8592915A79C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integration.CommonIntegrationTests", "tests\Integration\Integration.CommonIntegrationTests\Integration.CommonIntegrationTests.csproj", "{DF048127-1EBF-4330-8284-81688AC73413}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Integration.CommonIntegrationTests", "tests\Integration\Integration.CommonIntegrationTests\Integration.CommonIntegrationTests.csproj", "{DF048127-1EBF-4330-8284-81688AC73413}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -8,13 +8,16 @@ public class PersistentStateAccountClaimsPrincipalFactory : AccountClaimsPrincip
 { 
     public const string AuthUserKey = "authUser";
     public const string AuthOptionsKey = "authOptions";
+    public const string AuthTokenKey = "authToken";
 
     private readonly IJSRuntime _jsRuntime;
+    private IAccessTokenProvider _accessTokenProvider;
 
     public PersistentStateAccountClaimsPrincipalFactory(IAccessTokenProviderAccessor accessor, IJSRuntime jsRuntime)
         : base(accessor)
     {
         _jsRuntime = jsRuntime;
+        _accessTokenProvider = accessor.TokenProvider;
     }
 
     public override async ValueTask<ClaimsPrincipal> CreateUserAsync(RemoteUserAccount account, RemoteAuthenticationUserOptions options)
@@ -29,6 +32,10 @@ public class PersistentStateAccountClaimsPrincipalFactory : AccountClaimsPrincip
 
             var serializedOptions = JsonSerializer.Serialize(options);
             await _jsRuntime.InvokeVoidAsync("localStorage.setItem", AuthOptionsKey, serializedOptions);
+
+            var token = await _accessTokenProvider.RequestAccessToken();
+            var serializedToken = JsonSerializer.Serialize(token);
+            await _jsRuntime.InvokeVoidAsync("localStorage.setItem", AuthTokenKey, serializedToken);
         }
 
         return user ?? new ClaimsPrincipal();

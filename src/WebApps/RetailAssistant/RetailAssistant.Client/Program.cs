@@ -39,7 +39,7 @@ builder.Services.AddOidcAuthentication(options =>
     options.ProviderOptions.ResponseType = "code";
 }).AddAccountClaimsPrincipalFactory<PersistentStateAccountClaimsPrincipalFactory>();
 
-builder.Services.AddScoped<AuthenticationStateProvider, PersistentRemoteAuthenticationService<RemoteAuthenticationState, RemoteUserAccount, RemoteAuthenticationUserOptions>>();
+builder.Services.AddScoped<AuthenticationStateProvider, PersistentRemoteAuthenticationService<RemoteAuthenticationState, RemoteUserAccount>>();
 
 var app = builder.Build();
 
