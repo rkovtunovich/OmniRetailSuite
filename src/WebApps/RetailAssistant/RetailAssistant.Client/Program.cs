@@ -1,6 +1,8 @@
 ﻿using System.Globalization;
 using Infrastructure.Serialization.JsonText.Configuration;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.JSInterop;
 using MudBlazor.Services;
@@ -36,6 +38,8 @@ builder.Services.AddOidcAuthentication(options =>
     options.ProviderOptions.DefaultScopes.Add("IdentityServerApi");
     options.ProviderOptions.ResponseType = "code";
 });
+
+builder.Services.AddScoped<AuthenticationStateProvider, PersistentRemoteAuthenticationService<RemoteAuthenticationState, RemoteUserAccount>>();
 
 var app = builder.Build();
 
