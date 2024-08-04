@@ -10,8 +10,6 @@ public partial class RedirectToLogout
 
     protected override void OnInitialized()
     {
-        var postLogoutUrl = NavigationManager.BaseUri;
-
-        NavigationManager?.NavigateToLogout("authentication/logout", postLogoutUrl);
+        NavigationManager?.NavigateToLogout("authentication/logout");
     }
 }
