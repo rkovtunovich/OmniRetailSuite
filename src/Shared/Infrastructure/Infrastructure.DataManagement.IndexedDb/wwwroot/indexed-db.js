@@ -1,4 +1,6 @@
 ﻿
+//#region DB Management
+
 export function initializeDb(settings) {
     return openDb(settings.name, settings.version, (db) => {
         settings.objectStores.forEach((objectStore) => {
@@ -47,6 +49,10 @@ function deleteObjectStore(dbName, version, objectStoreName) {
     });
 }
 
+//#endregion
+
+//#region Data Management
+
  function performTransaction(dbName, storeName, transactionMode, operation) {
     return openDb(dbName).then(db => {
         return new Promise((resolve, reject) => {
@@ -82,3 +88,5 @@ export function deleteRecord(dbName, storeName, key) {
 export function getRecords(dbName, storeName) {
     return performTransaction(dbName, storeName, 'readonly', store => store.getAll());
 }
+
+//#endregion

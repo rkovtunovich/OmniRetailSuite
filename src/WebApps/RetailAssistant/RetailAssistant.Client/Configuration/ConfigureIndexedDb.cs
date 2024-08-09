@@ -1,4 +1,5 @@
 ﻿using Infrastructure.DataManagement.Abstraction;
+using Infrastructure.DataManagement.IndexedDb.Configuration;
 using Infrastructure.DataManagement.IndexedDb.Configuration.Settings;
 using Infrastructure.DataManagement.IndexedDb.Extensions;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -25,6 +26,13 @@ public static class ConfigureIndexedDb
                 ObjectStores = GetProductCatalogStoreDefinitions()
             };
             await host.PrepareDatabase(productCatalogDbSchema);
+
+            var retailDbSchema = new DbSchema
+            {
+                Name = "retail",
+                Version = 1,
+                ObjectStores = GetRetailStoreDefinitions()
+            };
 
             logger.LogInformation("IndexedDb configured.");
         }
@@ -59,5 +67,33 @@ public static class ConfigureIndexedDb
                 KeyPath = nameof(ProductType.Id)
             },
         ];
+    }
+
+    private static List<StoreDefinition> GetRetailStoreDefinitions()
+    {
+        return
+        [
+            new StoreDefinition
+            {
+                Name = nameof(Store),
+                KeyPath = nameof(Store.Id)
+            },
+            new StoreDefinition
+            {
+                Name = nameof(Cashier),
+                KeyPath = nameof(Cashier.Id)
+            },
+            new StoreDefinition
+            {
+                Name = nameof(Receipt),
+                KeyPath = nameof(Receipt.Id)
+            }
+        ];
+    }
+
+    public static void AddIndexedDb(this IServiceCollection services)
+    {
+        services.AddDataManagement();
+        services.AddHostedService<BackgroundDataSyncService>();
     }
 }

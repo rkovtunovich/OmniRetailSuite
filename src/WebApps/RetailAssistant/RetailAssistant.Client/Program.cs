@@ -26,7 +26,7 @@ builder.Services.AddRetailAssistantWebServices(builder.Configuration);
 builder.Services.AddMudServices();
 builder.Services.AddMudExtensions();
 builder.Services.AddRetailAssistantAppServices();
-builder.Services.AddDataManagement();
+builder.Services.AddIndexedDb();
 builder.Services.AddSingleton<TabsService>();
 
 builder.Services.AddOidcAuthentication(options =>

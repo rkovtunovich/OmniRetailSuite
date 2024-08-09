@@ -9,11 +9,14 @@ public class DbManager : IDbManager<DbSchema>, IAsyncDisposable
 
     private readonly Lazy<Task<IJSObjectReference>> _dbInteropModuleTask;
 
-    public DbManager(IJSRuntime jsRuntime)
+    private readonly ILogger<DbManager> _logger = null!;
+
+    public DbManager(IJSRuntime jsRuntime, ILogger<DbManager> logger)
     {
         _jsRuntime = jsRuntime;
         _dbInteropModuleTask = new(() => jsRuntime.InvokeAsync<IJSObjectReference>(
             "import", "./_content/Infrastructure.DataManagement.IndexedDb/indexed-db.js").AsTask());
+        _logger = logger;
     }
 
     public async Task EnsureDatabaseExists(DbSchema? dbSettings)
@@ -23,12 +26,14 @@ public class DbManager : IDbManager<DbSchema>, IAsyncDisposable
         var dbInteropModule = await _dbInteropModuleTask.Value;
 
         if (await dbInteropModule.InvokeAsync<bool>("isDbCreated", dbSettings.Name))
+        {
+            _logger.LogInformation($"Database '{dbSettings.Name}' already exists.");
             return;
-
-        //if(await _jsRuntime.InvokeAsync<bool>("isDbCreated", dbSettings.Name))
-        //    return;
+        }
 
         await dbInteropModule.InvokeVoidAsync("initializeDb", dbSettings);
+
+        _logger.LogInformation($"Database '{dbSettings.Name}' has been created.");
     }
 
     public async ValueTask DisposeAsync()
