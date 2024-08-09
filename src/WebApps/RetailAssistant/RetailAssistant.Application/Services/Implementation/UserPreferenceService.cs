@@ -1,35 +1,43 @@
-﻿using Infrastructure.Http;
+﻿using Blazored.LocalStorage;
+using Infrastructure.Http;
 using Infrastructure.Http.Clients;
 using Infrastructure.Http.Uri;
 
 namespace RetailAssistant.Application.Services.Implementation;
 
-public class UserPreferenceService : IUserPreferenceService
+public class UserPreferenceService(IHttpService<IdentityClientSettings> httpService,
+                                   ILogger<UserPreferenceService> logger,
+                                   IdentityUriResolver identityUriResolver,
+                                   IApplicationStateService applicationStateService,
+                                   ILocalStorageService localStorageService) : IUserPreferenceService
 {
-    private readonly IHttpService<IdentityClientSettings> _httpService;
-    private readonly ILogger<UserPreferenceService> _logger;
-    private readonly IdentityUriResolver _identityUriResolver;
-
-    public UserPreferenceService(IHttpService<IdentityClientSettings> httpService, ILogger<UserPreferenceService> logger, IdentityUriResolver identityUriResolver)
-    {
-        _logger = logger;
-        _httpService = httpService;
-        _identityUriResolver = identityUriResolver;
-    }
-
     public async Task<Settings?> GetPreferencesAsync(string userId)
     {
-        var uri = _identityUriResolver.GetPreferences(userId);
+        var settings = await localStorageService.GetItemAsync<Settings>(userId);
 
-        var preference = await _httpService.GetAsync<UserPreference>(uri);
+        if (!applicationStateService.IsOnline)     
+            return settings;
+       
+        var uri = identityUriResolver.GetPreferences(userId);
+        var preference = await httpService.GetAsync<UserPreference>(uri);
+        if (preference is null)
+            return settings;
 
-        return preference?.Settings;
+        if(!preference.Settings.IsEquivalent(settings))
+        {
+            await localStorageService.SetItemAsync(userId, preference.Settings);
+            settings = preference.Settings;
+
+            logger.LogInformation("User preferences updated from server");
+        }
+
+        return settings;
     }
 
-    public Task UpdatePreferencesAsync(string userId, Settings settings)
+    public async Task UpdatePreferencesAsync(string userId, Settings settings)
     {
-        var uri = _identityUriResolver.UpdatePreferences(userId);
+        var uri = identityUriResolver.UpdatePreferences(userId);
 
-        return _httpService.PutAsync(uri, settings);
+        await httpService.PutAsync(uri, settings);
     }
 }
