@@ -88,5 +88,6 @@ public class ApplicationStateService : IApplicationStateService, IDisposable
     public void Dispose()
     {
         _timer?.Dispose();
+        GC.SuppressFinalize(this);
     }
 }

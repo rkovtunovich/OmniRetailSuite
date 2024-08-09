@@ -1,8 +1,8 @@
 ﻿namespace Infrastructure.DataManagement.Postgres;
 
-public class DbManager(ISecretManager secretManager, IOptions<DbSettings> options, ILogger<DbManager> logger) : IDbManager
+public class DbManager(ISecretManager secretManager, IOptions<DbSettings> options, ILogger<DbManager> logger) : IDbManager<DbSettings>
 {
-    public async Task EnsureDatabaseExists(string dbName)
+    public async Task EnsureDatabaseExists(DbSettings? dbSettings = null)
     {
         var secretRequest = new SecretRequest
         {
@@ -22,15 +22,15 @@ public class DbManager(ISecretManager secretManager, IOptions<DbSettings> option
             Port = settings.Port,
             Username = secrets["sname"],
             Password = secrets["spassword"],
-            Database = dbName,
+            Database = settings.Database,
         };
 
-        if(await IsDatabaseExists(dbName, connectionStringBuilder.ConnectionString))
+        if(await IsDatabaseExists(settings.Database, connectionStringBuilder.ConnectionString))
             return;
 
         // Connect to the default 'postgres' database to create the target database
         connectionStringBuilder.Database = "postgres";
-        await CreateDatabase(dbName, connectionStringBuilder.ConnectionString);      
+        await CreateDatabase(settings.Database, connectionStringBuilder.ConnectionString);      
     }
 
     private async Task CreateDatabase(string dbName, string connectionString)
