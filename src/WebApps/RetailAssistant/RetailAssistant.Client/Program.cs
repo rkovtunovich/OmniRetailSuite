@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using Infrastructure.DataManagement.IndexedDb.Configuration;
+﻿using BlazorWorker.Core;
 using Infrastructure.Serialization.JsonText.Configuration;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
@@ -27,6 +26,7 @@ builder.Services.AddMudServices();
 builder.Services.AddMudExtensions();
 builder.Services.AddRetailAssistantAppServices();
 builder.Services.AddIndexedDb();
+builder.Services.AddWorkerFactory();
 builder.Services.AddSingleton<TabsService>();
 
 builder.Services.AddOidcAuthentication(options =>
@@ -56,13 +56,13 @@ try
     var result = await jsRuntime.InvokeAsync<string>("blazorCulture.get");
     var culture = CultureInfo.GetCultureInfo(result ?? defaultCulture);
 
-    if (result is null)  
+    if (result is null)
         await jsRuntime.InvokeVoidAsync("blazorCulture.set", defaultCulture);
-    
+
     CultureInfo.DefaultThreadCurrentCulture = culture;
     CultureInfo.DefaultThreadCurrentUICulture = culture;
 
-   await app.ConfigureIndexedDbAsync();
+    await app.ConfigureIndexedDbAsync(); 
 }
 catch (Exception ex)
 {

@@ -17,6 +17,7 @@ global using RetailAssistant.Core.Models.Retail;
 
 global using System.Collections.Generic;
 global using System.ComponentModel.DataAnnotations;
+global using System.Globalization;
 global using System.IO;
 global using System.Linq;
 global using System.Net;

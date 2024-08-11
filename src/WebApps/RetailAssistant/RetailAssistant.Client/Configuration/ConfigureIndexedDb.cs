@@ -35,6 +35,9 @@ public static class ConfigureIndexedDb
             };
 
             logger.LogInformation("IndexedDb configured.");
+
+            // create the instance of the data synchronization service for starting the sync process
+            var syncService = services.GetRequiredService<IDataSynchronizationService>();
         }
         catch (Exception ex)
         {
@@ -94,6 +97,6 @@ public static class ConfigureIndexedDb
     public static void AddIndexedDb(this IServiceCollection services)
     {
         services.AddDataManagement();
-        services.AddHostedService<BackgroundDataSyncService>();
+        services.AddScoped<IDataSynchronizationService, DataSynchronizationService>();
     }
 }
