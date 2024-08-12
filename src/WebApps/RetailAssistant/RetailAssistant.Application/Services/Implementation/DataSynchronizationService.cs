@@ -1,4 +1,6 @@
-﻿namespace RetailAssistant.Application.Services.Implementation;
+﻿using Infrastructure.DataManagement.IndexedDb;
+
+namespace RetailAssistant.Application.Services.Implementation;
 
 public class DataSynchronizationService : IDataSynchronizationService, IDisposable
 {
@@ -6,6 +8,7 @@ public class DataSynchronizationService : IDataSynchronizationService, IDisposab
     private readonly ILogger<DataSynchronizationService> _logger;
     private readonly IProductCatalogService<CatalogProductItem> _productItemService;
     private readonly IProductCatalogService<ProductParent> _productParentService;
+    private readonly IDbDataService<CatalogProductItem> _productItemDbDataService;
 
     private Timer? _fromServerSyncTimer;
     private Timer? _toServerSyncTimer;
@@ -13,6 +16,7 @@ public class DataSynchronizationService : IDataSynchronizationService, IDisposab
     public DataSynchronizationService(
         IApplicationStateService applicationStateService,
         ILogger<DataSynchronizationService> logger,
+        IDbDataService<CatalogProductItem> productItemDbDataService,
         IProductCatalogService<CatalogProductItem> productItemService,
         IProductCatalogService<ProductParent> productParentService)
     {
@@ -20,13 +24,14 @@ public class DataSynchronizationService : IDataSynchronizationService, IDisposab
         _logger = logger;
         _productItemService = productItemService;
         _productParentService = productParentService;
+        _productItemDbDataService = productItemDbDataService;
 
         Initialize();
     }
 
     private void Initialize()
     {
-        _fromServerSyncTimer = new Timer(async _ => await SyncFromServerAsync(CancellationToken.None), null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
+        _fromServerSyncTimer = new Timer(async _ => await SyncFromServerAsync(CancellationToken.None), null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
         _toServerSyncTimer = new Timer(async _ => await SyncToServerAsync(CancellationToken.None), null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
     }
 
@@ -44,6 +49,11 @@ public class DataSynchronizationService : IDataSynchronizationService, IDisposab
         {
             var productItems = await _productItemService.GetAllAsync();
             var productParents = await _productParentService.GetAllAsync();
+
+            foreach (var item in productItems)
+            {
+                await _productItemDbDataService.AddItemAsync("productCatalog", nameof(CatalogProductItem), item);
+            }
 
             // TO DO
 

@@ -2,24 +2,29 @@
 //#region DB Management
 
 export function initializeDb(settings) {
-    return openDb(settings.name, settings.version, (db) => {
-        settings.objectStores.forEach((objectStore) => {
-            createObjectStore(db, objectStore.name, objectStore.keyPath);
-        });
-    });
-}
-
-export function isDbCreated(dbName) {
     return new Promise((resolve, reject) => {
-        const request = indexedDB.open(dbName);
+        const request = indexedDB.open(settings.name, settings.version);
 
-        request.onsuccess = () => resolve(true);
-        request.onerror = () => resolve(false);
+        request.onupgradeneeded = function (event) {
+            const db = event.target.result;
+            settings.objectStores.forEach((store) => {
+                if (!db.objectStoreNames.contains(store.name)) {
+                    db.createObjectStore(store.name, { keyPath: store.keyPath });
+                }
+            });
+        };
+
+        request.onsuccess = function (event) {
+            // Successfully opened the database
+            event.target.result.close(); // Close the connection
+            resolve(true);
+        };
+
+        request.onerror = function () {
+            // Failed to open or upgrade the database
+            reject(false);
+        };
     });
-}
-
-function createObjectStore(db, name, keyPath) {
-    return db.createObjectStore(name, { keyPath });
 }
 
 function openDb(name, version, upgradeCallback) {
@@ -38,14 +43,6 @@ function deleteDb(dbName) {
 
         request.onsuccess = () => resolve(true);
         request.onerror = () => resolve(false);
-    });
-}
-
-function deleteObjectStore(dbName, version, objectStoreName) {
-    return new Promise((resolve, reject) => {
-        openDb(dbName, version, (db) => {
-            db.deleteObjectStore(objectStoreName);
-        }).then(() => resolve(true));
     });
 }
 

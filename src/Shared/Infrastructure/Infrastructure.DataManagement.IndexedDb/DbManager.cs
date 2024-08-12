@@ -25,15 +25,12 @@ public class DbManager : IDbManager<DbSchema>, IAsyncDisposable
 
         var dbInteropModule = await _dbInteropModuleTask.Value;
 
-        if (await dbInteropModule.InvokeAsync<bool>("isDbCreated", dbSettings.Name))
-        {
-            _logger.LogInformation($"Database '{dbSettings.Name}' already exists.");
-            return;
-        }
+        var result = await dbInteropModule.InvokeAsync<bool>("initializeDb", dbSettings);
 
-        await dbInteropModule.InvokeVoidAsync("initializeDb", dbSettings);
-
-        _logger.LogInformation($"Database '{dbSettings.Name}' has been created.");
+        if(result)
+            _logger.LogInformation($"Database '{dbSettings.Name}' has been initialized and is ready for use.");
+        else
+            _logger.LogError($"Error initializing database '{dbSettings.Name}'.");
     }
 
     public async ValueTask DisposeAsync()

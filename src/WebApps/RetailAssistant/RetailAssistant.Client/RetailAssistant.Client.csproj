@@ -24,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Shared\Infrastructure\Infrastructure.DataManagement.IndexedDb\Infrastructure.DataManagement.IndexedDb.csproj" />
     <ProjectReference Include="..\..\..\Shared\Infrastructure\Infrastructure.Serialization.JsonText\Infrastructure.Serialization.JsonText.csproj" />
     <ProjectReference Include="..\..\..\Shared\UI\UI.RazorComponents\UI.Razor.csproj" />
     <ProjectReference Include="..\RetailAssistant.Application\RetailAssistant.Application.csproj" />

@@ -1,5 +1,4 @@
-﻿using BlazorWorker.Core;
-using Infrastructure.Serialization.JsonText.Configuration;
+﻿using Infrastructure.Serialization.JsonText.Configuration;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
@@ -26,7 +25,6 @@ builder.Services.AddMudServices();
 builder.Services.AddMudExtensions();
 builder.Services.AddRetailAssistantAppServices();
 builder.Services.AddIndexedDb();
-builder.Services.AddWorkerFactory();
 builder.Services.AddSingleton<TabsService>();
 
 builder.Services.AddOidcAuthentication(options =>

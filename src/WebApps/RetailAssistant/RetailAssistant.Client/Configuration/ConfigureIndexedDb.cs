@@ -1,4 +1,5 @@
 ﻿using Infrastructure.DataManagement.Abstraction;
+using Infrastructure.DataManagement.IndexedDb;
 using Infrastructure.DataManagement.IndexedDb.Configuration;
 using Infrastructure.DataManagement.IndexedDb.Configuration.Settings;
 using Infrastructure.DataManagement.IndexedDb.Extensions;
@@ -52,7 +53,7 @@ public static class ConfigureIndexedDb
             new StoreDefinition
             {
                 Name = nameof(CatalogProductItem),
-                KeyPath = nameof(CatalogProductItem.Id)             
+                KeyPath = nameof(CatalogProductItem.Id).ToLower()
             },
             new StoreDefinition
             {
@@ -98,5 +99,7 @@ public static class ConfigureIndexedDb
     {
         services.AddDataManagement();
         services.AddScoped<IDataSynchronizationService, DataSynchronizationService>();
+
+        services.AddScoped<IDbDataService<CatalogProductItem>, DbDataService<CatalogProductItem>>();
     }
 }
