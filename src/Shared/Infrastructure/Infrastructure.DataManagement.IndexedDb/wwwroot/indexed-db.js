@@ -86,4 +86,8 @@ export function getRecords(dbName, storeName) {
     return performTransaction(dbName, storeName, 'readonly', store => store.getAll());
 }
 
+export function clearStore(dbName, storeName) {
+    return performTransaction(dbName, storeName, 'readwrite', store => store.clear());
+}
+
 //#endregion

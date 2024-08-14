@@ -2,29 +2,29 @@
 
 namespace RetailAssistant.Application.Services.Implementation;
 
-public class DataSynchronizationService : IDataSynchronizationService, IDisposable
+public class DataSynchronizationService<TModel> : IDataSynchronizationService<TModel>, IDisposable where TModel : EntityModelBase, new()
 {
+    private const string ProductCatalogDbName = "productCatalog";
+    private const string RetailDbName = "retail";
+
     private readonly IApplicationStateService _applicationStateService;
-    private readonly ILogger<DataSynchronizationService> _logger;
-    private readonly IProductCatalogService<CatalogProductItem> _productItemService;
-    private readonly IProductCatalogService<ProductParent> _productParentService;
-    private readonly IDbDataService<CatalogProductItem> _productItemDbDataService;
+    private readonly ILogger<DataSynchronizationService<TModel>> _logger;
+    private readonly IProductCatalogService<TModel> _productCatalogService;
+    private readonly IDbDataService<TModel> _dbDataService;
 
     private Timer? _fromServerSyncTimer;
     private Timer? _toServerSyncTimer;
 
     public DataSynchronizationService(
         IApplicationStateService applicationStateService,
-        ILogger<DataSynchronizationService> logger,
-        IDbDataService<CatalogProductItem> productItemDbDataService,
-        IProductCatalogService<CatalogProductItem> productItemService,
-        IProductCatalogService<ProductParent> productParentService)
+        IDbDataService<TModel> dbDataService,
+        IProductCatalogService<TModel> productCatalogService,
+        ILogger<DataSynchronizationService<TModel>> logger)
     {
         _applicationStateService = applicationStateService;
+        _productCatalogService = productCatalogService;
+        _dbDataService = dbDataService;
         _logger = logger;
-        _productItemService = productItemService;
-        _productParentService = productParentService;
-        _productItemDbDataService = productItemDbDataService;
 
         Initialize();
     }
@@ -47,15 +47,12 @@ public class DataSynchronizationService : IDataSynchronizationService, IDisposab
 
         try
         {
-            var productItems = await _productItemService.GetAllAsync();
-            var productParents = await _productParentService.GetAllAsync();
-
-            foreach (var item in productItems)
+            var productItems = await _productCatalogService.GetAllAsync();
+            await _dbDataService.ClearStoreAsync(ProductCatalogDbName, typeof(TModel).Name);
+            foreach (var productItem in productItems)
             {
-                await _productItemDbDataService.AddItemAsync("productCatalog", nameof(CatalogProductItem), item);
+                await _dbDataService.AddItemAsync(ProductCatalogDbName, typeof(TModel).Name, productItem);
             }
-
-            // TO DO
 
             _logger.LogInformation("Data loaded from server.");
         }

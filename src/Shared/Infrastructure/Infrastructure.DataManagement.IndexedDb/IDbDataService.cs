@@ -11,4 +11,6 @@ public interface IDbDataService<T>
     Task UpdateItemAsync(string dbName, string storeName, T item);
 
     Task DeleteItemAsync(string dbName, string storeName, string key);
+
+    Task ClearStoreAsync(string dbName, string storeName);
 }

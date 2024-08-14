@@ -34,11 +34,12 @@ public static class ConfigureIndexedDb
                 Version = 1,
                 ObjectStores = GetRetailStoreDefinitions()
             };
+            await host.PrepareDatabase(retailDbSchema);
 
             logger.LogInformation("IndexedDb configured.");
 
-            // create the instance of the data synchronization service for starting the sync process
-            var syncService = services.GetRequiredService<IDataSynchronizationService>();
+            // create the instances of the data synchronization services for starting the sync process
+            services.GetRequiredService<IDataSynchronizationService<CatalogProductItem>>();
         }
         catch (Exception ex)
         {
@@ -58,17 +59,17 @@ public static class ConfigureIndexedDb
             new StoreDefinition
             {
                 Name = nameof(ProductBrand),
-                KeyPath = nameof(ProductBrand.Id)
+                KeyPath = nameof(ProductBrand.Id).ToLower()
             },
             new StoreDefinition
             {
                 Name = nameof(ProductParent),
-                KeyPath = nameof(ProductParent.Id)
+                KeyPath = nameof(ProductParent.Id).ToLower()
             },
             new StoreDefinition
             {
                 Name = nameof(ProductType),
-                KeyPath = nameof(ProductType.Id)
+                KeyPath = nameof(ProductType.Id).ToLower()
             },
         ];
     }
@@ -80,17 +81,17 @@ public static class ConfigureIndexedDb
             new StoreDefinition
             {
                 Name = nameof(Store),
-                KeyPath = nameof(Store.Id)
+                KeyPath = nameof(Store.Id).ToLower()
             },
             new StoreDefinition
             {
                 Name = nameof(Cashier),
-                KeyPath = nameof(Cashier.Id)
+                KeyPath = nameof(Cashier.Id).ToLower()
             },
             new StoreDefinition
             {
                 Name = nameof(Receipt),
-                KeyPath = nameof(Receipt.Id)
+                KeyPath = nameof(Receipt.Id).ToLower()
             }
         ];
     }
@@ -98,7 +99,7 @@ public static class ConfigureIndexedDb
     public static void AddIndexedDb(this IServiceCollection services)
     {
         services.AddDataManagement();
-        services.AddScoped<IDataSynchronizationService, DataSynchronizationService>();
+        services.AddScoped<IDataSynchronizationService<CatalogProductItem>, DataSynchronizationService<CatalogProductItem>>();
 
         services.AddScoped<IDbDataService<CatalogProductItem>, DbDataService<CatalogProductItem>>();
     }

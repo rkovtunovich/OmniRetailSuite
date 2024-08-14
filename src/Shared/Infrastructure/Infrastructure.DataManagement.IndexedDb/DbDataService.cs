@@ -49,4 +49,21 @@ public class DbDataService<T> : IDbDataService<T>
     {
         throw new NotImplementedException();
     }
+
+    public async Task ClearStoreAsync(string dbName, string storeName)
+    {
+        try
+        {
+            var dbInteropModule = await _dbInteropModuleTask.Value;
+
+            await dbInteropModule.InvokeVoidAsync("clearStore", dbName, storeName);
+
+            _logger.LogInformation($"Store '{storeName}' in database '{dbName}' has been cleared.");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Error clearing store '{storeName}' in database '{dbName}'.");
+            throw;
+        }
+    }
 }
