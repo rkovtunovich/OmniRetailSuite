@@ -18,11 +18,15 @@ export function initializeDb(settings) {
             // Successfully opened the database
             event.target.result.close(); // Close the connection
             resolve(true);
+
+            console.log(`Successfully opened database: ${settings.name}`);
         };
 
         request.onerror = function () {
             // Failed to open or upgrade the database
             reject(false);
+
+            console.error(`Failed to open database: ${settings.name}`);
         };
     });
 }

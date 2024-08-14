@@ -2,24 +2,22 @@
 
 namespace RetailAssistant.Application.Services.Implementation;
 
-public class DataSynchronizationService<TModel> : IDataSynchronizationService<TModel>, IDisposable where TModel : EntityModelBase, new()
+public class DataSyncFromServerService<TModel> : IDataSyncFromServerService<TModel>, IDisposable where TModel : EntityModelBase, new()
 {
     private const string ProductCatalogDbName = "productCatalog";
-    private const string RetailDbName = "retail";
 
     private readonly IApplicationStateService _applicationStateService;
-    private readonly ILogger<DataSynchronizationService<TModel>> _logger;
+    private readonly ILogger<DataSyncFromServerService<TModel>> _logger;
     private readonly IProductCatalogService<TModel> _productCatalogService;
     private readonly IDbDataService<TModel> _dbDataService;
 
     private Timer? _fromServerSyncTimer;
-    private Timer? _toServerSyncTimer;
 
-    public DataSynchronizationService(
+    public DataSyncFromServerService(
         IApplicationStateService applicationStateService,
         IDbDataService<TModel> dbDataService,
         IProductCatalogService<TModel> productCatalogService,
-        ILogger<DataSynchronizationService<TModel>> logger)
+        ILogger<DataSyncFromServerService<TModel>> logger)
     {
         _applicationStateService = applicationStateService;
         _productCatalogService = productCatalogService;
@@ -31,11 +29,10 @@ public class DataSynchronizationService<TModel> : IDataSynchronizationService<TM
 
     private void Initialize()
     {
-        _fromServerSyncTimer = new Timer(async _ => await SyncFromServerAsync(CancellationToken.None), null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
-        _toServerSyncTimer = new Timer(async _ => await SyncToServerAsync(CancellationToken.None), null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
+        _fromServerSyncTimer = new Timer(async _ => await SyncAsync(CancellationToken.None), null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
     }
 
-    public async Task SyncFromServerAsync(CancellationToken stoppingToken)
+    public async Task SyncAsync(CancellationToken stoppingToken)
     {
         if (!_applicationStateService.IsOnline)
         {
@@ -62,32 +59,9 @@ public class DataSynchronizationService<TModel> : IDataSynchronizationService<TM
         }
     }
 
-    public async Task SyncToServerAsync(CancellationToken stoppingToken)
-    {
-        if (!_applicationStateService.IsOnline)
-        {
-            _logger.LogInformation("Device is offline. Data sync is disabled.");
-            return;
-        }
-
-        _logger.LogInformation("Starting data sync to server...");
-
-        try
-        {
-            // TO DO
-            await Task.FromResult(0);
-            _logger.LogInformation("Data sync to server completed.");
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Data sync to server failed.");
-        }
-    }
-
     public void Dispose()
     {
         _fromServerSyncTimer?.Dispose();
-        _toServerSyncTimer?.Dispose();
 
         GC.SuppressFinalize(this);
     }

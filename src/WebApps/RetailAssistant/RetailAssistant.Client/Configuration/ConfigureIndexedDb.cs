@@ -39,7 +39,7 @@ public static class ConfigureIndexedDb
             logger.LogInformation("IndexedDb configured.");
 
             // create the instances of the data synchronization services for starting the sync process
-            services.GetRequiredService<IDataSynchronizationService<CatalogProductItem>>();
+            services.GetRequiredService<IDataSyncFromServerService<CatalogProductItem>>();
         }
         catch (Exception ex)
         {
@@ -99,7 +99,7 @@ public static class ConfigureIndexedDb
     public static void AddIndexedDb(this IServiceCollection services)
     {
         services.AddDataManagement();
-        services.AddScoped<IDataSynchronizationService<CatalogProductItem>, DataSynchronizationService<CatalogProductItem>>();
+        services.AddScoped<IDataSyncFromServerService<CatalogProductItem>, DataSyncFromServerService<CatalogProductItem>>();
 
         services.AddScoped<IDbDataService<CatalogProductItem>, DbDataService<CatalogProductItem>>();
     }
