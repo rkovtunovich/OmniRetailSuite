@@ -22,11 +22,11 @@ export function initializeDb(settings) {
             console.log(`Successfully opened database: ${settings.name}`);
         };
 
-        request.onerror = function () {
+        request.onerror = function (event) {
             // Failed to open or upgrade the database
             reject(false);
 
-            console.error(`Failed to open database: ${settings.name}`);
+            console.error(`Failed to open database: ${settings.name} - ${event.target.errorCode}:${event.target.error}`);
         };
     });
 }
