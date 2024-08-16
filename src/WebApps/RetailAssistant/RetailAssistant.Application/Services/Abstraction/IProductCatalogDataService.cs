@@ -1,12 +1,12 @@
 ﻿namespace RetailAssistant.Application.Services.Abstraction;
 
-public interface IRetailService<TModel> where TModel : class
+public interface IProductCatalogDataService<TModel> : IDataService<TModel> where TModel : class
 {
     event Func<TModel, Task> OnChanged;
 
     Task<TModel?> GetByIdAsync(Guid id);
 
-    Task<List<TModel>> GetAllAsync();
+    Task<IList<TModel>> GetByParentAsync(Guid parentId);
 
     Task<TModel> CreateAsync(TModel model);
 

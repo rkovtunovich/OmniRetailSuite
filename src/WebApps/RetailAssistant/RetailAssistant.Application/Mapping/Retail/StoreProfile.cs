@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-
-namespace RetailAssistant.Application.Mapping.Retail;
+﻿namespace RetailAssistant.Application.Mapping.Retail;
 
 public class StoreProfile : Profile
 {
@@ -8,5 +6,8 @@ public class StoreProfile : Profile
     {
         CreateMap<Store, StoreDto>();
         CreateMap<StoreDto, Store>();
+
+        CreateMap<Store, AppDatabase>()
+            .ConvertUsing(src => AppDatabase.Retail);
     }
 }

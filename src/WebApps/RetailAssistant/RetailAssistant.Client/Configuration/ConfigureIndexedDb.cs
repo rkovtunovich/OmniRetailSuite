@@ -22,7 +22,7 @@ public static class ConfigureIndexedDb
         {
             var productCatalogDbSchema = new DbSchema
             {
-                Name = "productCatalog",
+                Name = AppDatabase.ProductCatalog.ToString(),
                 Version = 1,
                 ObjectStores = GetProductCatalogStoreDefinitions()
             };
@@ -30,7 +30,7 @@ public static class ConfigureIndexedDb
 
             var retailDbSchema = new DbSchema
             {
-                Name = "retail",
+                Name = AppDatabase.Retail.ToString(),
                 Version = 1,
                 ObjectStores = GetRetailStoreDefinitions()
             };
@@ -100,7 +100,6 @@ public static class ConfigureIndexedDb
     public static void AddIndexedDb(this IServiceCollection services)
     {
         services.AddDataManagement();
-
         services.AddScoped<IDataSyncFromServerService<CatalogProductItem>, DataSyncFromServerService<CatalogProductItem>>();
         services.AddScoped<IDataSyncFromServerService<ProductParent>, DataSyncFromServerService<ProductParent>>();
 

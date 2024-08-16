@@ -14,10 +14,17 @@ public static class ConfigureAppServices
 
         services.AddScoped<IUserPreferenceService, UserPreferenceService>();
 
-        services.AddScoped<IRetailService<Store>, RetailService<Store, StoreDto>>();
-        services.AddScoped<IRetailService<Receipt>, RetailService<Receipt, ReceiptDto>>();
-        services.AddScoped<IProductCatalogService<CatalogProductItem>, ProductCatalogService<CatalogProductItem, ProductItemDto>>();
-        services.AddScoped<IProductCatalogService<ProductParent>, ProductCatalogService<ProductParent, ProductParentDto>>();
+        services.AddScoped<IRetailDataService<Store>, RetailService<Store, StoreDto>>();
+        services.AddScoped<IDataService<Store>>((provider) => provider.GetRequiredService<IRetailDataService<Store>>());
+
+        services.AddScoped<IRetailDataService<Receipt>, RetailService<Receipt, ReceiptDto>>();
+        services.AddScoped<IDataService<Receipt>>((provider) => provider.GetRequiredService<IRetailDataService<Receipt>>());
+
+        services.AddScoped<IProductCatalogDataService<CatalogProductItem>, ProductCatalogService<CatalogProductItem, ProductItemDto>>();
+        services.AddScoped<IDataService<CatalogProductItem>>((provider) => provider.GetRequiredService<IProductCatalogDataService<CatalogProductItem>>());
+
+        services.AddScoped<IProductCatalogDataService<ProductParent>, ProductCatalogService<ProductParent, ProductParentDto>>();
+        services.AddScoped<IDataService<ProductParent>>((provider) => provider.GetRequiredService<IProductCatalogDataService<ProductParent>>());
 
         services.AddMapping();
 

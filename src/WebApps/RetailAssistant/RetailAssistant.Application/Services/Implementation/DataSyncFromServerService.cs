@@ -4,25 +4,26 @@ namespace RetailAssistant.Application.Services.Implementation;
 
 public class DataSyncFromServerService<TModel> : IDataSyncFromServerService<TModel>, IDisposable where TModel : EntityModelBase, new()
 {
-    private const string ProductCatalogDbName = "productCatalog";
-
     private readonly IApplicationStateService _applicationStateService;
     private readonly ILogger<DataSyncFromServerService<TModel>> _logger;
-    private readonly IProductCatalogService<TModel> _productCatalogService;
+    private readonly IDataService<TModel> _dataService;
     private readonly IDbDataService<TModel> _dbDataService;
+    private readonly IMapper _mapper;
 
     private Timer? _fromServerSyncTimer;
 
     public DataSyncFromServerService(
         IApplicationStateService applicationStateService,
         IDbDataService<TModel> dbDataService,
-        IProductCatalogService<TModel> productCatalogService,
-        ILogger<DataSyncFromServerService<TModel>> logger)
+        IDataService<TModel> dataService,
+        ILogger<DataSyncFromServerService<TModel>> logger,
+        IMapper mapper)
     {
         _applicationStateService = applicationStateService;
-        _productCatalogService = productCatalogService;
+        _dataService = dataService;
         _dbDataService = dbDataService;
         _logger = logger;
+        _mapper = mapper;
 
         Initialize();
     }
@@ -44,11 +45,13 @@ public class DataSyncFromServerService<TModel> : IDataSyncFromServerService<TMod
 
         try
         {
-            var productItems = await _productCatalogService.GetAllAsync();
-            await _dbDataService.ClearStoreAsync(ProductCatalogDbName, typeof(TModel).Name);
+            var dbName = _mapper.Map<AppDatabase>(new TModel()).ToString();
+
+            var productItems = await _dataService.GetAllAsync();
+            await _dbDataService.ClearStoreAsync(dbName, typeof(TModel).Name);
             foreach (var productItem in productItems)
             {
-                await _dbDataService.AddItemAsync(ProductCatalogDbName, typeof(TModel).Name, productItem);
+                await _dbDataService.AddItemAsync(dbName, typeof(TModel).Name, productItem);
             }
 
             _logger.LogInformation("Data loaded from server.");

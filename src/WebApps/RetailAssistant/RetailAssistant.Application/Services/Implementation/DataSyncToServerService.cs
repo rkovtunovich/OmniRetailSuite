@@ -4,20 +4,20 @@ namespace RetailAssistant.Application.Services.Implementation;
 
 public class DataSyncToServerService<TModel> : IDataSyncToServerService<TModel>, IDisposable where TModel : EntityModelBase, new()
 {
-    private const string RetailDbName = "retail";
-
     private readonly IApplicationStateService _applicationStateService;
     private readonly ILogger<DataSyncToServerService<TModel>> _logger;
-    private readonly IRetailService<TModel> _retailService;
+    private readonly IRetailDataService<TModel> _retailService;
     private readonly IDbDataService<TModel> _dbDataService;
+    private readonly IMapper _mapper;
 
     private Timer? _toServerSyncTimer;
 
     public DataSyncToServerService(
         IApplicationStateService applicationStateService,
         IDbDataService<TModel> dbDataService,
-        IRetailService<TModel> retailService,
-        ILogger<DataSyncToServerService<TModel>> logger)
+        IRetailDataService<TModel> retailService,
+        ILogger<DataSyncToServerService<TModel>> logger,
+        IMapper mapper)
     {
         _applicationStateService = applicationStateService;
         _retailService = retailService;
@@ -25,6 +25,7 @@ public class DataSyncToServerService<TModel> : IDataSyncToServerService<TModel>,
         _logger = logger;
 
         Initialize();
+        _mapper = mapper;
     }
 
     private void Initialize()

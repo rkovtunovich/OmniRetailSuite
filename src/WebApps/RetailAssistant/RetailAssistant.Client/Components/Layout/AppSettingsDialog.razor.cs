@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
-using RetailAssistant.Client.Authentication;
 
 namespace RetailAssistant.Client.Components.Layout;
 
@@ -13,7 +11,7 @@ public partial class AppSettingsDialog
     private ILocalConfigService LocalConfigService { get; set; } = null!;
 
     [Inject]
-    private IRetailService<Store> _retailService { get; set; } = null!;
+    private IRetailDataService<Store> _retailService { get; set; } = null!;
 
     [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; } = default!;
 
@@ -31,7 +29,7 @@ public partial class AppSettingsDialog
 
     private RetailAssistantAppConfig _appConfig = new();
 
-    private List<Store> _stores = [];
+    private IList<Store> _stores = [];
 
     private List<Language> _languages = [Language.EN, Language.UK];
 

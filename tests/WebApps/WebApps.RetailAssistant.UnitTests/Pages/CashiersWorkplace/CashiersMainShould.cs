@@ -9,9 +9,9 @@ namespace WebApps.RetailAssistant.UnitTests.Pages.CashiersWorkplace;
 
 public class CashiersMainShould : TestContext
 {
-    private readonly IProductCatalogService<ProductParent> _productParentService;
-    private readonly IProductCatalogService<CatalogProductItem> _productItemService;
-    private readonly IRetailService<Receipt> _receiptService;
+    private readonly IProductCatalogDataService<ProductParent> _productParentService;
+    private readonly IProductCatalogDataService<CatalogProductItem> _productItemService;
+    private readonly IRetailDataService<Receipt> _receiptService;
     private readonly ILocalConfigService _localConfigService;
     private readonly IGuidGenerator _guidGenerator;
 
@@ -19,9 +19,9 @@ public class CashiersMainShould : TestContext
     {
         JSInterop.SetupVoid("mudPopover.initialize", _ => true);
 
-        _productParentService = Substitute.For<IProductCatalogService<ProductParent>>();
-        _productItemService = Substitute.For<IProductCatalogService<CatalogProductItem>>();
-        _receiptService = Substitute.For<IRetailService<Receipt>>();
+        _productParentService = Substitute.For<IProductCatalogDataService<ProductParent>>();
+        _productItemService = Substitute.For<IProductCatalogDataService<CatalogProductItem>>();
+        _receiptService = Substitute.For<IRetailDataService<Receipt>>();
         _localConfigService = Substitute.For<ILocalConfigService>();
         _guidGenerator = Substitute.For<IGuidGenerator>();
 

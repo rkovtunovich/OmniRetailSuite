@@ -4,7 +4,7 @@ using Infrastructure.Http.Uri;
 
 namespace RetailAssistant.Application.Services.Implementation;
 
-public class ProductCatalogService<TModel, TDto> : IProductCatalogService<TModel> where TModel : EntityModelBase, new()
+public class ProductCatalogService<TModel, TDto> : IProductCatalogDataService<TModel> where TModel : EntityModelBase, new()
 {
     private readonly IHttpService<ProductCatalogClientSettings> _httpService;
     private readonly ILogger<RetailService<TModel, TDto>> _logger;

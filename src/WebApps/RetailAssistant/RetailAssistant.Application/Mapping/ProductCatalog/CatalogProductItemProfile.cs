@@ -4,7 +4,10 @@ public class CatalogProductItemProfile : Profile
 {
     public CatalogProductItemProfile()
     {
-        CreateMap<CatalogProductItem, Contracts.Dtos.ProductCatalog.ProductItemDto>();
-        CreateMap<Contracts.Dtos.ProductCatalog.ProductItemDto, CatalogProductItem>();
+        CreateMap<CatalogProductItem, ProductItemDto>();
+        CreateMap<ProductItemDto, CatalogProductItem>();
+
+        CreateMap<CatalogProductItem, AppDatabase>()
+            .ConvertUsing(src => AppDatabase.ProductCatalog);
     }
 }

@@ -6,5 +6,8 @@ public class ProductParentProfile : Profile
     {
         CreateMap<ProductParent, ProductParentDto>();
         CreateMap<ProductParentDto, ProductParent>();
+
+        CreateMap<ProductParent, AppDatabase>()
+            .ConvertUsing(src => AppDatabase.ProductCatalog);
     }
 }

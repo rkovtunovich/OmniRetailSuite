@@ -11,11 +11,11 @@ public partial class CashiersMain
 {
     #region Injected services
 
-    [Inject] public IProductCatalogService<ProductParent> ProductParentService { get; set; } = null!;
+    [Inject] public IProductCatalogDataService<ProductParent> ProductParentService { get; set; } = null!;
 
-    [Inject] public IProductCatalogService<CatalogProductItem> ProductItemService { get; set; } = null!;
+    [Inject] public IProductCatalogDataService<CatalogProductItem> ProductItemService { get; set; } = null!;
 
-    [Inject] public IRetailService<Receipt> ReceiptService { get; set; } = null!;
+    [Inject] public IRetailDataService<Receipt> ReceiptService { get; set; } = null!;
 
     [Inject] private ILocalConfigService LocalConfigService { get; set; } = null!;
 
