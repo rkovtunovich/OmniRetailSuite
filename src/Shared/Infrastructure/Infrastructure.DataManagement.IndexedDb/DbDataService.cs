@@ -30,22 +30,46 @@ public class DbDataService<T> : IDbDataService<T>
         }
     }
 
-    public Task DeleteItemAsync(string dbName, string storeName, string key)
+    public async Task<IEnumerable<T>> GetAllItemsAsync(string dbName, string storeName)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var dbInteropModule = await _dbInteropModuleTask.Value;
+
+            var items = await dbInteropModule.InvokeAsync<IEnumerable<T>>("getAllRecords", dbName, storeName);
+
+            return items;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Error getting all items from store '{storeName}' in database '{dbName}'.");
+            throw;
+        }
     }
 
-    public Task<IEnumerable<T>> GetAllItemsAsync(string dbName, string storeName)
+    public async Task<T?> GetItemAsync(string dbName, string storeName, string key)
     {
-        throw new NotImplementedException();
-    }
+        try
+        {
+            var dbInteropModule = await _dbInteropModuleTask.Value;
 
-    public Task<T?> GetItemAsync(string dbName, string storeName, string key)
-    {
-        throw new NotImplementedException();
+            var item = await dbInteropModule.InvokeAsync<T?>("getRecord", dbName, storeName, key);
+
+            return item;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Error getting item by key '{key}' from store '{storeName}' in database '{dbName}'.");
+            throw;
+        }
     }
 
     public Task UpdateItemAsync(string dbName, string storeName, T item)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task DeleteItemAsync(string dbName, string storeName, string key)
     {
         throw new NotImplementedException();
     }
