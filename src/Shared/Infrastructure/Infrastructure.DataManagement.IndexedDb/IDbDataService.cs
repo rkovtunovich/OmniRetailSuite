@@ -1,16 +1,16 @@
 ﻿namespace Infrastructure.DataManagement.IndexedDb;
 
-public interface IDbDataService<T>
+public interface IDbDataService<TRecord>
 {
-    Task AddItemAsync(string dbName, string storeName, T item);
+    Task AddRecordAsync(string dbName, string storeName, TRecord item);
 
-    Task<T?> GetItemAsync(string dbName, string storeName, string key);
+    Task<TRecord?> GetRecordAsync(string dbName, string storeName, string key);
 
-    Task<IEnumerable<T>> GetAllItemsAsync(string dbName, string storeName);
+    Task<IEnumerable<TRecord>> GetAllRecordsAsync(string dbName, string storeName);
 
-    Task UpdateItemAsync(string dbName, string storeName, T item);
+    Task UpdateRecordAsync(string dbName, string storeName, TRecord item);
 
-    Task DeleteItemAsync(string dbName, string storeName, string key);
+    Task DeleteRecordAsync(string dbName, string storeName, string key);
 
     Task ClearStoreAsync(string dbName, string storeName);
 }

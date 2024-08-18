@@ -1,4 +1,5 @@
 ﻿using Infrastructure.DataManagement.IndexedDb;
+using RetailAssistant.Data;
 
 namespace RetailAssistant.Application.Services.Implementation;
 
@@ -30,7 +31,10 @@ public class DataSyncFromServerService<TModel> : IDataSyncFromServerService<TMod
 
     private void Initialize()
     {
-        _fromServerSyncTimer = new Timer(async _ => await SyncAsync(CancellationToken.None), null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
+        var interval = TimeSpan.FromMinutes(1);
+        _fromServerSyncTimer = new Timer(async _ => await SyncAsync(CancellationToken.None), null, TimeSpan.Zero, interval);
+
+        _logger.LogInformation($"Data sync timer initialized for {typeof(TModel).Name} with interval {interval}.");
     }
 
     public async Task SyncAsync(CancellationToken stoppingToken)
@@ -51,7 +55,7 @@ public class DataSyncFromServerService<TModel> : IDataSyncFromServerService<TMod
             await _dbDataService.ClearStoreAsync(dbName, typeof(TModel).Name);
             foreach (var productItem in productItems)
             {
-                await _dbDataService.AddItemAsync(dbName, typeof(TModel).Name, productItem);
+                await _dbDataService.AddRecordAsync(dbName, typeof(TModel).Name, productItem);
             }
 
             _logger.LogInformation("Data loaded from server.");

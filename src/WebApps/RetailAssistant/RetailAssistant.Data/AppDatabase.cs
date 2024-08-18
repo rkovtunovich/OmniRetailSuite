@@ -1,4 +1,4 @@
-﻿namespace RetailAssistant.Core.Models;
+﻿namespace RetailAssistant.Data;
 
 public enum AppDatabase
 {

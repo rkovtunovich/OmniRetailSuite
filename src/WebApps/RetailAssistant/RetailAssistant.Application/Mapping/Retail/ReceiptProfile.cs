@@ -1,4 +1,6 @@
-﻿namespace RetailAssistant.Application.Mapping.Retail;
+﻿using RetailAssistant.Data;
+
+namespace RetailAssistant.Application.Mapping.Retail;
 
 public class ReceiptProfile : Profile
 {

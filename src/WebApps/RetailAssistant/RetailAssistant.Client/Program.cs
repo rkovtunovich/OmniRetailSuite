@@ -8,6 +8,7 @@ using MudBlazor.Services;
 using MudExtensions.Services;
 using RetailAssistant.Application.Config;
 using RetailAssistant.Client.Configuration;
+using RetailAssistant.Data.Configuration;
 using UI.Razor.Services.Implementation;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -60,7 +61,8 @@ try
     CultureInfo.DefaultThreadCurrentCulture = culture;
     CultureInfo.DefaultThreadCurrentUICulture = culture;
 
-    await app.ConfigureIndexedDbAsync(); 
+    await app.ConfigureIndexedDbAsync();
+    app.StartDataSynchronization();
 }
 catch (Exception ex)
 {

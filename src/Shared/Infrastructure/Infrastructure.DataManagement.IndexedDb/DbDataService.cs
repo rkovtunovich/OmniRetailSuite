@@ -2,7 +2,7 @@
 
 namespace Infrastructure.DataManagement.IndexedDb;
 
-public class DbDataService<T> : IDbDataService<T>
+public class DbDataService<TRecord> : IDbDataService<TRecord>
 {
     private readonly Lazy<Task<IJSObjectReference>> _dbInteropModuleTask;
 
@@ -15,7 +15,7 @@ public class DbDataService<T> : IDbDataService<T>
         _logger = logger;
     }
 
-    public async Task AddItemAsync(string dbName, string storeName, T item)
+    public async Task AddRecordAsync(string dbName, string storeName, TRecord item)
     {
         try
         {
@@ -30,13 +30,13 @@ public class DbDataService<T> : IDbDataService<T>
         }
     }
 
-    public async Task<IEnumerable<T>> GetAllItemsAsync(string dbName, string storeName)
+    public async Task<IEnumerable<TRecord>> GetAllRecordsAsync(string dbName, string storeName)
     {
         try
         {
             var dbInteropModule = await _dbInteropModuleTask.Value;
 
-            var items = await dbInteropModule.InvokeAsync<IEnumerable<T>>("getAllRecords", dbName, storeName);
+            var items = await dbInteropModule.InvokeAsync<IEnumerable<TRecord>>("getAllRecords", dbName, storeName);
 
             return items;
         }
@@ -47,13 +47,13 @@ public class DbDataService<T> : IDbDataService<T>
         }
     }
 
-    public async Task<T?> GetItemAsync(string dbName, string storeName, string key)
+    public async Task<TRecord?> GetRecordAsync(string dbName, string storeName, string key)
     {
         try
         {
             var dbInteropModule = await _dbInteropModuleTask.Value;
 
-            var item = await dbInteropModule.InvokeAsync<T?>("getRecord", dbName, storeName, key);
+            var item = await dbInteropModule.InvokeAsync<TRecord?>("getRecord", dbName, storeName, key);
 
             return item;
         }
@@ -64,12 +64,12 @@ public class DbDataService<T> : IDbDataService<T>
         }
     }
 
-    public Task UpdateItemAsync(string dbName, string storeName, T item)
+    public Task UpdateRecordAsync(string dbName, string storeName, TRecord item)
     {
         throw new NotImplementedException();
     }
 
-    public Task DeleteItemAsync(string dbName, string storeName, string key)
+    public Task DeleteRecordAsync(string dbName, string storeName, string key)
     {
         throw new NotImplementedException();
     }

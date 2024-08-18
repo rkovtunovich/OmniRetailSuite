@@ -1,4 +1,6 @@
-﻿namespace RetailAssistant.Application.Mapping.ProductCatalog;
+﻿using RetailAssistant.Data;
+
+namespace RetailAssistant.Application.Mapping.ProductCatalog;
 
 public class CatalogProductItemProfile : Profile
 {

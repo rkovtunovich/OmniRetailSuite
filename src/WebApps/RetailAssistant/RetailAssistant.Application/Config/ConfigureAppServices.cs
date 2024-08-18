@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using Infrastructure.Common.Services;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using RetailAssistant.Application.Mapping.Configuration;
 
@@ -29,10 +30,23 @@ public static class ConfigureAppServices
         services.AddScoped<IProductCatalogDataService<ProductParent>, ProductCatalogService<ProductParent, ProductParentDto>>();
         services.AddScoped<IDataService<ProductParent>>((provider) => provider.GetRequiredService<IProductCatalogDataService<ProductParent>>());
 
+        services.AddScoped(typeof(IDataSyncFromServerService<>), typeof(DataSyncFromServerService<>));
+
         services.AddMapping();
 
         services.AddSingleton<IGuidGenerator, GuidGenerator>();
 
         return services;
+    }
+
+    public static void StartDataSynchronization(this WebAssemblyHost host)
+    {
+        var services = host.Services;
+
+        // create the instances of the data synchronization services for starting the sync process
+        services.GetRequiredService<IDataSyncFromServerService<CatalogProductItem>>();
+        services.GetRequiredService<IDataSyncFromServerService<ProductParent>>();
+        services.GetRequiredService<IDataSyncFromServerService<Store>>();
+        services.GetRequiredService<IDataSyncFromServerService<Cashier>>();
     }
 }
