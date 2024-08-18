@@ -3,6 +3,7 @@ using Infrastructure.Common.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using RetailAssistant.Application.Mapping.Configuration;
+using RetailAssistant.Data;
 
 namespace RetailAssistant.Application.Config;
 
@@ -30,7 +31,7 @@ public static class ConfigureAppServices
         services.AddScoped<IProductCatalogDataService<ProductParent>, ProductCatalogService<ProductParent, ProductParentDto>>();
         services.AddScoped<IDataService<ProductParent>>((provider) => provider.GetRequiredService<IProductCatalogDataService<ProductParent>>());
 
-        services.AddScoped(typeof(IDataSyncFromServerService<>), typeof(DataSyncFromServerService<>));
+        services.AddScoped(typeof(IDataSyncFromServerService<,>), typeof(DataSyncFromServerService<,>));
 
         services.AddMapping();
 
@@ -44,9 +45,9 @@ public static class ConfigureAppServices
         var services = host.Services;
 
         // create the instances of the data synchronization services for starting the sync process
-        services.GetRequiredService<IDataSyncFromServerService<CatalogProductItem>>();
-        services.GetRequiredService<IDataSyncFromServerService<ProductParent>>();
-        services.GetRequiredService<IDataSyncFromServerService<Store>>();
-        services.GetRequiredService<IDataSyncFromServerService<Cashier>>();
+        services.GetRequiredService<IDataSyncFromServerService<CatalogProductItem, ProductCatalogDbSchema>>();
+        services.GetRequiredService<IDataSyncFromServerService<ProductParent, ProductCatalogDbSchema>>();
+        services.GetRequiredService<IDataSyncFromServerService<Store, RetailDbSchema>>();
+        services.GetRequiredService<IDataSyncFromServerService<Cashier, RetailDbSchema>>();
     }
 }

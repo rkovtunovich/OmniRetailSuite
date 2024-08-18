@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 
 namespace RetailAssistant.Data;
 
-public class ApplicationRepository<TModel, TDbSettings> : IApplicationRepository<TModel, TDbSettings> where TModel : class where TDbSettings : DbSchema
+public class ApplicationRepository<TModel, TDbSettings> : IApplicationRepository<TModel, TDbSettings> where TModel : EntityModelBase where TDbSettings : DbSchema
 {
     private readonly IDbDataService<TModel> _dbDataService = null!;
     private readonly ILogger<ApplicationRepository<TModel, TDbSettings>> _logger = null!;
@@ -15,21 +15,6 @@ public class ApplicationRepository<TModel, TDbSettings> : IApplicationRepository
         _dbDataService = dbDataService;
         _logger = logger;
         _options = options;
-    }
-
-    public async Task<bool> CreateAsync(TModel model)
-    {
-        try
-        {
-            await _dbDataService.AddRecordAsync(_options.Value.Name, typeof(TModel).Name, model);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, $"Error creating {typeof(TModel).Name} record.");
-            throw;
-        }
-
-        return true;
     }
 
     public async Task<IEnumerable<TModel>> GetAllAsync()
@@ -62,6 +47,21 @@ public class ApplicationRepository<TModel, TDbSettings> : IApplicationRepository
         }
     }
 
+    public async Task<bool> CreateAsync(TModel model)
+    {
+        try
+        {
+            await _dbDataService.AddRecordAsync(_options.Value.Name, typeof(TModel).Name, model);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Error creating {typeof(TModel).Name} record.");
+            throw;
+        }
+
+        return true;
+    }
+
     public async Task<bool> UpdateAsync(TModel model)
     {
         try
@@ -71,6 +71,25 @@ public class ApplicationRepository<TModel, TDbSettings> : IApplicationRepository
         catch (Exception ex)
         {
             _logger.LogError(ex, $"Error updating {typeof(TModel).Name} record.");
+            throw;
+        }
+
+        return true;
+    }
+
+    public async Task<bool> CreateOrUpdateAsync(TModel model)
+    {
+        try
+        {
+            var result = await _dbDataService.GetRecordAsync(_options.Value.Name, typeof(TModel).Name, model.Id.ToString());
+            if (result is not null) 
+                await _dbDataService.UpdateRecordAsync(_options.Value.Name, typeof(TModel).Name, model);            
+            else           
+                await _dbDataService.AddRecordAsync(_options.Value.Name, typeof(TModel).Name, model);           
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Error creating or updating {typeof(TModel).Name} record.");
             throw;
         }
 

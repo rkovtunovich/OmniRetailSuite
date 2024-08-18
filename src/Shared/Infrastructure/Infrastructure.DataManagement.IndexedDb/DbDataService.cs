@@ -64,14 +64,34 @@ public class DbDataService<TRecord> : IDbDataService<TRecord>
         }
     }
 
-    public Task UpdateRecordAsync(string dbName, string storeName, TRecord item)
+    public async Task UpdateRecordAsync(string dbName, string storeName, TRecord item)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var dbInteropModule = await _dbInteropModuleTask.Value;
+
+            await dbInteropModule.InvokeVoidAsync("updateRecord", dbName, storeName, item);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Error updating item in store '{storeName}' in database '{dbName}'.");
+            throw;
+        }
     }
 
-    public Task DeleteRecordAsync(string dbName, string storeName, string key)
+    public async Task DeleteRecordAsync(string dbName, string storeName, string key)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var dbInteropModule = await _dbInteropModuleTask.Value;
+
+            await dbInteropModule.InvokeVoidAsync("deleteRecord", dbName, storeName, key);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Error deleting item by key '{key}' from store '{storeName}' in database '{dbName}'.");
+            throw;
+        }
     }
 
     public async Task ClearStoreAsync(string dbName, string storeName)

@@ -10,5 +10,7 @@ public interface IApplicationRepository<TModel, TDbSchema> where TModel : class 
 
     Task<bool> UpdateAsync(TModel model);
 
+    Task<bool> CreateOrUpdateAsync(TModel model);
+
     Task<bool> DeleteAsync(Guid id);
 }

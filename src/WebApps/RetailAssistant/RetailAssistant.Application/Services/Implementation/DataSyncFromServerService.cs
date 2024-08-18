@@ -1,28 +1,29 @@
-﻿using Infrastructure.DataManagement.IndexedDb;
+﻿using Infrastructure.DataManagement.IndexedDb.Configuration.Settings;
 using RetailAssistant.Data;
 
 namespace RetailAssistant.Application.Services.Implementation;
 
-public class DataSyncFromServerService<TModel> : IDataSyncFromServerService<TModel>, IDisposable where TModel : EntityModelBase, new()
+public class DataSyncFromServerService<TModel, TDbSettings> 
+    : IDataSyncFromServerService<TModel, TDbSettings>, IDisposable where TModel : EntityModelBase, new() where TDbSettings : DbSchema
 {
     private readonly IApplicationStateService _applicationStateService;
-    private readonly ILogger<DataSyncFromServerService<TModel>> _logger;
+    private readonly ILogger<DataSyncFromServerService<TModel, TDbSettings>> _logger;
     private readonly IDataService<TModel> _dataService;
-    private readonly IDbDataService<TModel> _dbDataService;
+    private readonly IApplicationRepository<TModel, TDbSettings> _applicationRepository;
     private readonly IMapper _mapper;
 
     private Timer? _fromServerSyncTimer;
 
     public DataSyncFromServerService(
         IApplicationStateService applicationStateService,
-        IDbDataService<TModel> dbDataService,
+        IApplicationRepository<TModel, TDbSettings> applicationRepository,
         IDataService<TModel> dataService,
-        ILogger<DataSyncFromServerService<TModel>> logger,
+        ILogger<DataSyncFromServerService<TModel, TDbSettings>> logger,
         IMapper mapper)
     {
         _applicationStateService = applicationStateService;
         _dataService = dataService;
-        _dbDataService = dbDataService;
+        _applicationRepository = applicationRepository;
         _logger = logger;
         _mapper = mapper;
 
@@ -52,10 +53,10 @@ public class DataSyncFromServerService<TModel> : IDataSyncFromServerService<TMod
             var dbName = _mapper.Map<AppDatabase>(new TModel()).ToString();
 
             var productItems = await _dataService.GetAllAsync();
-            await _dbDataService.ClearStoreAsync(dbName, typeof(TModel).Name);
+
             foreach (var productItem in productItems)
             {
-                await _dbDataService.AddRecordAsync(dbName, typeof(TModel).Name, productItem);
+                await _applicationRepository.CreateOrUpdateAsync(productItem);
             }
 
             _logger.LogInformation("Data loaded from server.");
