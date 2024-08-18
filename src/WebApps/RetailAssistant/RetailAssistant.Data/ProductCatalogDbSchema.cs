@@ -8,6 +8,7 @@ public class ProductCatalogDbSchema : DbSchema
     {
         Name = AppDatabase.ProductCatalog.ToString();
         Version = 1;
+        SynchronizationInterval = 1;
         ObjectStores = GetProductCatalogStoreDefinitions();
     }
 

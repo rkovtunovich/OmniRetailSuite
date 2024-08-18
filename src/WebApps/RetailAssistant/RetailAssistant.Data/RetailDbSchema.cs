@@ -8,6 +8,7 @@ public class RetailDbSchema : DbSchema
     {
         Name = AppDatabase.Retail.ToString();
         Version = 1;
+        SynchronizationInterval = 1;
         ObjectStores = GetRetailStoreDefinitions();
     }
 

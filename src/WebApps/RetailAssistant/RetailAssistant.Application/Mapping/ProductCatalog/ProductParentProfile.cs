@@ -1,6 +1,4 @@
-﻿using RetailAssistant.Data;
-
-namespace RetailAssistant.Application.Mapping.ProductCatalog;
+﻿namespace RetailAssistant.Application.Mapping.ProductCatalog;
 
 public class ProductParentProfile : Profile
 {
@@ -8,8 +6,5 @@ public class ProductParentProfile : Profile
     {
         CreateMap<ProductParent, ProductParentDto>();
         CreateMap<ProductParentDto, ProductParent>();
-
-        CreateMap<ProductParent, AppDatabase>()
-            .ConvertUsing(src => AppDatabase.ProductCatalog);
     }
 }

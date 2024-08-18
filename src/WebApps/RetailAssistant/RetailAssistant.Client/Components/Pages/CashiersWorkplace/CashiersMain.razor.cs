@@ -1,7 +1,7 @@
 ﻿using Infrastructure.Common.Services;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.Extensions.Localization;
 using RetailAssistant.Core.Models.ProductCatalog;
+using RetailAssistant.Data;
 using UI.Razor.Enums;
 using UI.Razor.Helpers;
 
@@ -11,7 +11,7 @@ public partial class CashiersMain
 {
     #region Injected services
 
-    [Inject] public IProductCatalogDataService<ProductParent> ProductParentService { get; set; } = null!;
+    [Inject] public IApplicationRepository<ProductParent, ProductCatalogDbSchema> ProductParentRepository { get; set; } = null!;
 
     [Inject] public IProductCatalogDataService<CatalogProductItem> ProductItemService { get; set; } = null!;
 
@@ -159,7 +159,7 @@ public partial class CashiersMain
 
     private async Task ReloadItemParents()
     {
-        var itemParentsList = await ProductParentService.GetAllAsync();
+        var itemParentsList = await ProductParentRepository.GetAllAsync();
         _itemParents.Clear();
         _itemParents.Add(new ProductParent { Id = Guid.NewGuid(), Name = FilterSpecialCase.All.ToString() });
         _itemParents.Add(new ProductParent { Id = Guid.NewGuid(), Name = FilterSpecialCase.Empty.ToString() });

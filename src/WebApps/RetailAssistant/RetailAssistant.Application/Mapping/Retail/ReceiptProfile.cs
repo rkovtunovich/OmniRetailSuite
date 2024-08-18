@@ -1,6 +1,4 @@
-﻿using RetailAssistant.Data;
-
-namespace RetailAssistant.Application.Mapping.Retail;
+﻿namespace RetailAssistant.Application.Mapping.Retail;
 
 public class ReceiptProfile : Profile
 {
@@ -8,8 +6,5 @@ public class ReceiptProfile : Profile
     {
         CreateMap<Receipt, ReceiptDto>();
         CreateMap<ReceiptDto, Receipt>();
-
-        CreateMap<Receipt, AppDatabase>()
-            .ConvertUsing(src => AppDatabase.Retail);
     }
 }

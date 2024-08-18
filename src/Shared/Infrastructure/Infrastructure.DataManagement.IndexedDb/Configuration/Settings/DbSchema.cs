@@ -6,5 +6,7 @@ public class DbSchema
 
     public int Version { get; set; }
 
+    public int SynchronizationInterval { get; set; }
+
     public List<StoreDefinition> ObjectStores { get; set; } = null!;
 }

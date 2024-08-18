@@ -36,7 +36,7 @@ public class DbDataService<TRecord> : IDbDataService<TRecord>
         {
             var dbInteropModule = await _dbInteropModuleTask.Value;
 
-            var items = await dbInteropModule.InvokeAsync<IEnumerable<TRecord>>("getAllRecords", dbName, storeName);
+            var items = await dbInteropModule.InvokeAsync<IEnumerable<TRecord>>("getRecords", dbName, storeName);
 
             return items;
         }

@@ -1,6 +1,4 @@
-﻿using RetailAssistant.Data;
-
-namespace RetailAssistant.Application.Mapping.Retail;
+﻿namespace RetailAssistant.Application.Mapping.Retail;
 
 public class CashierProfile : Profile
 {
@@ -8,8 +6,5 @@ public class CashierProfile : Profile
     {
         CreateMap<Cashier, CashierDto>();
         CreateMap<CashierDto, Cashier>();
-
-        CreateMap<Cashier, AppDatabase>()
-            .ConvertUsing(src => AppDatabase.Retail);
     }
 }
