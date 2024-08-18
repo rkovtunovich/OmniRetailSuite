@@ -17,6 +17,9 @@ public static class ConfigureAppServices
         services.AddScoped<IRetailDataService<Store>, RetailService<Store, StoreDto>>();
         services.AddScoped<IDataService<Store>>((provider) => provider.GetRequiredService<IRetailDataService<Store>>());
 
+        services.AddScoped<IRetailDataService<Cashier>, RetailService<Cashier, CashierDto>>();
+        services.AddScoped<IDataService<Cashier>>((provider) => provider.GetRequiredService<IRetailDataService<Cashier>>());
+
         services.AddScoped<IRetailDataService<Receipt>, RetailService<Receipt, ReceiptDto>>();
         services.AddScoped<IDataService<Receipt>>((provider) => provider.GetRequiredService<IRetailDataService<Receipt>>());
 

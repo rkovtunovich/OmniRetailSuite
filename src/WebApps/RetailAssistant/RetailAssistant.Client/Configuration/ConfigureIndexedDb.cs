@@ -41,6 +41,8 @@ public static class ConfigureIndexedDb
             // create the instances of the data synchronization services for starting the sync process
             services.GetRequiredService<IDataSyncFromServerService<CatalogProductItem>>();
             services.GetRequiredService<IDataSyncFromServerService<ProductParent>>();
+            services.GetRequiredService<IDataSyncFromServerService<Store>>();
+            services.GetRequiredService<IDataSyncFromServerService<Cashier>>();
         }
         catch (Exception ex)
         {
@@ -102,8 +104,12 @@ public static class ConfigureIndexedDb
         services.AddDataManagement();
         services.AddScoped<IDataSyncFromServerService<CatalogProductItem>, DataSyncFromServerService<CatalogProductItem>>();
         services.AddScoped<IDataSyncFromServerService<ProductParent>, DataSyncFromServerService<ProductParent>>();
+        services.AddScoped<IDataSyncFromServerService<Store>, DataSyncFromServerService<Store>>();
+        services.AddScoped<IDataSyncFromServerService<Cashier>, DataSyncFromServerService<Cashier>>();
 
         services.AddScoped<IDbDataService<CatalogProductItem>, DbDataService<CatalogProductItem>>();
         services.AddScoped<IDbDataService<ProductParent>, DbDataService<ProductParent>>();
+        services.AddScoped<IDbDataService<Store>, DbDataService<Store>>();
+        services.AddScoped<IDbDataService<Cashier>, DbDataService<Cashier>>();
     }
 }
