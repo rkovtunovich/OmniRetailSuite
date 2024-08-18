@@ -5,6 +5,7 @@ using Infrastructure.DataManagement.IndexedDb.Configuration.Settings;
 using Infrastructure.DataManagement.IndexedDb.Extensions;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace RetailAssistant.Data.Configuration;
 
@@ -20,8 +21,8 @@ public static class ConfigureIndexedDb
 
         try
         {
-            await host.PrepareDatabase(new ProductCatalogDbSchema());
-            await host.PrepareDatabase(new RetailDbSchema());
+            await host.PrepareDatabase(services.GetRequiredService<IOptions<ProductCatalogDbSchema>>().Value);
+            await host.PrepareDatabase(services.GetRequiredService<IOptions<RetailDbSchema>>().Value);
 
             logger.LogInformation("IndexedDb configured.");
 
@@ -34,7 +35,11 @@ public static class ConfigureIndexedDb
  
     public static void AddIndexedDb(this IServiceCollection services)
     {
+        services.AddSingleton(Options.Create(new ProductCatalogDbSchema()));
+        services.AddSingleton(Options.Create(new RetailDbSchema()));
+
         services.AddDataManagement();
         services.AddScoped(typeof(IDbDataService<>), typeof(DbDataService<>));
+        services.AddScoped(typeof(IApplicationRepository<,>), typeof(ApplicationRepository<,>));
     }
 }
