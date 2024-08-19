@@ -1,5 +1,8 @@
 ﻿using Infrastructure.DataManagement.IndexedDb.Configuration.Settings;
 using Microsoft.Extensions.Options;
+using Polly;
+using Polly.Registry;
+using RetailAssistant.Core.Models.Settings;
 using RetailAssistant.Data;
 
 namespace RetailAssistant.Application.Services.Implementation;
@@ -13,6 +16,7 @@ public class DataSyncFromServerService<TModel, TDbSettings> : IDataSyncFromServe
     private readonly IDataService<TModel> _dataService;
     private readonly IApplicationRepository<TModel, TDbSettings> _applicationRepository;
     private readonly IOptions<TDbSettings> _options;
+    private readonly ResiliencePipeline _resiliencePipeline;
 
     private Timer? _fromServerSyncTimer;
 
@@ -21,13 +25,15 @@ public class DataSyncFromServerService<TModel, TDbSettings> : IDataSyncFromServe
         IApplicationRepository<TModel, TDbSettings> applicationRepository,
         IDataService<TModel> dataService,
         ILogger<DataSyncFromServerService<TModel, TDbSettings>> logger,
-        IOptions<TDbSettings> options)
+        IOptions<TDbSettings> options,
+        ResiliencePipelineProvider<string> resiliencePipelineProvider)
     {
         _applicationStateService = applicationStateService;
         _dataService = dataService;
         _applicationRepository = applicationRepository;
         _logger = logger;
         _options = options;
+        _resiliencePipeline = resiliencePipelineProvider.GetPipeline(RetryPolicySettings.Key);
 
         Initialize();
     }
@@ -52,14 +58,17 @@ public class DataSyncFromServerService<TModel, TDbSettings> : IDataSyncFromServe
 
         try
         {
-            var dbName = _options.Value.Name;
-
-            var productItems = await _dataService.GetAllAsync();
-
-            foreach (var productItem in productItems)
+            await _resiliencePipeline.ExecuteAsync(async (stoppingToken) =>
             {
-                await _applicationRepository.CreateOrUpdateAsync(productItem);
-            }
+                var dbName = _options.Value.Name;
+
+                var productItems = await _dataService.GetAllAsync();
+
+                foreach (var productItem in productItems)
+                {
+                    await _applicationRepository.CreateOrUpdateAsync(productItem);
+                }
+            });
 
             _logger.LogInformation("Data loaded from server.");
         }
