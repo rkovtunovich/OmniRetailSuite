@@ -44,10 +44,10 @@ public static class ConfigureAppServices
     {
         var services = host.Services;
 
-        // create the instances of the data synchronization services for starting the sync process
-        services.GetRequiredService<IDataSyncFromServerService<CatalogProductItem, ProductCatalogDbSchema>>();
-        services.GetRequiredService<IDataSyncFromServerService<ProductParent, ProductCatalogDbSchema>>();
-        services.GetRequiredService<IDataSyncFromServerService<Store, RetailDbSchema>>();
-        services.GetRequiredService<IDataSyncFromServerService<Cashier, RetailDbSchema>>();
+        //starting the sync process
+        services.GetRequiredService<IDataSyncFromServerService<CatalogProductItem, ProductCatalogDbSchema>>().SyncAsync(default);
+        services.GetRequiredService<IDataSyncFromServerService<ProductParent, ProductCatalogDbSchema>>().SyncAsync(default);
+        services.GetRequiredService<IDataSyncFromServerService<Store, RetailDbSchema>>().SyncAsync(default);
+        services.GetRequiredService<IDataSyncFromServerService<Cashier, RetailDbSchema>>().SyncAsync(default);
     }
 }

@@ -7,8 +7,8 @@ using RetailAssistant.Data;
 
 namespace RetailAssistant.Application.Services.Implementation;
 
-public class DataSyncFromServerService<TModel, TDbSettings> : IDataSyncFromServerService<TModel, TDbSettings>, IDisposable 
-    where TModel : EntityModelBase, new() 
+public class DataSyncFromServerService<TModel, TDbSettings> : IDataSyncFromServerService<TModel, TDbSettings>, IDisposable
+    where TModel : EntityModelBase, new()
     where TDbSettings : DbSchema
 {
     private readonly IApplicationStateService _applicationStateService;
@@ -19,6 +19,8 @@ public class DataSyncFromServerService<TModel, TDbSettings> : IDataSyncFromServe
     private readonly ResiliencePipeline _resiliencePipeline;
 
     private Timer? _fromServerSyncTimer;
+    private bool _isTimerInitialized = false;
+    private readonly object _timerLock = new();
 
     public DataSyncFromServerService(
         IApplicationStateService applicationStateService,
@@ -34,27 +36,19 @@ public class DataSyncFromServerService<TModel, TDbSettings> : IDataSyncFromServe
         _logger = logger;
         _options = options;
         _resiliencePipeline = resiliencePipelineProvider.GetPipeline(RetryPolicySettings.Key);
-
-        Initialize();
-    }
-
-    private void Initialize()
-    {
-        var interval =  TimeSpan.FromMinutes(_options.Value.SynchronizationInterval);
-        _fromServerSyncTimer = new Timer(async _ => await SyncAsync(CancellationToken.None), null, TimeSpan.Zero, interval);
-
-        _logger.LogInformation($"Data sync timer initialized for {typeof(TModel).Name} with interval {interval}.");
     }
 
     public async Task SyncAsync(CancellationToken stoppingToken)
     {
+        EnsureTimerInitialized();
+
         if (!_applicationStateService.IsOnline)
         {
             _logger.LogInformation("Device is offline. Data sync is disabled.");
             return;
         }
 
-        _logger.LogInformation("Starting loading data from server...");
+        _logger.LogInformation($"Starting loading {typeof(TModel).Name} data from server.");
 
         try
         {
@@ -64,17 +58,34 @@ public class DataSyncFromServerService<TModel, TDbSettings> : IDataSyncFromServe
 
                 var productItems = await _dataService.GetAllAsync();
 
-                foreach (var productItem in productItems)
-                {
-                    await _applicationRepository.CreateOrUpdateAsync(productItem);
-                }
+                foreach (var productItem in productItems)               
+                    await _applicationRepository.CreateOrUpdateAsync(productItem);              
             });
 
-            _logger.LogInformation("Data loaded from server.");
+            _logger.LogInformation($"Data loading from server completed for {typeof(TModel).Name}.");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Data loading from server failed.");
+            _logger.LogError(ex, $"Data loading from server failed for {typeof(TModel).Name}.");
+        }
+    }
+
+    private void EnsureTimerInitialized()
+    {
+        if (_isTimerInitialized) 
+            return;
+
+        lock (_timerLock)
+        {
+            if (_isTimerInitialized) 
+                return;
+
+            var interval = TimeSpan.FromMinutes(_options.Value.SynchronizationInterval);
+            _fromServerSyncTimer = new Timer(async _ => await SyncAsync(CancellationToken.None), null, TimeSpan.Zero, interval);
+
+            _isTimerInitialized = true;
+
+            _logger.LogInformation($"Data sync timer initialized for {typeof(TModel).Name} with interval {interval}.");
         }
     }
 
