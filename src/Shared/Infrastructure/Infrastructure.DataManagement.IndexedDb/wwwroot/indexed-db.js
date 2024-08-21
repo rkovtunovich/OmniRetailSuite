@@ -7,9 +7,21 @@ export function initializeDb(settings) {
 
         request.onupgradeneeded = function (event) {
             const db = event.target.result;
-            settings.objectStores.forEach((store) => {
-                if (!db.objectStoreNames.contains(store.name)) {
-                    db.createObjectStore(store.name, { keyPath: store.keyPath });
+            settings.objectStores.forEach((storeDefinition) => {
+                if (!db.objectStoreNames.contains(storeDefinition.name)) {
+
+                    // Create the object storeDefinition
+                    var createdStore = db.createObjectStore(storeDefinition.name, { keyPath: storeDefinition.keyPath });
+
+                    // Create indexes if they are defined
+                    if (storeDefinition.indexes) {
+                        storeDefinition.indexes.forEach((index) => {
+
+                            if (!createdStore.indexNames.contains(index.name)) {
+                                createdStore.createIndex(index.name, index.keyPath, { unique: index.unique });
+                            }
+                        })
+                    }
                 }
             });
         };
@@ -88,6 +100,10 @@ export function deleteRecord(dbName, storeName, key) {
 
 export function getRecords(dbName, storeName) {
     return performTransaction(dbName, storeName, 'readonly', store => store.getAll());
+}
+
+export function getRecordsByIndex(dbName, storeName, indexName, key) {
+    return performTransaction(dbName, storeName, 'readonly', store => store.index(indexName).getAll(key));
 }
 
 export function clearStore(dbName, storeName) {

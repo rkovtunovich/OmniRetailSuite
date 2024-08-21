@@ -19,22 +19,30 @@ public class ProductCatalogDbSchema : DbSchema
             new StoreDefinition
             {
                 Name = nameof(CatalogProductItem),
-                KeyPath = nameof(CatalogProductItem.Id).ToLower()
+                KeyPath = nameof(CatalogProductItem.Id).ToCamelCase(),
+                Indexes = [ 
+                    new() 
+                    { 
+                        Name = nameof(CatalogProductItem.ParentId).ToCamelCase(), 
+                        KeyPath = nameof(CatalogProductItem.ParentId).ToCamelCase(),
+                        Unique = false 
+                    }
+                ]
             },
             new StoreDefinition
             {
                 Name = nameof(ProductBrand),
-                KeyPath = nameof(ProductBrand.Id).ToLower()
+                KeyPath = nameof(ProductBrand.Id).ToCamelCase()
             },
             new StoreDefinition
             {
                 Name = nameof(ProductParent),
-                KeyPath = nameof(ProductParent.Id).ToLower()
+                KeyPath = nameof(ProductParent.Id).ToCamelCase()
             },
             new StoreDefinition
             {
                 Name = nameof(ProductType),
-                KeyPath = nameof(ProductType.Id).ToLower()
+                KeyPath = nameof(ProductType.Id).ToCamelCase()
             },
         ];
     }

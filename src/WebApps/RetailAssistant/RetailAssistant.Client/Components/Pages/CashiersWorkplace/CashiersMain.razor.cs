@@ -13,7 +13,7 @@ public partial class CashiersMain
 
     [Inject] public IApplicationRepository<ProductParent, ProductCatalogDbSchema> ProductParentRepository { get; set; } = null!;
 
-    [Inject] public IProductCatalogDataService<CatalogProductItem> ProductItemService { get; set; } = null!;
+    [Inject] public IApplicationRepository<CatalogProductItem, ProductCatalogDbSchema> ProductItemRepository { get; set; } = null!;
 
     [Inject] public IRetailDataService<Receipt> ReceiptService { get; set; } = null!;
 
@@ -78,12 +78,12 @@ public partial class CashiersMain
     {
         if (productParent is null)
         {
-            var productItemsList = await ProductItemService.GetAllAsync();
+            var productItemsList = await ProductItemRepository.GetAllAsync();
             _productItems = [.. productItemsList];
         }
         else
         {
-            var productItemsList = await ProductItemService.GetByParentAsync(productParent.Id);
+            var productItemsList = await ProductItemRepository.GetAllByPropertyAsync(nameof(CatalogProductItem.ParentId), productParent.Id);
             _productItems = [.. productItemsList];
         }
 

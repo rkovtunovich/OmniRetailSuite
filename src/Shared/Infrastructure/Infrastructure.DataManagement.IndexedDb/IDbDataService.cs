@@ -8,6 +8,8 @@ public interface IDbDataService<TRecord>
 
     Task<IEnumerable<TRecord>> GetAllRecordsAsync(string dbName, string storeName);
 
+    Task<IEnumerable<TRecord>> GetAllRecordsByIndexAsync(string dbName, string storeName, string indexName, string indexValue);
+
     Task UpdateRecordAsync(string dbName, string storeName, TRecord item);
 
     Task DeleteRecordAsync(string dbName, string storeName, string key);

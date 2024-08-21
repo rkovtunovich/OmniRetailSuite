@@ -148,6 +148,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.DataManageme
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailAssistant.Data", "src\WebApps\RetailAssistant\RetailAssistant.Data\RetailAssistant.Data.csproj", "{C4EBA8E6-3AB0-460F-AFB0-C44DD267C3AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers.StringsHelper", "src\Shared\Helpers\Helpers.StringsHelper\Helpers.StringsHelper.csproj", "{6BDC27D3-7D43-4613-8BF7-139708AF220E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -430,6 +432,12 @@ Global
 		{C4EBA8E6-3AB0-460F-AFB0-C44DD267C3AD}.NoVariablesDefault|Any CPU.Build.0 = Debug|Any CPU
 		{C4EBA8E6-3AB0-460F-AFB0-C44DD267C3AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4EBA8E6-3AB0-460F-AFB0-C44DD267C3AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BDC27D3-7D43-4613-8BF7-139708AF220E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BDC27D3-7D43-4613-8BF7-139708AF220E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BDC27D3-7D43-4613-8BF7-139708AF220E}.NoVariablesDefault|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BDC27D3-7D43-4613-8BF7-139708AF220E}.NoVariablesDefault|Any CPU.Build.0 = Debug|Any CPU
+		{6BDC27D3-7D43-4613-8BF7-139708AF220E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BDC27D3-7D43-4613-8BF7-139708AF220E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -496,6 +504,7 @@ Global
 		{DF048127-1EBF-4330-8284-81688AC73413} = {64D07E59-BB24-4001-A57B-8592915A79C6}
 		{8C1F37BF-925A-4D24-BC8C-E1EDAB615F71} = {BE3FB256-472F-4424-B0D2-A31B37EC7229}
 		{C4EBA8E6-3AB0-460F-AFB0-C44DD267C3AD} = {1D91FEC3-6E74-4EF7-BBB6-8F70D14AE95D}
+		{6BDC27D3-7D43-4613-8BF7-139708AF220E} = {2E7A07C6-B2AB-4311-9619-7E3E01AE3D1C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {49813262-5DA3-4D61-ABD3-493C74CE8C2B}

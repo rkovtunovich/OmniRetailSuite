@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\Helpers\Helpers.StringsHelper\Helpers.StringsHelper.csproj" />
     <ProjectReference Include="..\..\..\Shared\Infrastructure\Infrastructure.DataManagement.IndexedDb\Infrastructure.DataManagement.IndexedDb.csproj" />
     <ProjectReference Include="..\RetailAssistant.Core\RetailAssistant.Core.csproj" />
   </ItemGroup>

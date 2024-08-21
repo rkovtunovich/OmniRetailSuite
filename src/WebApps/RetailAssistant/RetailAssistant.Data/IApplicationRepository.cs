@@ -6,6 +6,8 @@ public interface IApplicationRepository<TModel, TDbSchema> where TModel : class 
 
     Task<IEnumerable<TModel>> GetAllAsync();
 
+    Task<IEnumerable<TModel>> GetAllByPropertyAsync(string propertyName, object propertyValue);
+
     Task<bool> CreateAsync(TModel model);
 
     Task<bool> UpdateAsync(TModel model);

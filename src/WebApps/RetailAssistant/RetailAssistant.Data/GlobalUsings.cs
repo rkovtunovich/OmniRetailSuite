@@ -1,4 +1,6 @@
-﻿global using Microsoft.Extensions.Logging;
+﻿global using Helpers.StringsHelper;
+
+global using Microsoft.Extensions.Logging;
 
 global using RetailAssistant.Core.Models;
 global using RetailAssistant.Core.Models.ProductCatalog;

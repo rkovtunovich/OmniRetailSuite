@@ -32,6 +32,22 @@ public class ApplicationRepository<TModel, TDbSettings> : IApplicationRepository
         }
     }
 
+    public async Task<IEnumerable<TModel>> GetAllByPropertyAsync(string propertyName, object propertyValue )
+    {
+        try
+        {
+            var value = propertyValue.ToString() ?? throw new ArgumentNullException(nameof(propertyValue), "Property value cannot be null.");
+            var result = await _dbDataService.GetAllRecordsByIndexAsync(_options.Value.Name, typeof(TModel).Name, propertyName.ToCamelCase(), value);
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Error getting all {typeof(TModel).Name} records by property '{propertyName}'.");
+            throw;
+        }
+    }
+
     public async Task<TModel?> GetByIdAsync(Guid id)
     {
         try

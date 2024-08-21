@@ -47,6 +47,23 @@ public class DbDataService<TRecord> : IDbDataService<TRecord>
         }
     }
 
+    public async Task<IEnumerable<TRecord>> GetAllRecordsByIndexAsync(string dbName, string storeName, string indexName, string indexValue)
+    {
+        try
+        {
+            var dbInteropModule = await _dbInteropModuleTask.Value;
+
+            var items = await dbInteropModule.InvokeAsync<IEnumerable<TRecord>>("getRecordsByIndex", dbName, storeName, indexName, indexValue);
+
+            return items;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Error getting all items from store '{storeName}' in database '{dbName}' by index '{indexName}' with value '{indexValue}'.");
+            throw;
+        }
+    }
+
     public async Task<TRecord?> GetRecordAsync(string dbName, string storeName, string key)
     {
         try

@@ -19,17 +19,17 @@ public class RetailDbSchema : DbSchema
             new StoreDefinition
             {
                 Name = nameof(Store),
-                KeyPath = nameof(Store.Id).ToLower()
+                KeyPath = nameof(Store.Id).ToCamelCase()
             },
             new StoreDefinition
             {
                 Name = nameof(Cashier),
-                KeyPath = nameof(Cashier.Id).ToLower()
+                KeyPath = nameof(Cashier.Id).ToCamelCase()
             },
             new StoreDefinition
             {
                 Name = nameof(Receipt),
-                KeyPath = nameof(Receipt.Id).ToLower()
+                KeyPath = nameof(Receipt.Id).ToCamelCase()
             }
         ];
     }
