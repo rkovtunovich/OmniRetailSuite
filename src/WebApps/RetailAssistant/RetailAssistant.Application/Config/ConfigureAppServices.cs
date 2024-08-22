@@ -31,6 +31,7 @@ public static class ConfigureAppServices
         services.AddScoped<IProductCatalogDataService<ProductParent>, ProductCatalogService<ProductParent, ProductParentDto>>();
         services.AddScoped<IDataService<ProductParent>>((provider) => provider.GetRequiredService<IProductCatalogDataService<ProductParent>>());
 
+        services.AddScoped(typeof(IDataSyncToServerService<,>), typeof(DataSyncToServerService<,>));
         services.AddScoped(typeof(IDataSyncFromServerService<,>), typeof(DataSyncFromServerService<,>));
 
         services.AddMapping();
@@ -45,6 +46,8 @@ public static class ConfigureAppServices
         var services = host.Services;
 
         //starting the sync process
+        services.GetRequiredService<IDataSyncToServerService<Receipt, RetailDbSchema>>().SyncAsync(default);
+
         services.GetRequiredService<IDataSyncFromServerService<CatalogProductItem, ProductCatalogDbSchema>>().SyncAsync(default);
         services.GetRequiredService<IDataSyncFromServerService<ProductParent, ProductCatalogDbSchema>>().SyncAsync(default);
         services.GetRequiredService<IDataSyncFromServerService<Store, RetailDbSchema>>().SyncAsync(default);

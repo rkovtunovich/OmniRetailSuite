@@ -6,8 +6,6 @@ public interface IRetailDataService<TModel> : IDataService<TModel> where TModel 
 
     Task<TModel?> GetByIdAsync(Guid id);
 
-    Task<TModel> CreateAsync(TModel model);
-
     Task<bool> UpdateAsync(TModel model);
 
     Task<bool> DeleteAsync(Guid id, bool isSoftDeleting);

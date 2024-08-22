@@ -10,6 +10,8 @@ public abstract class EntityModelBase
 
     public string? CodePrefix { get; set; }
 
+    public DateTimeOffset UploadedAt { get; set; }
+
     public string GetCode()
     {
         return $"{CodePrefix}{CodeNumber:0000}";

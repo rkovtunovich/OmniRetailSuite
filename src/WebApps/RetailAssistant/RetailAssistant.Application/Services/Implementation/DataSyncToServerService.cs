@@ -1,70 +1,46 @@
-﻿using Infrastructure.DataManagement.IndexedDb;
+﻿using Helpers.StringsHelper;
 using Infrastructure.DataManagement.IndexedDb.Configuration.Settings;
 using Microsoft.Extensions.Options;
+using Polly.Registry;
+using RetailAssistant.Data;
 
 namespace RetailAssistant.Application.Services.Implementation;
 
-public class DataSyncToServerService<TModel, TDbSettings> : IDataSyncToServerService<TModel>, IDisposable 
+public class DataSyncToServerService<TModel, TDbSettings>(
+    IApplicationStateService applicationStateService,
+    IApplicationRepository<TModel, TDbSettings> applicationRepository,
+    IDataService<TModel> dataService,
+    ILogger<DataSyncToServerService<TModel, TDbSettings>> logger,
+    IOptions<TDbSettings> options,
+    ResiliencePipelineProvider<string> resiliencePipelineProvider) :
+    DataSyncServiceBase<TModel, TDbSettings>(applicationStateService, applicationRepository, dataService, logger, options, resiliencePipelineProvider),
+    IDataSyncToServerService<TModel, TDbSettings>
     where TModel : EntityModelBase, new()
     where TDbSettings : DbSchema
 {
-    private readonly IApplicationStateService _applicationStateService;
-    private readonly ILogger<DataSyncToServerService<TModel, TDbSettings>> _logger;
-    private readonly IRetailDataService<TModel> _retailService;
-    private readonly IDbDataService<TModel> _dbDataService;
-    private readonly IOptions<TDbSettings> _options;
+    private static readonly string _uploadedAtPropertyName = nameof(EntityModelBase.UploadedAt).ToCamelCase();
+    private static readonly string _valueForUploadedAt = DateTimeOffset.MinValue.ToString("yyyy-MM-ddTHH:mm:sszzz");
 
-    private Timer? _toServerSyncTimer;
-
-    public DataSyncToServerService(
-        IApplicationStateService applicationStateService,
-        IDbDataService<TModel> dbDataService,
-        IRetailDataService<TModel> retailService,
-        ILogger<DataSyncToServerService<TModel, TDbSettings>> logger,
-        IOptions<TDbSettings> options)
+    protected override async Task PerformSynchronizationAsync(CancellationToken stoppingToken)
     {
-        _applicationStateService = applicationStateService;
-        _retailService = retailService;
-        _dbDataService = dbDataService;
-        _logger = logger;
-        _options = options;
+        var items = await _applicationRepository.GetAllByPropertyAsync(_uploadedAtPropertyName, _valueForUploadedAt);
 
-        Initialize();
-    }
+        var uploadedCount = 0;
+        var allItemsCount = items.Count();
 
-    private void Initialize()
-    {
-        var interval = TimeSpan.FromMinutes(_options.Value.SynchronizationInterval);
-        _toServerSyncTimer = new Timer(async _ => await SyncAsync(CancellationToken.None), null, TimeSpan.Zero, interval);
-    }
-
-    public async Task SyncAsync(CancellationToken stoppingToken)
-    {
-        if (!_applicationStateService.IsOnline)
+        foreach (var item in items)
         {
-            _logger.LogInformation("Device is offline. Data sync is disabled.");
-            return;
+            var createdItem = await _dataService.CreateAsync(item);
+
+            if (createdItem != null)
+            {
+                createdItem.UploadedAt = DateTimeOffset.Now;
+                await _applicationRepository.UpdateAsync(createdItem);
+
+                uploadedCount++;
+            }          
         }
 
-        _logger.LogInformation("Starting uploading data to server...");
-
-        try
-        {
-            // TODO: Implement the logic to upload data to the server
-            await Task.FromResult(0);
-
-            _logger.LogInformation("Data uploaded to server.");
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Data uploading to server failed.");
-        }
-    }
-
-    public void Dispose()
-    {
-        _toServerSyncTimer?.Dispose();
-
-        GC.SuppressFinalize(this);
+        _logger.LogInformation($"{typeof(TModel).Name}: uploaded {uploadedCount} from {allItemsCount} items to the server.");
     }
 }
