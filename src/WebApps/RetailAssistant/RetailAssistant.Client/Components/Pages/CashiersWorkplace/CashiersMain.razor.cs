@@ -15,7 +15,7 @@ public partial class CashiersMain
 
     [Inject] public IApplicationRepository<CatalogProductItem, ProductCatalogDbSchema> ProductItemRepository { get; set; } = null!;
 
-    [Inject] public IRetailDataService<Receipt> ReceiptService { get; set; } = null!;
+    [Inject] public IApplicationRepository<Receipt, RetailDbSchema> ReceiptRepository { get; set; } = null!;
 
     [Inject] private ILocalConfigService LocalConfigService { get; set; } = null!;
 
@@ -272,7 +272,7 @@ public partial class CashiersMain
         PaymentDialog?.Close();
 
         _receipt.Date = DateTime.Now;
-        await ReceiptService.CreateAsync(_receipt);
+        await ReceiptRepository.CreateAsync(_receipt);
 
         await InitNewReceipt();
 

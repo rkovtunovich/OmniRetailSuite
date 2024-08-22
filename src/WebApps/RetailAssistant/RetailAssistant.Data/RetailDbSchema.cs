@@ -29,7 +29,15 @@ public class RetailDbSchema : DbSchema
             new StoreDefinition
             {
                 Name = nameof(Receipt),
-                KeyPath = nameof(Receipt.Id).ToCamelCase()
+                KeyPath = nameof(Receipt.Id).ToCamelCase(),
+                Indexes = [
+                    new()
+                    {
+                        Name = nameof(Receipt.UploadedAt).ToCamelCase(),
+                        KeyPath = nameof(Receipt.UploadedAt).ToCamelCase(),
+                        Unique = false
+                    }
+                ]
             }
         ];
     }

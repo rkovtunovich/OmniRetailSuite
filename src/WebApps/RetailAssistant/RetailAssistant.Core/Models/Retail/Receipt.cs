@@ -44,6 +44,8 @@ public class Receipt : EntityModelBase
 
     public decimal TotalPrice { get; set; }
 
+    public DateTimeOffset UploadedAt { get; set; }
+
     public List<ReceiptItem> ReceiptItems { get; set; } = [];
 
     public void AddReceiptItem(ReceiptItem receiptItem)
@@ -88,7 +90,6 @@ public class Receipt : EntityModelBase
         {
             Id = id,
             ProductItem = new RetailProductItem { Id = productItem.Id, Name = productItem.Name },
-            Receipt = this,
             ReceiptId = Id,
             Quantity = 1,
             UnitPrice = productItem.Price,
