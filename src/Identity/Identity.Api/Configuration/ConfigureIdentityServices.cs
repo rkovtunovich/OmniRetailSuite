@@ -160,9 +160,10 @@ public static class ConfigureIdentityServices
                     [
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "api",
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
                         IdentityServerConstants.LocalApi.ScopeName,
-                        "webappsgateway"
+                        "webappsgateway",
+                        "api"
                     ]
                 }
         ];

@@ -13,11 +13,13 @@ public class PersistentRemoteAuthenticationService<TRemoteAuthenticationState, T
     public const string AuthUserKey = "authUser";
     public const string AuthOptionsKey = "authOptions";
     public const string AuthTokenKey = "authToken";
+    private readonly string _sessionKey;
 
     private readonly IJSRuntime _jsRuntime;
     private readonly ILogger<PersistentRemoteAuthenticationService<TRemoteAuthenticationState, TAccount>> _logger;
 
     private bool _isTokenPersisted = false;
+    private bool _isSessionRestored = false;
 
     public PersistentRemoteAuthenticationService(
         IJSRuntime jsRuntime,
@@ -29,6 +31,8 @@ public class PersistentRemoteAuthenticationService<TRemoteAuthenticationState, T
     {
         _jsRuntime = jsRuntime;
         _logger = logger;
+
+        _sessionKey = $"oidc.user:{Options.ProviderOptions.Authority}:{Options.UserOptions.AuthenticationType}";
     }
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -71,6 +75,8 @@ public class PersistentRemoteAuthenticationService<TRemoteAuthenticationState, T
         // Remove the user state from local storage
         await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", AuthUserKey);
         await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", AuthOptionsKey);
+        await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", AuthTokenKey);
+        await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", _sessionKey);
 
         return await base.SignOutAsync(context);
     }
@@ -91,11 +97,17 @@ public class PersistentRemoteAuthenticationService<TRemoteAuthenticationState, T
         var serializedOptions = JsonSerializer.Serialize(Options.UserOptions);
         await _jsRuntime.InvokeVoidAsync("localStorage.setItem", AuthOptionsKey, serializedOptions);
 
+        var session = await _jsRuntime.InvokeAsync<string>("sessionStorage.getItem", _sessionKey);
+        if (!string.IsNullOrEmpty(session))
+            await _jsRuntime.InvokeVoidAsync("localStorage.setItem", _sessionKey, session);
+
         return result;
     }
 
     public override async ValueTask<AccessTokenResult> RequestAccessToken()
     {
+        await RestoreSessionAsync();
+
         var tokenResult = await base.RequestAccessToken();
 
         if (tokenResult.Status == AccessTokenResultStatus.Success && !_isTokenPersisted)
@@ -124,5 +136,21 @@ public class PersistentRemoteAuthenticationService<TRemoteAuthenticationState, T
         }
 
         return tokenResult;
+    }
+
+    private async ValueTask RestoreSessionAsync()
+    {
+        if (_isSessionRestored)
+            return;
+
+        var currentSession = await _jsRuntime.InvokeAsync<string>("sessionStorage.getItem", _sessionKey);
+        if (!string.IsNullOrEmpty(currentSession))
+            return;
+
+        var persistedSession = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", _sessionKey);
+        if (!string.IsNullOrEmpty(persistedSession))
+            await _jsRuntime.InvokeVoidAsync("sessionStorage.setItem", _sessionKey, persistedSession);
+
+        _isSessionRestored = true;
     }
 }
