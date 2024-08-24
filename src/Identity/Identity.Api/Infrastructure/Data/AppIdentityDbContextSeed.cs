@@ -8,18 +8,24 @@ namespace Identity.Api.Infrastructure.Data;
 
 public class AppIdentityDbContextSeed
 {
-    public static async Task SeedAsync(ApplicationDbContext identityDbContext, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IUserPreferenceRepository preferenceRepository)
+    public static async Task SeedAsync(ApplicationDbContext identityDbContext,
+                                       UserManager<ApplicationUser> userManager,
+                                       RoleManager<IdentityRole> roleManager,
+                                       IUserPreferenceRepository preferenceRepository,
+                                       IConfiguration configuration)
     {
         if (identityDbContext.Database.IsNpgsql())       
             identityDbContext.Database.Migrate();
         
         await roleManager.CreateAsync(new IdentityRole(Constants.Roles.ADMINISTRATORS));
 
-        await CreateAdminUser(userManager, preferenceRepository);
-        await CreateDefaultUser(userManager, preferenceRepository);
+        var defaultPassword = configuration["DefaultUserPassword"] ?? throw new Exception("DefaultUserPassword is not set in configuration");
+
+        await CreateAdminUser(userManager, preferenceRepository, defaultPassword);
+        await CreateDefaultUser(userManager, preferenceRepository, defaultPassword);
     }
 
-    private static async Task CreateAdminUser(UserManager<ApplicationUser> userManager, IUserPreferenceRepository preferenceRepository)
+    private static async Task CreateAdminUser(UserManager<ApplicationUser> userManager, IUserPreferenceRepository preferenceRepository, string defaultPassword)
     {
         var adminUserName = "admin";
         var adminUser = new ApplicationUser
@@ -28,7 +34,7 @@ public class AppIdentityDbContextSeed
             Email = "admin@microsoft.com",
             CreatedAt = DateTimeOffset.UtcNow
         };
-        await userManager.CreateAsync(adminUser, AuthorizationConstants.DEFAULT_PASSWORD);
+        await userManager.CreateAsync(adminUser, defaultPassword);
         adminUser = await userManager.FindByNameAsync(adminUserName) ?? throw new Exception("Seeding DB error");
 
         await userManager.AddToRoleAsync(adminUser, Constants.Roles.ADMINISTRATORS);  
@@ -36,7 +42,7 @@ public class AppIdentityDbContextSeed
         await SeedPreferencesAdminUser(preferenceRepository, adminUser.Id);
     }
 
-    private static async Task CreateDefaultUser(UserManager<ApplicationUser> userManager, IUserPreferenceRepository preferenceRepository)
+    private static async Task CreateDefaultUser(UserManager<ApplicationUser> userManager, IUserPreferenceRepository preferenceRepository, string defaultPassword)
     {
         var defaultUser = new ApplicationUser
         {
@@ -44,7 +50,7 @@ public class AppIdentityDbContextSeed
             Email = "demouser@microsoft.com",
             CreatedAt = DateTimeOffset.UtcNow
         };
-        await userManager.CreateAsync(defaultUser, AuthorizationConstants.DEFAULT_PASSWORD);
+        await userManager.CreateAsync(defaultUser, defaultPassword);
 
         defaultUser = await userManager.FindByNameAsync(defaultUser.UserName) ?? throw new Exception("Seeding DB error");
 

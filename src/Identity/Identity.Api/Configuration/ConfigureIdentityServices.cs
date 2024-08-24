@@ -36,7 +36,7 @@ public static class ConfigureIdentityServices
         {
             options.AddPolicy("default", policy =>
             {
-                policy.WithOrigins(configuration["RetailAssistant"] ?? throw new ArgumentNullException("RetailAssistant"))
+                policy.WithOrigins(configuration["RetailAssistant"] ?? throw new NullReferenceException("RetailAssistant"))
                       .AllowAnyHeader()
                       .AllowAnyMethod();
             });
@@ -65,7 +65,7 @@ public static class ConfigureIdentityServices
              new("webappsgateway", "WEB Apps API Gateway")
                     {
                         ApiSecrets = { new Secret("webappsgateway-secret".Sha256()) },
-                        Scopes = { "webappsgateway" }                       
+                        Scopes = { "webappsgateway" }
                     }
         ];
     }
@@ -88,27 +88,16 @@ public static class ConfigureIdentityServices
                 new() {
                     ClientId = "blazorOpenId",
                     ClientName = "Blazor Admin OpenId Client",
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,                    
-                    //Used to retrieve the access token on the back channel.
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,                     
                     ClientSecrets =
                     {
                         new Secret("blazorSecret".Sha256())
                     },
-                    //RedirectUris = { "http://blazoradmin" },
-                    //RequireConsent = false,
-                    //RequirePkce = true,
-                    //PostLogoutRedirectUris = { $"http://blazoradmin/Account/Redirecting" },
-                    //AllowedCorsOrigins = { "http://eshopxamarin" },
                     AllowedScopes =
                     [
-                        //IdentityServerConstants.StandardScopes.OpenId,
-                        //IdentityServerConstants.StandardScopes.Profile,
                         "webappsgateway",
                          IdentityServerConstants.LocalApi.ScopeName
                     ],
-                    //Allow requesting refresh tokens for long lived API access
-                    //AllowOfflineAccess = true,
-                    //AllowAccessTokensViaBrowser = true
                 },
                 new() {
                     ClientId = "blazorInteractive",
@@ -119,13 +108,8 @@ public static class ConfigureIdentityServices
                     ],
                     ClientUri = $"{configuration["Backoffice"]}/", // public uri of the client
                     AllowedGrantTypes = GrantTypes.Code,
-                    //AllowAccessTokensViaBrowser = false,
-                    //RequireConsent = false,
-                    //RequireConsent = true,
-                    //RequirePkce = false,
                     AllowPlainTextPkce = true,
                     AllowOfflineAccess = true,
-                    //AlwaysIncludeUserClaimsInIdToken = true,
                     RedirectUris =
                     [
                         $"{configuration["Backoffice"]}/signin-oidc"
@@ -138,7 +122,7 @@ public static class ConfigureIdentityServices
                     AllowedScopes =
                     [
                         IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,                     
+                        IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.LocalApi.ScopeName,
                         "webappsgateway"
                     ],
@@ -152,14 +136,17 @@ public static class ConfigureIdentityServices
                     ClientUri = $"{configuration["RetailAssistant"]}/", // public uri of the client
                     AllowedGrantTypes = GrantTypes.Code,
                     RequireClientSecret = false,
-                    //AllowAccessTokensViaBrowser = false,
-                    //RequireConsent = false,
-                    //RequireConsent = true,
+                    RequireConsent = false,
                     RequirePkce = true,
-                    AllowPlainTextPkce = true,
+                    AllowPlainTextPkce = false,
                     AllowOfflineAccess = true,
                     AllowedCorsOrigins = { configuration["RetailAssistant"] },
-                    //AlwaysIncludeUserClaimsInIdToken = true,
+                    AccessTokenLifetime = 60 * 60 * 2, // 2 hours
+                    IdentityTokenLifetime = 60 * 60 * 2, // 2 hours
+                    AbsoluteRefreshTokenLifetime = 60 * 60 * 24 * 30, // 30 days
+                    SlidingRefreshTokenLifetime = 60 * 60 * 24 * 15, // 15 days
+                    RefreshTokenUsage = TokenUsage.ReUse,
+                    RefreshTokenExpiration = TokenExpiration.Sliding,
                     RedirectUris =
                     [
                         $"{configuration["RetailAssistant"]}/authentication/login-callback"
@@ -176,9 +163,7 @@ public static class ConfigureIdentityServices
                         "api",
                         IdentityServerConstants.LocalApi.ScopeName,
                         "webappsgateway"
-                    ],
-                    AccessTokenLifetime = 60 * 60 * 2, // 2 hours
-                    IdentityTokenLifetime= 60 * 60 * 2 // 2 hours
+                    ]
                 }
         ];
     }
