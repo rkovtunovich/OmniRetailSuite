@@ -11,7 +11,7 @@ public static class ConfigureWebInfrastructureServices
 {
     public static IServiceCollection AddRetailAssistantWebServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<IdentityServerSettings>(configuration.GetSection(IdentityServerSettings.Key));
+        services.Configure<IdentitySettings>(configuration.GetSection(IdentitySettings.Key));
         services.Configure<GatewaySettings>(configuration.GetSection(GatewaySettings.Key));
       
         services.AddIdentityClient(configuration);
@@ -37,7 +37,7 @@ public static class ConfigureWebInfrastructureServices
         var identityClientName = identityClientSettings.GetValue<string>(nameof(IdentityClientSettings.Name))
             ?? throw new Exception("Identity client name isn't settled in configuration");
 
-        var authority = configuration.GetValue<string>("IdentityServerSettings:Authority") ??
+        var authority = configuration.GetValue<string>($"{IdentitySettings.Key}:Authority") ??
                 throw new Exception("Identity server authority isn't settled in configuration");
 
         services.AddHttpClient(identityClientName, client =>

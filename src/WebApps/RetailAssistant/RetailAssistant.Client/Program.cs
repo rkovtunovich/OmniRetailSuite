@@ -1,4 +1,5 @@
-﻿using Infrastructure.Serialization.JsonText.Configuration;
+﻿using IdentityModel;
+using Infrastructure.Serialization.JsonText.Configuration;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
@@ -8,6 +9,7 @@ using MudBlazor.Services;
 using MudExtensions.Services;
 using RetailAssistant.Application.Config;
 using RetailAssistant.Client.Configuration;
+using RetailAssistant.Core.Models.Settings;
 using RetailAssistant.Data.Configuration;
 using UI.Razor.Services.Implementation;
 
@@ -30,13 +32,14 @@ builder.Services.AddSingleton<TabsService>();
 
 builder.Services.AddOidcAuthentication(options =>
 {
-    builder.Configuration.Bind("Local", options.ProviderOptions);
+    builder.Configuration.Bind(IdentitySettings.Key, options.ProviderOptions);
 
     options.ProviderOptions.DefaultScopes.Add("openid");
     options.ProviderOptions.DefaultScopes.Add("profile");
     options.ProviderOptions.DefaultScopes.Add("api");
     options.ProviderOptions.DefaultScopes.Add("webappsgateway");
     options.ProviderOptions.DefaultScopes.Add("IdentityServerApi");
+    options.ProviderOptions.DefaultScopes.Add("offline_access");
     options.ProviderOptions.ResponseType = "code";
 });
 
