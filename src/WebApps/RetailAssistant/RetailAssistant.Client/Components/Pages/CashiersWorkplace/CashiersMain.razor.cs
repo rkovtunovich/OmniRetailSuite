@@ -1,7 +1,7 @@
 ﻿using Infrastructure.Common.Services;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.Extensions.Localization;
 using RetailAssistant.Core.Models.ProductCatalog;
+using RetailAssistant.Data;
 using UI.Razor.Enums;
 using UI.Razor.Helpers;
 
@@ -11,11 +11,11 @@ public partial class CashiersMain
 {
     #region Injected services
 
-    [Inject] public IProductCatalogService<ProductParent> ProductParentService { get; set; } = null!;
+    [Inject] public IApplicationRepository<ProductParent, ProductCatalogDbSchema> ProductParentRepository { get; set; } = null!;
 
-    [Inject] public IProductCatalogService<CatalogProductItem> ProductItemService { get; set; } = null!;
+    [Inject] public IApplicationRepository<CatalogProductItem, ProductCatalogDbSchema> ProductItemRepository { get; set; } = null!;
 
-    [Inject] public IRetailService<Receipt> ReceiptService { get; set; } = null!;
+    [Inject] public IApplicationRepository<Receipt, RetailDbSchema> ReceiptRepository { get; set; } = null!;
 
     [Inject] private ILocalConfigService LocalConfigService { get; set; } = null!;
 
@@ -78,12 +78,12 @@ public partial class CashiersMain
     {
         if (productParent is null)
         {
-            var productItemsList = await ProductItemService.GetAllAsync();
+            var productItemsList = await ProductItemRepository.GetAllAsync();
             _productItems = [.. productItemsList];
         }
         else
         {
-            var productItemsList = await ProductItemService.GetByParentAsync(productParent.Id);
+            var productItemsList = await ProductItemRepository.GetAllByPropertyAsync(nameof(CatalogProductItem.ParentId), productParent.Id);
             _productItems = [.. productItemsList];
         }
 
@@ -159,7 +159,7 @@ public partial class CashiersMain
 
     private async Task ReloadItemParents()
     {
-        var itemParentsList = await ProductParentService.GetAllAsync();
+        var itemParentsList = await ProductParentRepository.GetAllAsync();
         _itemParents.Clear();
         _itemParents.Add(new ProductParent { Id = Guid.NewGuid(), Name = FilterSpecialCase.All.ToString() });
         _itemParents.Add(new ProductParent { Id = Guid.NewGuid(), Name = FilterSpecialCase.Empty.ToString() });
@@ -272,7 +272,7 @@ public partial class CashiersMain
         PaymentDialog?.Close();
 
         _receipt.Date = DateTime.Now;
-        await ReceiptService.CreateAsync(_receipt);
+        await ReceiptRepository.CreateAsync(_receipt);
 
         await InitNewReceipt();
 
@@ -306,7 +306,6 @@ public partial class CashiersMain
     #endregion
 
     #region Cashier
-
 
     private async Task ShowCashierChangeDialog()
     {

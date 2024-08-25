@@ -2,23 +2,16 @@
 
 namespace RetailAssistant.Application.Services.Implementation;
 
-public class LocalConfigService : ILocalConfigService
+public class LocalConfigService(ILocalStorageService localStorageService) : ILocalConfigService
 {
-    private readonly ILocalStorageService _localStorageService;
-
     private RetailAssistantAppConfig? _config;
-
-    public LocalConfigService(ILocalStorageService localStorageService)
-    {
-        _localStorageService = localStorageService;
-    }
 
     public async Task<RetailAssistantAppConfig> GetConfigAsync()
     {
         if (_config is not null)        
             return _config;
 
-        _config = await _localStorageService.GetItemAsync<RetailAssistantAppConfig>(nameof(RetailAssistantAppConfig));
+        _config = await localStorageService.GetItemAsync<RetailAssistantAppConfig>(nameof(RetailAssistantAppConfig));
 
         return _config ?? new();
     }
@@ -27,6 +20,6 @@ public class LocalConfigService : ILocalConfigService
     {
         _config = config;
 
-        await _localStorageService.SetItemAsync(nameof(RetailAssistantAppConfig), config);
+        await localStorageService.SetItemAsync(nameof(RetailAssistantAppConfig), config);
     }
 }

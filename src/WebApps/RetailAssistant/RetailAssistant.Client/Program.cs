@@ -1,12 +1,16 @@
-﻿using System.Globalization;
+﻿using IdentityModel;
 using Infrastructure.Serialization.JsonText.Configuration;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.JSInterop;
 using MudBlazor.Services;
 using MudExtensions.Services;
 using RetailAssistant.Application.Config;
 using RetailAssistant.Client.Configuration;
+using RetailAssistant.Core.Models.Settings;
+using RetailAssistant.Data.Configuration;
 using UI.Razor.Services.Implementation;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -23,19 +27,23 @@ builder.Services.AddRetailAssistantWebServices(builder.Configuration);
 builder.Services.AddMudServices();
 builder.Services.AddMudExtensions();
 builder.Services.AddRetailAssistantAppServices();
+builder.Services.AddIndexedDb();
 builder.Services.AddSingleton<TabsService>();
 
 builder.Services.AddOidcAuthentication(options =>
 {
-    builder.Configuration.Bind("Local", options.ProviderOptions);
+    builder.Configuration.Bind(IdentitySettings.Key, options.ProviderOptions);
 
     options.ProviderOptions.DefaultScopes.Add("openid");
     options.ProviderOptions.DefaultScopes.Add("profile");
     options.ProviderOptions.DefaultScopes.Add("api");
     options.ProviderOptions.DefaultScopes.Add("webappsgateway");
     options.ProviderOptions.DefaultScopes.Add("IdentityServerApi");
+    options.ProviderOptions.DefaultScopes.Add("offline_access");
     options.ProviderOptions.ResponseType = "code";
 });
+
+builder.Services.AddScoped<AuthenticationStateProvider, PersistentRemoteAuthenticationService<RemoteAuthenticationState, RemoteUserAccount>>();
 
 var app = builder.Build();
 
@@ -50,11 +58,14 @@ try
     var result = await jsRuntime.InvokeAsync<string>("blazorCulture.get");
     var culture = CultureInfo.GetCultureInfo(result ?? defaultCulture);
 
-    if (result is null)  
+    if (result is null)
         await jsRuntime.InvokeVoidAsync("blazorCulture.set", defaultCulture);
-    
+
     CultureInfo.DefaultThreadCurrentCulture = culture;
     CultureInfo.DefaultThreadCurrentUICulture = culture;
+
+    await app.ConfigureIndexedDbAsync();
+    app.StartDataSynchronization();
 }
 catch (Exception ex)
 {

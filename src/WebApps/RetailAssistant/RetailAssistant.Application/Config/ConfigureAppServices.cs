@@ -1,7 +1,9 @@
 ﻿using Blazored.LocalStorage;
 using Infrastructure.Common.Services;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using RetailAssistant.Application.Mapping.Configuration;
+using RetailAssistant.Data;
 
 namespace RetailAssistant.Application.Config;
 
@@ -14,15 +16,41 @@ public static class ConfigureAppServices
 
         services.AddScoped<IUserPreferenceService, UserPreferenceService>();
 
-        services.AddScoped<IRetailService<Store>, RetailService<Store, StoreDto>>();
-        services.AddScoped<IRetailService<Receipt>, RetailService<Receipt, ReceiptDto>>();
-        services.AddScoped<IProductCatalogService<CatalogProductItem>, ProductCatalogService<CatalogProductItem, Contracts.Dtos.ProductCatalog.ProductItemDto>>();
-        services.AddScoped<IProductCatalogService<ProductParent>, ProductCatalogService<ProductParent, ProductParentDto>>();
+        services.AddScoped<IRetailDataService<Store>, RetailService<Store, StoreDto>>();
+        services.AddScoped<IDataService<Store>>((provider) => provider.GetRequiredService<IRetailDataService<Store>>());
+
+        services.AddScoped<IRetailDataService<Cashier>, RetailService<Cashier, CashierDto>>();
+        services.AddScoped<IDataService<Cashier>>((provider) => provider.GetRequiredService<IRetailDataService<Cashier>>());
+
+        services.AddScoped<IRetailDataService<Receipt>, RetailService<Receipt, ReceiptDto>>();
+        services.AddScoped<IDataService<Receipt>>((provider) => provider.GetRequiredService<IRetailDataService<Receipt>>());
+
+        services.AddScoped<IProductCatalogDataService<CatalogProductItem>, ProductCatalogService<CatalogProductItem, ProductItemDto>>();
+        services.AddScoped<IDataService<CatalogProductItem>>((provider) => provider.GetRequiredService<IProductCatalogDataService<CatalogProductItem>>());
+
+        services.AddScoped<IProductCatalogDataService<ProductParent>, ProductCatalogService<ProductParent, ProductParentDto>>();
+        services.AddScoped<IDataService<ProductParent>>((provider) => provider.GetRequiredService<IProductCatalogDataService<ProductParent>>());
+
+        services.AddScoped(typeof(IDataSyncToServerService<,>), typeof(DataSyncToServerService<,>));
+        services.AddScoped(typeof(IDataSyncFromServerService<,>), typeof(DataSyncFromServerService<,>));
 
         services.AddMapping();
 
         services.AddSingleton<IGuidGenerator, GuidGenerator>();
 
         return services;
+    }
+
+    public static void StartDataSynchronization(this WebAssemblyHost host)
+    {
+        var services = host.Services;
+
+        //starting the sync process
+        services.GetRequiredService<IDataSyncToServerService<Receipt, RetailDbSchema>>().SyncAsync(default);
+
+        services.GetRequiredService<IDataSyncFromServerService<CatalogProductItem, ProductCatalogDbSchema>>().SyncAsync(default);
+        services.GetRequiredService<IDataSyncFromServerService<ProductParent, ProductCatalogDbSchema>>().SyncAsync(default);
+        services.GetRequiredService<IDataSyncFromServerService<Store, RetailDbSchema>>().SyncAsync(default);
+        services.GetRequiredService<IDataSyncFromServerService<Cashier, RetailDbSchema>>().SyncAsync(default);
     }
 }

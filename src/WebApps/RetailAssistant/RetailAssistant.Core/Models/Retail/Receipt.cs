@@ -88,7 +88,6 @@ public class Receipt : EntityModelBase
         {
             Id = id,
             ProductItem = new RetailProductItem { Id = productItem.Id, Name = productItem.Name },
-            Receipt = this,
             ReceiptId = Id,
             Quantity = 1,
             UnitPrice = productItem.Price,

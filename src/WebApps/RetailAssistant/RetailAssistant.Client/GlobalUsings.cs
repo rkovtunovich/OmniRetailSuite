@@ -1,6 +1,7 @@
 ﻿global using Core.WebApps.UserPreferences;
 
 global using Microsoft.AspNetCore.Components;
+global using Microsoft.Extensions.Localization;
 
 global using MudBlazor;
 
@@ -8,7 +9,7 @@ global using RetailAssistant.Application.Services.Abstraction;
 global using RetailAssistant.Application.Services.Implementation;
 
 global using RetailAssistant.Client.Components;
-global using RetailAssistant.Client.Extensions;
+global using RetailAssistant.Client.Authentication;
 
 global using RetailAssistant.Core.Models;
 global using RetailAssistant.Core.Models.Retail;
@@ -16,6 +17,7 @@ global using RetailAssistant.Core.Models.Retail;
 
 global using System.Collections.Generic;
 global using System.ComponentModel.DataAnnotations;
+global using System.Globalization;
 global using System.IO;
 global using System.Linq;
 global using System.Net;

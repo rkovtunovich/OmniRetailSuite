@@ -121,6 +121,12 @@
     <value>Cashier's workplace</value>
   </data>
   <data name="Home" xml:space="preserve">
-    <value>Home</value>
+    <value>Main</value>
+  </data>
+  <data name="StoreSelected" xml:space="preserve">
+    <value>Current store is</value>
+  </data>
+  <data name="StoreNotSelected" xml:space="preserve">
+    <value>Store is not selected. Please, select a store in the settings. </value>
   </data>
 </root>

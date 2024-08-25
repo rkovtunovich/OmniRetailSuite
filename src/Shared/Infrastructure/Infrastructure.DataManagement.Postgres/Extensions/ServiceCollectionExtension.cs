@@ -8,16 +8,16 @@ public static class ServiceCollectionExtension
     {
         var serviceProvider = services.BuildServiceProvider();
 
-        var logger = serviceProvider.GetRequiredService<ILogger<IDbManager>>();
+        var logger = serviceProvider.GetRequiredService<ILogger<IDbManager<DbSettings>>>();
 
         logger.LogInformation("Prepare Database for seeding...");
 
         try
         {
-            var dbManager = serviceProvider.GetRequiredService<IDbManager>();
+            var dbManager = serviceProvider.GetRequiredService<IDbManager<DbSettings>>();
             var dbOptions = serviceProvider.GetRequiredService<IOptions<DbSettings>>();
 
-            await dbManager.EnsureDatabaseExists(dbOptions.Value.Database);
+            await dbManager.EnsureDatabaseExists();
         }
         catch (Exception ex)
         {

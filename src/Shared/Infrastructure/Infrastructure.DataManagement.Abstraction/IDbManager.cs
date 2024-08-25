@@ -1,6 +1,6 @@
 ﻿namespace Infrastructure.DataManagement.Abstraction;
 
-public interface IDbManager
+public interface IDbManager<TOptions> where TOptions : class
 {
-    Task EnsureDatabaseExists(string dbName);
+    Task EnsureDatabaseExists(TOptions? options = null);
 }

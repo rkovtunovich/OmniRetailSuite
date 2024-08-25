@@ -19,7 +19,7 @@ public static class DbSeeder
             var identityContext = scopedProvider.GetRequiredService<ApplicationDbContext>();
             var preferences = scopedProvider.GetRequiredService<IUserPreferenceRepository>();
 
-            await AppIdentityDbContextSeed.SeedAsync(identityContext, userManager, roleManager, preferences);
+            await AppIdentityDbContextSeed.SeedAsync(identityContext, userManager, roleManager, preferences, app.Configuration);
         }
         catch (Exception ex)
         {

@@ -4,7 +4,7 @@ using RetailAssistant.Application.Helpers;
 
 namespace RetailAssistant.Application.Services.Implementation;
 
-public class RetailService<TModel, TDto> : IRetailService<TModel> where TModel : EntityModelBase, new()
+public class RetailService<TModel, TDto> : IRetailDataService<TModel> where TModel : EntityModelBase, new()
 {
     private readonly IHttpService<RetailClientSettings> _httpService;
     private readonly ILogger<RetailService<TModel, TDto>> _logger;
@@ -19,7 +19,7 @@ public class RetailService<TModel, TDto> : IRetailService<TModel> where TModel :
         _mapper = mapper;
     }
 
-    public async Task<List<TModel>> GetAllAsync()
+    public async Task<IList<TModel>> GetAllAsync()
     {
         var uri = RetailUrlHelper.GetAll<TModel>();
         var dtos = await _httpService.GetAsync<List<TDto>>(uri);

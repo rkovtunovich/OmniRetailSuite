@@ -6,11 +6,11 @@ public partial class AppSettings : OrsComponentBase
     private ILocalConfigService LocalConfigService { get; set; } = null!;
 
     [Inject]
-    private IRetailService<Store> _retailService { get; set; } = null!;
+    private IRetailDataService<Store> _retailService { get; set; } = null!;
 
     private RetailAssistantAppConfig _appConfig = new();
 
-    private List<Store> _stores = [];
+    private IList<Store> _stores = [];
 
     protected override async Task OnInitializedAsync()
     {
