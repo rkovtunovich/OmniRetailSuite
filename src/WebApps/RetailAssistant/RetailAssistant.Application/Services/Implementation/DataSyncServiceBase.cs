@@ -19,7 +19,7 @@ public abstract class DataSyncServiceBase<TModel, TDbSettings> :
     protected readonly IOptions<TDbSettings> _options;
     protected readonly ResiliencePipeline _resiliencePipeline;
 
-    private Timer? _fromServerSyncTimer;
+    private Timer? _syncTimer;
     private bool _isTimerInitialized = false;
     private readonly object _timerLock = new();
 
@@ -37,14 +37,14 @@ public abstract class DataSyncServiceBase<TModel, TDbSettings> :
         _logger = logger;
         _options = options;
         _resiliencePipeline = resiliencePipelineProvider.GetPipeline(RetryPolicySettings.Key);
+
+        _applicationStateService.OnStateChange += HandleStateChange;
     }
 
     protected abstract Task PerformSynchronizationAsync(CancellationToken stoppingToken);
 
     public async Task SyncAsync(CancellationToken stoppingToken)
     {
-        EnsureTimerInitialized();
-
         if (!_applicationStateService.IsOnline)
         {
             _logger.LogInformation("Device is offline. Data sync is disabled.");
@@ -68,6 +68,16 @@ public abstract class DataSyncServiceBase<TModel, TDbSettings> :
         }
     }
 
+    public void Dispose()
+    {
+        _syncTimer?.Dispose();
+        _applicationStateService.OnStateChange -= HandleStateChange;
+
+        GC.SuppressFinalize(this);
+    }
+
+    #region Timer
+
     private void EnsureTimerInitialized()
     {
         if (_isTimerInitialized) 
@@ -79,7 +89,7 @@ public abstract class DataSyncServiceBase<TModel, TDbSettings> :
                 return;
 
             var interval = TimeSpan.FromMinutes(_options.Value.SynchronizationInterval);
-            _fromServerSyncTimer = new Timer(async _ => await SyncAsync(CancellationToken.None), null, TimeSpan.Zero, interval);
+            _syncTimer = new Timer(async _ => await SyncAsync(CancellationToken.None), null, TimeSpan.Zero, interval);
 
             _isTimerInitialized = true;
 
@@ -87,10 +97,26 @@ public abstract class DataSyncServiceBase<TModel, TDbSettings> :
         }
     }
 
-    public void Dispose()
+    private void StartSyncTimer()
     {
-        _fromServerSyncTimer?.Dispose();
-
-        GC.SuppressFinalize(this);
+        EnsureTimerInitialized();
+        _syncTimer?.Change(TimeSpan.Zero, TimeSpan.FromMinutes(_options.Value.SynchronizationInterval));
+        _logger.LogInformation($"Sync timer started for {typeof(TModel).Name}.");
     }
+
+    private void StopSyncTimer()
+    {
+        _syncTimer?.Change(Timeout.Infinite, Timeout.Infinite);
+        _logger.LogInformation($"Sync timer stopped for {typeof(TModel).Name}.");
+    }
+
+    private void HandleStateChange()
+    {
+        if (_applicationStateService.IsOnline)     
+            StartSyncTimer();       
+        else       
+            StopSyncTimer();        
+    }
+
+    #endregion  
 }
