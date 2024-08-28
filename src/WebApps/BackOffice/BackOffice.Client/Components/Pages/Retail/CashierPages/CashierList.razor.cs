@@ -6,7 +6,7 @@ public partial class CashierList : ListBase<Cashier>
 
     [Inject] private IStringLocalizer<CashierList> _localizer { get; set; } = default!;
 
-    private DialogOptions _dialogOptions = new() { DisableBackdropClick = true };
+    private DialogOptions _dialogOptions = new() { BackdropClick = false };
 
     #region Overrides
 

@@ -19,6 +19,9 @@ public partial class ContextMenu : OrsComponentBase
     public async Task Show(MouseEventArgs eventArg)
     {
         var contextMenu = await JSRuntime.InvokeAsync<IJSObjectReference>("document.getElementById", _contextMenuId);
+        if (contextMenu is null)
+            return;
+
         await contextMenu.InvokeVoidAsync("style.setProperty", "left", $"{eventArg.ClientX}px");
         await contextMenu.InvokeVoidAsync("style.setProperty", "top", $"{eventArg.ClientY}px");
         await contextMenu.InvokeVoidAsync("style.setProperty", "display", "block");
@@ -28,7 +31,7 @@ public partial class ContextMenu : OrsComponentBase
             { "Disabled", false }
         }));
 
-        _contextMenu.OpenMenu(eventArg);
+        await _contextMenu.OpenMenuAsync(eventArg);
     }
 
     protected override void OnInitialized()
@@ -43,7 +46,7 @@ public partial class ContextMenu : OrsComponentBase
 
     private async Task OnContextMenuOpenChanged(bool state)
     {
-        if (_contextMenu.IsOpen)
+        if (_contextMenu.Open)
             return;
 
         await _contextMenu.SetParametersAsync(ParameterView.FromDictionary(new Dictionary<string, object?>

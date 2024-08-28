@@ -32,7 +32,7 @@
     </ToolBarContent>
 
     <Columns>
-        <PropertyColumn Property="x => x.GetCode()" Title="@_localizer["Number"]" IsEditable="false" />
+        <PropertyColumn Property="x => x.GetCode()" Title="@_localizer["Number"]" Editable="false" />
         <PropertyColumn Property="x => Converter.UtcToLocalDateTime(x.Date)" Title="@_localizer["Date"]" />
         <PropertyColumn Property="x => x.Store" Title="@_localizer["Store"]" />
         <PropertyColumn Property="x => x.Cashier" Title="@_localizer["Cashier"]" />

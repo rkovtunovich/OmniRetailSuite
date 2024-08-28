@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.Extensions.Localization;
 
 namespace BackOffice.Client.Components.Layout;
 
@@ -57,7 +56,7 @@ public partial class MainLayout
             MaxWidth = MaxWidth.Medium,
             FullWidth = true,
             CloseOnEscapeKey = true,
-            DisableBackdropClick = true
+            BackdropClick = false
         };
 
         var parameters = new DialogParameters

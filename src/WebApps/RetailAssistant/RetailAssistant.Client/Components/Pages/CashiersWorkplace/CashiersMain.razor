@@ -52,8 +52,7 @@
 
             <MudContainer Class="cashiers-workplace-keyboard-container m-0 p-0">
 
-                <MudTreeView T="ProductParent"
-                             Items="@_itemParents"
+                <MudTreeView Items="@_itemParents"
                              Hover="true"
                              Dense
                              Class="cashiers-workplace-catalog-parent-tree">
@@ -62,14 +61,15 @@
 
                         <MudTreeViewItem Items="@item.Children"
                                          Icon="@Icons.Material.Outlined.Folder"
-                                         Value="item"
-                                         OnClick="@(e => OnParentItemClick(item, e))"
-                                         Class="@($"{GetItemClass(item)} ors-no-select")">
+                                         T="ProductParent"
+                                         Value="item.Value"
+                                         OnClick="@(e => OnParentItemClick(item.Value, e))"
+                                         Class="@($"{GetItemClass(item.Value)} ors-no-select")">
 
                             <BodyContent>
                                 <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                                    <MudText Class="ors-tree-item-parent-code" Style="flex-basis: 20%; margin-right: 16px;">@item.GetCode()</MudText>
-                                    <MudText Class="ors-tree-item-parent-name" Style="flex-grow: 1;">@item.Name</MudText>
+                                    <MudText Class="ors-tree-item-parent-code" Style="flex-basis: 20%; margin-right: 16px;">@item.Value?.GetCode()</MudText>
+                                    <MudText Class="ors-tree-item-parent-name" Style="flex-grow: 1;">@item.Value?.Name</MudText>
                                 </div>
                             </BodyContent>
 

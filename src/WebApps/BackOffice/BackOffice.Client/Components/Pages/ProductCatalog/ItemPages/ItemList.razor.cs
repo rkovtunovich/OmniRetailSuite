@@ -22,7 +22,7 @@ public partial class ItemList : ListBase<ProductItem>
 
     #region Product Items
 
-    private DialogOptions _dialogOptions = new() { DisableBackdropClick = true };
+    private DialogOptions _dialogOptions = new() { BackdropClick = false };
 
     #endregion
 
@@ -30,7 +30,7 @@ public partial class ItemList : ListBase<ProductItem>
 
     private ProductParent? _selectedProductParent;
 
-    private HashSet<ProductParent> _itemParents = [];
+    private IReadOnlyCollection<TreeItemData<ProductParent>> _itemParents = [];
 
     private bool _isItemParentsOpen = true;
 
@@ -175,12 +175,14 @@ public partial class ItemList : ListBase<ProductItem>
         CallRequestRefresh();
     }
 
-    private async void OnParentItemDoubleClick(ProductParent productParent)
+    private async void OnParentItemDoubleClick(TreeItemData<ProductParent> treeItemData)
     {
+        var productParent = treeItemData.Value;
+
         _selectedProductParent = productParent;
         SelectedItem = null;
 
-        if (productParent.Name == FilterSpecialCase.All.ToString())
+        if (productParent?.Name == FilterSpecialCase.All.ToString())
         {
             await ReloadProductItems();
             _selectedProductParent = null;
@@ -222,31 +224,53 @@ public partial class ItemList : ListBase<ProductItem>
 
     private async Task ReloadItemParents()
     {
-        var itemParentsList = await ProductParentService.GetAllAsync();
-        _itemParents.Clear();
-        _itemParents.Add(new ProductParent { Id = Guid.NewGuid(), Name = FilterSpecialCase.All.ToString() });
-        _itemParents.Add(new ProductParent { Id = Guid.NewGuid(), Name = FilterSpecialCase.Empty.ToString() });
-
-        foreach (var itemParent in itemParentsList)
+        var itemParents = new List<ProductParent>
         {
-            _itemParents.Add(itemParent);
-        }
+            new() { Id = Guid.NewGuid(), Name = FilterSpecialCase.All.ToString() },
+            new() { Id = Guid.NewGuid(), Name = FilterSpecialCase.Empty.ToString() }
+        };
+        itemParents.AddRange(await ProductParentService.GetAllAsync());
+
+       _itemParents = CreateTreeItems(itemParents);
 
         CallRequestRefresh();
     }
 
-    private string GetItemClass(ProductParent productParent)
+    private string GetItemClass(TreeItemData<ProductParent> viewItem)
     {
         if (_selectedProductParent is null)
             return "";
 
-        if (_selectedProductParent.Name == FilterSpecialCase.All.ToString() && productParent.Name == _selectedProductParent.Name)
+        var productParent = viewItem.Value;
+
+        if (_selectedProductParent.Name == FilterSpecialCase.All.ToString() && productParent?.Name == _selectedProductParent.Name)
             return _selectedParentClassName;
 
-        if (_selectedProductParent.Name == FilterSpecialCase.Empty.ToString() && productParent.Name == _selectedProductParent.Name)
+        if (_selectedProductParent.Name == FilterSpecialCase.Empty.ToString() && productParent?.Name == _selectedProductParent.Name)
             return _selectedParentClassName;
 
-        return _selectedProductParent.Id == productParent.Id ? _selectedParentClassName : "";
+        return _selectedProductParent.Id == productParent?.Id ? _selectedParentClassName : "";
+    }
+
+    private static List<TreeItemData<ProductParent>> CreateTreeItems(List<ProductParent>? items)
+    {
+        if (items is null)
+            return [];
+
+        var treeItems = new List<TreeItemData<ProductParent>>();
+
+        foreach (var item in items)
+        {
+            var treeItem = new TreeItemData<ProductParent>
+            {
+                Value = item,
+                Children = CreateTreeItems(item.Children)
+            };
+
+            treeItems.Add(treeItem);
+        }
+
+        return treeItems;
     }
 
     #endregion

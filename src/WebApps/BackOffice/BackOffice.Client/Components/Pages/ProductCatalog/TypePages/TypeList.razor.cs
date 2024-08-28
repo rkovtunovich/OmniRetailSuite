@@ -8,7 +8,7 @@ public partial class TypeList : ListBase<ProductType>
 
     [Inject] private IStringLocalizer<TypeList> _localizer { get; set; } = default!;
 
-    private DialogOptions _dialogOptions = new() { DisableBackdropClick = true };
+    private DialogOptions _dialogOptions = new() { BackdropClick = false };
 
     #region Overrides
 

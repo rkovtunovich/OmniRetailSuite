@@ -211,3 +211,12 @@ a, .btn-link {
 }
 
 /* ---Cashier's workpalce */
+
+
+/* +++App settings dialog */
+
+.app-settings-dialog-tabs > .mud-tabs-tabbar-wrapper{
+    display:grid;
+}
+
+/* --App settings dialog */

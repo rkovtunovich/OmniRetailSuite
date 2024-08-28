@@ -4,14 +4,15 @@ using MudBlazor.Services;
 using RetailAssistant.Core.Models;
 using RetailAssistant.Core.Models.ProductCatalog;
 using RetailAssistant.Core.Models.Retail;
+using RetailAssistant.Data;
 
 namespace WebApps.RetailAssistant.UnitTests.Pages.CashiersWorkplace;
 
 public class CashiersMainShould : TestContext
 {
-    private readonly IProductCatalogDataService<ProductParent> _productParentService;
-    private readonly IProductCatalogDataService<CatalogProductItem> _productItemService;
-    private readonly IRetailDataService<Receipt> _receiptService;
+    private readonly IApplicationRepository<ProductParent, ProductCatalogDbSchema> _productParentRepository;
+    private readonly IApplicationRepository<CatalogProductItem, ProductCatalogDbSchema> _productItemRepository;
+    private readonly IApplicationRepository<Receipt, RetailDbSchema> _receiptRepository;
     private readonly ILocalConfigService _localConfigService;
     private readonly IGuidGenerator _guidGenerator;
 
@@ -19,16 +20,16 @@ public class CashiersMainShould : TestContext
     {
         JSInterop.SetupVoid("mudPopover.initialize", _ => true);
 
-        _productParentService = Substitute.For<IProductCatalogDataService<ProductParent>>();
-        _productItemService = Substitute.For<IProductCatalogDataService<CatalogProductItem>>();
-        _receiptService = Substitute.For<IRetailDataService<Receipt>>();
+        _productParentRepository = Substitute.For<IApplicationRepository<ProductParent, ProductCatalogDbSchema>>();
+        _productItemRepository = Substitute.For<IApplicationRepository<CatalogProductItem, ProductCatalogDbSchema>>();
+        _receiptRepository = Substitute.For<IApplicationRepository<Receipt, RetailDbSchema>>();
         _localConfigService = Substitute.For<ILocalConfigService>();
         _guidGenerator = Substitute.For<IGuidGenerator>();
 
         Services.AddMudServices();
-        Services.AddSingleton(_productParentService);
-        Services.AddSingleton(_productItemService);
-        Services.AddSingleton(_receiptService);
+        Services.AddSingleton(_productParentRepository);
+        Services.AddSingleton(_productItemRepository);
+        Services.AddSingleton(_receiptRepository);
         Services.AddSingleton(_localConfigService);
         Services.AddSingleton(_guidGenerator);
         Services.AddSingleton(Substitute.For<IStringLocalizer<CashiersMain>>());
@@ -43,8 +44,8 @@ public class CashiersMainShould : TestContext
         JSInterop.SetupVoid("mudKeyInterceptor.connect", _ => true);
         JSInterop.SetupVoid("mudElementRef.saveFocus", _ => true);
         JSInterop.SetupVoid("mudScrollManager.lockScroll", _ => true);
-        _productParentService.GetAllAsync().Returns([]);
-        _productItemService.GetAllAsync().Returns([new() { Id = Guid.NewGuid() }]);
+        _productParentRepository.GetAllAsync().Returns([]);
+        _productItemRepository.GetAllAsync().Returns([new() { Id = Guid.NewGuid() }]);
         _localConfigService.GetConfigAsync().Returns(new RetailAssistantAppConfig()
         {
             Store = new Store()
@@ -73,7 +74,7 @@ public class CashiersMainShould : TestContext
 
         if (paymentDialog is not null)
         {
-            var fragment = Render(paymentDialog.RenderFragment);
+            var fragment = Render(paymentDialog?.RenderFragment ?? throw new InvalidOperationException());
             var receiptPaymentComponent = fragment.FindComponent<ReceiptPayment>();
             var payButton =  receiptPaymentComponent.Find("#receipt-payment-pay-button");
             payButton.Click();
@@ -81,8 +82,6 @@ public class CashiersMainShould : TestContext
 
         // Wait for the ReceiptPaymentMade method to complete
         cashierMainComponent.WaitForState(() => cashierMainComponent.Instance.PaymentDialog is null, TimeSpan.FromSeconds(10));
-
-        //cashierMainComponent.Render();
 
         // Assert
         var rows = cashierMainComponent.FindAll(".cashiers-workplace-receipt-table-row");
@@ -93,8 +92,8 @@ public class CashiersMainShould : TestContext
     public void AddProductItemToReceipt_ProductItemAddedToReceipt_ReceiptTableHasOneRow()
     {
         // Arrange
-        _productParentService.GetAllAsync().Returns([]);
-        _productItemService.GetAllAsync().Returns([new() { Id = Guid.NewGuid() }]);
+        _productParentRepository.GetAllAsync().Returns([]);
+        _productItemRepository.GetAllAsync().Returns([new() { Id = Guid.NewGuid() }]);
         _localConfigService.GetConfigAsync().Returns(new RetailAssistantAppConfig()
         {
             Store = new Store()
@@ -110,6 +109,6 @@ public class CashiersMainShould : TestContext
 
         // Assert
         var rows = component.FindAll(".cashiers-workplace-receipt-table-row");
-        rows.Should().HaveCount(1);
+        rows.Should().ContainSingle();
     }
 }

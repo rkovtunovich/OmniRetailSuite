@@ -6,7 +6,7 @@ public partial class StoreList : ListBase<Store>
 
     [Inject] private IStringLocalizer<StoreList> _localizer { get; set; } = default!;
 
-    private DialogOptions _dialogOptions = new() { DisableBackdropClick = true };
+    private DialogOptions _dialogOptions = new() { BackdropClick = false };
 
     #region Overrides
 
