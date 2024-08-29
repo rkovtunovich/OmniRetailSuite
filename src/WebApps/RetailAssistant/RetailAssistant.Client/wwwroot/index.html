@@ -28,11 +28,16 @@
 
 <body>
     <div id="app">
-        <svg class="loading-progress">
-            <circle r="40%" cx="50%" cy="50%" />
-            <circle r="40%" cx="50%" cy="50%" />
-        </svg>
-        <div class="loading-progress-text"></div>
+
+        <div class="ors-loader">
+            <img src="logo.png" alt="Loading..." height="500">
+            <h1>Retail Assistant</h1>
+            <div style="display:flex; gap:10px; justify-content:center; align-items:center">
+                <div class="spinner-border" role="status"></div>
+                The application is loading...
+            </div>
+        </div>
+
     </div>
 
     <div id="blazor-error-ui">
