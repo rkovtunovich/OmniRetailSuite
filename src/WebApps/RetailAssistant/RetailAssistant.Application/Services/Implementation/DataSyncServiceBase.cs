@@ -1,4 +1,5 @@
 ﻿using Infrastructure.DataManagement.IndexedDb.Configuration.Settings;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Options;
 using Polly;
 using Polly.Registry;
@@ -18,6 +19,7 @@ public abstract class DataSyncServiceBase<TModel, TDbSettings> :
     protected readonly IApplicationRepository<TModel, TDbSettings> _applicationRepository;
     protected readonly IOptions<TDbSettings> _options;
     protected readonly ResiliencePipeline _resiliencePipeline;
+    private readonly AuthenticationStateProvider _authenticationStateProvider;
 
     private Timer? _syncTimer;
     private bool _isTimerInitialized = false;
@@ -29,7 +31,8 @@ public abstract class DataSyncServiceBase<TModel, TDbSettings> :
         IDataService<TModel> dataService,
         ILogger<DataSyncServiceBase<TModel, TDbSettings>> logger,
         IOptions<TDbSettings> options,
-        ResiliencePipelineProvider<string> resiliencePipelineProvider)
+        ResiliencePipelineProvider<string> resiliencePipelineProvider,
+        AuthenticationStateProvider authenticationStateProvider)
     {
         _applicationStateService = applicationStateService;
         _dataService = dataService;
@@ -37,6 +40,7 @@ public abstract class DataSyncServiceBase<TModel, TDbSettings> :
         _logger = logger;
         _options = options;
         _resiliencePipeline = resiliencePipelineProvider.GetPipeline(RetryPolicySettings.Key);
+        _authenticationStateProvider = authenticationStateProvider;
 
         _applicationStateService.OnStateChange += HandleStateChange;
     }
@@ -48,6 +52,13 @@ public abstract class DataSyncServiceBase<TModel, TDbSettings> :
         if (!_applicationStateService.IsOnline)
         {
             _logger.LogInformation("Device is offline. Data sync is disabled.");
+            return;
+        }
+
+        var authenticationState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        if (authenticationState.User.Identity?.IsAuthenticated is not true)
+        {
+            _logger.LogInformation("User is not authenticated. Data sync is disabled.");
             return;
         }
 
@@ -112,7 +123,7 @@ public abstract class DataSyncServiceBase<TModel, TDbSettings> :
 
     private void HandleStateChange()
     {
-        if (_applicationStateService.IsOnline)     
+        if (_applicationStateService.IsOnline)
             StartSyncTimer();       
         else       
             StopSyncTimer();        
