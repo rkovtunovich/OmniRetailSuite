@@ -3,6 +3,8 @@
     set: (value) => window.localStorage['BlazorCulture'] = value
   };
 
+document.body.style.fontSize = setFontSize();
+
 async function checkForServiceWorkerUpdate() {
     if ('serviceWorker' in navigator) {
         try {
@@ -24,4 +26,23 @@ if ('serviceWorker' in navigator) {
             window.location.reload();
         }
     });
+}
+
+// set font size based on user preference to body
+function changeFontSize(size) {
+    document.body.style.fontSize = size;
+
+    // save to local storage
+    localStorage.setItem('fontSize', size);
+}
+
+// set font size based on user preference from local storage
+function setFontSize() {
+    const size = localStorage.getItem('fontSize');
+    if (size) {
+        document.body.style.fontSize = size;
+    }
+    else {
+        document.body.style.fontSize = "1em";
+    }
 }

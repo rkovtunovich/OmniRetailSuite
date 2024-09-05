@@ -146,9 +146,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Integration.CommonIntegrati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.DataManagement.IndexedDb", "src\Shared\Infrastructure\Infrastructure.DataManagement.IndexedDb\Infrastructure.DataManagement.IndexedDb.csproj", "{8C1F37BF-925A-4D24-BC8C-E1EDAB615F71}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailAssistant.Data", "src\WebApps\RetailAssistant\RetailAssistant.Data\RetailAssistant.Data.csproj", "{C4EBA8E6-3AB0-460F-AFB0-C44DD267C3AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetailAssistant.Data", "src\WebApps\RetailAssistant\RetailAssistant.Data\RetailAssistant.Data.csproj", "{C4EBA8E6-3AB0-460F-AFB0-C44DD267C3AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers.StringsHelper", "src\Shared\Helpers\Helpers.StringsHelper\Helpers.StringsHelper.csproj", "{6BDC27D3-7D43-4613-8BF7-139708AF220E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Helpers.StringsHelper", "src\Shared\Helpers\Helpers.StringsHelper\Helpers.StringsHelper.csproj", "{6BDC27D3-7D43-4613-8BF7-139708AF220E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

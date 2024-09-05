@@ -37,6 +37,8 @@
                         </MudSelect>
                     </MudItem>
 
+                    <FontSizeSettings />
+
                 </MudGrid>
 
             </MudTabPanel>
@@ -53,6 +55,8 @@
                                Variant="@MudBlazor.Variant.Filled">
 
                         @foreach (var item in _stores)
+
+
 
                         {
                             <MudSelectItem Value="@item"></MudSelectItem>

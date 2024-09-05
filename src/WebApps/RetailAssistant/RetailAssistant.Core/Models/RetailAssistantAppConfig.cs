@@ -1,6 +1,4 @@
-﻿using RetailAssistant.Core.Models.Retail;
-
-namespace RetailAssistant.Core.Models;
+﻿namespace RetailAssistant.Core.Models;
 
 public class RetailAssistantAppConfig
 {

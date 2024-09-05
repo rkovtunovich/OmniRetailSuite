@@ -1,0 +1,9 @@
+﻿<MudSlider Value=_fontSize
+           Min="0.5"
+           Max="1.5"
+           ValueChanged="@((double size) => ChangeFontSize(size))"
+           Step="0.1" />
+
+<div class="d-flex flex-column align-center" style="width: 100%">
+    <MudText Class="pb-4">@_localizer["FontSize"] @(_fontSize)em</MudText>
+</div>
