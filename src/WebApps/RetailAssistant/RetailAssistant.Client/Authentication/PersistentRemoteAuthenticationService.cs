@@ -19,7 +19,7 @@ public class PersistentRemoteAuthenticationService<TRemoteAuthenticationState, T
     private readonly ILogger<PersistentRemoteAuthenticationService<TRemoteAuthenticationState, TAccount>> _logger;
 
     private bool _isTokenPersisted = false;
-    private bool _isSessionRestored = false;
+    //private bool _isSessionRestored = false;
 
     public PersistentRemoteAuthenticationService(
         IJSRuntime jsRuntime,
@@ -140,8 +140,8 @@ public class PersistentRemoteAuthenticationService<TRemoteAuthenticationState, T
 
     private async ValueTask RestoreSessionAsync()
     {
-        if (_isSessionRestored)
-            return;
+        //if (_isSessionRestored)
+        //    return;
 
         var currentSession = await _jsRuntime.InvokeAsync<string>("sessionStorage.getItem", _sessionKey);
         if (!string.IsNullOrEmpty(currentSession))
@@ -151,6 +151,6 @@ public class PersistentRemoteAuthenticationService<TRemoteAuthenticationState, T
         if (!string.IsNullOrEmpty(persistedSession))
             await _jsRuntime.InvokeVoidAsync("sessionStorage.setItem", _sessionKey, persistedSession);
 
-        _isSessionRestored = true;
+        //_isSessionRestored = true;
     }
 }

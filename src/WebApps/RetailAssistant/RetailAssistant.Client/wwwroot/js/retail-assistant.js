@@ -50,3 +50,16 @@ function setFontSize() {
         document.body.style.fontSize = "1em";
     }
 }
+
+function clearCacheAndReload() {
+    if ('caches' in window) {
+        // Clear all caches
+        caches.keys().then(function (names) {
+            for (let name of names) {
+                caches.delete(name);
+            }
+        });
+    }
+    // Force a full page reload
+    window.location.reload(true); // Reload with cache bypass
+}

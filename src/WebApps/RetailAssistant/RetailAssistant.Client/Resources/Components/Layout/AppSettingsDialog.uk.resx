@@ -123,6 +123,9 @@
   <data name="Cancel" xml:space="preserve">
     <value>Відмінити</value>
   </data>
+  <data name="ClearCacheReload" xml:space="preserve">
+    <value>Очистити кеш та перезавантажити</value>
+  </data>
   <data name="Language" xml:space="preserve">
     <value>Мова</value>
   </data>
