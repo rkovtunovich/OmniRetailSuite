@@ -118,6 +118,10 @@ a, .btn-link {
     padding: 2px;
 }
 
+.mud-table-cell{
+    font-size: inherit !important;
+}
+
 .form-command-panel {
     box-shadow: 1px 1px 5px var(--mud-palette-black);
 }

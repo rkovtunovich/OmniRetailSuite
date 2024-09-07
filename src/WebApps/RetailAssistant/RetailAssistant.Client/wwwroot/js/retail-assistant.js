@@ -30,10 +30,11 @@ if ('serviceWorker' in navigator) {
 
 // set font size based on user preference to body
 function changeFontSize(size) {
-    document.body.style.fontSize = size;
 
     // save to local storage
     localStorage.setItem('fontSize', size);
+
+    setFontSize();
 }
 
 // set font size based on user preference from local storage
@@ -41,6 +42,9 @@ function setFontSize() {
     const size = localStorage.getItem('fontSize');
     if (size) {
         document.body.style.fontSize = size;
+        document.documentElement.style.setProperty("--mud-typography-body1-size", size);
+        document.documentElement.style.setProperty("--mud-typography-input-size", size);
+        document.documentElement.style.setProperty("--mud-typography-button-size", size);
     }
     else {
         document.body.style.fontSize = "1em";
