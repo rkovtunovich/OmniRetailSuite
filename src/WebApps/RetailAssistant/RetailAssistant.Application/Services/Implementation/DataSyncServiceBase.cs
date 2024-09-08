@@ -1,4 +1,5 @@
 ﻿using Infrastructure.DataManagement.IndexedDb.Configuration.Settings;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Options;
 using Polly;
 using Polly.Registry;
@@ -18,8 +19,9 @@ public abstract class DataSyncServiceBase<TModel, TDbSettings> :
     protected readonly IApplicationRepository<TModel, TDbSettings> _applicationRepository;
     protected readonly IOptions<TDbSettings> _options;
     protected readonly ResiliencePipeline _resiliencePipeline;
+    private readonly AuthenticationStateProvider _authenticationStateProvider;
 
-    private Timer? _fromServerSyncTimer;
+    private Timer? _syncTimer;
     private bool _isTimerInitialized = false;
     private readonly object _timerLock = new();
 
@@ -29,7 +31,8 @@ public abstract class DataSyncServiceBase<TModel, TDbSettings> :
         IDataService<TModel> dataService,
         ILogger<DataSyncServiceBase<TModel, TDbSettings>> logger,
         IOptions<TDbSettings> options,
-        ResiliencePipelineProvider<string> resiliencePipelineProvider)
+        ResiliencePipelineProvider<string> resiliencePipelineProvider,
+        AuthenticationStateProvider authenticationStateProvider)
     {
         _applicationStateService = applicationStateService;
         _dataService = dataService;
@@ -37,17 +40,25 @@ public abstract class DataSyncServiceBase<TModel, TDbSettings> :
         _logger = logger;
         _options = options;
         _resiliencePipeline = resiliencePipelineProvider.GetPipeline(RetryPolicySettings.Key);
+        _authenticationStateProvider = authenticationStateProvider;
+
+        _applicationStateService.OnStateChange += HandleStateChange;
     }
 
     protected abstract Task PerformSynchronizationAsync(CancellationToken stoppingToken);
 
     public async Task SyncAsync(CancellationToken stoppingToken)
     {
-        EnsureTimerInitialized();
-
         if (!_applicationStateService.IsOnline)
         {
             _logger.LogInformation("Device is offline. Data sync is disabled.");
+            return;
+        }
+
+        var authenticationState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        if (authenticationState.User.Identity?.IsAuthenticated is not true)
+        {
+            _logger.LogInformation("User is not authenticated. Data sync is disabled.");
             return;
         }
 
@@ -68,6 +79,16 @@ public abstract class DataSyncServiceBase<TModel, TDbSettings> :
         }
     }
 
+    public void Dispose()
+    {
+        _syncTimer?.Dispose();
+        _applicationStateService.OnStateChange -= HandleStateChange;
+
+        GC.SuppressFinalize(this);
+    }
+
+    #region Timer
+
     private void EnsureTimerInitialized()
     {
         if (_isTimerInitialized) 
@@ -79,7 +100,7 @@ public abstract class DataSyncServiceBase<TModel, TDbSettings> :
                 return;
 
             var interval = TimeSpan.FromMinutes(_options.Value.SynchronizationInterval);
-            _fromServerSyncTimer = new Timer(async _ => await SyncAsync(CancellationToken.None), null, TimeSpan.Zero, interval);
+            _syncTimer = new Timer(async _ => await SyncAsync(CancellationToken.None), null, TimeSpan.Zero, interval);
 
             _isTimerInitialized = true;
 
@@ -87,10 +108,26 @@ public abstract class DataSyncServiceBase<TModel, TDbSettings> :
         }
     }
 
-    public void Dispose()
+    private void StartSyncTimer()
     {
-        _fromServerSyncTimer?.Dispose();
-
-        GC.SuppressFinalize(this);
+        EnsureTimerInitialized();
+        _syncTimer?.Change(TimeSpan.Zero, TimeSpan.FromMinutes(_options.Value.SynchronizationInterval));
+        _logger.LogInformation($"Sync timer started for {typeof(TModel).Name}.");
     }
+
+    private void StopSyncTimer()
+    {
+        _syncTimer?.Change(Timeout.Infinite, Timeout.Infinite);
+        _logger.LogInformation($"Sync timer stopped for {typeof(TModel).Name}.");
+    }
+
+    private void HandleStateChange()
+    {
+        if (_applicationStateService.IsOnline)
+            StartSyncTimer();       
+        else       
+            StopSyncTimer();        
+    }
+
+    #endregion  
 }

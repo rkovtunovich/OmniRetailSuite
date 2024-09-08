@@ -28,7 +28,7 @@ public partial class App
                     CultureInfo.CurrentUICulture)));
     }
 
-    private string AppendFileVersion(string filePath)
+    private static string AppendFileVersion(string filePath)
     {
         var contentRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
         var path = Path.Combine(contentRootPath, filePath);

@@ -2,8 +2,14 @@
 
     <DialogContent>
 
-        <MudTabs Outlined="true" Position="@Position.Left" Rounded="true" Border="true"
-                 ApplyEffectsToContainer="true" Class="mt-8" PanelClass="pa-6">
+        <MudTabs Outlined="true"
+                 Position="@Position.Left"
+                 Border="true"
+                 ApplyEffectsToContainer="true"
+                 AlwaysShowScrollButtons="false"
+                 HideSlider="true"
+                 Class="mt-8 app-settings-dialog-tabs"
+                 PanelClass="pa-6">
 
             <MudTabPanel Text="@_localizer["UserPreferences"]">
 
@@ -23,12 +29,17 @@
                         <MudSelect Label="@_localizer["Language"]" Value="_settings.Language" ValueChanged="@((Language l) => ChangeLanguage(l))">
 
                             @foreach (var language in _languages)
+
                             {
                                 <MudSelectItem Value="@language">@language</MudSelectItem>
                             }
 
                         </MudSelect>
                     </MudItem>
+
+                    <FontSizeSettings />
+
+                    <MudButton OnClick="ReloadWithCacheClear" Color="Color.Primary">@_localizer["ClearCacheReload"]</MudButton>
 
                 </MudGrid>
 
@@ -46,6 +57,9 @@
                                Variant="@MudBlazor.Variant.Filled">
 
                         @foreach (var item in _stores)
+
+
+
                         {
                             <MudSelectItem Value="@item"></MudSelectItem>
                         }

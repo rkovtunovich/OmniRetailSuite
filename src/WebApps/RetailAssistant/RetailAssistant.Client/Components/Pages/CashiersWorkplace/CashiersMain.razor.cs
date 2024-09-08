@@ -130,15 +130,18 @@ public partial class CashiersMain
     #region fields
 
     private ProductParent? _selectedProductParent;
-    private HashSet<ProductParent> _itemParents = [];
+    private IReadOnlyCollection<TreeItemData<ProductParent>> _itemParents = [];
     private static readonly string selectedParentClassName = "ors-selected-parent-item";
 
     #endregion
 
     #region methods
 
-    private async void OnParentItemClick(ProductParent productParent, MouseEventArgs mouseEventArgs)
+    private async void OnParentItemClick(ProductParent? productParent, MouseEventArgs mouseEventArgs)
     {
+        if (productParent is null)
+            return;
+
         _selectedProductParent = productParent;
         _isTableLoading = true;
 
@@ -159,21 +162,23 @@ public partial class CashiersMain
 
     private async Task ReloadItemParents()
     {
-        var itemParentsList = await ProductParentRepository.GetAllAsync();
-        _itemParents.Clear();
-        _itemParents.Add(new ProductParent { Id = Guid.NewGuid(), Name = FilterSpecialCase.All.ToString() });
-        _itemParents.Add(new ProductParent { Id = Guid.NewGuid(), Name = FilterSpecialCase.Empty.ToString() });
-
-        foreach (var itemParent in itemParentsList)
+        var itemParents = new List<ProductParent>
         {
-            _itemParents.Add(itemParent);
-        }
+            new() { Id = Guid.NewGuid(), Name = FilterSpecialCase.All.ToString() },
+            new() { Id = Guid.NewGuid(), Name = FilterSpecialCase.Empty.ToString() }
+        };
+        itemParents.AddRange(await ProductParentRepository.GetAllAsync());
+
+        _itemParents = CreateTreeItems(itemParents);
 
         CallRequestRefresh();
     }
 
-    private string GetItemClass(ProductParent productParent)
+    private string GetItemClass(ProductParent? productParent)
     {
+        if(productParent is null)
+            return string.Empty;
+
         if (_selectedProductParent is null)
             return "";
 
@@ -184,6 +189,27 @@ public partial class CashiersMain
             return selectedParentClassName;
 
         return _selectedProductParent.Id == productParent.Id ? selectedParentClassName : "";
+    }
+
+    private static List<TreeItemData<ProductParent>> CreateTreeItems(List<ProductParent>? items)
+    {
+        if (items is null)
+            return [];
+
+        var treeItems = new List<TreeItemData<ProductParent>>();
+
+        foreach (var item in items)
+        {
+            var treeItem = new TreeItemData<ProductParent>
+            {
+                Value = item,
+                Children = CreateTreeItems(item.Children)
+            };
+
+            treeItems.Add(treeItem);
+        }
+
+        return treeItems;
     }
 
     #endregion
@@ -256,7 +282,7 @@ public partial class CashiersMain
         {
             CloseOnEscapeKey = false,
             MaxWidth = MaxWidth.Medium,
-            DisableBackdropClick = true
+            BackdropClick = false
         };
 
         var dialogParameters = new DialogParameters { { "ChildContent", content } };

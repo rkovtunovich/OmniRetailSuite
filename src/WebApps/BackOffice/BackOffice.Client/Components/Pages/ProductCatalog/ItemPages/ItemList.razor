@@ -52,11 +52,11 @@
 
             <Columns>
 
-                <PropertyColumn Property="x => x.GetCode()" Title="@_localizer["Code"]" IsEditable="false" />
+                <PropertyColumn Property="x => x.GetCode()" Title="@_localizer["Code"]" Editable="false" />
                 <PropertyColumn Property="x => x.Name" Title="@_localizer["Name"]" />
                 <PropertyColumn Property="x => x.Description" Title="@_localizer["Description"]" />
-                <PropertyColumn Property="x => x.ProductType" Title="@_localizer["Type"]" IsEditable="false" />
-                <PropertyColumn Property="x => x.ProductBrand" Title="@_localizer["Brand"]" IsEditable="false" />
+                <PropertyColumn Property="x => x.ProductType" Title="@_localizer["Type"]" Editable="false" />
+                <PropertyColumn Property="x => x.ProductBrand" Title="@_localizer["Brand"]" Editable="false" />
                 <PropertyColumn Property="x => x.Price" Title="@_localizer["Price"]" />
                 <PropertyColumn Property="x => x.Barcode" Title="@_localizer["Barcode"]" />
 
@@ -79,19 +79,20 @@
 
             </MudToolBar>
 
-            <MudTreeView T="ProductParent" Items="@_itemParents" Hover="true" Dense>
-                <ItemTemplate Context="item">
+            <MudTreeView Items="@_itemParents" Hover="true" Dense>
+                <ItemTemplate Context="treeItem">
 
-                    <MudTreeViewItem Items="@item.Children"
+                    <MudTreeViewItem Items="@treeItem.Children"
                                      Icon="@Icons.Material.Outlined.Folder"
-                                     Value="item"
-                                     OnDoubleClick="@(e => OnParentItemDoubleClick(item))"
-                                     Class="@($"{GetItemClass(item)} ors-no-select")">
+                                     T ="ProductParent"
+                                     Value="treeItem.Value"
+                                     OnDoubleClick="@(e => OnParentItemDoubleClick(treeItem))"
+                                     Class="@($"{GetItemClass(treeItem)} ors-no-select")">
 
                         <BodyContent>
                             <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                                <MudText Class="ors-tree-item-parent-code" Style="flex-basis: 20%; margin-right: 16px;">@item.GetCode()</MudText>
-                                <MudText Class="ors-tree-item-parent-name" Style="flex-grow: 1;">@item.Name</MudText>
+                                <MudText Class="ors-tree-item-parent-code" Style="flex-basis: 20%; margin-right: 16px;">@treeItem.Value?.GetCode()</MudText>
+                                <MudText Class="ors-tree-item-parent-name" Style="flex-grow: 1;">@treeItem.Value?.Name</MudText>
                                 <MudIconButton Size="@Size.Small"
                                                Icon="@IconHelper.Open"
                                                OnClick="@(() => OpenItemParentClick(context))" />

@@ -88,4 +88,9 @@ public partial class AppSettingsDialog
     {
         AppSettingsDialogInstance.Close(DialogResult.Ok(_settings));
     }
+
+    private async void ReloadWithCacheClear()
+    {
+        await _jsRuntime.InvokeVoidAsync("clearCacheAndReload");
+    }
 }

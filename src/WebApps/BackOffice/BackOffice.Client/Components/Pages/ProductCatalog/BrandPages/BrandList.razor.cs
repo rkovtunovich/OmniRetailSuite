@@ -8,7 +8,7 @@ public partial class BrandList : ListBase<ProductBrand>
 
     [Inject] private IStringLocalizer<BrandList> _localizer { get; set; } = default!;
 
-    private DialogOptions _dialogOptions = new() { DisableBackdropClick = true };
+    private DialogOptions _dialogOptions = new() { BackdropClick = false };
 
     #region Overrides
 

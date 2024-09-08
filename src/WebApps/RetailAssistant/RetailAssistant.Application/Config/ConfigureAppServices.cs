@@ -46,11 +46,11 @@ public static class ConfigureAppServices
         var services = host.Services;
 
         //starting the sync process
-        services.GetRequiredService<IDataSyncToServerService<Receipt, RetailDbSchema>>().SyncAsync(default);
+        services.GetRequiredService<IDataSyncToServerService<Receipt, RetailDbSchema>>();
 
-        services.GetRequiredService<IDataSyncFromServerService<CatalogProductItem, ProductCatalogDbSchema>>().SyncAsync(default);
-        services.GetRequiredService<IDataSyncFromServerService<ProductParent, ProductCatalogDbSchema>>().SyncAsync(default);
-        services.GetRequiredService<IDataSyncFromServerService<Store, RetailDbSchema>>().SyncAsync(default);
-        services.GetRequiredService<IDataSyncFromServerService<Cashier, RetailDbSchema>>().SyncAsync(default);
+        services.GetRequiredService<IDataSyncFromServerService<CatalogProductItem, ProductCatalogDbSchema>>();
+        services.GetRequiredService<IDataSyncFromServerService<ProductParent, ProductCatalogDbSchema>>();
+        services.GetRequiredService<IDataSyncFromServerService<Store, RetailDbSchema>>();
+        services.GetRequiredService<IDataSyncFromServerService<Cashier, RetailDbSchema>>();
     }
 }

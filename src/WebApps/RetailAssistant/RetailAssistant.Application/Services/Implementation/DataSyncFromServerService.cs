@@ -1,4 +1,5 @@
 ﻿using Infrastructure.DataManagement.IndexedDb.Configuration.Settings;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Options;
 using Polly.Registry;
 using RetailAssistant.Data;
@@ -11,8 +12,9 @@ public class DataSyncFromServerService<TModel, TDbSettings>(
     IDataService<TModel> dataService,
     ILogger<DataSyncFromServerService<TModel, TDbSettings>> logger,
     IOptions<TDbSettings> options,
-    ResiliencePipelineProvider<string> resiliencePipelineProvider) : 
-    DataSyncServiceBase<TModel, TDbSettings>(applicationStateService, applicationRepository, dataService, logger, options, resiliencePipelineProvider),
+    ResiliencePipelineProvider<string> resiliencePipelineProvider,
+    AuthenticationStateProvider authenticationStateProvider): 
+    DataSyncServiceBase<TModel, TDbSettings>(applicationStateService, applicationRepository, dataService, logger, options, resiliencePipelineProvider, authenticationStateProvider),
     IDataSyncFromServerService<TModel, TDbSettings>
     where TModel : EntityModelBase, new()
     where TDbSettings : DbSchema

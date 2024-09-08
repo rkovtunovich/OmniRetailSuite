@@ -1,8 +1,5 @@
-﻿using System.Globalization;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.Extensions.Localization;
+﻿using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
-using RetailAssistant.Client.Authentication;
 
 namespace RetailAssistant.Client.Components.Layout;
 
@@ -54,7 +51,7 @@ public partial class MainLayout : IDisposable
             MaxWidth = MaxWidth.Medium,
             FullWidth = true,
             CloseOnEscapeKey = true,
-            DisableBackdropClick = true
+            BackdropClick = false
         };
 
         var parameters = new DialogParameters

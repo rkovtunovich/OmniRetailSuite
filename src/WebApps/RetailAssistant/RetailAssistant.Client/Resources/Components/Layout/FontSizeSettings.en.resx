@@ -117,28 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AppSettings" xml:space="preserve">
-    <value>Налаштування програми</value>
-  </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Відмінити</value>
-  </data>
-  <data name="ClearCacheReload" xml:space="preserve">
-    <value>Очистити кеш та перезавантажити</value>
-  </data>
-  <data name="Language" xml:space="preserve">
-    <value>Мова</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Зберегти</value>
-  </data>
-  <data name="Store" xml:space="preserve">
-    <value>Магазин</value>
-  </data>
-  <data name="Theme" xml:space="preserve">
-    <value>Тема</value>
-  </data>
-  <data name="UserPreferences" xml:space="preserve">
-    <value>Параметри користувача</value>
+  <data name="FontSize" xml:space="preserve">
+    <value>Font size</value>
   </data>
 </root>

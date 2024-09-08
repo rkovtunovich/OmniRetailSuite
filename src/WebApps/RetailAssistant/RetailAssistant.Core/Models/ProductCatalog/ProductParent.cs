@@ -8,5 +8,5 @@ public class ProductParent : EntityModelBase
 
     public Guid? ParentId { get; set; }
 
-    public HashSet<ProductParent>? Children { get; set; }
+    public List<ProductParent>? Children { get; set; }
 }

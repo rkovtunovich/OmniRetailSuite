@@ -123,6 +123,9 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="ClearCacheReload" xml:space="preserve">
+    <value>Clear cache and reload</value>
+  </data>
   <data name="Language" xml:space="preserve">
     <value>Language</value>
   </data>
